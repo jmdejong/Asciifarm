@@ -141,7 +141,7 @@ objectdict = {
     "player": playerent.Player,
     "stone": Stone,
     "rock": Rock,
-    "rabbit": Rabbit,
+    #"rabbit": Rabbit,
     "grass": Grass,
     "water": Water,
     "floor": Floor,
