@@ -55,5 +55,11 @@ class Player:
     
     def control(self, action):
         self.controller["action"] = action
-            
+    
+    def getGroundObjs(self):
+        if not self.entity:
+            return None
+        objs = set(self.entity.getGround().getObjs())
+        objs.discard(self.entity)
+        return objs
     

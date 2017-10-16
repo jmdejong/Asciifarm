@@ -33,8 +33,8 @@ class View:
         data = {
             "type": "fullupdate",
             "info":{
-                "holding": holding.char if holding else "nothing"
-                #"ground": [obj.char for obj in player.ground.getObjs()]
+                "holding": holding.getChar() if holding else "nothing",
+                "ground": [obj.getChar() for obj in player.getGroundObjs()]
             }
         }
         if field:
