@@ -7,11 +7,6 @@ from gameobjects import Wall
 import grid
 import event
 
-_listType = type([])
-_stringType = type("hello")
-_noneType = type(None)
-_tupleType = type(())
-_dictType = type({})
 
 class Room:
     
@@ -32,16 +27,20 @@ class Room:
         for x in range(g.width):
             for y in range(g.height):
                 val = g.get(x, y)
-                if not isinstance(val, _listType) :
+                if not isinstance(val, list) :
                     val = [val]
                 for obj in val:
-                    if isinstance(obj, _stringType):
-                        self.addObj((x, y), gameobjects.makeObject(obj))
-                    elif isinstance(obj, _dictType):
+                    if isinstance(obj, str):
+                        objtype = obj
+                        args = []
+                        kwargs = {}
+                    elif isinstance(obj, dict):
                         objtype = obj["type"]
                         args = obj.get("args", [])
                         kwargs = obj.get("kwargs", {})
-                        self.addObj((x, y), gameobjects.makeObject(objtype, self, (x, y), *args, **kwargs))
+                    else:
+                        continue
+                    self.addObj((x, y), gameobjects.makeObject(objtype, self, *args, **kwargs))
         
     
     def getEntrance(self):
@@ -52,21 +51,14 @@ class Room:
     
     def update(self):
         self.updateEvent.trigger()
-        #for listener in frozenset(self.updateListeners.values()):
-            #listener()
     
     def addUpdateListener(self, listener, key=None):
         self.updateEvent.addListener(listener, key)
-        #if (key == None):
-            #key = listener
-        #self.updateListeners[key] = listener
     
     def removeUpdateListener(self, key):
         self.updateEvent.removeListener(key)
-        #self.updateListeners.pop(key, None)
     
     def getChar(self, pos):
-        #x, y = pos
         return self._getGround(pos).getTopObj().getChar()
     
     def isValidPos(self, pos):
@@ -75,29 +67,23 @@ class Room:
     
     def _getGround(self, pos):
         if pos not in self.field and self.isValidPos(pos):
-            groundPatch = ground.GroundPatch()
+            groundPatch = ground.GroundPatch(self, pos)
             self.field[pos] = groundPatch
         return self.field.get(pos)
     
-    #def get(self, pos):
-        #return self._getGround(pos)
+    def get(self, pos):
+        if isinstance(pos, str):
+            pos = self.places.get(pos)
+        if pos:
+            return self._getGround(pos)
+        return None
     
     def getPlace(self, place):
         return self.places.get(place)
     
     def addObj(self, pos, obj):
-        self._getGround(pos).addObj(obj)
+        obj.place(self.get(pos))
     
     def removeObj(self, pos, obj):
         self._getGround(pos).removeObj(obj)
-    
-    def getObjs(self, pos):
-        return self._getGround(pos).getObjs()
-    
-    def accessible(self, pos):
-        ground = self._getGround(pos)
-        return ground and ground.accessible()
-    
-    def onEnter(self, pos, obj):
-        self._getGround(pos).onEnter(obj)
 

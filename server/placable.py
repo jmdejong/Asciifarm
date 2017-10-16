@@ -12,3 +12,6 @@ class GameObject:
     
     def getChar(self):
         return self.char
+    
+    def place(self, ground):
+        ground.addObj(self)

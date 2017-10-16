@@ -10,32 +10,24 @@ class Player(GameObject):
     attributes = {}
     slowness = 2
     
-    def __init__(self, room, pos, name=None):
+    def __init__(self, room, name=None):
         self.controller = {}
         self.room = room
         self.name = name or str(id(self))
-        #self.char = self.name[0]
-        x, y = pos
-        self.x = x
-        self.y = y
-        #self.ground = None
-        self.place((x, y))
+        self.ground = None
         self.holding = None
         self.moveCooldown = 0
-        #self.direction = random.choice(["north", "south", "east", "west"])
         room.addUpdateListener(self.update, self)
         self.event = event.Event()
     
     def setController(self, controller):
         self.controller = controller
     
-    def place(self, pos):
-        x, y = pos
-        self.room.removeObj((self.x, self.y), self)
-        self.room.addObj((x, y), self)
-        #self.ground = self.room.get(x, y)
-        self.x = x
-        self.y = y
+    def place(self, ground):
+        if self.ground:
+            self.ground.removeObj(self)
+        ground.addObj(self)
+        self.ground = ground
             
     
     def update(self):
@@ -44,36 +36,29 @@ class Player(GameObject):
         if "action" in self.controller:
             action = self.controller["action"]
             
-            if action in {"north", "east", "south", "west"} and self.moveCooldown <= 0:
-                direction = action
-                dx = (direction == "east") - (direction == "west")
-                dy = (direction == "south") - (direction == "north")
+            if action in self.ground.getNeighbours() and self.moveCooldown <= 0:
+                newPlace = self.ground.getNeighbours()[action]
                 
-                newx = self.x + dx
-                newy = self.y + dy
-                
-                if self.room.accessible((newx, newy)):
-                    self.place((newx, newy))
+                if newPlace.accessible():
+                    self.place(newPlace)
                     self.moveCooldown = self.slowness
-                    self.room.onEnter((self.x, self.y), self)
+                    newPlace.onEnter(self)
             
             
             if action == "drop" and self.holding:
-                self.room.addObj((self.x, self.y), self.holding)
+                self.ground.addObj(self.holding)
                 self.holding = None
             
             if action == "take" and not self.holding:
-                #place = self.field.get(self.x, self.y)
-                for obj in self.room.getObjs((self.x, self.y)):
+                for obj in self.ground.getObjs():
                     if "takable" in obj.attributes:
-                        self.room.removeObj((self.x, self.y), obj)
+                        self.ground.removeObj(obj)
                         self.holding = obj
                         break
             
     
     def remove(self):
-        #self.game.removePlayer(self.name)
-        self.room.removeObj((self.x, self.y), self)
+        self.ground.removeObj(self)
         self.room.removeUpdateListener(self)
     
     def getEvent(self):

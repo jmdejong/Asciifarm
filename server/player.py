@@ -9,7 +9,6 @@ class Player:
         self.world = world
         
         self.roomname = None
-        #self.pos = (0,0)
         
         self.entity = None
         
@@ -34,25 +33,14 @@ class Player:
             self.leaveRoom()
         
         self.roomname = roomname
-        if isinstance(place, list) or isinstance(place, tuple):
-            pos = place
-        elif isinstance(place, str):
-            pos = room.getPlace(place)
-        else:
-            pos = room.getEntrance()
-        self.entity = playerent.Player(room, pos)
+        pos = place or room.getEntrance()
+        self.entity = playerent.Player(room)
         self.entity.setController(self.controller)
         self.entity.getEvent().addListener(self.onPlayerAction)
         room.addObj(pos, self.entity)
     
     def getRoom(self):
         return self.roomname
-    
-    def getPos(self):
-        if self.entity:
-            return self.entity.getPos()
-        else:
-            return None
     
     def onPlayerAction(self, action, *data):
         if action == "changeroom":

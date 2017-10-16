@@ -1,7 +1,9 @@
 
 import random
 from gameobjects import objectdict
-    
+
+neighbourdirs = {"north":(0,-1), "south":(0,1), "east":(1,0), "west":(-1,0)}
+
 class GroundPatch:
     
     #height = 0
@@ -9,11 +11,14 @@ class GroundPatch:
     char = ' '
     objects = None
     
-    def __init__(self, char=' '):
+    def __init__(self, room, pos, char=' '):
         # objects is actually a set, but because its elements are mutable
         # it is implemented as a dictionary with the id as index
         self.objects = {}
         self.char = char
+        self.room = room
+        self.pos = pos
+        self.neighbours = None
     
     def accessible(self):
         return not any("solid" in obj.attributes for obj in self.objects.values())
@@ -44,3 +49,16 @@ class GroundPatch:
                 continue
             if hasattr(o, "onEnter"):
                 o.onEnter(obj)
+    
+    def getNeighbours(self):
+        if not self.neighbours:
+            x, y = self.pos
+            self.neighbours = {}
+            for name, (dx, dy) in neighbourdirs.items():
+                g = self.room.get((x+dx, y+dy))
+                if g:
+                    self.neighbours[name] = g
+        
+        return self.neighbours
+    
+
