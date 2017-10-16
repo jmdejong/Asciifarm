@@ -5,6 +5,7 @@ import playerent
 import gameobjects
 from gameobjects import Wall
 import grid
+import event
 
 _listType = type([])
 _stringType = type("hello")
@@ -20,7 +21,7 @@ class Room:
         self.players = {}
         self.width = data["width"]
         self.height = data["height"]
-        self.updateListeners = {}
+        self.updateEvent = event.Event()
         self.entrance = (10, 5)
         
         self.field = {}
@@ -55,16 +56,19 @@ class Room:
         return self.players[name].getControlInterface()
     
     def update(self):
-        for listener in frozenset(self.updateListeners.values()):
-            listener()
+        self.updateEvent.trigger()
+        #for listener in frozenset(self.updateListeners.values()):
+            #listener()
     
     def addUpdateListener(self, listener, key=None):
-        if (key == None):
-            key = listener
-        self.updateListeners[key] = listener
+        self.updateEvent.addListener(listener, key)
+        #if (key == None):
+            #key = listener
+        #self.updateListeners[key] = listener
     
     def removeUpdateListener(self, key):
-        self.updateListeners.pop(key, None)
+        self.updateEven.removeListener(key)
+        #self.updateListeners.pop(key, None)
     
     def getChar(self, pos):
         #x, y = pos

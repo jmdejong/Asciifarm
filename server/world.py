@@ -7,26 +7,41 @@ import player
 
 class World:
     
-    def __init__(self, data={}):
+    def __init__(self, data={"begin": None, "rooms": {}}):
         
         self.rooms = {}
+        self.beginRoom = data["begin"]
         
         self.players = {}
         
-        for roomname, roomdata in data.items():
+        for roomname, roomdata in data["rooms"].items():
             self.makeRoom(roomname, roomdata)
         #self.makeRoom("begin", {"width": 64, "height": 32})
     
     
-    def makePlayer(self, name, data=None):
+    def createPlayer(self, name, data=None):
+        
         if name in self.players:
-            #raise Exception("Can not make new player with the name of an existing player")
-            pl = self.players[name]
-        else:
-            pl = player.Player(name)
-            self.players[name] = pl
-        pl.joinRoom(self.rooms["begin"])
+            raise Exception("Can not make new player with the name of an existing player")
+        pl = player.Player(name, self)
+        self.players[name] = pl
+        pl.joinRoom(self.getBeginRoom())
         return pl
+    
+    def playerJoin(self, name):
+        pl = self.players[name]
+        pl.joinRoom(pl.getRoom())
+        return pl
+    
+    #def makePlayer(self, name, data=None):
+        #if name in self.players:
+            ##raise Exception("Can not make new player with the name of an existing player")
+            #pl = self.players[name]
+        #else:
+            #pl = player.Player(name)
+            #self.players[name] = pl
+        #pl.joinRoom(self.rooms[self.beginRoom])
+        #return pl
     
     def makeRoom(self, name, data):
         ro = room.Room(name, data)
@@ -46,6 +61,9 @@ class World:
     
     def getRoom(self, roomname):
         return self.rooms.get(roomname)
+    
+    def getBeginRoom(self):
+        return self.beginRoom
     
     def controlPlayer(self, playername, action):
         self.players[playername].control(action)

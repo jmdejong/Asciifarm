@@ -48,7 +48,11 @@ class Game:
             t = msg[0]
             name = msg[1]
             if t == "join":
-                self.world.makePlayer(name)
+                #self.world.makePlayer(name)
+                try:
+                    self.world.createPlayer(name)
+                except Exception as e:
+                    self.world.playerJoin(name)
             elif t == "leave":
                 self.world.removePlayer(name)
             elif t == "input":

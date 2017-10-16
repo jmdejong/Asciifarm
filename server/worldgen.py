@@ -40,5 +40,8 @@ def generateBeginRoom():
 
 def generateWorld():
     return {
-        "begin": generateBeginRoom()
+        "begin": "begin",
+        "rooms":{
+            "begin": generateBeginRoom()
+            }
         }

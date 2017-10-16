@@ -1,6 +1,6 @@
 
 from placable import GameObject
-
+import event
 
 class Player(GameObject):
     
