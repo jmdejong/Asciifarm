@@ -34,7 +34,13 @@ class Player:
             self.leaveRoom()
         
         self.roomname = roomname
-        pos = place or room.getEntrance()
+        if isinstance(place, list) or isinstance(place, tuple):
+            pos = place
+        elif isinstance(place, str):
+            pos = room.getPlace(place)
+        else:
+            pos = room.getEntrance()
+        #pos = place or room.getEntrance()
         self.entity = playerent.Player(room, pos)
         self.entity.setController(self.controller)
         self.entity.getEvent().addListener(self.onPlayerAction)
@@ -45,7 +51,6 @@ class Player:
         #return self.world.getRoom(self.roomname)
     
     def onPlayerAction(self, action, *data):
-        print(action, data)
         if action == "changeroom":
             room, pos = data
             self.joinRoom(room, pos)

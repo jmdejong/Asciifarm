@@ -24,6 +24,8 @@ class Room:
         self.updateEvent = event.Event()
         self.entrance = tuple(data["spawn"])
         
+        self.places = data.get("places", {})
+        
         self.field = {}
         
         g = grid.fromDict(data)
@@ -34,21 +36,12 @@ class Room:
                     val = [val]
                 for obj in val:
                     if isinstance(obj, _stringType):
-                        #print(obj)
                         self.addObj((x, y), gameobjects.makeObject(obj))
                     elif isinstance(obj, _dictType):
                         objtype = obj["type"]
                         args = obj.get("args", [])
                         kwargs = obj.get("kwargs", {})
-                        #print(objtype, args, kwargs)
                         self.addObj((x, y), gameobjects.makeObject(objtype, self, (x, y), *args, **kwargs))
-        
-        #for x in range(self.width):
-            #self.addObj((x, 0), Wall())
-            #self.addObj((x, self.height-1), Wall())
-        #for y in range(1,self.height-1):
-            #self.addObj((0, y), Wall())
-            #self.addObj((self.width-1, y), Wall())
         
     
     def getEntrance(self):
@@ -88,6 +81,9 @@ class Room:
     
     #def get(self, pos):
         #return self._getGround(pos)
+    
+    def getPlace(self, place):
+        return self.places.get(place)
     
     def addObj(self, pos, obj):
         self._getGround(pos).addObj(obj)

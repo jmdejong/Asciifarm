@@ -31,12 +31,14 @@ def generateBeginRoom():
             g.set(x, y, "water")
     
     g.set(3, 8, ["grass", "stone"])
-    g.set(30, 20, {"type": "roomexit", "args": ["basement"], "kwargs": {"char": "stairdown"}})
+    g.set(30, 20, {"type": "roomexit", "args": ["basement", "stairup"], "kwargs": {"char": "stairdown"}})
     
     
     d = g.toDict()
     d["spawn"] = (10, 5)
-    
+    d["places"] = {
+        "stairdown": (30, 20)
+        }
     return d
 
 
@@ -51,9 +53,12 @@ def generateBasement():
         for y in range(16, 25):
             g.set(x, y, "ground")
     
-    g.set(30, 20, {"type": "roomexit", "args": ["begin"], "kwargs": {"char": "stairup"}})
+    g.set(30, 20, {"type": "roomexit", "args": ["begin", "stairdown"], "kwargs": {"char": "stairup"}})
     d = g.toDict()
-    d["spawn"] = (31, 20)
+    d["spawn"] = (30, 20)
+    d["places"] = {
+        "stairup": (30, 20)
+        }
     return d
 
 

@@ -36,7 +36,6 @@ class Player(GameObject):
         #self.ground = self.room.get(x, y)
         self.x = x
         self.y = y
-        self.room.onEnter((x, y), self)
             
     
     def update(self):
@@ -56,24 +55,8 @@ class Player(GameObject):
                 if self.room.accessible((newx, newy)):
                     self.place((newx, newy))
                     self.moveCooldown = self.slowness
+                    self.room.onEnter((self.x, self.y), self)
             
-        
-        
-            #if action in {"fastnorth", "fasteast", "fastsouth", "fastwest"}:
-                #direction = action
-                #dx = (direction == "fasteast") - (direction == "fastwest")
-                #dy = (direction == "fastsouth") - (direction == "fastnorth")
-                
-                #dx *= 10
-                #dy *= 10
-                
-                #newx = self.x + dx
-                #newy = self.y + dy
-                
-                #if self.room.accessible((newx, newy)):
-                    #self.place((newx, newy))
-            
-            #place = self.room.get((self.x, self.y))
             
             if action == "drop" and self.holding:
                 self.room.addObj((self.x, self.y), self.holding)
@@ -87,7 +70,6 @@ class Player(GameObject):
                         self.holding = obj
                         break
             
-            #del self.controller["action"]
     
     def remove(self):
         #self.game.removePlayer(self.name)
