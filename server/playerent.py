@@ -78,4 +78,7 @@ class Player(GameObject):
     
     def getEvent(self):
         return self.event
+    
+    def getPos(self):
+        return (self.x, self.y)
 

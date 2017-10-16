@@ -49,8 +49,6 @@ class Grid:
                 idsByValue[frozenChar] = charId
             charId = idsByValue[frozenChar]
             data.append(charId)
-        #print(valuesById)
-        #print(idsByValue)
         return {
             "width": self.width,
             "height": self.height,
@@ -67,9 +65,5 @@ def fromDict(data):
     for (i, val) in enumerate(field):
         y, x = divmod(i, width)
         grid.set(x, y, mapping[val])
-    #for x in range(width):
-        #for y in range(height):
-            #i = x + width * y
-            #grid.set(x, y, mapping.get(field.get(x+width*y)))
     
     return grid

@@ -16,11 +16,11 @@ class Player:
         self.data = {}
         
         self.controller = {}
+        
     
     def updateData(self):
         if self.entity:
             pass
-            #self.data = self.entity.toJSON
     
     def leaveRoom(self):
         self.entity.remove()
@@ -40,7 +40,6 @@ class Player:
             pos = room.getPlace(place)
         else:
             pos = room.getEntrance()
-        #pos = place or room.getEntrance()
         self.entity = playerent.Player(room, pos)
         self.entity.setController(self.controller)
         self.entity.getEvent().addListener(self.onPlayerAction)
@@ -48,7 +47,12 @@ class Player:
     
     def getRoom(self):
         return self.roomname
-        #return self.world.getRoom(self.roomname)
+    
+    def getPos(self):
+        if self.entity:
+            return self.entity.getPos()
+        else:
+            return None
     
     def onPlayerAction(self, action, *data):
         if action == "changeroom":
@@ -63,5 +67,5 @@ class Player:
     
     def control(self, action):
         self.controller["action"] = action
-        #return self.controller
+            
     

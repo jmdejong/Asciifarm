@@ -48,7 +48,6 @@ class Game:
             t = msg[0]
             name = msg[1]
             if t == "join":
-                #self.world.makePlayer(name)
                 if not self.world.hasPlayer(name):
                     self.world.createPlayer(name)
                 self.world.playerJoin(name)

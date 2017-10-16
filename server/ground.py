@@ -1,35 +1,6 @@
 
 import random
 from gameobjects import objectdict
-
-#class Ground:
-    
-    #field = []
-    ##ground = []
-    #width = 0
-    #height = 0
-    
-    #def __init__(self, game):
-        
-        #self.field = {}
-        ##self.mapGenerator = mapgenerator.MapGenerator(scale=8)
-        #self.game = game
-    
-    #def get(self, x, y):
-        #if (x, y) not in self.field:
-            #groundPatch = GroundPatch() #char=self.mapGenerator.getGrass(x, y))
-            ##for objecttype in self.mapGenerator.getObjects(x, y):
-                ##groundPatch.addObj(objectdict[objecttype](x, y, self, self.game))
-            #self.field[(x,y)] = groundPatch
-        #return self.field[(x, y)]
-    
-    #def addObj(self, x, y, obj):
-        #p = self.get(x, y).addObj(obj)
-        
-    #def removeObj(self, x, y, obj):
-        #self.get(x, y).removeObj(obj)
-
-
     
 class GroundPatch:
     
@@ -39,7 +10,6 @@ class GroundPatch:
     objects = None
     
     def __init__(self, char=' '):
-        #self.height = height
         # objects is actually a set, but because its elements are mutable
         # it is implemented as a dictionary with the id as index
         self.objects = {}

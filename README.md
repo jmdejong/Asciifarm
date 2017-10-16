@@ -14,3 +14,4 @@ IT IS NOW POSSIBLE TO CHANGE ROOMS!!!
 - better interaction system
 - more content (rooms, objects etc)
 - more efficient drawing/communication by only updating changed squares
+- write converter to convert tiled map files to readable files
