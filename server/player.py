@@ -27,17 +27,28 @@ class Player:
     
     def joinRoom(self, roomname, place=None):
         room = self.world.getRoom(roomname)
+        if not room:
+            raise Exception("Invalid Room")
+        
         if self.entity:
             self.leaveRoom()
         
         self.roomname = roomname
         pos = place or room.getEntrance()
-        self.entity = playerent.Player(pos, room)
+        self.entity = playerent.Player(room, pos)
         self.entity.setController(self.controller)
+        self.entity.getEvent().addListener(self.onPlayerAction)
         room.addObj(pos, self.entity)
     
     def getRoom(self):
-        return self.world.getRoom(self.roomname)
+        return self.roomname
+        #return self.world.getRoom(self.roomname)
+    
+    def onPlayerAction(self, action, *data):
+        print(action, data)
+        if action == "changeroom":
+            room, pos = data
+            self.joinRoom(room, pos)
     
     def getInventory(self):
         if self.entity:

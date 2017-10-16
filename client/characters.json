@@ -12,6 +12,9 @@
         "rabbit": "r",
         "water": "~",
         "floor": "+",
+        "exit": "$",
+        "stairdown": ">",
+        "stairup": "<",
         " ": " "
     }
 }

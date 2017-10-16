@@ -27,7 +27,7 @@ class View:
     
     def playerView(self, playerName):
         player = self.world.getPlayer(playerName)
-        field = self.viewRoom(player.getRoom())
+        field = self.roomView(player.getRoom())
         #print(player.getRoom())
         holding = player.getInventory()
         data = {

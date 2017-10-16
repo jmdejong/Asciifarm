@@ -6,10 +6,7 @@ import grid
 # module for generating some test rooms. should probably be replaced
 
 def generateBeginRoom():
-    
     g = grid.Grid(64, 32, "grass")
-    
-    
     
     for x in range(20, 41):
         for y in range(15, 26):
@@ -34,14 +31,37 @@ def generateBeginRoom():
             g.set(x, y, "water")
     
     g.set(3, 8, ["grass", "stone"])
+    g.set(30, 20, {"type": "roomexit", "args": ["basement"], "kwargs": {"char": "stairdown"}})
     
-    return g.toDict()
+    
+    d = g.toDict()
+    d["spawn"] = (10, 5)
+    
+    return d
+
+
+def generateBasement():
+    
+    g = grid.Grid(64, 32, None)
+    
+    for x in range(20, 41):
+        for y in range(15, 26):
+            g.set(x, y, "wall")
+    for x in range(21, 40):
+        for y in range(16, 25):
+            g.set(x, y, "ground")
+    
+    g.set(30, 20, {"type": "roomexit", "args": ["begin"], "kwargs": {"char": "stairup"}})
+    d = g.toDict()
+    d["spawn"] = (31, 20)
+    return d
 
 
 def generateWorld():
     return {
         "begin": "begin",
         "rooms":{
-            "begin": generateBeginRoom()
+            "begin": generateBeginRoom(),
+            "basement": generateBasement()
             }
         }

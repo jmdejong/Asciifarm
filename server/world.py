@@ -25,12 +25,16 @@ class World:
             raise Exception("Can not make new player with the name of an existing player")
         pl = player.Player(name, self)
         self.players[name] = pl
-        pl.joinRoom(self.getBeginRoom())
+        #pl.joinRoom(self.getBeginRoom())
         return pl
     
     def playerJoin(self, name):
         pl = self.players[name]
-        pl.joinRoom(pl.getRoom())
+        r = pl.getRoom()
+        if not r:
+            r = self.getBeginRoom()
+        print(r)
+        pl.joinRoom(r)
         return pl
     
     #def makePlayer(self, name, data=None):
@@ -58,6 +62,9 @@ class World:
     
     def getPlayer(self, playername):
         return self.players[playername]
+    
+    def hasPlayer(self, playername):
+        return playername in self.players
     
     def getRoom(self, roomname):
         return self.rooms.get(roomname)

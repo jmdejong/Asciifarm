@@ -12,7 +12,7 @@ class Event:
         self.listeners[key] = listener
     
     def removeListener(self, key):
-        self.listeners.pop(key)
+        self.listeners.pop(key, None)
     
     def trigger(self, *args, **kwargs):
         for listener in frozenset(self.listeners.values()):

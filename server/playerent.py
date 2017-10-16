@@ -10,7 +10,7 @@ class Player(GameObject):
     attributes = {}
     slowness = 2
     
-    def __init__(self, pos, room, name=None):
+    def __init__(self, room, pos, name=None):
         self.controller = {}
         self.room = room
         self.name = name or str(id(self))
@@ -24,6 +24,7 @@ class Player(GameObject):
         self.moveCooldown = 0
         #self.direction = random.choice(["north", "south", "east", "west"])
         room.addUpdateListener(self.update, self)
+        self.event = event.Event()
     
     def setController(self, controller):
         self.controller = controller
@@ -35,6 +36,7 @@ class Player(GameObject):
         #self.ground = self.room.get(x, y)
         self.x = x
         self.y = y
+        self.room.onEnter((x, y), self)
             
     
     def update(self):
@@ -55,20 +57,21 @@ class Player(GameObject):
                     self.place((newx, newy))
                     self.moveCooldown = self.slowness
             
-            
-            if action in {"fastnorth", "fasteast", "fastsouth", "fastwest"}:
-                direction = action
-                dx = (direction == "fasteast") - (direction == "fastwest")
-                dy = (direction == "fastsouth") - (direction == "fastnorth")
+        
+        
+            #if action in {"fastnorth", "fasteast", "fastsouth", "fastwest"}:
+                #direction = action
+                #dx = (direction == "fasteast") - (direction == "fastwest")
+                #dy = (direction == "fastsouth") - (direction == "fastnorth")
                 
-                dx *= 10
-                dy *= 10
+                #dx *= 10
+                #dy *= 10
                 
-                newx = self.x + dx
-                newy = self.y + dy
+                #newx = self.x + dx
+                #newy = self.y + dy
                 
-                if self.room.accessible((newx, newy)):
-                    self.place((newx, newy))
+                #if self.room.accessible((newx, newy)):
+                    #self.place((newx, newy))
             
             #place = self.room.get((self.x, self.y))
             
@@ -90,6 +93,7 @@ class Player(GameObject):
         #self.game.removePlayer(self.name)
         self.room.removeObj((self.x, self.y), self)
         self.room.removeUpdateListener(self)
-        
-
+    
+    def getEvent(self):
+        return self.event
 

@@ -22,7 +22,7 @@ class Room:
         self.width = data["width"]
         self.height = data["height"]
         self.updateEvent = event.Event()
-        self.entrance = (10, 5)
+        self.entrance = tuple(data["spawn"])
         
         self.field = {}
         
@@ -30,16 +30,18 @@ class Room:
         for x in range(g.width):
             for y in range(g.height):
                 val = g.get(x, y)
-                if isinstance(val, _stringType) :
+                if not isinstance(val, _listType) :
                     val = [val]
                 for obj in val:
                     if isinstance(obj, _stringType):
+                        #print(obj)
                         self.addObj((x, y), gameobjects.makeObject(obj))
                     elif isinstance(obj, _dictType):
-                        t = obj["type"]
+                        objtype = obj["type"]
                         args = obj.get("args", [])
                         kwargs = obj.get("kwargs", {})
-                        self.addObj((x, y), gameobjects.makeObject(objtype, *args, **kwargs))
+                        #print(objtype, args, kwargs)
+                        self.addObj((x, y), gameobjects.makeObject(objtype, self, (x, y), *args, **kwargs))
         
         #for x in range(self.width):
             #self.addObj((x, 0), Wall())
@@ -67,7 +69,7 @@ class Room:
         #self.updateListeners[key] = listener
     
     def removeUpdateListener(self, key):
-        self.updateEven.removeListener(key)
+        self.updateEvent.removeListener(key)
         #self.updateListeners.pop(key, None)
     
     def getChar(self, pos):
@@ -99,5 +101,7 @@ class Room:
     def accessible(self, pos):
         ground = self._getGround(pos)
         return ground and ground.accessible()
-
+    
+    def onEnter(self, pos, obj):
+        self._getGround(pos).onEnter(obj)
 

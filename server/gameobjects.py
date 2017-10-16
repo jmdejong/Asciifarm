@@ -66,6 +66,26 @@ class Water(GameObject):
         "solid"
         }
 
+class Anything(GameObject):
+    
+    # test object to see if arguments work
+    
+    size = 1
+    
+    def __init__(self, room, pos, char):
+        self.char = char
+
+class RoomExit(GameObject):
+    
+    def __init__(self, room, pos, destRoom, destPos=None, char="exit", size=1):
+        self.destRoom = destRoom
+        self.destPos = destPos
+        self.char = char
+        self.size = size
+    
+    def onEnter(self, obj):
+        obj.getEvent().trigger("changeroom", self.destRoom, self.destPos)
+
 
 #class MapExit(GameObject):
     
@@ -145,7 +165,9 @@ objectdict = {
     "grass": Grass,
     "water": Water,
     "floor": Floor,
-    "ground": Ground
+    "ground": Ground,
+    "anything": Anything,
+    "roomexit": RoomExit
     }
 
 

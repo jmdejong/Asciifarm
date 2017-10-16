@@ -2,32 +2,32 @@
 import random
 from gameobjects import objectdict
 
-class Ground:
+#class Ground:
     
-    field = []
-    #ground = []
-    width = 0
-    height = 0
+    #field = []
+    ##ground = []
+    #width = 0
+    #height = 0
     
-    def __init__(self, game):
+    #def __init__(self, game):
         
-        self.field = {}
-        #self.mapGenerator = mapgenerator.MapGenerator(scale=8)
-        self.game = game
+        #self.field = {}
+        ##self.mapGenerator = mapgenerator.MapGenerator(scale=8)
+        #self.game = game
     
-    def get(self, x, y):
-        if (x, y) not in self.field:
-            groundPatch = GroundPatch() #char=self.mapGenerator.getGrass(x, y))
-            #for objecttype in self.mapGenerator.getObjects(x, y):
-                #groundPatch.addObj(objectdict[objecttype](x, y, self, self.game))
-            self.field[(x,y)] = groundPatch
-        return self.field[(x, y)]
+    #def get(self, x, y):
+        #if (x, y) not in self.field:
+            #groundPatch = GroundPatch() #char=self.mapGenerator.getGrass(x, y))
+            ##for objecttype in self.mapGenerator.getObjects(x, y):
+                ##groundPatch.addObj(objectdict[objecttype](x, y, self, self.game))
+            #self.field[(x,y)] = groundPatch
+        #return self.field[(x, y)]
     
-    def addObj(self, x, y, obj):
-        p = self.get(x, y).addObj(obj)
+    #def addObj(self, x, y, obj):
+        #p = self.get(x, y).addObj(obj)
         
-    def removeObj(self, x, y, obj):
-        self.get(x, y).removeObj(obj)
+    #def removeObj(self, x, y, obj):
+        #self.get(x, y).removeObj(obj)
 
 
     
@@ -67,3 +67,10 @@ class GroundPatch:
     
     def getChar(self):
         return self.char
+    
+    def onEnter(self, obj):
+        for o in frozenset(self.objects.values()):
+            if o == obj:
+                continue
+            if hasattr(o, "onEnter"):
+                o.onEnter(obj)
