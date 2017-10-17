@@ -18,7 +18,7 @@ from screen import Screen
 
 class Client:
     
-    def __init__(self, stdscr, name="___", address="/tmp/tron_socket", spectate=False):
+    def __init__(self, stdscr, name, connection, spectate=False):
         self.stdscr = stdscr
         self.screen = Screen(stdscr)
         
@@ -26,8 +26,7 @@ class Client:
         
         self.keepalive = True
         
-        self.connection = Connection()
-        self.connection.connect(address)
+        self.connection = connection
         
         self.lastoutputstring = None
         self.lastinfostring = None
@@ -111,11 +110,17 @@ class Client:
                 self.connection.send(json.dumps({"input":commands[key]}))
 
 
-def main(name, socket, spectate=False):
+def main(name, address, spectate=False):
     
+    connection = Connection()
+    try:
+        connection.connect(address)
+    except ConnectionRefusedError:
+        print("ERROR: Could not connect to server.\nAre you sure that the server is running and that you're connecting to the right address?", file=sys.stderr)
+        return
     
     def start(stdscr):
-        client = Client(stdscr, name, socket, spectate)
+        client = Client(stdscr, name, connection, spectate)
     
     curses.wrapper(start)
     
