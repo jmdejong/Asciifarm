@@ -4,6 +4,9 @@ from placable import GameObject
 import playerent
 import random
 
+
+# todo: composition
+
 class Wall(GameObject):
     
     char = 'wall'
@@ -39,6 +42,27 @@ class Stone(GameObject):
     attributes = {
         "takable",
         }
+    ground = None
+    
+    def place(self, ground):
+        if self.ground:
+            self.ground.removeObj(self)
+        ground.addObj(self)
+        self.ground = ground
+    
+    def remove(self):
+        self.ground.removeObj(self)
+        self.ground = None
+    
+    
+    def take(self, other):
+        self.remove()
+        
+    
+    def getInteractions(self):
+        return {
+            "take": self.take
+            }
 
 
 class Grass(GameObject):

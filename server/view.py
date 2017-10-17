@@ -30,11 +30,13 @@ class View:
         field = self.roomView(player.getRoom())
         #print(player.getRoom())
         holding = player.getInventory()
+        #print('v', player.getInteractions())
         data = {
             "type": "fullupdate",
             "info":{
                 "holding": holding.getChar() if holding else "nothing",
-                "ground": [obj.getChar() for obj in player.getGroundObjs()]
+                "ground": [obj.getChar() for obj in player.getGroundObjs()],
+                "interactions": [ action + ' ' + obj.getChar() for action, obj in player.getInteractions()]
             }
         }
         if field:

@@ -55,7 +55,43 @@ class Player(GameObject):
                         self.ground.removeObj(obj)
                         self.holding = obj
                         break
-            
+    
+    def pickup(self, obj):
+        if not self.holding:
+            self.holding = obj
+        else:
+            self.ground.addObj(obj)
+    
+    def drop(self):
+        obj = self.holding
+        self.holding = None
+        self.ground.addObj(obj)
+    
+    def getActions(self):
+        actions = {}
+        if self.holding:
+            actions["drop"] = self.drop
+        else:
+            actions["take"] = self.pickup
+        return actions
+    
+    def performAction(self, action, other):
+        fn = self.getActions().get(action)
+        ofn = other.getInteractions().get(action)
+        if not fn or not ofn:
+            return
+        fn(other)
+        ofn(self)
+        
+    
+    def getNearObjects(self):
+        places = {self.ground} | set(self.ground.getNeighbours().values())
+        #print(places)
+        objects = set()
+        for place in places:
+            objects |= {obj for obj in place.getObjs()}
+        #print(objects)
+        return objects
     
     def remove(self):
         self.ground.removeObj(self)
@@ -66,4 +102,9 @@ class Player(GameObject):
     
     def getGround(self):
         return self.ground
-
+    
+    def getInventory(self):
+        if self.holding:
+            return [self.holding]
+        else:
+            return []

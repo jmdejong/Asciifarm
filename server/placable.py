@@ -7,7 +7,7 @@ class GameObject:
     size = 0
     attributes = {}
     
-    def __init__(self, *args):
+    def __init__(self, *args, **kwargs):
         pass
     
     def getChar(self):
@@ -15,3 +15,9 @@ class GameObject:
     
     def place(self, ground):
         ground.addObj(self)
+    
+    def getInteractions(self):
+        return {}
+    
+    def exists(self):
+        return True

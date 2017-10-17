@@ -54,7 +54,36 @@ class Player:
             return None
     
     def control(self, action):
-        self.controller["action"] = action
+        if action in {"north", "south", "east", "west"}:
+            self.controller["action"] = action
+        else:
+            self.controller["action"] = None
+        
+        for interaction, obj in self.getInteractions():
+            if action == interaction:
+                self.performAction(action, obj)
+    
+    def performAction(self, action, obj):
+        if not self.entity:
+            return
+        self.entity.performAction(action, obj)
+    
+    def getInteractions(self):
+        if not self.entity:
+            return None
+        objs = set(self.entity.getNearObjects())
+        objs.discard(self.entity)
+        for item in self.entity.getInventory():
+            objs.add(item)
+        #objs |= {self.entity.holding}
+        interactions = set()
+        for obj in objs:
+            #print("a ",obj.getInteractions())
+            for action in obj.getInteractions():
+                if action in self.entity.getActions():
+                    #print(action)
+                    interactions.add((action, obj))
+        return interactions
     
     def getGroundObjs(self):
         if not self.entity:
