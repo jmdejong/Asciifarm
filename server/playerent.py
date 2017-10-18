@@ -43,7 +43,8 @@ class Player(GameObject):
                     self.place(newPlace)
                     self.moveCooldown = self.slowness
                     newPlace.onEnter(self)
-                    
+        
+            del self.controller["action"]
     
     def inventoryAdd(self, obj):
         if not self.holding:

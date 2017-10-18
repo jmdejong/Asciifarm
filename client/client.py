@@ -86,20 +86,20 @@ class Client:
     def command_loop(self):
         
         commands = {
-            ord("w"): "north",
-            curses.KEY_UP: "north",
-            ord("s"): "south",
-            curses.KEY_DOWN: "south",
-            ord("d"): "east",
-            curses.KEY_RIGHT: "east",
-            ord("a"): "west",
-            curses.KEY_LEFT: "west",
-            ord("e"): "take",
-            ord("q"): "drop",
-            ord("W"): "fastnorth",
-            ord("S"): "fastsouth",
-            ord("D"): "fasteast",
-            ord("A"): "fastwest"
+            ord("w"): ("move", "north"),
+            curses.KEY_UP: ("move", "north"),
+            ord("s"): ("move", "south"),
+            curses.KEY_DOWN: ("move", "south"),
+            ord("d"): ("move", "east"),
+            curses.KEY_RIGHT: ("move", "east"),
+            ord("a"): ("move", "west"),
+            curses.KEY_LEFT: ("move", "west"),
+            ord("e"): ("interact", "take"),
+            ord("q"): ("interact", "drop"),
+            ord("W"): ("move", "fastnorth"),
+            ord("S"): ("move", "fastsouth"),
+            ord("D"): ("move", "fasteast"),
+            ord("A"): ("move", "fastwest")
         }
         
         while self.keepalive:

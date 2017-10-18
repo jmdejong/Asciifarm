@@ -54,14 +54,16 @@ class Player:
             return None
     
     def control(self, action):
-        if action in {"north", "south", "east", "west"}:
-            self.controller["action"] = action
-        else:
-            self.controller["action"] = None
+        if not action or len(action) < 1:
+            return
+        kind = action[0]
+        if kind == "move" and len(action) > 1:
+            self.controller["action"] = action[1]
         
-        for interaction, obj in self.getInteractions():
-            if action == interaction:
-                self.performAction(action, obj)
+        if kind == "interact" and len(action) > 1:
+            for interaction, obj in self.getInteractions():
+                if action[1] == interaction:
+                    self.performAction(action[1], obj)
     
     def performAction(self, action, obj):
         if not self.entity:
