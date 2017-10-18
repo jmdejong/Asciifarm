@@ -43,55 +43,46 @@ class Player(GameObject):
                     self.place(newPlace)
                     self.moveCooldown = self.slowness
                     newPlace.onEnter(self)
-            
-            
-            if action == "drop" and self.holding:
-                self.ground.addObj(self.holding)
-                self.holding = None
-            
-            if action == "take" and not self.holding:
-                for obj in self.ground.getObjs():
-                    if "takable" in obj.attributes:
-                        self.ground.removeObj(obj)
-                        self.holding = obj
-                        break
+                    
     
-    def pickup(self, obj):
+    def inventoryAdd(self, obj):
         if not self.holding:
             self.holding = obj
         else:
             self.ground.addObj(obj)
     
-    def drop(self):
-        obj = self.holding
-        self.holding = None
-        self.ground.addObj(obj)
+    def inventoryRemove(self, obj):
+        if obj == self.holding:
+            self.holding = None
+            return True
+        return False
     
     def getActions(self):
-        actions = {}
+        actions = set()
         if self.holding:
-            actions["drop"] = self.drop
+            actions.add("drop")
         else:
-            actions["take"] = self.pickup
+            actions.add("take")
         return actions
     
     def performAction(self, action, other):
-        fn = self.getActions().get(action)
         ofn = other.getInteractions().get(action)
-        if not fn or not ofn:
+        if not ofn:
             return
-        fn(other)
         ofn(self)
         
     
     def getNearObjects(self):
         places = {self.ground} | set(self.ground.getNeighbours().values())
-        #print(places)
         objects = set()
         for place in places:
             objects |= {obj for obj in place.getObjs()}
-        #print(objects)
+        objects.discard(self)
         return objects
+    
+    def getNearItems(self):
+        items = self.getNearObjects() | set(self.getInventory())
+        return items
     
     def remove(self):
         self.ground.removeObj(self)

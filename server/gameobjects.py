@@ -57,12 +57,19 @@ class Stone(GameObject):
     
     def take(self, other):
         self.remove()
-        
+        other.inventoryAdd(self)
+    
+    def drop(self, other):
+        other.inventoryRemove(self)
+        self.place(other.getGround())
     
     def getInteractions(self):
-        return {
-            "take": self.take
-            }
+        interactions = {}
+        if self.ground:
+            interactions["take"] = self.take
+        else:
+            interactions["drop"] = self.drop
+        return interactions
 
 
 class Grass(GameObject):

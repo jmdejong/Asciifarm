@@ -63,10 +63,15 @@ def generateBasement():
 
 
 def generateWorld():
-    return {
+    worlddata = {
         "begin": "begin",
         "rooms":{
             "begin": generateBeginRoom(),
             "basement": generateBasement()
             }
         }
+    
+    #import json
+    #with open("worlddata.json", "w") as f:
+        #json.dump(worlddata, f, indent=2)
+    return worlddata

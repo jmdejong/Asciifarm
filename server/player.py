@@ -71,17 +71,11 @@ class Player:
     def getInteractions(self):
         if not self.entity:
             return None
-        objs = set(self.entity.getNearObjects())
-        objs.discard(self.entity)
-        for item in self.entity.getInventory():
-            objs.add(item)
-        #objs |= {self.entity.holding}
+        objs = set(self.entity.getNearItems())
         interactions = set()
         for obj in objs:
-            #print("a ",obj.getInteractions())
             for action in obj.getInteractions():
                 if action in self.entity.getActions():
-                    #print(action)
                     interactions.add((action, obj))
         return interactions
     
