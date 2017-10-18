@@ -8,7 +8,24 @@ A lot of functionality is actually working.
 
 IT IS NOW POSSIBLE TO CHANGE ROOMS!!!
 
-## TODO
+## Vision/ideas
+
+The idea is to make 3 different kind of areas:
+
+- private areas, where players can build their own house/farm
+  * these areas will be the only one where players can build
+  * other players can only enter with permission of the owner
+  * maybe some group areas too? (that can be bought with in-game currency)
+- public areas, where players can interact with each other and npcs
+  * towns, where players can trade
+  * static dungeons, where monsters spawn
+  * whatever levels someone feels like making
+  * similar to the world of most mmorpgs
+- procedurally generated dungeons, where players can explore and fight for loot
+  * like roguelikes
+  * if the player dies they can not return to the same dungeon
+
+## TODO first
 
 - improve inventory: probably store it in Player instead of Playerent
 - better interaction system
@@ -18,3 +35,5 @@ IT IS NOW POSSIBLE TO CHANGE ROOMS!!!
 - more code reusability in gameobjects
 - make server robust to invalid messages
 - better interaction selection
+- add combat
+- multicharacter sprites in client
