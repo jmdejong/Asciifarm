@@ -31,6 +31,8 @@ def generateBeginRoom():
             g.set(x, y, "water")
     
     g.set(3, 8, ["grass", "stone"])
+    g.set(4, 7, ["grass", "stone"])
+    g.set(6, 8, ["grass", "pebble"])
     g.set(30, 20, {"type": "roomexit", "args": ["basement", "stairup"], "kwargs": {"char": "stairdown"}})
     
     

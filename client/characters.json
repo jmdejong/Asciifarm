@@ -4,6 +4,7 @@
         "wall": "#",
         "rock": "X",
         "stone": "o",
+        "pebble": "*",
         "player": "@",
         "ground": ".",
         "grass1": ",",

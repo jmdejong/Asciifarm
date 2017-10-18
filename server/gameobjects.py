@@ -42,18 +42,31 @@ class Stone(GameObject):
     attributes = {
         "takable",
         }
-    ground = None
     
-    def place(self, ground):
+    def take(self, other):
+        self.remove()
+        other.inventoryAdd(self)
+    
+    def drop(self, other):
+        other.inventoryRemove(self)
+        self.place(other.getGround())
+    
+    def getInteractions(self):
+        interactions = {}
         if self.ground:
-            self.ground.removeObj(self)
-        ground.addObj(self)
-        self.ground = ground
+            interactions["take"] = self.take
+        else:
+            interactions["drop"] = self.drop
+        return interactions
+
+
+class Pebble(GameObject):
     
-    def remove(self):
-        self.ground.removeObj(self)
-        self.ground = None
-    
+    char = 'pebble'
+    size = 0.2
+    attributes = {
+        "takable",
+        }
     
     def take(self, other):
         self.remove()
@@ -123,6 +136,7 @@ objectdict = {
     "tree": Tree,
     "player": playerent.Player,
     "stone": Stone,
+    "pebble": Pebble,
     "rock": Rock,
     #"rabbit": Rabbit,
     "grass": Grass,

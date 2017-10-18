@@ -14,7 +14,7 @@ import getpass
 import client
 
 
-parser = argparse.ArgumentParser(description="The client to Vamok World aka Project Doggo 2017. Run this to connect to to the server.", epilog="""
+parser = argparse.ArgumentParser(description="The client to Rooms. Run this to connect to to the server.", epilog="""
 Gameplay information:
     Control your player with the arrow keys or wasd. Press escape to exit.
     You can pick up something with the 'e' key, and drop whatever you're holding with 'q'.

@@ -14,7 +14,6 @@ class Player(GameObject):
         self.controller = {}
         self.room = room
         self.name = name or str(id(self))
-        self.ground = None
         self.holding = None
         self.moveCooldown = 0
         room.addUpdateListener(self.update, self)
@@ -23,18 +22,12 @@ class Player(GameObject):
     def setController(self, controller):
         self.controller = controller
     
-    def place(self, ground):
-        if self.ground:
-            self.ground.removeObj(self)
-        ground.addObj(self)
-        self.ground = ground
-            
-    
     def update(self):
         self.moveCooldown = max(self.moveCooldown-1, 0)
         
         if "action" in self.controller:
             action = self.controller["action"]
+            del self.controller["action"]
             
             if action in self.ground.getNeighbours() and self.moveCooldown <= 0:
                 newPlace = self.ground.getNeighbours()[action]
@@ -44,7 +37,6 @@ class Player(GameObject):
                     self.moveCooldown = self.slowness
                     newPlace.onEnter(self)
         
-            del self.controller["action"]
     
     def inventoryAdd(self, obj):
         if not self.holding:
@@ -86,14 +78,11 @@ class Player(GameObject):
         return items
     
     def remove(self):
-        self.ground.removeObj(self)
+        super().remove()
         self.room.removeUpdateListener(self)
     
     def getEvent(self):
         return self.event
-    
-    def getGround(self):
-        return self.ground
     
     def getInventory(self):
         if self.holding:
