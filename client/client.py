@@ -10,6 +10,7 @@ import getpass
 import argparse
 from connection import Connection
 from screen import Screen
+import string
 
 # todo: remove references to tron
 
@@ -30,6 +31,19 @@ class Client:
         
         self.lastoutputstring = None
         self.lastinfostring = None
+        
+        self.commands = {
+            ord("w"): ("move", "north"),
+            curses.KEY_UP: ("move", "north"),
+            ord("s"): ("move", "south"),
+            curses.KEY_DOWN: ("move", "south"),
+            ord("d"): ("move", "east"),
+            curses.KEY_RIGHT: ("move", "east"),
+            ord("a"): ("move", "west"),
+            curses.KEY_LEFT: ("move", "west"),
+            ord("e"): ("take",),
+            ord("q"): ("drop",)
+        }
         
         if not spectate:
             self.connection.send(json.dumps({"name":name}))
@@ -74,10 +88,10 @@ class Client:
             if outputstring != self.lastoutputstring:
                 self.screen.put(outputstring, self.fieldWidth, self.fieldHeight)
                 self.lastoutputstring = outputstring
-            #else:
-                #self.screen.put('_'*100)
+        
         if 'info' in data:
             infostring = json.dumps(data['info'], indent=2)
+            infostring += "\n\n" + self.getControlsString()
             if infostring != self.lastinfostring:
                 self.screen.putPlayers(infostring, self.fieldWidth+2)
                 self.lastinfostring = infostring
@@ -85,29 +99,20 @@ class Client:
     
     def command_loop(self):
         
-        commands = {
-            ord("w"): ("move", "north"),
-            curses.KEY_UP: ("move", "north"),
-            ord("s"): ("move", "south"),
-            curses.KEY_DOWN: ("move", "south"),
-            ord("d"): ("move", "east"),
-            curses.KEY_RIGHT: ("move", "east"),
-            ord("a"): ("move", "west"),
-            curses.KEY_LEFT: ("move", "west"),
-            ord("e"): ("take",),
-            ord("q"): ("drop",),
-            ord("W"): ("move", "fastnorth"),
-            ord("S"): ("move", "fastsouth"),
-            ord("D"): ("move", "fasteast"),
-            ord("A"): ("move", "fastwest")
-        }
+        
         
         while self.keepalive:
             key = self.stdscr.getch()
             if key == 27:
                 self.keepalive = False
-            if key in commands:
-                self.connection.send(json.dumps({"input":commands[key]}))
+            if key in self.commands:
+                self.connection.send(json.dumps({"input": self.commands[key]}))
+    
+    def getControlsString(self):
+        return "Controls:\n"+'\n'.join(
+            chr(key) + ": " + ' '.join(action)
+            for key, action in self.commands.items()
+            if chr(key) in string.printable)
 
 
 def main(name, address, spectate=False):
