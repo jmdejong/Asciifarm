@@ -96,7 +96,9 @@ class RoomExit(GameObject):
         self.size = size
     
     def onEnter(self, obj):
-        obj.getEvent().trigger("changeroom", self.destRoom, self.destPos)
+        observable = obj.getComponent("observable")
+        if observable:
+            observable.trigger("changeroom", self.destRoom, self.destPos)
 
 
 objectdict = {

@@ -1,6 +1,7 @@
 
 import playerent
 import components
+import event
 
 class Player:
     
@@ -34,12 +35,14 @@ class Player:
         
         self.roomname = roomname
         pos = place or room.getEntrance()
+        observable = event.Event()
+        observable.addListener(self.onPlayerAction)
         self.entity = room.makeObject("player", components={
             "inventory": self.inventory,
             "move": components.Move(slowness=2),
-            "controller": components.InputController()
+            "controller": components.InputController(),
+            "observable": observable
             })
-        self.entity.getEvent().addListener(self.onPlayerAction)
         room.addObj(pos, self.entity)
     
     def getRoom(self):

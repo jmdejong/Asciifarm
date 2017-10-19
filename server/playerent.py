@@ -14,7 +14,6 @@ class Player(GameObject):
         self.name = name or str(id(self))
         self.event = event.Event()
         
-        self.moveDirection = None
         
         self.components = components
         
@@ -33,9 +32,6 @@ class Player(GameObject):
         for component in self.components.values():
             if hasattr(component, "remove"):
                 component.remove()
-    
-    def getEvent(self):
-        return self.event
     
     def getComponent(self, name):
         return self.components.get(name, None)
