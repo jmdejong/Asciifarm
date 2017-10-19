@@ -18,7 +18,7 @@ class View:
         screen = grid.Grid(width, height)
         for x in range(width):
             for y in range(height):
-                screen.set(x, y, room.getChar((x, y)))
+                screen.set(x, y, room.getSprite((x, y)))
         return screen.toDict()
     
     def roomView(self, roomName):
@@ -31,8 +31,8 @@ class View:
         data = {
             "type": "fullupdate",
             "info":{
-                "inventory": [obj.getChar() for obj in player.getInventory()],
-                "ground": [obj.getChar() for obj in player.getGroundObjs()]
+                "inventory": [obj.getSprite() for obj in player.getInventory()],
+                "ground": [obj.getSprite() for obj in player.getGroundObjs()]
                 #"interactions": [ action + ' ' + obj.getChar() for action, obj in player.getInteractions()]
             }
         }

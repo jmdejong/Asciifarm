@@ -17,10 +17,6 @@ class Player:
         self.inventory = components.Inventory(10)
         
     
-    def updateData(self):
-        if self.entity:
-            pass
-    
     def leaveRoom(self):
         self.entity.remove()
     
@@ -59,7 +55,7 @@ class Player:
     
     def getInventory(self):
         if self.entity:
-            return self.entity.getComponent("inventory").getItems()
+            return self.inventory.getItems()
         else:
             return []
     
@@ -68,11 +64,6 @@ class Player:
             return
         controller = self.entity.getComponent("controller")
         controller.control(action)
-    
-    def performAction(self, action, obj):
-        if not self.entity:
-            return
-        self.entity.performAction(action, obj)
     
     def getInteractions(self):
         if not self.entity:

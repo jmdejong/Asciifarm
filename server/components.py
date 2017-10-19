@@ -41,7 +41,7 @@ class InputController:
         
         if kind == "take":
             for obj in self.owner.getNearObjects():
-                if obj.isTakable() and inventory.canAdd(obj):
+                if obj.getComponent("item") != None and inventory.canAdd(obj):
                     inventory.add(obj)
                     obj.remove()
                     break

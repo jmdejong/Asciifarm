@@ -28,7 +28,7 @@ class Entity:
     def getComponent(self, name):
         return self.components.get(name, None)
     
-    def getChar(self):
+    def getSprite(self):
         return self.sprite
     
     def getHeight(self):
@@ -64,8 +64,5 @@ class Entity:
     
     def isSolid(self):
         return self.solid
-    
-    def isTakable(self): # temporary until all game objects are entities
-        return self.getComponent("item") != None
     
     

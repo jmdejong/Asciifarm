@@ -52,8 +52,8 @@ class Room:
     def update(self):
         self.updateEvent.trigger()
     
-    def getChar(self, pos):
-        return self._getGround(pos).getTopObj().getChar()
+    def getSprite(self, pos):
+        return self._getGround(pos).getTopObj().getSprite()
     
     def isValidPos(self, pos):
         x, y = pos

@@ -5,14 +5,11 @@ neighbourdirs = {"north":(0,-1), "south":(0,1), "east":(1,0), "west":(-1,0)}
 
 class GroundPatch:
     
-    char = ' '
-    objects = None
-    
-    def __init__(self, room, pos, char=' '):
+    def __init__(self, room, pos, sprite=' '):
         # objects is actually a set, but because its elements are mutable
         # it is implemented as a dictionary with the id as index
         self.objects = {}
-        self.char = char
+        self.sprite = sprite
         self.room = room
         self.pos = pos
         self.neighbours = None
@@ -37,8 +34,8 @@ class GroundPatch:
                 topObj = obj
         return topObj
     
-    def getChar(self):
-        return self.char
+    def getSprite(self):
+        return self.sprite
     
     def onEnter(self, obj):
         for o in frozenset(self.objects.values()):
@@ -60,5 +57,5 @@ class GroundPatch:
         return self.neighbours
     
     def getHeight(self):
-        return 0
+        return -1
 
