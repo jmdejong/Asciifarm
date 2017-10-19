@@ -5,6 +5,7 @@ from components.inventory import Inventory
 from components.inputcontroller import InputController
 from components.move import Move
 from components.fighter import Fighter
+from components.faction import GOOD, EVIL, NEUTRAL
 
 class Player:
     
@@ -47,7 +48,8 @@ class Player:
                 "move": Move(slowness=2),
                 "controller": InputController(),
                 "observable": observable,
-                "fighter": Fighter(100, 5)
+                "fighter": Fighter(100, 5),
+                "alignment": GOOD
                 })
         room.addObj(pos, self.entity)
     

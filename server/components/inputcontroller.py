@@ -9,7 +9,7 @@ class InputController:
     def attach(self, obj, events):
         self.owner = obj
         
-        for dep in {"inventory", "move", "fighter"}:
+        for dep in {"inventory", "move", "fighter", "alignment"}:
             if not obj.getComponent(dep):
                 # todo: better exception
                 raise Exception("InputController needs object with " + dep + " component")
@@ -57,7 +57,7 @@ class InputController:
             else:
                 objs = self.owner.getNearObjects()
             for obj in objs:
-                if obj.getComponent("fighter") != None:
+                if obj.getComponent("fighter") != None and self.owner.getComponent("alignment").isEnemy(obj):
                     fighter.attack(obj)
                     break
     

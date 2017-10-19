@@ -9,6 +9,7 @@ from components.move import Move
 from components.portal import Portal
 from components.trap import Trap
 from components.fighter import Fighter
+from components.faction import NEUTRAL, GOOD, EVIL
 
 def makeWall(roomEvents):
     return Entity(roomEvents, sprite="wall", height=2, solid=True)
@@ -44,7 +45,7 @@ def makeRabbit(roomEvents):
     return Entity(roomEvents, sprite="rabbit", height=1, components={"move": Move(slowness=4), "controller": RandomWalkController(moveChance=0.05)})
 
 def makeDummy(roomEvents):
-    return Entity(roomEvents, sprite="dummy", height=1, components={"fighter": Fighter(health=20, strength=0)})
+    return Entity(roomEvents, sprite="dummy", height=1, components={"fighter": Fighter(health=20, strength=0), "alignment": EVIL})
 
 def makeSpikeTrap(roomEvents):
     return Entity(roomEvents, sprite="spikes", height=1, components={"fighter": Fighter(health=25, strength=25), "collision": Trap()})

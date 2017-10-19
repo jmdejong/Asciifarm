@@ -37,6 +37,7 @@ The idea is to make 3 different kind of areas:
 
 ## TODO first
 
+- attack cooldown
 - add enemies
 - add allies (and prevent constant PVP)
 - more content (rooms, objects etc)
@@ -48,6 +49,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- factions
 - add combat
 - improve inventory: probably store it in Player instead of Playerent
 - better interaction system
