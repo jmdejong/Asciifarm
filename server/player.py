@@ -1,6 +1,10 @@
 
 import components
 import event
+from components.inventory import Inventory
+from components.inputcontroller import InputController
+from components.move import Move
+from components.fighter import Fighter
 
 class Player:
     
@@ -14,11 +18,12 @@ class Player:
         self.entity = None
         
         self.data = {}
-        self.inventory = components.Inventory(10)
+        self.inventory = Inventory(10)
         
     
     def leaveRoom(self):
-        self.entity.remove()
+        if self.entity:
+            self.entity.remove()
     
     def joinRoom(self, roomname, place=None):
         room = self.world.getRoom(roomname)
@@ -39,9 +44,10 @@ class Player:
             name = '~' + self.name,
             components={
                 "inventory": self.inventory,
-                "move": components.Move(slowness=2),
-                "controller": components.InputController(),
-                "observable": observable
+                "move": Move(slowness=2),
+                "controller": InputController(),
+                "observable": observable,
+                "fighter": Fighter(100, 5)
                 })
         room.addObj(pos, self.entity)
     
@@ -52,6 +58,36 @@ class Player:
         if action == "changeroom":
             room, pos = data
             self.joinRoom(room, pos)
+        
+        if action == "attack":
+            obj, damage = data
+            print("{} attacks {} for {} damage".format(self.name, obj.getName(), damage))
+        
+        if action == "kill":
+            obj = data[0]
+            print("{} kills {}".format(self.name, obj.getName()))
+        
+        if action == "damage":
+            obj, damage = data
+            print("{} got {} damage from {}".format(self.name, damage, obj.getName()))
+        
+        if action == "die":
+            obj = data[0]
+            print("{} got killed by {}".format(self.name, obj.getName()))
+            self.entity = None
+        
+    
+    def control(self, action):
+        if not self.entity:
+            return
+        controller = self.entity.getComponent("controller")
+        controller.addAction(action)
+    
+    def getHealth(self):
+        if self.entity:
+            return self.entity.getComponent("fighter").getHealth()
+        else:
+            return None
     
     def getInventory(self):
         if self.entity:
@@ -59,21 +95,15 @@ class Player:
         else:
             return []
     
-    def control(self, action):
-        if not self.entity:
-            return
-        controller = self.entity.getComponent("controller")
-        controller.control(action)
-    
     def getInteractions(self):
         if not self.entity:
-            return None
+            return []
         controller = self.entity.getComponent("controller")
         return controller.getInteractions()
     
     def getGroundObjs(self):
         if not self.entity:
-            return None
+            return []
         objs = set(self.entity.getGround().getObjs())
         objs.discard(self.entity)
         return objs

@@ -31,6 +31,7 @@ class View:
         data = {
             "type": "fullupdate",
             "info":{
+                "health": player.getHealth(),
                 "inventory": [obj.getSprite() for obj in player.getInventory()],
                 "ground": [obj.getSprite() for obj in player.getGroundObjs()]
                 #"interactions": [ action + ' ' + obj.getChar() for action, obj in player.getInteractions()]

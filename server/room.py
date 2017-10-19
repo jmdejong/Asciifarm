@@ -14,11 +14,11 @@ class Room:
         self.name = name
         self.width = data["width"]
         self.height = data["height"]
-        self.updateEvent = event.Event()
+        #self.updateEvent = event.Event()
         self.entrance = tuple(data["spawn"])
         
         self.events = {
-            "update": self.updateEvent,
+            "update": event.Event(),
             "control": event.Event()
             }
         
@@ -50,7 +50,8 @@ class Room:
         return self.entrance
     
     def update(self):
-        self.updateEvent.trigger()
+        self.events["control"].trigger(1)
+        self.events["update"].trigger()
     
     def getSprite(self, pos):
         return self._getGround(pos).getTopObj().getSprite()

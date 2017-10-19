@@ -16,6 +16,7 @@
         "exit": "$",
         "stairdown": ">",
         "stairup": "<",
+        "dummy": "d",
         " ": " "
     }
 }

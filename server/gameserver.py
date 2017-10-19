@@ -53,7 +53,6 @@ class GameServer:
                 print("new player: "+name)
             
         if "input" in data:
-            #c.data = data["input"]
             if n in self.connections:
                 self.messages.put(("input", self.connections[n], data["input"]))
     

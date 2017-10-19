@@ -6,6 +6,10 @@
 # this class is not as small as possible
 # Hopefully this will make the code simpler
 
+# This page explains the composition patter that I'm trying to use here:
+# http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python%2Blibtcod,_part_6
+# main difference: I don't give entities an attribute for each component type, but store the components in a dict instead
+
 
 class Entity:
     
@@ -30,6 +34,9 @@ class Entity:
     
     def getSprite(self):
         return self.sprite
+    
+    def getName(self):
+        return self.name
     
     def getHeight(self):
         return self.height

@@ -8,6 +8,16 @@ A lot of functionality is actually working.
 
 IT IS NOW POSSIBLE TO CHANGE ROOMS!!!
 
+## Features
+
+- Multiplayer
+- Walking around
+- Switching between rooms
+- Persistent inventory
+- Fighting (no creatures yet, soon to come)
+- NPC's (rabbits)
+
+
 ## Vision/ideas
 
 The idea is to make 3 different kind of areas:
@@ -27,13 +37,19 @@ The idea is to make 3 different kind of areas:
 
 ## TODO first
 
-- improve inventory: probably store it in Player instead of Playerent
-- better interaction system
+- add enemies
+- add allies (and prevent constant PVP)
 - more content (rooms, objects etc)
-- more efficient drawing/communication by only updating changed squares
-- write converter to convert tiled map files to readable files
-- more code reusability in gameobjects
 - make server robust to invalid messages
 - better interaction selection
-- add combat
+- more efficient drawing/communication by only updating changed squares
+- write converter to convert tiled map files to readable files
 - multicharacter sprites in client
+
+## DONE
+
+- add combat
+- improve inventory: probably store it in Player instead of Playerent
+- better interaction system
+- more code reusability in gameobjects
+- avoid long files
