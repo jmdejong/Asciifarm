@@ -6,6 +6,9 @@ class Inventory:
     def __init__(self, capacity):
         self.capacity = capacity
         self.items = []
+        
+    def attach(self, obj):
+        pass
     
     def canAdd(self, item):
         return len(self.items) < self.capacity
@@ -24,27 +27,29 @@ class InputController:
     
     def attach(self, obj):
         self.owner = obj
+        if not obj.getComponent("inventory"):
+            # todo: better exception
+            raise Exception("InputController needs object with inventory")
     
     def control(self, action):
         if not action or len(action) < 1:
             return
-        #print(action)
         kind = action[0]
         if kind == "move" and len(action) > 1:
-            #self.controller["action"] = action[1]
             self.owner.move(action[1])
         
+        inventory = self.owner.getComponent("inventory")
+        
         if kind == "take":
-            #print(action)
             for obj in self.owner.getNearObjects():
-                if "takable" in obj.attributes: # temporary hack
-                    self.owner.inventory.add(obj)
+                if "takable" in obj.attributes and inventory.canAdd(obj): # temporary hack
+                    inventory.add(obj)
                     obj.remove()
                     break
         
         if kind == "drop":
-            for obj in self.owner.getInventory()[::-1]: # reverse inventory so it works as a stack
-                self.owner.inventory.remove(obj)
+            for obj in inventory.getItems()[::-1]: # reverse inventory so it works as a stack
+                inventory.remove(obj)
                 obj.place(self.owner.getGround())
                 break
 

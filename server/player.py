@@ -46,14 +46,15 @@ class Player:
     
     def getInventory(self):
         if self.entity:
-            return self.entity.getInventory()
+            return self.entity.getComponent("inventory").getItems()
         else:
             return []
     
     def control(self, action):
         if not self.entity:
             return
-        self.entity.getController().control(action)
+        controller = self.entity.getComponent("controller")
+        controller.control(action)
     
     def performAction(self, action, obj):
         if not self.entity:

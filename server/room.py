@@ -13,7 +13,6 @@ class Room:
     
     def __init__(self, name, data):
         self.name = name
-        self.players = {}
         self.width = data["width"]
         self.height = data["height"]
         self.updateEvent = event.Event()
@@ -46,9 +45,6 @@ class Room:
     def getEntrance(self):
         return self.entrance
     
-    def getController(self, name):
-        return self.players[name].getControlInterface()
-    
     def update(self):
         self.updateEvent.trigger()
     
@@ -77,9 +73,6 @@ class Room:
         if pos:
             return self._getGround(pos)
         return None
-    
-    def getPlace(self, place):
-        return self.places.get(place)
     
     def addObj(self, pos, obj):
         obj.place(self.get(pos))

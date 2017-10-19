@@ -7,7 +7,6 @@ class Player(GameObject):
     
     char = 'player'
     size = 2
-    direction = None
     attributes = {}
     slowness = 2
     
@@ -18,10 +17,15 @@ class Player(GameObject):
         self.moveCooldown = 0
         room.addUpdateListener(self.update, self)
         self.event = event.Event()
-        self.inventory = components.Inventory(10)
+        
         self.moveDirection = None
-        self.controller = components.InputController()
-        self.controller.attach(self)
+        
+        self.components = {
+            "inventory": components.Inventory(10),
+            "controller": components.InputController()
+            }
+        for component in self.components.values():
+            component.attach(self)
     
     
     def move(self, direction):
@@ -53,8 +57,7 @@ class Player(GameObject):
     def getEvent(self):
         return self.event
     
-    def getController(self):
-        return self.controller
+    def getComponent(self, name):
+        return self.components.get(name, None)
     
-    def getInventory(self):
-        return self.inventory.getItems()
+
