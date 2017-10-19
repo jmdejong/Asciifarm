@@ -34,7 +34,7 @@ class Player:
         
         self.roomname = roomname
         pos = place or room.getEntrance()
-        self.entity = playerent.Player(room.events, components={
+        self.entity = room.makeObject("player", components={
             "inventory": self.inventory,
             "move": components.Move(slowness=2),
             "controller": components.InputController()

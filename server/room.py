@@ -44,7 +44,7 @@ class Room:
                         kwargs = obj.get("kwargs", {})
                     else:
                         continue
-                    self.addObj((x, y), gameobjects.makeObject(objtype, self.events, *args, **kwargs))
+                    self.addObj((x, y), self.makeObject(objtype, *args, **kwargs))
         
     
     def getEntrance(self):
@@ -52,12 +52,6 @@ class Room:
     
     def update(self):
         self.updateEvent.trigger()
-    
-    def addUpdateListener(self, listener, key=None):
-        self.updateEvent.addListener(listener, key)
-    
-    def removeUpdateListener(self, key):
-        self.updateEvent.removeListener(key)
     
     def getChar(self, pos):
         return self._getGround(pos).getTopObj().getChar()
@@ -78,6 +72,9 @@ class Room:
         if pos:
             return self._getGround(pos)
         return None
+    
+    def makeObject(self, objtype, *args, **kwargs):
+        return gameobjects.makeObject(objtype, self.events, *args, **kwargs)
     
     def addObj(self, pos, obj):
         obj.place(self.get(pos))

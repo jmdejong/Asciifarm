@@ -30,7 +30,7 @@ class Player(GameObject):
     
     def remove(self):
         super().remove()
-        for component in self.components.items():
+        for component in self.components.values():
             if hasattr(component, "remove"):
                 component.remove()
     

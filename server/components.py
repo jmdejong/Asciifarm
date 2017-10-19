@@ -13,7 +13,7 @@ class Inventory:
     def add(self, item):
         self.items.append(item)
     
-    def remove(self, item):
+    def drop(self, item):
         self.items.remove(item) # should I catch here?
     
     def getItems(self):
@@ -48,7 +48,7 @@ class InputController:
         
         if kind == "drop":
             for obj in inventory.getItems()[::-1]: # reverse inventory so it works as a stack
-                inventory.remove(obj)
+                inventory.drop(obj)
                 obj.place(self.owner.getGround())
                 break
     
@@ -74,6 +74,7 @@ class Move:
     def update(self):
         
         self.moveCooldown = max(self.moveCooldown-1, 0)
+        
         
         neighbours = self.owner.getGround().getNeighbours()
         if self.direction in neighbours and self.moveCooldown <= 0:
