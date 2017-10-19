@@ -3,6 +3,7 @@
 from placable import GameObject
 import playerent
 import random
+import entity
 
 
 # todo: composition
@@ -114,9 +115,10 @@ objectdict = {
     "floor": Floor,
     "ground": Ground,
     "anything": Anything,
-    "roomexit": RoomExit
+    "roomexit": RoomExit,
+    "entity": entity.Entity
     }
 
 
-def makeObject(name, *args, **kwargs):
-    return objectdict[name](*args, **kwargs)
+def makeObject(objtype, *args, **kwargs):
+    return objectdict[objtype](*args, **kwargs)

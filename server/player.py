@@ -37,12 +37,17 @@ class Player:
         pos = place or room.getEntrance()
         observable = event.Event()
         observable.addListener(self.onPlayerAction)
-        self.entity = room.makeObject("player", components={
-            "inventory": self.inventory,
-            "move": components.Move(slowness=2),
-            "controller": components.InputController(),
-            "observable": observable
-            })
+        self.entity = room.makeObject("entity",
+            sprite = "player",
+            solid = False,
+            height = 2,
+            name = '~' + self.name,
+            components={
+                "inventory": self.inventory,
+                "move": components.Move(slowness=2),
+                "controller": components.InputController(),
+                "observable": observable
+                })
         room.addObj(pos, self.entity)
     
     def getRoom(self):
