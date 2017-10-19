@@ -35,3 +35,6 @@ class GameObject:
     def getGround(self):
         return self.ground
     
+    def getHeight(self):
+        return self.size
+    

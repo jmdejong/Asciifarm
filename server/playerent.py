@@ -1,6 +1,7 @@
 
 from placable import GameObject
 import event
+import components
 
 class Player(GameObject):
     
@@ -11,71 +12,39 @@ class Player(GameObject):
     slowness = 2
     
     def __init__(self, room, name=None):
-        self.controller = {}
         self.room = room
         self.name = name or str(id(self))
         self.holding = None
         self.moveCooldown = 0
         room.addUpdateListener(self.update, self)
         self.event = event.Event()
+        self.inventory = components.Inventory(10)
+        self.moveDirection = None
+        self.controller = components.InputController()
+        self.controller.attach(self)
     
-    def setController(self, controller):
-        self.controller = controller
+    
+    def move(self, direction):
+        self.moveDirection = direction
     
     def update(self):
         self.moveCooldown = max(self.moveCooldown-1, 0)
-        
-        if "action" in self.controller:
-            action = self.controller["action"]
-            del self.controller["action"]
             
-            if action in self.ground.getNeighbours() and self.moveCooldown <= 0:
-                newPlace = self.ground.getNeighbours()[action]
-                
-                if newPlace.accessible():
-                    self.place(newPlace)
-                    self.moveCooldown = self.slowness
-                    newPlace.onEnter(self)
-        
-    
-    def inventoryAdd(self, obj):
-        if not self.holding:
-            self.holding = obj
-        else:
-            self.ground.addObj(obj)
-    
-    def inventoryRemove(self, obj):
-        if obj == self.holding:
-            self.holding = None
-            return True
-        return False
-    
-    def getActions(self):
-        actions = set()
-        if self.holding:
-            actions.add("drop")
-        else:
-            actions.add("take")
-        return actions
-    
-    def performAction(self, action, other):
-        ofn = other.getInteractions().get(action)
-        if not ofn:
-            return
-        ofn(self)
+        if self.moveDirection in self.ground.getNeighbours() and self.moveCooldown <= 0:
+            newPlace = self.ground.getNeighbours()[self.moveDirection]
+            
+            if newPlace.accessible():
+                self.place(newPlace)
+                self.moveCooldown = self.slowness
+                newPlace.onEnter(self)
+            
+            self.moveDirection = None
         
     
     def getNearObjects(self):
-        places = {self.ground} | set(self.ground.getNeighbours().values())
-        objects = set()
-        for place in places:
-            objects |= {obj for obj in place.getObjs()}
+        objects = set(self.ground.getObjs())
         objects.discard(self)
         return objects
-    
-    def getNearItems(self):
-        items = self.getNearObjects() | set(self.getInventory())
-        return items
     
     def remove(self):
         super().remove()
@@ -84,8 +53,8 @@ class Player(GameObject):
     def getEvent(self):
         return self.event
     
+    def getController(self):
+        return self.controller
+    
     def getInventory(self):
-        if self.holding:
-            return [self.holding]
-        else:
-            return []
+        return self.inventory.getItems()

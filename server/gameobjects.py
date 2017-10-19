@@ -42,22 +42,6 @@ class Stone(GameObject):
     attributes = {
         "takable",
         }
-    
-    def take(self, other):
-        self.remove()
-        other.inventoryAdd(self)
-    
-    def drop(self, other):
-        other.inventoryRemove(self)
-        self.place(other.getGround())
-    
-    def getInteractions(self):
-        interactions = {}
-        if self.ground:
-            interactions["take"] = self.take
-        else:
-            interactions["drop"] = self.drop
-        return interactions
 
 
 class Pebble(GameObject):
@@ -67,22 +51,6 @@ class Pebble(GameObject):
     attributes = {
         "takable",
         }
-    
-    def take(self, other):
-        self.remove()
-        other.inventoryAdd(self)
-    
-    def drop(self, other):
-        other.inventoryRemove(self)
-        self.place(other.getGround())
-    
-    def getInteractions(self):
-        interactions = {}
-        if self.ground:
-            interactions["take"] = self.take
-        else:
-            interactions["drop"] = self.drop
-        return interactions
 
 
 class Grass(GameObject):

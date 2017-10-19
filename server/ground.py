@@ -6,8 +6,6 @@ neighbourdirs = {"north":(0,-1), "south":(0,1), "east":(1,0), "west":(-1,0)}
 
 class GroundPatch:
     
-    #height = 0
-    size = 0
     char = ' '
     objects = None
     
@@ -36,7 +34,7 @@ class GroundPatch:
     def getTopObj(self):
         topObj = self
         for obj in self.getObjs():
-            if obj.size > topObj.size:
+            if obj.getHeight() > topObj.getHeight():
                 topObj = obj
         return topObj
     
@@ -61,4 +59,6 @@ class GroundPatch:
         
         return self.neighbours
     
+    def getHeight(self):
+        return 0
 
