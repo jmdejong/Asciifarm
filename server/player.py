@@ -34,8 +34,9 @@ class Player:
         
         self.roomname = roomname
         pos = place or room.getEntrance()
-        self.entity = playerent.Player(room, components={
+        self.entity = playerent.Player(room.events, components={
             "inventory": self.inventory,
+            "move": components.Move(slowness=2),
             "controller": components.InputController()
             })
         self.entity.getEvent().addListener(self.onPlayerAction)

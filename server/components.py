@@ -6,9 +6,6 @@ class Inventory:
     def __init__(self, capacity):
         self.capacity = capacity
         self.items = []
-        
-    def attach(self, obj):
-        pass
     
     def canAdd(self, item):
         return len(self.items) < self.capacity
@@ -25,18 +22,20 @@ class Inventory:
 
 class InputController:
     
-    def attach(self, obj):
+    def attach(self, obj, events):
         self.owner = obj
-        if not obj.getComponent("inventory"):
-            # todo: better exception
-            raise Exception("InputController needs object with inventory")
+        
+        for dep in {"inventory", "move"}:
+            if not obj.getComponent(dep):
+                # todo: better exception
+                raise Exception("InputController needs object with " + dep + "component")
     
     def control(self, action):
         if not action or len(action) < 1:
             return
         kind = action[0]
         if kind == "move" and len(action) > 1:
-            self.owner.move(action[1])
+            self.owner.getComponent("move").move(action[1])
         
         inventory = self.owner.getComponent("inventory")
         
@@ -55,4 +54,44 @@ class InputController:
     
     def getInteractions(self):
         return []
+
+class Move:
+    
+    def __init__(self, slowness=1):
+        self.direction = None
+        self.moveCooldown = 0
+        self.slowness = slowness
+    
+    def attach(self, obj, events):
+        self.owner = obj
+        self.updateEvent = events["update"]
+        self.updateEvent.addListener(self.update)
+        
+    
+    def move(self, direction):
+        self.direction = direction
+    
+    def update(self):
+        
+        self.moveCooldown = max(self.moveCooldown-1, 0)
+        
+        neighbours = self.owner.getGround().getNeighbours()
+        if self.direction in neighbours and self.moveCooldown <= 0:
+            newPlace = neighbours[self.direction]
+            
+            if newPlace.accessible():
+                self.owner.place(newPlace)
+                self.moveCooldown = self.slowness
+                newPlace.onEnter(self.owner)
+            
+            self.direction = None
+    
+    def remove(self):
+        self.updateEvent.removeListener(self.update)
+
+
+
+
+
+
 

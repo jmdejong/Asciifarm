@@ -18,6 +18,11 @@ class Room:
         self.updateEvent = event.Event()
         self.entrance = tuple(data["spawn"])
         
+        self.events = {
+            "update": self.updateEvent,
+            "control": event.Event()
+            }
+        
         self.places = data.get("places", {})
         
         self.field = {}
@@ -39,7 +44,7 @@ class Room:
                         kwargs = obj.get("kwargs", {})
                     else:
                         continue
-                    self.addObj((x, y), gameobjects.makeObject(objtype, self, *args, **kwargs))
+                    self.addObj((x, y), gameobjects.makeObject(objtype, self.events, *args, **kwargs))
         
     
     def getEntrance(self):

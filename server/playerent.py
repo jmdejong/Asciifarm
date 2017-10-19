@@ -8,14 +8,10 @@ class Player(GameObject):
     char = 'player'
     size = 2
     attributes = {}
-    slowness = 2
     
-    def __init__(self, room, name=None, components={}):
-        self.room = room
+    def __init__(self, events, name=None, components={}):
+        self.roomEvents = events
         self.name = name or str(id(self))
-        self.holding = None
-        self.moveCooldown = 0
-        room.addUpdateListener(self.update, self)
         self.event = event.Event()
         
         self.moveDirection = None
@@ -23,24 +19,8 @@ class Player(GameObject):
         self.components = components
         
         for component in self.components.values():
-            component.attach(self)
-    
-    
-    def move(self, direction):
-        self.moveDirection = direction
-    
-    def update(self):
-        self.moveCooldown = max(self.moveCooldown-1, 0)
-            
-        if self.moveDirection in self.ground.getNeighbours() and self.moveCooldown <= 0:
-            newPlace = self.ground.getNeighbours()[self.moveDirection]
-            
-            if newPlace.accessible():
-                self.place(newPlace)
-                self.moveCooldown = self.slowness
-                newPlace.onEnter(self)
-            
-            self.moveDirection = None
+            if hasattr(component, "attach"):
+                component.attach(self, self.roomEvents)
         
     
     def getNearObjects(self):
@@ -50,7 +30,9 @@ class Player(GameObject):
     
     def remove(self):
         super().remove()
-        self.room.removeUpdateListener(self)
+        for component in self.components.items():
+            if hasattr(component, "remove"):
+                component.remove()
     
     def getEvent(self):
         return self.event
