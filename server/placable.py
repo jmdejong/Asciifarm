@@ -31,6 +31,11 @@ class GameObject:
             self.ground.removeObj(self)
             self.ground = None
     
+    def isSolid(self):
+        return "solid" in self.attributes
+    
+    def isTakable(self): # temp hack until entities replaces gameobjects
+        return "takable" in self.attributes
     
     def getGround(self):
         return self.ground

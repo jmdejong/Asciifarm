@@ -1,5 +1,4 @@
 
-import playerent
 import components
 import event
 
@@ -37,7 +36,7 @@ class Player:
         pos = place or room.getEntrance()
         observable = event.Event()
         observable.addListener(self.onPlayerAction)
-        self.entity = room.makeObject("entity",
+        self.entity = room.makeEntity(
             sprite = "player",
             solid = False,
             height = 2,

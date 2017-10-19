@@ -1,124 +1,56 @@
 
 
-from placable import GameObject
-import playerent
 import random
 import entity
+from entity import Entity
+import components
 
-
-# todo: composition
-
-class Wall(GameObject):
+def makeWall(roomEvents):
+    return Entity(roomEvents, sprite="wall", height=2, solid=True)
     
-    char = 'wall'
-    size = 2
-    attributes = {
-        "solid",
-        }
+def makeRock(roomEvents):
+    return Entity(roomEvents, sprite="rock", height=10, solid=True)
 
+def makeTree(roomEvents):
+    return Entity(roomEvents, sprite="tree", height=3, solid=True)
 
-class Rock(GameObject):
+def makeStone(roomEvents):
+    return Entity(roomEvents, sprite="stone", height=0.2, solid=False, components={"item": components.Item()})
+
+def makePebble(roomEvents):
+    return Entity(roomEvents, sprite="pebble", height=0.2, solid=False, components={"item": components.Item()})
+
+def makeGrass(roomEvents):
+    return Entity(roomEvents, sprite=random.choice(["ground", "grass1", "grass2", "grass3"]), height=0.15, solid=False)
+
+def makeFloor(roomEvents):
+    return Entity(roomEvents, sprite="floor", height=0.1, solid=False)
     
-    char = 'rock'
-    size = 10
-    attributes = {
-        "solid",
-        }
+def makeGround(roomEvents):
+    return Entity(roomEvents, sprite="ground", height=0.1, solid=False)
     
+def makeWater(roomEvents):
+    return Entity(roomEvents, sprite="water", height=0.1, solid=True)
+
+def makeRoomExit(roomEvents, destRoom, destPos=None, char="exit", size=1):
+    return Entity(roomEvents, sprite=char, height=size, solid=False, components={"collision": components.Portal(destRoom, destPos)})
 
 
-class Tree(GameObject):
-    
-    char = 'tree'# 🌳♣♠𐇲𐂷
-    size = 3
-    attributes = {
-        "solid",
-        }
 
-
-class Stone(GameObject):
-    
-    char = 'stone' # •
-    size = 0.2
-    attributes = {
-        "takable",
-        }
-
-
-class Pebble(GameObject):
-    
-    char = 'pebble'
-    size = 0.2
-    attributes = {
-        "takable",
-        }
-
-
-class Grass(GameObject):
-    
-    size = 0.15
-    
-    def __init__(self, *args):
-        self.char = random.choice(["ground", "grass1", "grass2", "grass3"])
-
-class Floor(GameObject):
-    
-    char = "floor"
-    size = 0.1
-
-class Ground(GameObject):
-    
-    char = "ground"
-    size = 0.1
-
-class Water(GameObject):
-    
-    char = "water"
-    size = 0.1
-    attributes = {
-        "solid"
-        }
-
-class Anything(GameObject):
-    
-    # test object to see if arguments work
-    
-    size = 1
-    
-    def __init__(self, room, pos, char):
-        self.char = char
-
-class RoomExit(GameObject):
-    
-    def __init__(self, room, destRoom, destPos=None, char="exit", size=1):
-        self.destRoom = destRoom
-        self.destPos = destPos
-        self.char = char
-        self.size = size
-    
-    def onEnter(self, obj):
-        observable = obj.getComponent("observable")
-        if observable:
-            observable.trigger("changeroom", self.destRoom, self.destPos)
-
-
-objectdict = {
-    "wall": Wall,
-    "tree": Tree,
-    "player": playerent.Player,
-    "stone": Stone,
-    "pebble": Pebble,
-    "rock": Rock,
-    #"rabbit": Rabbit,
-    "grass": Grass,
-    "water": Water,
-    "floor": Floor,
-    "ground": Ground,
-    "anything": Anything,
-    "roomexit": RoomExit,
-    "entity": entity.Entity
+entitydict = {
+    "wall": makeWall,
+    "tree": makeTree,
+    "stone": makeStone,
+    "pebble": makePebble,
+    "rock": makeRock,
+    "grass": makeGrass,
+    "water": makeWater,
+    "floor": makeFloor,
+    "ground": makeGround,
+    "roomexit": makeRoomExit
     }
+    
 
-
-def makeObject(objtype, *args, **kwargs):
-    return objectdict[objtype](*args, **kwargs)
+def makeEntity(entType, *args, **kwargs):
+    return entitydict[entType](*args, **kwargs)
+    

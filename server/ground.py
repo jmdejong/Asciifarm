@@ -1,6 +1,5 @@
 
 import random
-from gameobjects import objectdict
 
 neighbourdirs = {"north":(0,-1), "south":(0,1), "east":(1,0), "west":(-1,0)}
 
@@ -19,7 +18,7 @@ class GroundPatch:
         self.neighbours = None
     
     def accessible(self):
-        return not any("solid" in obj.attributes for obj in self.objects.values())
+        return not any(obj.isSolid() for obj in self.objects.values())
     
     def addObj(self, obj):
         self.objects[id(obj)] = obj
@@ -45,8 +44,9 @@ class GroundPatch:
         for o in frozenset(self.objects.values()):
             if o == obj:
                 continue
-            if hasattr(o, "onEnter"):
-                o.onEnter(obj)
+            collision = o.getComponent("collision")
+            if collision:
+                collision.onEnter(obj)
     
     def getNeighbours(self):
         if not self.neighbours:

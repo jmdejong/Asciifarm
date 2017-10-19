@@ -1,11 +1,10 @@
 
 import random
 import ground
-import playerent
 import gameobjects
-from gameobjects import Wall
 import grid
 import event
+import entity
 
 
 class Room:
@@ -74,7 +73,10 @@ class Room:
         return None
     
     def makeObject(self, objtype, *args, **kwargs):
-        return gameobjects.makeObject(objtype, self.events, *args, **kwargs)
+        return gameobjects.makeEntity(objtype, self.events, *args, **kwargs)
+    
+    def makeEntity(self, *args, **kwargs):
+        return entity.Entity(self.events, *args, **kwargs)
     
     def addObj(self, pos, obj):
         obj.place(self.get(pos))

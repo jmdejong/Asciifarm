@@ -62,4 +62,10 @@ class Entity:
         objects.discard(self)
         return objects
     
+    def isSolid(self):
+        return self.solid
+    
+    def isTakable(self): # temporary until all game objects are entities
+        return self.getComponent("item") != None
+    
     

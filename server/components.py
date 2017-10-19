@@ -41,7 +41,7 @@ class InputController:
         
         if kind == "take":
             for obj in self.owner.getNearObjects():
-                if "takable" in obj.attributes and inventory.canAdd(obj): # temporary hack
+                if obj.isTakable() and inventory.canAdd(obj):
                     inventory.add(obj)
                     obj.remove()
                     break
@@ -92,7 +92,21 @@ class Move:
 
 
 
+class Item:
+    
+    def __init__(self, *args, **kwargs):
+        pass
 
 
 
+class Portal:
+    
+    def __init__(self, destRoom, destPos=None):
+        self.destRoom = destRoom
+        self.destPos = destPos
+    
+    def onEnter(self, obj):
+        observable = obj.getComponent("observable")
+        if observable:
+            observable.trigger("changeroom", self.destRoom, self.destPos)
 
