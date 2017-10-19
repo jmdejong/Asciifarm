@@ -52,4 +52,7 @@ class InputController:
                 inventory.remove(obj)
                 obj.place(self.owner.getGround())
                 break
+    
+    def getInteractions(self):
+        return []
 

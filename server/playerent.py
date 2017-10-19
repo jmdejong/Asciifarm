@@ -10,7 +10,7 @@ class Player(GameObject):
     attributes = {}
     slowness = 2
     
-    def __init__(self, room, name=None):
+    def __init__(self, room, name=None, components={}):
         self.room = room
         self.name = name or str(id(self))
         self.holding = None
@@ -20,10 +20,8 @@ class Player(GameObject):
         
         self.moveDirection = None
         
-        self.components = {
-            "inventory": components.Inventory(10),
-            "controller": components.InputController()
-            }
+        self.components = components
+        
         for component in self.components.values():
             component.attach(self)
     

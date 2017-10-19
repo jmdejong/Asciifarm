@@ -1,5 +1,6 @@
 
 import playerent
+import components
 
 class Player:
     
@@ -13,6 +14,7 @@ class Player:
         self.entity = None
         
         self.data = {}
+        self.inventory = components.Inventory(10)
         
     
     def updateData(self):
@@ -32,7 +34,10 @@ class Player:
         
         self.roomname = roomname
         pos = place or room.getEntrance()
-        self.entity = playerent.Player(room)
+        self.entity = playerent.Player(room, components={
+            "inventory": self.inventory,
+            "controller": components.InputController()
+            })
         self.entity.getEvent().addListener(self.onPlayerAction)
         room.addObj(pos, self.entity)
     
@@ -64,13 +69,8 @@ class Player:
     def getInteractions(self):
         if not self.entity:
             return None
-        objs = set(self.entity.getNearItems())
-        interactions = set()
-        for obj in objs:
-            for action in obj.getInteractions():
-                if action in self.entity.getActions():
-                    interactions.add((action, obj))
-        return interactions
+        controller = self.entity.getComponent("controller")
+        return controller.getInteractions()
     
     def getGroundObjs(self):
         if not self.entity:
