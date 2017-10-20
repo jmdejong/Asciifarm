@@ -39,7 +39,7 @@ def generateBeginRoom():
     g.set(30, 20, {"type": "roomexit", "args": ["basement", "stairup"], "kwargs": {"char": "stairdown"}})
     
     
-    g.set(45, 5, ["grass", "goblinspawner"])
+    #g.set(45, 5, ["grass", "goblinspawner"])
     
     d = g.toDict()
     d["spawn"] = (10, 5)
@@ -59,15 +59,55 @@ def generateBasement():
     for x in range(21, 40):
         for y in range(16, 25):
             g.set(x, y, "ground")
+    for x in range(40, 64):
+        g.set(x, 18, "wall")
+        g.set(x, 22, "wall")
+    for x in range(40, 63):
+        for y in range(19, 22):
+            g.set(x, y, "ground")
+    
+    for y in range(19, 22):
+        g.set(63, y, {"type": "roomexit", "args": ["arena"], "kwargs": {"char": "ground"}})
     
     g.set(30, 20, {"type": "roomexit", "args": ["begin", "stairdown"], "kwargs": {"char": "stairup"}})
     
-    g.set(22, 18, ["ground", "goblin"])
+    #g.set(22, 18, ["ground", "goblin"])
     d = g.toDict()
     d["spawn"] = (30, 20)
     d["places"] = {
-        "stairup": (30, 20)
+        "stairup": (30, 20),
+        "toarena": (63, 20)
         }
+    return d
+
+def generateArena():
+    
+    g = grid.Grid(64, 32, None)
+    
+    for x in range(10, 51):
+        for y in range(10, 31):
+            g.set(x, y, "wall")
+    for x in range(11, 50):
+        for y in range(11, 30):
+            g.set(x, y, "ground")
+    for x in range(0, 10):
+        g.set(x, 18, "wall")
+        g.set(x, 22, "wall")
+    for x in range(1, 11):
+        for y in range(19, 22):
+            g.set(x, y, "ground")
+    
+    for y in range(19, 22):
+        g.set(0, y, {"type": "roomexit", "args": ["basement", "toarena"], "kwargs": {"char": "ground"}})
+    
+    g.set(22, 14, ["ground", "goblinspawner"])
+    g.set(40, 14, ["ground", "goblinspawner"])
+    g.set(22, 26, ["ground", "goblinspawner"])
+    g.set(40, 26, ["ground", "goblinspawner"])
+    g.set(42, 20, ["ground", "goblinspawner"])
+    
+    d = g.toDict()
+    d["spawn"] = (0, 20)
     return d
 
 
@@ -76,7 +116,8 @@ def generateWorld():
         "begin": "begin",
         "rooms":{
             "begin": generateBeginRoom(),
-            "basement": generateBasement()
+            "basement": generateBasement(),
+            "arena": generateArena()
             }
         }
     
