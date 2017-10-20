@@ -8,7 +8,6 @@ class Portal:
         self.destPos = destPos
     
     def onEnter(self, obj):
-        observable = obj.getComponent("observable")
-        if observable:
-            observable.trigger("changeroom", self.destRoom, self.destPos)
+        
+        obj.trigger("changeroom", self.destRoom, self.destPos)
 

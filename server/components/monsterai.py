@@ -6,9 +6,9 @@ import random
 class MonsterAi:
     
     
-    def __init__(self, viewdist, moveChance=1):
+    def __init__(self, viewDist, moveChance=1):
         self.moveChance = moveChance
-        self.viewdist = viewdist
+        self.viewdist = viewDist
     
     
     def attach(self, obj, events):

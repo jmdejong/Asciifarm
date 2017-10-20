@@ -46,13 +46,13 @@ def makeRabbit(roomEvents):
     return Entity(roomEvents, sprite="rabbit", height=1, components={"move": Move(slowness=4), "controller": RandomWalkController(moveChance=0.05)})
 
 def makeDummy(roomEvents):
-    return Entity(roomEvents, sprite="dummy", height=1, components={"fighter": Fighter(health=20, strength=0), "alignment": EVIL})
+    return Entity(roomEvents, sprite="dummy", height=1, components={"fighter": Fighter(maxHealth=20, strength=0), "alignment": EVIL})
 
 def makeSpikeTrap(roomEvents):
-    return Entity(roomEvents, sprite="spikes", height=1, components={"fighter": Fighter(health=25, strength=25), "collision": Trap()})
+    return Entity(roomEvents, sprite="spikes", height=1, components={"fighter": Fighter(maxHealth=25, strength=25), "collision": Trap()})
 
 def makeGoblin(roomEvents):
-    return Entity(roomEvents, sprite="goblin", height=1, components={"move": Move(slowness=4), "fighter": Fighter(health=25, strength=5, slowness=3), "alignment": EVIL, "controller": MonsterAi(viewdist=5, moveChance=0.01)})
+    return Entity(roomEvents, sprite="goblin", height=1, components={"move": Move(slowness=4), "fighter": Fighter(maxHealth=25, strength=5, slowness=3), "alignment": EVIL, "controller": MonsterAi(viewDist=5, moveChance=0.01)})
 
 
 entitydict = {

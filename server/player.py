@@ -39,8 +39,6 @@ class Player:
             self.leaveRoom()
         
         pos = place or room.getEntrance()
-        observable = event.Event()
-        observable.addListener(self.onPlayerAction)
         self.entity = room.makeEntity(
             sprite = "player",
             solid = False,
@@ -50,10 +48,11 @@ class Player:
                 "inventory": self.inventory,
                 "move": Move(slowness=2),
                 "controller": InputController(),
-                "observable": observable,
                 "fighter": Fighter(self.health or self.maxHealth, 5, slowness=2),
                 "alignment": GOOD
                 })
+        
+        self.entity.addListener(self.onPlayerAction)
         room.addObj(pos, self.entity)
         
         self.roomname = roomname

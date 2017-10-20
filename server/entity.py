@@ -1,10 +1,10 @@
 
+import event
 
 # Attempt to implement an entity component system
 # This is the base object
-# Contrary to my earlier attempts to implement this (in other projects),
-# this class is not as small as possible
-# Hopefully this will make the code simpler
+# Components are given on construcion
+# for all components 
 
 # This page explains the composition patter that I'm trying to use here:
 # http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python%2Blibtcod,_part_6
@@ -20,6 +20,7 @@ class Entity:
         self.height = height # if multiple objects are on a square, the tallest one is drawn
         self.name = name if name else sprite # human readable name/description
         self.components = components
+        self.observable = event.Event()
         
         for component in components.values():
             if hasattr(component, "attach"):
@@ -49,6 +50,15 @@ class Entity:
         for component in self.components.values():
             if hasattr(component, "remove"):
                 component.remove()
+    
+    def addListener(self, callback, key=None):
+        self.observable.addListener(callback, key)
+    
+    def removeListener(self, key):
+        self.observable.removeListener(key)
+    
+    def trigger(self, *args):
+        self.observable.trigger(*args)
     
     def getSprite(self):
         return self.sprite

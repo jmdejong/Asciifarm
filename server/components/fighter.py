@@ -1,10 +1,12 @@
 
 import timeout
+import utils
 
 class Fighter:
     
-    def __init__(self, health, strength=0, slowness=1):
-        self.health = health
+    def __init__(self, maxHealth, strength=0, slowness=1, health=None):
+        self.maxHealth = maxHealth
+        self.health = health or maxHealth
         self.strength = strength
         self.target = None
         self.slowness = slowness
@@ -16,10 +18,9 @@ class Fighter:
     
     def damage(self, damage, attacker):
         self.health -= damage
+        self.health = utils.clamp(self.health, 0, self.maxHealth)
         
-        observable = self.owner.getComponent("observable")
-        if observable:
-            observable.trigger("damage", attacker, damage)
+        self.owner.trigger("damage" if damage >= 0 else "heal", attacker, damage)
         
         if self.isDead():
             self.die(attacker)
@@ -38,26 +39,25 @@ class Fighter:
                 
                 self.timeout.timeout()
                 
-                observable = self.owner.getComponent("observable")
-                if observable:
-                    observable.trigger("attack", other, damage)
-                    if otherFighter.isDead():
-                        observable.trigger("kill", other)
+                self.owner.trigger("attack", other, damage)
+                if otherFighter.isDead():
+                    self.owner.trigger("kill", other)
         
         self.target = None
         self.fightEvent.removeListener(self.doAttack)
     
     def die(self, killer):
         
-        observable = self.owner.getComponent("observable")
-        if observable:
-            observable.trigger("die", killer)
+        self.owner.trigger("die", killer)
         
         self.owner.remove()
     
     
     def getHealth(self):
         return self.health
+    
+    def heal(self, health):
+        self.damage(-health)
     
     def isDead(self):
         return self.health <= 0
