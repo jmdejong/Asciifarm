@@ -105,9 +105,6 @@ class Client:
         self.screen.refresh()
     
     def command_loop(self):
-        
-        
-        
         while self.keepalive:
             key = self.stdscr.getch()
             if key == 27:
@@ -131,11 +128,18 @@ def main(name, address, spectate=False):
         print("ERROR: Could not connect to server.\nAre you sure that the server is running and that you're connecting to the right address?", file=sys.stderr)
         return
     
+    caught_ctrl_c = False
     def start(stdscr):
-        client = Client(stdscr, name, connection, spectate)
+        nonlocal caught_ctrl_c
+        try:
+            client = Client(stdscr, name, connection, spectate)
+        except KeyboardInterrupt:
+            caught_ctrl_c = True
     
     curses.wrapper(start)
-    
+    if caught_ctrl_c:
+        print('^C caught, goodbye!')
+
 
 if __name__ == "__main__":
     
@@ -146,5 +150,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     main(args.name, args.socket, args.spectate)
-    
 
