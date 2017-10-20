@@ -39,7 +39,7 @@ The idea is to make 3 different kind of areas:
 - more efficient drawing/communication by only updating changed squares
 - test server robustness
 - more efficient detection for monsters
-- make health persistent
+- better code documentation
 - growing plants
 - more content (rooms, objects etc)
 - loot
@@ -53,6 +53,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- make health persistent
 - make server robust to invalid messages
 - attack cooldown
 - add enemies

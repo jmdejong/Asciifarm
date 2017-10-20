@@ -20,11 +20,15 @@ class Player:
         
         self.data = {}
         self.inventory = Inventory(10)
+        self.health = None
+        self.maxHealth = 100
         
     
     def leaveRoom(self):
         if self.entity:
+            self.health = self.getHealth()
             self.entity.remove()
+            self.entity = None
     
     def joinRoom(self, roomname, place=None):
         room = self.world.getRoom(roomname)
@@ -47,7 +51,7 @@ class Player:
                 "move": Move(slowness=2),
                 "controller": InputController(),
                 "observable": observable,
-                "fighter": Fighter(100, 5, slowness=2),
+                "fighter": Fighter(self.health or self.maxHealth, 5, slowness=2),
                 "alignment": GOOD
                 })
         room.addObj(pos, self.entity)
