@@ -28,21 +28,12 @@ class Entity:
         self.ground = None
         pass
     
+    def hasComponent(self, name):
+        return name in self.components
     
     def getComponent(self, name):
         return self.components.get(name, None)
     
-    def getSprite(self):
-        return self.sprite
-    
-    def getName(self):
-        return self.name
-    
-    def getHeight(self):
-        return self.height
-    
-    def inRoom(self):
-        return self.ground != None
     
     def place(self, ground):
         if self.ground:
@@ -59,10 +50,20 @@ class Entity:
             if hasattr(component, "remove"):
                 component.remove()
     
+    def getSprite(self):
+        return self.sprite
+    
+    def getName(self):
+        return self.name
+    
+    def getHeight(self):
+        return self.height
+    
+    def inRoom(self):
+        return self.ground != None
     
     def getGround(self):
         return self.ground
-    
     
     def getNearObjects(self):
         objects = set(self.ground.getObjs())
@@ -71,5 +72,17 @@ class Entity:
     
     def isSolid(self):
         return self.solid
+    
+    def setName(self, name):
+        self.name = name
+    
+    def setSprite(self, sprite):
+        self.sprite = sprite
+    
+    def setHeight(self, height):
+        self.height = height
+    
+    def setSolid(self, solid):
+        self.solid = solid
     
     
