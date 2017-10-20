@@ -1,5 +1,6 @@
 #! /usr/bin/python3
 
+import os
 import sys
 
 import curses
@@ -56,7 +57,8 @@ class Client:
         self.fieldWidth = 0
         self.fieldHeight = 0
         
-        with open("client/characters.json") as f:
+        fname = os.path.join(os.path.dirname(__file__), "characters.json")
+        with open(fname) as f:
             self.characters = json.load(f)['ascii']
         
         threading.Thread(target=self.listen, daemon=True).start()
