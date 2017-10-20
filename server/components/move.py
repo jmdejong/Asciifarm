@@ -1,36 +1,41 @@
 
+import timeout
 
 class Move:
     
     def __init__(self, slowness=1):
         self.direction = None
-        self.moveCooldown = 0
         self.slowness = slowness
     
     def attach(self, obj, events):
         self.owner = obj
-        self.updateEvent = events["update"]
-        self.updateEvent.addListener(self.update)
+        self.moveEvent = events["move"]
+        self.timeout = timeout.Timeout(events["update"], self.slowness)
         
     
     def move(self, direction):
         self.direction = direction
-    
-    def update(self):
+        self.moveEvent.addListener(self.doMove)
         
-        self.moveCooldown = max(self.moveCooldown-1, 0)
-        
-        
+    def canMove(self, direction):
         neighbours = self.owner.getGround().getNeighbours()
-        if self.direction in neighbours and self.moveCooldown <= 0:
+        return direction in neighbours and neighbours[direction].accessible()
+    
+    def doMove(self):
+        neighbours = self.owner.getGround().getNeighbours()
+        if self.direction in neighbours and self.timeout.isReady():
             newPlace = neighbours[self.direction]
             
             if newPlace.accessible():
                 self.owner.place(newPlace)
-                self.moveCooldown = self.slowness
+                self.timeout.timeout()
                 newPlace.onEnter(self.owner)
             
-            self.direction = None
+        self.direction = None
+        self.moveEvent.removeListener(self.doMove)
+        
     
     def remove(self):
-        self.updateEvent.removeListener(self.update)
+        self.moveEvent.removeListener(self.doMove)
+        self.timeout.remove()
+

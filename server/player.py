@@ -48,7 +48,7 @@ class Player:
                 "move": Move(slowness=2),
                 "controller": InputController(),
                 "observable": observable,
-                "fighter": Fighter(100, 5),
+                "fighter": Fighter(10000, 5, slowness=2),
                 "alignment": GOOD
                 })
         room.addObj(pos, self.entity)

@@ -18,7 +18,7 @@ class RandomWalkController:
         self.controlEvent.addListener(self.control)
     
     
-    def control(self, steps):
+    def control(self):
         
         if random.random() < self.moveChance:
             direction = random.choice(["north", "south", "east", "west"])
@@ -26,5 +26,5 @@ class RandomWalkController:
         
     
     def remove(self):
-        self.controlEvent.remove(self.control)
+        self.controlEvent.removeListener(self.control)
         

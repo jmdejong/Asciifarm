@@ -14,7 +14,4 @@ class Trap:
     
     def onEnter(self, obj):
         self.fighter.attack(obj)
-        #observable = obj.getComponent("observable")
-        #if observable:
-            #observable.trigger("changeroom", self.destRoom, self.destPos)
 

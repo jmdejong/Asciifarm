@@ -17,6 +17,8 @@
         "stairdown": ">",
         "stairup": "<",
         "dummy": "d",
+        "spikes": "^",
+        "goblin": "g",
         " ": " "
     }
 }

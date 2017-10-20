@@ -38,7 +38,7 @@ class Game:
             
             self.update()
             self.sendState()
-            time.sleep(0.05)
+            time.sleep(0.1)
     
     def update(self):
         

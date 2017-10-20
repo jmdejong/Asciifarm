@@ -18,8 +18,10 @@ class Room:
         self.entrance = tuple(data["spawn"])
         
         self.events = {
-            "update": event.Event(),
-            "control": event.Event()
+            "control": event.Event(),
+            "move": event.Event(),
+            "fight": event.Event(),
+            "update": event.Event()
             }
         
         self.places = data.get("places", {})
@@ -50,8 +52,10 @@ class Room:
         return self.entrance
     
     def update(self):
-        self.events["control"].trigger(1)
-        self.events["update"].trigger()
+        self.events["control"].trigger()
+        self.events["move"].trigger()
+        self.events["fight"].trigger()
+        self.events["update"].trigger(1)
     
     def getSprite(self, pos):
         return self._getGround(pos).getTopObj().getSprite()

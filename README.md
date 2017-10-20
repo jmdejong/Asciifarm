@@ -37,9 +37,6 @@ The idea is to make 3 different kind of areas:
 
 ## TODO first
 
-- attack cooldown
-- add enemies
-- add allies (and prevent constant PVP)
 - more content (rooms, objects etc)
 - make server robust to invalid messages
 - better interaction selection
@@ -49,6 +46,8 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- attack cooldown
+- add enemies
 - factions
 - add combat
 - improve inventory: probably store it in Player instead of Playerent

@@ -56,6 +56,9 @@ class GroundPatch:
         
         return self.neighbours
     
+    def getPos(self):
+        return self.pos
+    
     def getHeight(self):
         return -1
 

@@ -21,7 +21,7 @@ class InputController:
         self.actions.put(action)
     
     
-    def control(self, steps):
+    def control(self):
         while not self.actions.empty():
             action = self.actions.get()
             self.executeAction(action)

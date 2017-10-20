@@ -21,7 +21,7 @@ def generateBeginRoom():
         g.set(40, y, "wall")
     
     g.set(20, 19, "ground")
-    g.set(20, 20, "ground")
+    g.set(20, 20, ["ground", "goblin"])
     
     for x in range(25, 32):
         for y in range(6, 11):
