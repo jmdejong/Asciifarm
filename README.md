@@ -38,21 +38,22 @@ The idea is to make 3 different kind of areas:
 - monster/object spawners
 - more efficient drawing/communication by only updating changed squares
 - test server robustness
-- more efficient detection for monsters
+- more efficient taget detection for monsters
 - better code documentation
 - growing plants
 - more content (rooms, objects etc)
 - loot
 - equipment
-- healing
 - room unloading when there are no players
 - better interaction selection
 - write converter to convert tiled map files to readable files
 - multicharacter sprites in client
 - in-game chat
+- multible socket types (regular unix, abstract unix, inet and websocket), selectable as command line arguments
 
 ## DONE
 
+- healing
 - make health persistent
 - make server robust to invalid messages
 - attack cooldown

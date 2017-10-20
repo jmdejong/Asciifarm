@@ -6,6 +6,7 @@ from components.inputcontroller import InputController
 from components.move import Move
 from components.fighter import Fighter
 from components.faction import GOOD, EVIL, NEUTRAL
+from components.healing import Healing
 
 class Player:
     
@@ -49,7 +50,8 @@ class Player:
                 "move": Move(slowness=2),
                 "controller": InputController(),
                 "fighter": Fighter(self.health or self.maxHealth, 5, slowness=2),
-                "alignment": GOOD
+                "alignment": GOOD,
+                "heal": Healing(interval=25)
                 })
         
         self.entity.addListener(self.onPlayerAction)
@@ -77,6 +79,11 @@ class Player:
         if action == "damage":
             obj, damage = data
             print("{} got {} damage from {}".format(self.name, damage, obj.getName()))
+        
+        if action == "heal":
+            obj, health = data
+            if obj:
+                print("{} got {} health from {}".format(self.name, health, obj.getName()))
         
         if action == "die":
             obj = data[0]

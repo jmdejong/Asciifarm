@@ -20,7 +20,7 @@ class Fighter:
         self.health -= damage
         self.health = utils.clamp(self.health, 0, self.maxHealth)
         
-        self.owner.trigger("damage" if damage >= 0 else "heal", attacker, damage)
+        self.owner.trigger("damage" if damage >= 0 else "heal", attacker, abs(damage))
         
         if self.isDead():
             self.die(attacker)
@@ -56,8 +56,11 @@ class Fighter:
     def getHealth(self):
         return self.health
     
-    def heal(self, health):
-        self.damage(-health)
+    def healthFull(self):
+        return self.health >= self.maxHealth
+    
+    def heal(self, health, source):
+        self.damage(-health, source)
     
     def isDead(self):
         return self.health <= 0

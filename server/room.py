@@ -52,6 +52,12 @@ class Room:
         return self.entrance
     
     def update(self):
+        """ call several update events for components
+        
+        These events are separate to ensure that everything happens in the right order
+        
+        'update' also has the number of steps as argument. This will be useful when room unloading becomes a thing, and when the room loads again a lot of steps have to be simulated.
+        """
         self.events["control"].trigger()
         self.events["move"].trigger()
         self.events["fight"].trigger()
