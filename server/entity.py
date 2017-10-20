@@ -58,7 +58,7 @@ class Entity:
         self.observable.removeListener(key)
     
     def trigger(self, *args):
-        self.observable.trigger(*args)
+        self.observable.trigger(self, *args)
     
     def getSprite(self):
         return self.sprite

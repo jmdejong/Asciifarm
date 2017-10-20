@@ -39,6 +39,8 @@ def generateBeginRoom():
     g.set(30, 20, {"type": "roomexit", "args": ["basement", "stairup"], "kwargs": {"char": "stairdown"}})
     
     
+    g.set(45, 5, ["grass", "goblinspawner"])
+    
     d = g.toDict()
     d["spawn"] = (10, 5)
     d["places"] = {

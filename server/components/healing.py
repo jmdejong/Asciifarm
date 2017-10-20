@@ -22,7 +22,7 @@ class Healing:
         
         obj.addListener(self.onObjEvent)
     
-    def onObjEvent(self, action, *data):
+    def onObjEvent(self, o, action, *data):
         """ start healing if it is not happening already """
         if action == "damage" and not self.delay:
             self.delay = self.interval

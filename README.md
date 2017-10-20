@@ -35,15 +35,15 @@ The idea is to make 3 different kind of areas:
 
 ## TODO first
 
-- monster/object spawners
 - more efficient drawing/communication by only updating changed squares
-- test server robustness
-- more efficient taget detection for monsters
 - better code documentation
 - growing plants
+- test server robustness
+- more efficient taget detection for monsters
 - more content (rooms, objects etc)
 - loot
 - equipment
+- better reaction on player death
 - room unloading when there are no players
 - better interaction selection
 - write converter to convert tiled map files to readable files
@@ -53,6 +53,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- monster/object spawners
 - healing
 - make health persistent
 - make server robust to invalid messages

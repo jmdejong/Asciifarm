@@ -11,6 +11,7 @@ from components.trap import Trap
 from components.fighter import Fighter
 from components.faction import NEUTRAL, GOOD, EVIL
 from components.monsterai import MonsterAi
+from components.spawner import Spawner
 
 def makeWall(roomEvents):
     return Entity(roomEvents, sprite="wall", height=2, solid=True)
@@ -52,7 +53,10 @@ def makeSpikeTrap(roomEvents):
     return Entity(roomEvents, sprite="spikes", height=1, components={"fighter": Fighter(maxHealth=25, strength=25), "collision": Trap()})
 
 def makeGoblin(roomEvents):
-    return Entity(roomEvents, sprite="goblin", height=1, components={"move": Move(slowness=4), "fighter": Fighter(maxHealth=25, strength=5, slowness=3), "alignment": EVIL, "controller": MonsterAi(viewDist=5, moveChance=0.01)})
+    return Entity(roomEvents, sprite="goblin", height=1.2, components={"move": Move(slowness=4), "fighter": Fighter(maxHealth=25, strength=5, slowness=3), "alignment": EVIL, "controller": MonsterAi(viewDist=5, moveChance=0.01)})
+
+def makeGoblinSpawner(roomEvents): # I should probably generalize this...
+    return Entity(roomEvents, sprite="portal", height=1, name="goblinspawner", components={"spawn": Spawner("goblin", 2, 20)})
 
 
 entitydict = {
@@ -69,7 +73,8 @@ entitydict = {
     "rabbit": makeRabbit,
     "dummy": makeDummy,
     "spiketrap": makeSpikeTrap,
-    "goblin": makeGoblin
+    "goblin": makeGoblin,
+    "goblinspawner": makeGoblinSpawner
     }
     
 

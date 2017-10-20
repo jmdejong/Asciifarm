@@ -1,6 +1,4 @@
 
-import components
-import event
 from components.inventory import Inventory
 from components.inputcontroller import InputController
 from components.move import Move
@@ -63,7 +61,7 @@ class Player:
     def getRoom(self):
         return self.roomname
     
-    def onPlayerAction(self, action, *data):
+    def onPlayerAction(self, o, action, *data):
         if action == "changeroom":
             room, pos = data
             self.joinRoom(room, pos)
