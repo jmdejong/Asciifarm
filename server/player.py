@@ -34,7 +34,6 @@ class Player:
         if self.entity:
             self.leaveRoom()
         
-        self.roomname = roomname
         pos = place or room.getEntrance()
         observable = event.Event()
         observable.addListener(self.onPlayerAction)
@@ -48,10 +47,13 @@ class Player:
                 "move": Move(slowness=2),
                 "controller": InputController(),
                 "observable": observable,
-                "fighter": Fighter(10000, 5, slowness=2),
+                "fighter": Fighter(100, 5, slowness=2),
                 "alignment": GOOD
                 })
         room.addObj(pos, self.entity)
+        
+        self.roomname = roomname
+        self.place = pos
     
     def getRoom(self):
         return self.roomname
@@ -77,10 +79,12 @@ class Player:
             obj = data[0]
             print("{} got killed by {}".format(self.name, obj.getName()))
             self.entity = None
+            self.roomname = None
+            self.place = None
         
     
     def control(self, action):
-        if not self.entity:
+        if not self.entity or not (isinstance(action, list) or isinstance(action, tuple)) or len(action) < 1:
             return
         controller = self.entity.getComponent("controller")
         controller.addAction(action)

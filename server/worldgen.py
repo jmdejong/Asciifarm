@@ -21,7 +21,7 @@ def generateBeginRoom():
         g.set(40, y, "wall")
     
     g.set(20, 19, "ground")
-    g.set(20, 20, ["ground", "goblin"])
+    g.set(20, 20, "ground")
     
     for x in range(25, 32):
         for y in range(6, 11):
@@ -59,6 +59,8 @@ def generateBasement():
             g.set(x, y, "ground")
     
     g.set(30, 20, {"type": "roomexit", "args": ["begin", "stairdown"], "kwargs": {"char": "stairup"}})
+    
+    g.set(22, 18, ["ground", "goblin"])
     d = g.toDict()
     d["spawn"] = (30, 20)
     d["places"] = {

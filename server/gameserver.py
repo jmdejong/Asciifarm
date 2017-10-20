@@ -40,7 +40,10 @@ class GameServer:
         pass
     
     def receive(self, n, data):
-        data = json.loads(data.decode('utf-8'))
+        try:
+            data = json.loads(data.decode('utf-8'))
+        except json.JSONDecodeError as e:
+            self.serv.send(n, bytes(json.dumps({"error": "invalidjson"}), "utf-8"))
         if "name" in data:
             name = data["name"]
             
