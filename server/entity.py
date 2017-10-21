@@ -1,18 +1,18 @@
 
 import event
 
-# Attempt to implement an entity component system
-# This is the base object
-# Components are given on construcion
-# for all components 
-
-# This page explains the composition patter that I'm trying to use here:
-# http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python%2Blibtcod,_part_6
-# main difference: I don't give entities an attribute for each component type, but store the components in a dict instead
 
 
 class Entity:
-    
+    """ Attempt to implement an entity component system
+
+    This is the base object
+    Components are given on construction.
+    Once a component is added to the object the attach method will be called on the component (if it has one).
+    The attach method is used to pass the entity and room events to the component.
+    When the entity is removed, all components will have their remove method called if they have one.
+    Remove methods are for cleanup, like unsubscribing from events.
+    """
     
     def __init__(self, roomEvents, sprite=' ', solid=False, height=0, name=None, components={}):
         self.sprite = sprite # the name of the image to display for this entity
