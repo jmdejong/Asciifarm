@@ -10,10 +10,12 @@ class Fighter:
         self.strength = strength
         self.target = None
         self.slowness = slowness
+        self.canAttack = True
     
     def attach(self, owner, events):
         self.owner = owner
         self.fightEvent = events["fight"]
+        self.updateEvent = events["update"]
         self.timeout = timeout.Timeout(events["update"], self.slowness)
     
     def damage(self, damage, attacker):
@@ -31,13 +33,14 @@ class Fighter:
     
     def doAttack(self):
         other = self.target
-        if other and self.timeout.isReady():
+        if other and other.hasComponent("fighter") and self.canAttack:
             otherFighter = other.getComponent("fighter")
             if otherFighter:
                 damage = self.strength
                 otherFighter.damage(damage, self.owner)
                 
-                self.timeout.timeout()
+                self.canAttack = False
+                self.timeout = timeout.Timeout(self.updateEvent, self.slowness, self.makeReady)
                 
                 self.owner.trigger("attack", other, damage)
                 if otherFighter.isDead():
@@ -67,6 +70,11 @@ class Fighter:
     
     def remove(self):
         self.fightEvent.removeListener(self.doAttack)
-        self.timeout.remove()
+        self.timeout and self.timeout.remove()
+    
+    
+    def makeReady(self, to):
+        self.canAttack = True
+        self.timeout = None
 
 

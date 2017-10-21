@@ -6,11 +6,14 @@ class Move:
     def __init__(self, slowness=1):
         self.direction = None
         self.slowness = slowness
+        self.canMove = False
+        self.timeout = None
     
     def attach(self, obj, events):
         self.owner = obj
         self.moveEvent = events["move"]
-        self.timeout = timeout.Timeout(events["update"], self.slowness)
+        self.updateEvent = events["update"]
+        self.canMove = True
         
     
     def move(self, direction):
@@ -23,19 +26,23 @@ class Move:
     
     def doMove(self):
         neighbours = self.owner.getGround().getNeighbours()
-        if self.direction in neighbours and self.timeout.isReady():
+        if self.direction in neighbours and self.canMove:
             newPlace = neighbours[self.direction]
             
             if newPlace.accessible():
                 self.owner.place(newPlace)
-                self.timeout.timeout()
+                self.canMove = False
+                self.timeout = timeout.Timeout(self.updateEvent, self.slowness, self.makeReady)
                 newPlace.onEnter(self.owner)
             
         self.direction = None
         self.moveEvent.removeListener(self.doMove)
-        
+    
+    def makeReady(self, to):
+        self.canMove = True
+        self.timeout = None
     
     def remove(self):
         self.moveEvent.removeListener(self.doMove)
-        self.timeout.remove()
+        self.timeout and self.timeout.remove()
 
