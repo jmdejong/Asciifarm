@@ -1,0 +1,2 @@
+#!/bin/sh
+./hostrooms.py >stdout.log 2>stderr.log &
