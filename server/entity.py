@@ -83,16 +83,3 @@ class Entity:
     def isSolid(self):
         return self.solid
     
-    def setName(self, name):
-        self.name = name
-    
-    def setSprite(self, sprite):
-        self.sprite = sprite
-    
-    def setHeight(self, height):
-        self.height = height
-    
-    def setSolid(self, solid):
-        self.solid = solid
-    
-    

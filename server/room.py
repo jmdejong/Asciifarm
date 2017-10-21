@@ -14,8 +14,10 @@ class Room:
         self.name = name
         self.width = data["width"]
         self.height = data["height"]
-        #self.updateEvent = event.Event()
         self.entrance = tuple(data["spawn"])
+        
+        self.changedCells = {} # this probably doesn't belong in this class, but for now it will do
+        # It's probably better to make the view component more elaborate
         
         self.events = {
             "control": event.Event(),
@@ -74,6 +76,7 @@ class Room:
         if pos not in self.field and self.isValidPos(pos):
             groundPatch = ground.GroundPatch(self, pos)
             self.field[pos] = groundPatch
+            groundPatch.addListener(self.onGroundChange)
         return self.field.get(pos)
     
     def get(self, pos):
@@ -94,4 +97,15 @@ class Room:
     
     def removeObj(self, pos, obj):
         self._getGround(pos).removeObj(obj)
+    
+    def onGroundChange(self, action, pos, sprite):
+        if action == "changesprite":
+            self.changedCells[pos] = sprite
+    
+    def getChangedCells(self):
+        return self.changedCells
+    
+    def resetChangedCells(self):
+        self.changedCells = {}
+        
 

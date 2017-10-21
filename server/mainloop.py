@@ -58,6 +58,7 @@ class Game:
             
         
         self.world.update()
+        
     
     def sendState(self):
         

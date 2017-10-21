@@ -26,7 +26,8 @@ class MonsterAi:
     
     
     def control(self):
-        #print("controlling monstar")
+        # todo: getObjsInRange is very slow, O(n^2).
+        # better select target from a list of all entities in the room that have alignment instead
         for obj in pathfinding.getObjsInRange(self.owner, self.viewdist):
             if self.alignment.isEnemy(obj):
                 # this is now the closest enemy
