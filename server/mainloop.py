@@ -63,6 +63,11 @@ class Game:
     def sendState(self):
         
         self.server.sendState(self.view)
+        #beginRoom = self.world.getRoom("begin")
+        #c = beginRoom.getChangedCells()
+        #if c:
+            #print(c)
+        self.world.resetChangedCells()
         
 
 

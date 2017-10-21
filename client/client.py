@@ -96,6 +96,12 @@ class Client:
                 self.screen.put(outputstring, self.fieldWidth, self.fieldHeight)
                 self.lastoutputstring = outputstring
         
+        if 'changecells' in data and len(data['changecells']):
+            self.screen.changeCells((
+                    (x, y, self.characters.get(sprite, '?')) 
+                    for ((x, y), sprite) in data['changecells']
+                ), self.fieldWidth, self.fieldHeight)
+        
         if 'info' in data:
             infostring = json.dumps(data['info'], indent=2)
             infostring += "\n\n" + self.getControlsString()
@@ -137,6 +143,7 @@ def main(name, address, spectate=False):
             caught_ctrl_c = True
     
     curses.wrapper(start)
+    
     if caught_ctrl_c:
         print('^C caught, goodbye!')
 

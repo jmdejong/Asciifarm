@@ -21,24 +21,24 @@ class View:
                 screen.set(x, y, room.getSprite((x, y)))
         return screen.toDict()
     
-    def roomView(self, roomName):
-        room = self.world.getRoom(roomName)
-        return self.viewRoom(room)
-    
     def playerView(self, playerName):
         player = self.world.getPlayer(playerName)
-        field = self.roomView(player.getRoom())
+        room = self.world.getRoom(player.getRoom())
+        changedCells = room.getChangedCells()
         data = {
-            "type": "fullupdate",
             "info":{
                 "health": player.getHealth(),
                 "inventory": [obj.getSprite() for obj in player.getInventory()],
                 "ground": [obj.getSprite() for obj in player.getGroundObjs()]
                 #"interactions": [ action + ' ' + obj.getChar() for action, obj in player.getInteractions()]
-            }
+            },
+            "changecells": list(changedCells.items())
         }
-        if field:
-            data["field"] = field
+        if player.shouldResetView():
+            field = self.viewRoom(room)
+            if field :
+                data["field"] = field
+                player.viewResetDone()
         
         return data
 

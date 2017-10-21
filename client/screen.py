@@ -14,13 +14,18 @@ class Screen:
     
     
     def put(self, field, width, height):
-        #self.fieldpad.clear()
-        #if (
         self.fieldpad.addstr(0, 0, field)
         self.height, self.width = self.stdscr.getmaxyx()
         self.fieldpad.noutrefresh(0,0,0,0,min(height, self.height-1), min(width, self.width-1))
         self.changed = True
-        
+    
+    def changeCells(self, cells, width, height):
+        for x, y, char in cells:
+            self.fieldpad.addstr(y, x, char)
+        self.height, self.width = self.stdscr.getmaxyx()
+        self.fieldpad.noutrefresh(0,0,0,0,min(height, self.height-1), min(width, self.width-1))
+        self.changed = True
+    
     def putPlayers(self, players, x=0, y=0):
         self.playerpad.clear()
         self.playerpad.addstr(0, 0, players)

@@ -67,4 +67,7 @@ class World:
             return
         pl = self.players[name]
         pl.leaveRoom()
-        
+    
+    def resetChangedCells(self):
+        for room in self.rooms.values():
+            room.resetChangedCells()

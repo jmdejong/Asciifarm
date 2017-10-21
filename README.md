@@ -35,7 +35,6 @@ The idea is to make 3 different kind of areas:
 
 ## TODO first
 
-- more efficient drawing/communication by only updating changed squares
 - better code documentation
 - test server robustness
 - more efficient target detection for monsters
@@ -53,6 +52,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- more efficient drawing/communication by only updating changed squares
 - growing plants
 - monster/object spawners
 - healing

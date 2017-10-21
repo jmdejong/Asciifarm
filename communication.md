@@ -65,8 +65,8 @@ Example message: `{"input": ["move", "east"]}`
 
 There are 3 types of messages that the server can send to the client: 'field', 'info' and 'error'
 
-Currently, 'field' and 'info' messages are always sent in the same dictionary, together with a 'type' value.
-The 'type' can be ignored and will probably soon be removed
+Currently, 'chanchedcells' and 'info' messages are always sent in the same dictionary.
+If there is a 'field' message, it will also be sent in that dictionary.
 
 ### 'error' messages
 
@@ -105,6 +105,19 @@ When the character for grass is ',', for stone is 'o' and for player is '@', the
 
 See view.py and Grid.toDict in grid.py for the implementation.
 
+### 'changecells' messages
+
+'changecells' messages update the visible state of some of the cells on the screen.
+The data is a list of cells.
+A cell is a list of two elements: first the position and then the spritename
+The position is also a list of 2 elements: first the x, position and then the y.
+
+Example message:
+
+    {"changecells": [
+        [[1, 2], "grass],
+        [[2, 2], "player"]
+    ]}
 
 ### 'info' messages
 
@@ -122,15 +135,7 @@ See view.py for the implementation.
 
 # Suggested improvements
 
-## partial field update
 
-Sending the complete field each update is very costly for both the client and the server
-
-A solution would be to send a list of areas to be updated (after the player has entered the room initially).
-
-Another solution is to send a list of single cells to be updated.
-
-This improvement has highest priority
 
 ## Lists as outer objects
 
@@ -149,3 +154,13 @@ It would be nice if it could sent a human readable string too.
 This has low priority and is only useful once the client has some console to print to.
 
 
+
+## partial field update
+
+DONE
+
+Sending the complete field each update is very costly for both the client and the server
+
+A solution would be to send a list of areas to be updated (after the player has entered the room initially).
+
+Another solution is to send a list of single cells to be updated.

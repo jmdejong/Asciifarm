@@ -22,6 +22,8 @@ class Player:
         self.health = None
         self.maxHealth = 100
         
+        self.resetView = True
+        
     
     def leaveRoom(self):
         if self.entity:
@@ -57,6 +59,8 @@ class Player:
         
         self.roomname = roomname
         self.place = pos
+        
+        self.resetView = True
     
     def getRoom(self):
         return self.roomname
@@ -122,3 +126,8 @@ class Player:
         objs.discard(self.entity)
         return objs
     
+    def shouldResetView(self):
+        return self.resetView
+    
+    def viewResetDone(self):
+        self.resetView = False
