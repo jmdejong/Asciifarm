@@ -9,6 +9,7 @@ class Healing:
         self.interval = interval
         self.amount = amount
         self.delay = 0
+        self.isHealing = False
     
     def attach(self, obj, roomData):
         
@@ -17,16 +18,21 @@ class Healing:
             raise Exception("InputController needs object with fighter component")
             
         self.fighter = obj.getComponent("fighter")
-        
         self.timeEvent = roomData.getEvent("update")
-        
         obj.addListener(self.onObjEvent)
+        
+        self.startHealing()
     
     def onObjEvent(self, o, action, *data):
+        if action == "damage":
+            self.startHealing()
+    
+    def startHealing(self):
         """ start healing if it is not happening already """
-        if action == "damage" and not self.delay:
+        if not self.isHealing:
             self.delay = self.interval
             self.timeEvent.addListener(self.time)
+            self.isHealing = True
     
     def time(self, steps):
         """ decrement delay, each time that delay is 0, heal the entity """
@@ -36,6 +42,7 @@ class Healing:
             self.delay = self.interval
             if self.fighter.healthFull():
                 self.timeEvent.removeListener(self.time)
+                self.isHealing = False
                 return
         self.delay -= steps
     

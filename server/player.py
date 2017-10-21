@@ -50,7 +50,7 @@ class Player:
                 "inventory": self.inventory,
                 "move": Move(slowness=2),
                 "controller": InputController(),
-                "fighter": Fighter(self.health or self.maxHealth, 5, slowness=2),
+                "fighter": Fighter(self.maxHealth, 5, slowness=2, health=self.health or self.maxHealth),
                 "alignment": Alignment(faction.GOOD),
                 "heal": Healing(interval=25)
                 })
