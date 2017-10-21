@@ -14,7 +14,7 @@ from components.monsterai import MonsterAi
 from components.spawner import Spawner
 from components.grow import Growing
 from components.alignment import Alignment
-
+from components.loot import Loot
 
 """ This module contains factory functions for many placable entities, and a make function to call a factory by a string name """
 
@@ -74,7 +74,13 @@ def makeSpikeTrap(roomData):
 entities["spiketrap"] = makeSpikeTrap
 
 def makeGoblin(roomData):
-    return Entity(roomData, sprite="goblin", height=1.2, components={"move": Move(slowness=4), "fighter": Fighter(maxHealth=25, strength=5, slowness=3), "alignment": Alignment(faction.EVIL), "controller": MonsterAi(viewDist=5, moveChance=0.01)})
+    return Entity(roomData, sprite="goblin", height=1.2, components={
+        "move": Move(slowness=4),
+        "fighter": Fighter(maxHealth=25, strength=5, slowness=3),
+        "alignment": Alignment(faction.EVIL),
+        "controller": MonsterAi(viewDist=5, moveChance=0.01),
+        "loot": Loot([("stone", .5), ("pebble", .5)])
+        })
 entities["goblin"] = makeGoblin
 
 def makeGoblinSpawner(roomData): # I should probably generalize this...
