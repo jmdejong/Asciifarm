@@ -39,7 +39,7 @@ The idea is to make 3 different kind of areas:
 - better code documentation
 - growing plants
 - test server robustness
-- more efficient taget detection for monsters
+- more efficient target detection for monsters
 - more content (rooms, objects etc)
 - loot
 - equipment

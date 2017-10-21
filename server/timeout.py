@@ -2,6 +2,7 @@
 
 
 class Timeout:
+    """ Helper class for components tha have to wait several updates before doing something """
     
     def __init__(self, timeEvent, time=1, callback=None):
         self.time = time

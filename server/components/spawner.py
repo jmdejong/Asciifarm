@@ -11,6 +11,7 @@ class Spawner:
         self.spawned = set()
         self.objectArgs = objectArgs
         self.objectKwargs = objectKwargs
+        self.timeouts = set()
     
     def attach(self, obj, events):
         
@@ -22,8 +23,10 @@ class Spawner:
         for i in range(self.amount):
             self.goSpawn()
     
-    def goSpawn(self): # todo: remove timeouts when spawner gets removed
-        timeout.Timeout(self.updateEvent, self.respawnDelay, callback=self.spawn).timeout()
+    def goSpawn(self):
+        to = timeout.Timeout(self.updateEvent, self.respawnDelay, callback=self.spawn)
+        self.timeouts.add(to)
+        to.timeout()
     
     def spawn(self):
         obj = gameobjects.makeEntity(self.objectType, self.roomEvents, *self.objectArgs, **self.objectKwargs)
@@ -32,6 +35,11 @@ class Spawner:
         obj.addListener(self.onObjEvent)
         print("{} spawned a {}".format(self.owner.getName(), self.objectType))
     
+    def filterTimeouts(self):
+        for to in frozenset(self.timouts):
+            if to.isReady():
+                to.remove()
+                self.timouts.remove(to)
     
     def onObjEvent(self, obj, action, *data):
         """ handle spawned object death """
@@ -40,3 +48,6 @@ class Spawner:
             obj.removeListener(self.onObjEvent)
             self.goSpawn()
     
+    def remove(self):
+        for to in self.timeouts:
+            to.remove()
