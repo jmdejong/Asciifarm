@@ -6,7 +6,7 @@ class InputController:
     def __init__(self):
         self.actions = queue.Queue()
     
-    def attach(self, obj, events):
+    def attach(self, obj, roomData):
         self.owner = obj
         
         for dep in {"inventory", "move", "fighter", "alignment"}:
@@ -16,7 +16,7 @@ class InputController:
             
             setattr(self, dep, obj.getComponent(dep))
         
-        self.controlEvent = events["control"]
+        self.controlEvent = roomData.getEvent("control")
         self.controlEvent.addListener(self.control)
     
     def addAction(self, action):

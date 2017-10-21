@@ -3,8 +3,9 @@ from components.inventory import Inventory
 from components.inputcontroller import InputController
 from components.move import Move
 from components.fighter import Fighter
-from components.faction import GOOD, EVIL, NEUTRAL
 from components.healing import Healing
+from components.alignment import Alignment
+import faction
 
 class Player:
     
@@ -50,7 +51,7 @@ class Player:
                 "move": Move(slowness=2),
                 "controller": InputController(),
                 "fighter": Fighter(self.health or self.maxHealth, 5, slowness=2),
-                "alignment": GOOD,
+                "alignment": Alignment(faction.GOOD),
                 "heal": Healing(interval=25)
                 })
         

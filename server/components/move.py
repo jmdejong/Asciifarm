@@ -9,10 +9,10 @@ class Move:
         self.canMove = False
         self.timeout = None
     
-    def attach(self, obj, events):
+    def attach(self, obj, roomData):
         self.owner = obj
-        self.moveEvent = events["move"]
-        self.updateEvent = events["update"]
+        self.moveEvent = roomData.getEvent("move")
+        self.updateEvent = roomData.getEvent("update")
         self.canMove = True
         
     

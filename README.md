@@ -37,7 +37,6 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - test server robustness
-- more efficient target detection for monsters
 - loot
 - make items usable
 - more content (rooms, objects etc)
@@ -52,6 +51,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- more efficient target detection for monsters
 - more efficient drawing/communication by only updating changed squares
 - growing plants
 - monster/object spawners

@@ -13,11 +13,11 @@ class Spawner:
         self.objectKwargs = objectKwargs
         self.timeouts = set()
     
-    def attach(self, obj, events):
+    def attach(self, obj, roomData):
         
         self.owner = obj
-        self.roomEvents = events
-        self.updateEvent = events["update"]
+        self.roomData = roomData
+        self.updateEvent = roomData.getEvent("update")
         
         for i in range(self.amount):
             self.goSpawn()
@@ -27,7 +27,7 @@ class Spawner:
         self.timeouts.add(to)
     
     def spawn(self, to):
-        obj = gameobjects.makeEntity(self.objectType, self.roomEvents, *self.objectArgs, **self.objectKwargs)
+        obj = gameobjects.makeEntity(self.objectType, self.roomData, *self.objectArgs, **self.objectKwargs)
         obj.place(self.owner.getGround())
         self.spawned.add(obj)
         self.timeouts.remove(to)

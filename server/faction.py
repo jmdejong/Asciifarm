@@ -6,17 +6,11 @@ class Faction:
     
     def hates(self, faction):
         self.enemies.add(faction)
-        if not faction.isEnemyFaction(self):
+        if not faction.isEnemy(self):
             faction.hates(self)
     
-    def isEnemyFaction(self, faction):
+    def isEnemy(self, faction):
         return faction in self.enemies
-    
-    def isEnemy(self, obj):
-        faction = obj.getComponent("alignment")
-        if not faction:
-            return False
-        return self.isEnemyFaction(faction)
 
 
 NEUTRAL = Faction() # doesn't hate anyone

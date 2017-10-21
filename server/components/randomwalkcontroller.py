@@ -7,14 +7,14 @@ class RandomWalkController:
         self.moveChance = moveChance
     
     
-    def attach(self, obj, events):
+    def attach(self, obj, roomData):
         self.owner = obj
         
         if not obj.getComponent("move"):
             # todo: better exception
             raise Exception("Controller needs object with move component")
         
-        self.controlEvent = events["control"]
+        self.controlEvent = roomData.getEvent("control")
         self.controlEvent.addListener(self.control)
     
     

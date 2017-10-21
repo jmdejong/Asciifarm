@@ -8,10 +8,10 @@ class MonsterAi:
     
     def __init__(self, viewDist, moveChance=1):
         self.moveChance = moveChance
-        self.viewdist = viewDist
+        self.viewDist = viewDist
     
     
-    def attach(self, obj, events):
+    def attach(self, obj, roomData):
         self.owner = obj
         
         for dep in {"move", "fighter", "alignment"}:
@@ -21,27 +21,28 @@ class MonsterAi:
             
             setattr(self, dep, obj.getComponent(dep))
         
-        self.controlEvent = events["control"]
+        self.controlEvent = roomData.getEvent("control")
         self.controlEvent.addListener(self.control)
+        self.roomData = roomData
     
     
     def control(self):
-        # todo: getObjsInRange is very slow, O(n^2).
-        # better select target from a list of all entities in the room that have alignment instead
-        for obj in pathfinding.getObjsInRange(self.owner, self.viewdist):
-            if self.alignment.isEnemy(obj):
-                # this is now the closest enemy
-                
-                if pathfinding.distanceBetween(self.owner, obj) < 2:
-                    self.fighter.attack(obj)
-                else:
-                    self.move.move(pathfinding.stepTo(self.owner, obj))
-                break
+        closestDistance = self.viewDist + 1
+        closest = None
+        for obj in self.roomData.getTargets():
+            distance = pathfinding.distanceBetween(self.owner, obj)
+            if self.alignment.isEnemy(obj) and distance < closestDistance:
+                closestDistance = distance
+                closest = obj
+        if closest:
+            if pathfinding.distanceBetween(self.owner, closest) <= 1:
+                self.fighter.attack(closest)
+            else:
+                self.move.move(pathfinding.stepTo(self.owner, closest))
         else:
             if random.random() < self.moveChance:
                 direction = random.choice(["north", "south", "east", "west"])
                 self.move.move(direction)
-        
     
     def remove(self):
         self.controlEvent.removeListener(self.control)

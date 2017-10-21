@@ -3,7 +3,7 @@
 class Trap:
     
     
-    def attach(self, obj, events):
+    def attach(self, obj, roomData):
         
         if not obj.getComponent("fighter"):
             # todo: better exception

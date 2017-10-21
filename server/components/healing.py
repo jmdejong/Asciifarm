@@ -10,7 +10,7 @@ class Healing:
         self.amount = amount
         self.delay = 0
     
-    def attach(self, obj, events):
+    def attach(self, obj, roomData):
         
         if not obj.getComponent("fighter"):
             # todo: better exception
@@ -18,7 +18,7 @@ class Healing:
             
         self.fighter = obj.getComponent("fighter")
         
-        self.timeEvent = events["update"]
+        self.timeEvent = roomData.getEvent("update")
         
         obj.addListener(self.onObjEvent)
     

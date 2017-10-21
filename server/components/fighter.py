@@ -12,11 +12,11 @@ class Fighter:
         self.slowness = slowness
         self.canAttack = True
     
-    def attach(self, owner, events):
+    def attach(self, owner, roomData):
         self.owner = owner
-        self.fightEvent = events["fight"]
-        self.updateEvent = events["update"]
-        self.timeout = timeout.Timeout(events["update"], self.slowness)
+        self.fightEvent = roomData.getEvent("fight")
+        self.updateEvent = roomData.getEvent("update")
+        self.timeout = timeout.Timeout(roomData.getEvent("update"), self.slowness)
     
     def damage(self, damage, attacker):
         self.health -= damage

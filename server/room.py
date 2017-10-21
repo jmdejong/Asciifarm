@@ -5,6 +5,7 @@ import gameobjects
 import grid
 import event
 import entity
+import roomdata
 
 
 class Room:
@@ -19,12 +20,12 @@ class Room:
         self.changedCells = {} # this probably doesn't belong in this class, but for now it will do
         # It's probably better to make the view component more elaborate
         
-        self.events = {
+        self.roomData = roomdata.RoomData(events={
             "control": event.Event(),
             "move": event.Event(),
             "fight": event.Event(),
             "update": event.Event()
-            }
+            })
         
         self.places = data.get("places", {})
         
@@ -60,10 +61,10 @@ class Room:
         
         'update' also has the number of steps as argument. This will be useful when room unloading becomes a thing, and when the room loads again a lot of steps have to be simulated.
         """
-        self.events["control"].trigger()
-        self.events["move"].trigger()
-        self.events["fight"].trigger()
-        self.events["update"].trigger(1)
+        self.roomData.getEvent("control").trigger()
+        self.roomData.getEvent("move").trigger()
+        self.roomData.getEvent("fight").trigger()
+        self.roomData.getEvent("update").trigger(1)
     
     def getSprite(self, pos):
         return self._getGround(pos).getTopObj().getSprite()
@@ -87,10 +88,10 @@ class Room:
         return None
     
     def makeObject(self, objtype, *args, **kwargs):
-        return gameobjects.makeEntity(objtype, self.events, *args, **kwargs)
+        return gameobjects.makeEntity(objtype, self.roomData, *args, **kwargs)
     
     def makeEntity(self, *args, **kwargs):
-        return entity.Entity(self.events, *args, **kwargs)
+        return entity.Entity(self.roomData, *args, **kwargs)
     
     def addObj(self, pos, obj):
         obj.place(self.get(pos))
