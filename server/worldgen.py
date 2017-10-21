@@ -2,8 +2,11 @@
 import grid
 
 
+""" Temporary module for generating rooms
 
-# module for generating some test rooms. should probably be replaced
+Eventually it's probably better to make a loader and load rooms from JSON
+However, this module is still very convenient for testing
+"""
 
 def generateBeginRoom():
     g = grid.Grid(64, 32, "grass")
@@ -35,7 +38,8 @@ def generateBeginRoom():
     g.set(6, 8, ["grass", "pebble"])
     g.set(50, 25, ["grass", "rabbit", "rabbit", "rabbit", "rabbit"])
     g.set(11, 12, ["grass", "dummy"])
-    g.set(19, 3, ["spiketrap"])
+    g.set(37, 18, ["spiketrap"])
+    g.set(19, 7, ["grass", "seed"])
     g.set(30, 20, {"type": "roomexit", "args": ["basement", "stairup"], "kwargs": {"char": "stairdown"}})
     
     

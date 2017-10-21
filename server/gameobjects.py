@@ -12,8 +12,10 @@ from components.fighter import Fighter
 from components.faction import NEUTRAL, GOOD, EVIL
 from components.monsterai import MonsterAi
 from components.spawner import Spawner
-#from components.grow import Growing
+from components.grow import Growing
 
+
+""" This module contains factory functions for many placable entities, and a make function to call a factory by a string name """
 
 entities = {}
 
@@ -78,7 +80,14 @@ def makeGoblinSpawner(roomEvents): # I should probably generalize this...
     return Entity(roomEvents, sprite="portal", height=1, name="goblinspawner", components={"spawn": Spawner("goblin", 2, 20)})
 entities["goblinspawner"] = makeGoblinSpawner
 
-    
+def makeSeed(roomEvents):
+    return Entity(roomEvents, sprite="seed", height=0.3, components={"grow": Growing("plant", 100)})
+entities["seed"] = makeSeed
+
+def makePlant(roomEvents):
+    return Entity(roomEvents, sprite="plant", height=1.2)
+entities["plant"] = makePlant
+
 
 def makeEntity(entType, *args, **kwargs):
     return entities[entType](*args, **kwargs)

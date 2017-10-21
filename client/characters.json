@@ -19,6 +19,8 @@
         "dummy": "d",
         "spikes": "^",
         "goblin": "g",
+        "seed": ":",
+        "plant": "y",
         " ": " "
     }
 }
