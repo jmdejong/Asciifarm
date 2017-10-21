@@ -30,6 +30,9 @@ class InputController:
     
     def executeAction(self, action):
         kind = action[0]
+        
+        # probably time to make this a dict with the action as keys and the function as value
+        
         if kind == "move" and len(action) > 1:
             self.move.move(action[1])
         
@@ -38,7 +41,7 @@ class InputController:
             for obj in self.owner.getNearObjects():
                 if obj.getComponent("item") != None and self.inventory.canAdd(obj):
                     self.inventory.add(obj)
-                    obj.remove()
+                    obj.unPlace()
                     break
         
         if kind == "drop":
@@ -58,6 +61,12 @@ class InputController:
                 if obj.getComponent("fighter") != None and self.alignment.isEnemy(obj):
                     self.fighter.attack(obj)
                     break
+        
+        
+        if kind == "use":
+            for obj in self.inventory.getItems():
+                obj.getComponent("item").use(self.owner)
+                break
     
     def getInteractions(self):
         return []

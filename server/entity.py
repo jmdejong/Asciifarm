@@ -42,14 +42,18 @@ class Entity:
         ground.addObj(self)
         self.ground = ground
     
-    def remove(self):
+    def unPlace(self):
+        
         if self.ground:
             self.ground.removeObj(self)
             self.ground = None
-        
+    
+    def remove(self):
+        self.unPlace()
         for component in self.components.values():
             if hasattr(component, "remove"):
                 component.remove()
+        self.trigger("remove")
     
     def addListener(self, callback, key=None):
         self.observable.addListener(callback, key)

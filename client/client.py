@@ -49,6 +49,7 @@ class Client:
             ord("S"): ("attack", "south"),
             ord("D"): ("attack", "east"),
             ord("A"): ("attack", "west"),
+            ord("r"): ("use",)
         }
         
         if not spectate:

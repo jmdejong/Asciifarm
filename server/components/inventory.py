@@ -11,9 +11,15 @@ class Inventory:
     
     def add(self, item):
         self.items.insert(0, item)
+        item.addListener(self.onItemUpdate)
     
     def drop(self, item):
         self.items.remove(item) # should I catch here?
     
     def getItems(self):
         return list(self.items)
+    
+    def onItemUpdate(self, item, action, *data):
+        if action == "remove":
+            print(item, action)
+            self.drop(item)

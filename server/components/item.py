@@ -2,5 +2,5 @@
 
 class Item:
     
-    def __init__(self, *args, **kwargs):
+    def use(self, user):
         pass

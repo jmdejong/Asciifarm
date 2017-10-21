@@ -19,6 +19,7 @@ class Player:
         self.entity = None
         
         self.data = {}
+        # todo: ensure that items have correct roomData when inventory changes room
         self.inventory = Inventory(10)
         self.health = None
         self.maxHealth = 100
