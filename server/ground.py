@@ -7,9 +7,7 @@ neighbourdirs = {"north":(0,-1), "south":(0,1), "east":(1,0), "west":(-1,0)}
 class GroundPatch:
     
     def __init__(self, room, pos, sprite=' '):
-        # objects is actually a set, but because its elements are mutable
-        # it is implemented as a dictionary with the id as index
-        self.objects = {}
+        self.objects = set()
         self.sprite = sprite
         self.room = room
         self.pos = pos
@@ -17,22 +15,22 @@ class GroundPatch:
         self.event = event.Event()
     
     def accessible(self):
-        return not any(obj.isSolid() for obj in self.objects.values())
+        return not any(obj.isSolid() for obj in self.objects)
     
     def addObj(self, obj):
         if obj.getHeight() >= self.getTopObj().getHeight():
             self.event.trigger("changesprite", self.getPos(), obj.getSprite())
-        self.objects[id(obj)] = obj
+        self.objects.add(obj)
     
     def removeObj(self, obj):
-        if id(obj) in self.objects:
-            del self.objects[id(obj)]
+        if obj in self.objects:
+            self.objects.remove(obj)
             topObj = self.getTopObj()
             if obj.getHeight() >= topObj.getHeight():
                 self.event.trigger("changesprite", self.getPos(), topObj.getSprite())
     
     def getObjs(self):
-        return self.objects.values()
+        return frozenset(self.objects)
     
     def getTopObj(self):
         topObj = self
@@ -45,7 +43,7 @@ class GroundPatch:
         return self.sprite
     
     def onEnter(self, obj):
-        for o in frozenset(self.objects.values()):
+        for o in frozenset(self.objects):
             if o == obj:
                 continue
             o.trigger("objectenter", obj)
