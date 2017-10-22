@@ -12,14 +12,28 @@ sys.path.append(sys.path[0]+"/shared/")
 import mainloop
 import argparse
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-s', '--socket', help="""
-The address of the socket.\n
-If this starts with a null byte, it is an abstract socket (this is usually what you want).\n
-Otherwise it is a unix file (which you could give permissions)\n
-Defaults to \\0roomtest\n
-\n
-When using a file as socket you will have to remove the file manually after execution (it is suggested to make it in /tmp)""", default="\0roomtest")
-args = parser.parse_args()
 
-mainloop.Game().start(args.socket)
+defaultAdresses = {
+    "abstract": "roomtest",
+    "unix": "./roomstest.socket",
+    "inet": "localhost:9021",
+    }
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-a", "--address", help="The address of the socket. When the socket type is 'abstract' this is just a name. When it is 'unix' this is a filename. When it is 'inet' is should be in the format 'address:port', eg 'localhost:8080'. Defaults depends on the socket type")
+    parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
+    
+    args = parser.parse_args()
+    address = args.address
+    if address == None:
+        address = defaultAdresses[args.socket]
+    if args.socket == "abstract":
+        address = '\0' + address
+    elif args.socket == "inet":
+        hostname, sep, port = address.partition(':')
+        address = (hostname, int(port))
+    mainloop.Game(args.socket).start(address)
+
+main()

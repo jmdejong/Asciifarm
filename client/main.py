@@ -4,8 +4,25 @@ from connection import Connection
 import curses
 import json
 import os
+import sys
 
-def main(name, address, keybindingsFile=None, characterFile=None):
+
+defaultAdresses = {
+    "abstract": "roomtest",
+    "unix": "./roomstest.socket",
+    "inet": "localhost:9021",
+    }
+
+def main(name, socketType, address, keybindingsFile=None, characterFile=None):
+    
+    
+    if address == None:
+        address = defaultAdresses[socketType]
+    if socketType == "abstract":
+        address = '\0' + address
+    elif socketType == "inet":
+        hostname, sep, port = address.partition(':')
+        address = (hostname, int(port))
     
     if keybindingsFile == None:
         fname = os.path.join(os.path.dirname(__file__), "keybindings.json")
@@ -19,7 +36,7 @@ def main(name, address, keybindingsFile=None, characterFile=None):
     characters = json.load(characterFile)
     characterFile.close()
     
-    connection = Connection()
+    connection = Connection(socketType)
     try:
         connection.connect(address)
     except ConnectionRefusedError:

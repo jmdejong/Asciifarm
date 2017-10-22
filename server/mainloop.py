@@ -15,9 +15,9 @@ import worldgen
 
 class Game:
     
-    def __init__(self):
+    def __init__(self, socketType):
         
-        self.server = gameserver.GameServer(self)
+        self.server = gameserver.GameServer(self, socketType)
         
         self.world = world.World(worldgen.generateWorld())
         
@@ -63,18 +63,6 @@ class Game:
     def sendState(self):
         
         self.server.sendState(self.view)
-        #beginRoom = self.world.getRoom("begin")
-        #c = beginRoom.getChangedCells()
-        #if c:
-            #print(c)
         self.world.resetChangedCells()
         
 
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--socket', help='The socket file to listen to. Use this if the default socket exists already.\nWARNING: if the given file exists it will be overwritten.\nDefaults to /tmp/tron_socket', default="/tmp/tron_socket")
-    args = parser.parse_args()
-    
-    Game().start(args.socket)

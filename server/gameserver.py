@@ -12,9 +12,9 @@ import queue
 class GameServer:
     
     
-    def __init__(self, game):
+    def __init__(self, game, socketType):
         
-        self.serv = server.Server(self.newConnection, self.receive, self.close)
+        self.serv = server.Server(socketType, self.newConnection, self.receive, self.close)
         
         self.connections = {}
         

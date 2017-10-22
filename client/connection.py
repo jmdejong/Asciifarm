@@ -5,8 +5,12 @@ from tcommunicate import send, receive
 
 class Connection:
     
-    def __init__(self):
-        self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    def __init__(self, socketType):
+        if socketType == "abstract" or socketType == "unix":
+            sockType = socket.AF_UNIX
+        elif socketType == "inet":
+            sockType = socket.AF_INET
+        self.sock = socket.socket(sockType, socket.SOCK_STREAM)
     
     def connect(self, address):
         self.sock.connect(address)

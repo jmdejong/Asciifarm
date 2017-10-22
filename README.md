@@ -15,6 +15,7 @@ A lot of functionality is actually working.
 - Fighting 
 - NPC's
 - Farming
+- Building
 
 ## Installation/starting instructions
 
@@ -61,19 +62,22 @@ The idea is to make 3 different kind of areas:
 - better code documentation
 - test server robustness
 - nondeterminism in combat and grow times
-- more content (rooms, objects etc)
+- only plant seeds in soil
+- make farming more work
 - equipment
+- write converter to convert tiled map files to readable files
 - better reaction on player death
 - room unloading when there are no players
 - better interaction selection
-- write converter to convert tiled map files to readable files
-- configurable graphics
 - multicharacter sprites in client
 - in-game chat
-- multiple socket types (regular unix, abstract unix, inet and websocket), selectable as command line arguments
+- support websockets
 
 ## DONE
 
+- more content (rooms, objects etc)
+- multiple socket types (regular unix, abstract unix, inet), selectable as command line arguments
+- configurable graphics
 - configurable keybindings
 - make items usable
 - farming
