@@ -39,7 +39,9 @@ def generateBeginRoom():
     g.set(50, 25, ["grass", "rabbit", "rabbit", "rabbit", "rabbit"])
     g.set(11, 12, ["grass", "dummy"])
     g.set(37, 18, ["spiketrap"])
-    g.set(19, 7, ["grass", "seed"])
+    g.set(21, 16, ["grass", "seed"])
+    g.set(21, 17, ["grass", "seed"])
+    g.set(22, 16, ["grass", "seed"])
     g.set(30, 20, {"type": "roomexit", "args": ["basement", "stairup"], "kwargs": {"char": "stairdown"}})
     
     

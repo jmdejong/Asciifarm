@@ -6,6 +6,7 @@ from components.fighter import Fighter
 from components.healing import Healing
 from components.alignment import Alignment
 import faction
+import entity
 
 class Player:
     
@@ -42,7 +43,7 @@ class Player:
             self.leaveRoom()
         
         pos = place or room.getEntrance()
-        self.entity = room.makeEntity(
+        self.entity = entity.Entity(
             sprite = "player",
             solid = False,
             height = 2,
@@ -55,7 +56,7 @@ class Player:
                 "alignment": Alignment(faction.GOOD),
                 "heal": Healing(interval=25)
                 })
-        
+        self.entity.construct(room.getRoomData())
         self.entity.addListener(self.onPlayerAction)
         room.addObj(pos, self.entity)
         

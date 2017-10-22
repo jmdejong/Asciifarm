@@ -18,5 +18,5 @@ class Build:
     def use(self, user):
         obj = gameobjects.makeEntity(self.buildType, self.roomData, *self.buildArgs, **self.buildKwargs)
         obj.place(user.getGround())
-        self.owner.remove()
+        self.owner.trigger("drop")
     

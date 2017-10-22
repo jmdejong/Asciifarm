@@ -8,6 +8,7 @@ class InputController:
     
     def attach(self, obj, roomData):
         self.owner = obj
+        self.roomData = roomData
         
         for dep in {"inventory", "move", "fighter", "alignment"}:
             if not obj.getComponent(dep):
@@ -40,13 +41,14 @@ class InputController:
         if kind == "take":
             for obj in self.owner.getNearObjects():
                 if obj.getComponent("item") != None and self.inventory.canAdd(obj):
+                    obj.remove()
                     self.inventory.add(obj)
-                    obj.unPlace()
                     break
         
         if kind == "drop":
             for obj in self.inventory.getItems():
                 self.inventory.drop(obj)
+                obj.construct(self.roomData)
                 obj.place(self.owner.getGround())
                 break
         

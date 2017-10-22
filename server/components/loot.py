@@ -19,8 +19,18 @@ class Loot:
     
     def dropLoot(self, obj, action, *data):
         if action == "die":
-            for item, chance in self.items:
+            for itemData in self.items:
+                item = itemData[0]
+                chance = 1
+                args = []
+                kwargs = {}
+                if len(itemData) > 1:
+                    chance = itemData[1]
+                    if len(itemData) > 2:
+                        args = itemData[2]
+                        if len(itemData) > 3:
+                            kwargs = itemData[3]
+                
                 if chance > random.random():
-                    # todo: args and kwargs
-                    obj = gameobjects.makeEntity(item, self.roomData)
+                    obj = gameobjects.makeEntity(item, self.roomData, *args, **kwargs)
                     obj.place(self.owner.getGround())

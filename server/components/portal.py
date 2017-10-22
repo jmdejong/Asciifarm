@@ -7,7 +7,11 @@ class Portal:
         self.destRoom = destRoom
         self.destPos = destPos
     
-    def onEnter(self, obj):
+    def attach(self, obj, roomData):
+        obj.addListener(self.onObjEvent)
         
-        obj.trigger("changeroom", self.destRoom, self.destPos)
+    
+    def onObjEvent(self, owner, action, obj=None, *data):
+        if action == "objectenter":
+            obj.trigger("changeroom", self.destRoom, self.destPos)
 

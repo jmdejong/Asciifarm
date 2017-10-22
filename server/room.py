@@ -48,7 +48,8 @@ class Room:
                         kwargs = obj.get("kwargs", {})
                     else:
                         continue
-                    self.addObj((x, y), self.makeObject(objtype, *args, **kwargs))
+                    ent = gameobjects.makeEntity(objtype, self.roomData, *args, **kwargs)
+                    self.addObj((x, y), ent)
         
     
     def getEntrance(self):
@@ -87,11 +88,8 @@ class Room:
             return self._getGround(pos)
         return None
     
-    def makeObject(self, objtype, *args, **kwargs):
-        return gameobjects.makeEntity(objtype, self.roomData, *args, **kwargs)
-    
-    def makeEntity(self, *args, **kwargs):
-        return entity.Entity(self.roomData, *args, **kwargs)
+    def getRoomData(self):
+        return self.roomData
     
     def addObj(self, pos, obj):
         obj.place(self.get(pos))

@@ -14,7 +14,7 @@ class Entity:
     Remove methods are for cleanup, like unsubscribing from events.
     """
     
-    def __init__(self, roomEvents, sprite=' ', solid=False, height=0, name=None, components={}):
+    def __init__(self, sprite=' ', solid=False, height=0, name=None, components={}):
         self.sprite = sprite # the name of the image to display for this entity
         self.solid = solid
         self.height = height # if multiple objects are on a square, the tallest one is drawn
@@ -22,12 +22,15 @@ class Entity:
         self.components = components
         self.observable = event.Event()
         
-        for component in components.values():
-            if hasattr(component, "attach"):
-                component.attach(self, roomEvents)
-        
         self.ground = None
+        self.roomData = None
         pass
+    
+    def construct(self, roomData):
+        self.roomData = roomData
+        for component in self.components.values():
+            if hasattr(component, "attach"):
+                component.attach(self, roomData)
     
     def hasComponent(self, name):
         return name in self.components
@@ -42,18 +45,15 @@ class Entity:
         ground.addObj(self)
         self.ground = ground
     
-    def unPlace(self):
-        
+    def remove(self):
         if self.ground:
             self.ground.removeObj(self)
             self.ground = None
-    
-    def remove(self):
-        self.unPlace()
         for component in self.components.values():
             if hasattr(component, "remove"):
                 component.remove()
         self.trigger("remove")
+        self.roomData = None
     
     def addListener(self, callback, key=None):
         self.observable.addListener(callback, key)

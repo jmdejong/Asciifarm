@@ -21,6 +21,7 @@
         "goblin": "g",
         "seed": ":",
         "plant": "Y",
+        "youngplant": "v",
         " ": " "
     }
 }

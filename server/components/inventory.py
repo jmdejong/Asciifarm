@@ -20,6 +20,5 @@ class Inventory:
         return list(self.items)
     
     def onItemUpdate(self, item, action, *data):
-        if action == "remove":
-            print(item, action)
+        if action == "drop":
             self.drop(item)
