@@ -48,9 +48,7 @@ class GroundPatch:
         for o in frozenset(self.objects.values()):
             if o == obj:
                 continue
-            collision = o.getComponent("collision")
-            if collision:
-                collision.onEnter(obj)
+            o.trigger("objectenter", obj)
     
     def getNeighbours(self):
         if not self.neighbours:
