@@ -69,6 +69,13 @@ class InputController:
             for obj in self.inventory.getItems():
                 obj.getComponent("item").use(self.owner)
                 break
+        
+        
+        if kind == "interact":
+            for obj in self.owner.getNearObjects():
+                if obj.getComponent("interact") != None:
+                    obj.getComponent("interact").interact(self.owner)
+                    break
     
     def getInteractions(self):
         return []

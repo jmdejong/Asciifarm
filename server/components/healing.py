@@ -15,7 +15,7 @@ class Healing:
         
         if not obj.getComponent("fighter"):
             # todo: better exception
-            raise Exception("InputController needs object with fighter component")
+            raise Exception("Healing Component needs object with fighter component")
             
         self.fighter = obj.getComponent("fighter")
         self.timeEvent = roomData.getEvent("update")

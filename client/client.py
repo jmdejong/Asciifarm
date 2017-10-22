@@ -42,14 +42,15 @@ class Client:
             curses.KEY_RIGHT: ("move", "east"),
             ord("a"): ("move", "west"),
             curses.KEY_LEFT: ("move", "west"),
-            ord("e"): ("take",),
+            ord("g"): ("take",),
             ord("q"): ("drop",),
-            ord("f"): ("attack",),
+            ord("F"): ("attack",),
             ord("W"): ("attack", "north"),
             ord("S"): ("attack", "south"),
             ord("D"): ("attack", "east"),
             ord("A"): ("attack", "west"),
-            ord("r"): ("use",)
+            ord("e"): ("use",),
+            ord("f"): ("interact",)
         }
         
         if not spectate:

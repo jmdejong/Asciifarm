@@ -16,6 +16,8 @@ from components.grow import Growing
 from components.alignment import Alignment
 from components.loot import Loot
 from components.build import Build
+from components.harvest import Harvest
+from components.food import Food
 
 """ This module contains factory functions for many placable entities, and a make function to call a factory by a string name """
 
@@ -35,7 +37,7 @@ def makeTree():
 entities["tree"] = makeTree
 
 def makeStone():
-    return Entity(sprite="stone", height=0.2, components={"item": Build("wall")})
+    return Entity(sprite="stone", height=0.4, components={"item": Build("wall")})
 entities["stone"] = makeStone
 
 def makePebble():
@@ -58,8 +60,8 @@ def makeWater():
     return Entity(sprite="water", height=0, solid=True)
 entities["water"] = makeWater
 
-def makeRoomExit(destRoom, destPos=None, char="exit", size=1):
-    return Entity(sprite=char, height=size, components={"collision": Portal(destRoom, destPos)})
+def makeRoomExit(destRoom, destPos=None, sprite="exit", size=1):
+    return Entity(sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos)})
 entities["roomexit"] = makeRoomExit
 
 def makeRabbit():
@@ -88,6 +90,10 @@ def makeGoblinSpawner(): # I should probably generalize this...
     return Entity(sprite="portal", height=1, name="goblinspawner", components={"spawn": Spawner("goblin", 2, 20)})
 entities["goblinspawner"] = makeGoblinSpawner
 
+def makeSpawner(objType, number, delay, sprite="portal", name=None, objArgs=[], objKwargs={}):
+    return Entity(sprite=sprite, height=1, name=name, components={"spawn": Spawner(objType, number, delay, objArgs, objKwargs)})
+entities["spawner"] = makeSpawner
+
 def makeSownSeed():
     return Entity(sprite="seed", height=0.05, components={"grow": Growing("youngplant", 100)})
 entities["sownseed"] = makeSownSeed
@@ -97,8 +103,15 @@ def makeYoungPlant():
 entities["youngplant"] = makeYoungPlant
 
 def makePlant():
-    return Entity(sprite="plant", height=1.2)
+    return Entity(sprite="plant", height=1.2, components={
+        "interact": Harvest(),
+        "loot": Loot([("seed", .92), ("seed", .20), ("food", .8), ("food", .4)])
+        })
 entities["plant"] = makePlant
+
+def makeFood():
+    return Entity(sprite="food", height=0.2, components={"item": Food(20)})
+entities["food"] = makeFood
 
 
 def makeSeed():

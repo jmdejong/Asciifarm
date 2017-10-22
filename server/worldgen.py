@@ -39,13 +39,12 @@ def generateBeginRoom():
     g.set(50, 25, ["grass", "rabbit", "rabbit", "rabbit", "rabbit"])
     g.set(11, 12, ["grass", "dummy"])
     g.set(37, 18, ["spiketrap"])
-    g.set(21, 16, ["grass", "seed"])
-    g.set(21, 17, ["grass", "seed"])
-    g.set(22, 16, ["grass", "seed"])
-    g.set(30, 20, {"type": "roomexit", "args": ["basement", "stairup"], "kwargs": {"char": "stairdown"}})
+    g.set(21, 16, ["ground", "seed"])
+    g.set(21, 17, ["ground", "seed"])
+    g.set(22, 16, ["ground", "seed"])
+    g.set(12, 6, ["grass", "plant"])
+    g.set(30, 20, {"type": "roomexit", "args": ["basement", "stairup"], "kwargs": {"sprite": "stairdown"}})
     
-    
-    #g.set(45, 5, ["grass", "goblinspawner"])
     
     d = g.toDict()
     d["spawn"] = (10, 5)
@@ -73,11 +72,10 @@ def generateBasement():
             g.set(x, y, "ground")
     
     for y in range(19, 22):
-        g.set(63, y, {"type": "roomexit", "args": ["arena"], "kwargs": {"char": "ground"}})
+        g.set(63, y, {"type": "roomexit", "args": ["arena"], "kwargs": {"sprite": "ground"}})
     
-    g.set(30, 20, {"type": "roomexit", "args": ["begin", "stairdown"], "kwargs": {"char": "stairup"}})
+    g.set(30, 20, {"type": "roomexit", "args": ["begin", "stairdown"], "kwargs": {"sprite": "stairup"}})
     
-    #g.set(22, 18, ["ground", "goblin"])
     d = g.toDict()
     d["spawn"] = (30, 20)
     d["places"] = {
@@ -104,13 +102,10 @@ def generateArena():
             g.set(x, y, "ground")
     
     for y in range(19, 22):
-        g.set(0, y, {"type": "roomexit", "args": ["basement", "toarena"], "kwargs": {"char": "ground"}})
+        g.set(0, y, {"type": "roomexit", "args": ["basement", "toarena"], "kwargs": {"sprite": "ground"}})
     
-    g.set(22, 14, ["ground", "goblinspawner"])
-    g.set(40, 14, ["ground", "goblinspawner"])
-    g.set(22, 26, ["ground", "goblinspawner"])
-    g.set(40, 26, ["ground", "goblinspawner"])
-    g.set(42, 20, ["ground", "goblinspawner"])
+    for x, y in [(22, 14), (40, 14), (22, 26), (40, 26)]:
+        g.set(x, y, ["ground", {"type": "spawner", "args": ["goblin", 2, 50, "portal", "goblinspawner"]}])
     
     d = g.toDict()
     d["spawn"] = (0, 20)
