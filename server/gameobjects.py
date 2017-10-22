@@ -81,10 +81,20 @@ def makeGoblin():
         "move": Move(slowness=4),
         "fighter": Fighter(maxHealth=25, strength=5, slowness=3),
         "alignment": Alignment(faction.EVIL),
-        "controller": MonsterAi(viewDist=5, moveChance=0.01),
+        "controller": MonsterAi(viewDist=8, moveChance=0.01),
         "loot": Loot([("seed", .5), ("seed", .1)])
         })
 entities["goblin"] = makeGoblin
+
+def makeTroll():
+    return Entity(sprite="troll", height=1.2, components={
+        "move": Move(slowness=5),
+        "fighter": Fighter(maxHealth=125, strength=12, slowness=5),
+        "alignment": Alignment(faction.EVIL),
+        "controller": MonsterAi(viewDist=8, moveChance=0.01),
+        "loot": Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5)])
+        })
+entities["troll"] = makeTroll
 
 def makeGoblinSpawner(): # I should probably generalize this...
     return Entity(sprite="portal", height=1, name="goblinspawner", components={"spawn": Spawner("goblin", 2, 20)})

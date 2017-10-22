@@ -58,21 +58,23 @@ def generateBasement():
     
     g = grid.Grid(64, 32, None)
     
+    # main room
     for x in range(20, 41):
         for y in range(15, 26):
             g.set(x, y, "wall")
     for x in range(21, 40):
         for y in range(16, 25):
             g.set(x, y, "ground")
-    for x in range(40, 64):
-        g.set(x, 18, "wall")
-        g.set(x, 22, "wall")
-    for x in range(40, 63):
-        for y in range(19, 22):
+    
+    # tunnel
+    for y in range(25, 32):
+        g.set(28, y, "wall")
+        g.set(32, y, "wall")
+        for x in range(29, 32):
             g.set(x, y, "ground")
     
-    for y in range(19, 22):
-        g.set(63, y, {"type": "roomexit", "args": ["arena"], "kwargs": {"sprite": "ground"}})
+    for x in range(29, 32):
+        g.set(x, 31, {"type": "roomexit", "args": ["arena"], "kwargs": {"sprite": "ground"}})
     
     g.set(30, 20, {"type": "roomexit", "args": ["begin", "stairdown"], "kwargs": {"sprite": "stairup"}})
     
@@ -80,7 +82,7 @@ def generateBasement():
     d["spawn"] = (30, 20)
     d["places"] = {
         "stairup": (30, 20),
-        "toarena": (63, 20)
+        "toarena": (30, 30)
         }
     return d
 
@@ -94,21 +96,23 @@ def generateArena():
     for x in range(11, 50):
         for y in range(11, 30):
             g.set(x, y, "ground")
-    for x in range(0, 10):
-        g.set(x, 18, "wall")
-        g.set(x, 22, "wall")
-    for x in range(1, 11):
-        for y in range(19, 22):
+    for y in range(0, 11):
+        g.set(28, y, "wall")
+        g.set(32, y, "wall")
+        for x in range(29, 32):
             g.set(x, y, "ground")
     
-    for y in range(19, 22):
-        g.set(0, y, {"type": "roomexit", "args": ["basement", "toarena"], "kwargs": {"sprite": "ground"}})
+    for x in range(29, 32):
+        g.set(x, 0, {"type": "roomexit", "args": ["basement", "toarena"], "kwargs": {"sprite": "ground"}})
     
-    for x, y in [(22, 14), (40, 14), (22, 26), (40, 26)]:
+    for x, y in [(19, 14), (41, 14), (19, 22), (41, 22)]:
         g.set(x, y, ["ground", {"type": "spawner", "args": ["goblin", 2, 50, "portal", "goblinspawner"]}])
     
+    
+    g.set(30, 27, ["ground", {"type": "spawner", "args": ["troll", 1, 200, "portal", "trollspawner"]}])
+    
     d = g.toDict()
-    d["spawn"] = (0, 20)
+    d["spawn"] = (30, 1)
     return d
 
 

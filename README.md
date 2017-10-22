@@ -14,6 +14,7 @@ A lot of functionality is actually working.
 - Persistent inventory
 - Fighting 
 - NPC's
+- Farming
 
 ## Installation/starting instructions
 
