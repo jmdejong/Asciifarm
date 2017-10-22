@@ -19,7 +19,7 @@ import string
 
 class Client:
     
-    def __init__(self, stdscr, name, connection, keybindings):
+    def __init__(self, stdscr, name, connection, keybindings, characters):
         self.stdscr = stdscr
         self.screen = Screen(stdscr)
         
@@ -39,9 +39,8 @@ class Client:
         self.fieldWidth = 0
         self.fieldHeight = 0
         
-        fname = os.path.join(os.path.dirname(__file__), "characters.json")
-        with open(fname) as f:
-            self.characters = json.load(f)['ascii']
+        self.characters = characters["mapping"]
+        self.defaultChar = characters["default"]
         
         threading.Thread(target=self.listen, daemon=True).start()
         self.command_loop()
@@ -70,7 +69,7 @@ class Client:
             mapping = data['field']['mapping']
             outputstring = '\n'.join(
                 ''.join(
-                    self.characters.get(mapping[fieldCells[x + y*self.fieldWidth]], '?') for x in range(self.fieldWidth)
+                    self.characters.get(mapping[fieldCells[x + y*self.fieldWidth]], self.defaultChar) for x in range(self.fieldWidth)
                     ) for y in range(self.fieldHeight)
                 )
             if outputstring != self.lastoutputstring:
@@ -79,7 +78,7 @@ class Client:
         
         if 'changecells' in data and len(data['changecells']):
             self.screen.changeCells((
-                    (x, y, self.characters.get(sprite, '?')) 
+                    (x, y, self.characters.get(sprite, self.defaultChar)) 
                     for ((x, y), sprite) in data['changecells']
                 ), self.fieldWidth, self.fieldHeight)
         

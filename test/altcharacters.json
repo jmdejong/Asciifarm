@@ -1,14 +1,14 @@
 {
-    "mapping":{
+    "ascii":{
         "tree": "T",
-        "wall": "#",
+        "wall": "X",
         "rock": "X",
         "stone": "o",
         "pebble": "*",
         "player": "@",
-        "ground": ".",
+        "ground": "+",
         "grass1": ",",
-        "grass2": "'",
+        "grass2": "\"",
         "grass3": "`",
         "rabbit": "r",
         "water": "~",

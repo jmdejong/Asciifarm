@@ -24,6 +24,7 @@ Gameplay information:
 parser.add_argument('-n', '--name', help='Your player name (must be unique!). Defaults to username', default=getpass.getuser())
 parser.add_argument('-s', '--socket', help='The socket address to connect to. Defaults to \0roomtest\nIf the addres starts with a null byte it is treated as abstract address (usually what you want), Otherwise it is treated as a unix filename', default="\0roomtest")
 parser.add_argument('-k', '--keybindings', help='The file with the keybindings', type=argparse.FileType('r'))
+parser.add_argument('-c', '--characters', help='The file with the character mappings for the graphics', type=argparse.FileType('r'))
 args = parser.parse_args()
 
-main.main(args.name, args.socket, args.keybindings)
+main.main(args.name, args.socket, args.keybindings, args.characters)
