@@ -87,7 +87,7 @@ def makeGoblin():
 entities["goblin"] = makeGoblin
 
 def makeTroll():
-    return Entity(sprite="troll", height=1.2, components={
+    return Entity(sprite="troll", height=1.8, components={
         "move": Move(slowness=5),
         "fighter": Fighter(maxHealth=125, strength=12, slowness=5),
         "alignment": Alignment(faction.EVIL),

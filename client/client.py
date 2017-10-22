@@ -9,7 +9,6 @@ import threading
 import json
 import getpass
 import argparse
-from connection import Connection
 from screen import Screen
 import string
 
@@ -20,7 +19,7 @@ import string
 
 class Client:
     
-    def __init__(self, stdscr, name, connection, spectate=False):
+    def __init__(self, stdscr, name, connection, keybindings):
         self.stdscr = stdscr
         self.screen = Screen(stdscr)
         
@@ -33,28 +32,9 @@ class Client:
         self.lastoutputstring = None
         self.lastinfostring = None
         
-        self.commands = {
-            ord("w"): ("move", "north"),
-            curses.KEY_UP: ("move", "north"),
-            ord("s"): ("move", "south"),
-            curses.KEY_DOWN: ("move", "south"),
-            ord("d"): ("move", "east"),
-            curses.KEY_RIGHT: ("move", "east"),
-            ord("a"): ("move", "west"),
-            curses.KEY_LEFT: ("move", "west"),
-            ord("g"): ("take",),
-            ord("q"): ("drop",),
-            ord("F"): ("attack",),
-            ord("W"): ("attack", "north"),
-            ord("S"): ("attack", "south"),
-            ord("D"): ("attack", "east"),
-            ord("A"): ("attack", "west"),
-            ord("e"): ("use",),
-            ord("f"): ("interact",)
-        }
+        self.commands = {ord(key): command for key, command in keybindings['input'].items()}
         
-        if not spectate:
-            self.connection.send(json.dumps({"name":name}))
+        self.connection.send(json.dumps({"name": name}))
         
         self.fieldWidth = 0
         self.fieldHeight = 0
@@ -88,7 +68,6 @@ class Client:
             self.fieldHeight = data['field']['height']
             fieldCells = data['field']['field']
             mapping = data['field']['mapping']
-            #print(mapping['0'])
             outputstring = '\n'.join(
                 ''.join(
                     self.characters.get(mapping[fieldCells[x + y*self.fieldWidth]], '?') for x in range(self.fieldWidth)
@@ -127,36 +106,5 @@ class Client:
             if chr(key) in string.printable)
 
 
-def main(name, address, spectate=False):
-    
-    connection = Connection()
-    try:
-        connection.connect(address)
-    except ConnectionRefusedError:
-        print("ERROR: Could not connect to server.\nAre you sure that the server is running and that you're connecting to the right address?", file=sys.stderr)
-        return
-    
-    caught_ctrl_c = False
-    def start(stdscr):
-        nonlocal caught_ctrl_c
-        try:
-            client = Client(stdscr, name, connection, spectate)
-        except KeyboardInterrupt:
-            caught_ctrl_c = True
-    
-    curses.wrapper(start)
-    
-    if caught_ctrl_c:
-        print('^C caught, goodbye!')
 
-
-if __name__ == "__main__":
-    
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-n', '--name', help='Your player name (must be unique!). Defaults to username', default=getpass.getuser())
-    parser.add_argument('-s', '--socket', help='The socket file to connect to. Defaults to /tmp/tron_socket', default="/tmp/tron_socket")
-    parser.add_argument('-p', '--spectate', help='Join as spectator', action="store_true")
-    args = parser.parse_args()
-    
-    main(args.name, args.socket, args.spectate)
 

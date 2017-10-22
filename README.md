@@ -63,7 +63,6 @@ The idea is to make 3 different kind of areas:
 - nondeterminism in combat and grow times
 - more content (rooms, objects etc)
 - equipment
-- configurable keybindings
 - better reaction on player death
 - room unloading when there are no players
 - better interaction selection
@@ -75,6 +74,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- configurable keybindings
 - make items usable
 - farming
 - loot
