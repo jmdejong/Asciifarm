@@ -14,7 +14,7 @@ import argparse
 
 defaultAdresses = {
     "abstract": "asciifarm",
-    "unix": "./asciifarm.socket",
+    "unix": "asciifarm.socket",
     "inet": "localhost:9021",
     }
 

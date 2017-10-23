@@ -1,7 +1,7 @@
 
 import socket
 
-from tcommunicate import send, receive
+from .tcommunicate import send, receive
 
 class Connection:
     

@@ -1,16 +1,15 @@
 
-from client import Client
-from connection import Connection
 import curses
 import json
 import os
-import sys
 import getpass
-
+import sys
+from .connection import Connection
+from .client import Client
 
 defaultAdresses = {
     "abstract": "asciifarm",
-    "unix": "./asciifarm.socket",
+    "unix": "asciifarm.socket",
     "inet": "localhost:9021",
     }
 

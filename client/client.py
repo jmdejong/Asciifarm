@@ -9,7 +9,7 @@ import threading
 import json
 import getpass
 import argparse
-from screen import Screen
+from .screen import Screen
 import string
 
 # todo: remove references to tron

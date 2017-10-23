@@ -6,11 +6,9 @@ if sys.version_info[0] < 3:
     print("This game is written in python 3.\nRun 'python3 "+sys.argv[0]+"' or './"+sys.argv[0]+"'")
     sys.exit(-1)
 
-sys.path.append(sys.path[0]+"/client/")
-
 import argparse
 import getpass
-import main
+import client
 
 
 parser = argparse.ArgumentParser(description="The client to AsciiFarm. Run this to connect to to the server.", epilog="""
@@ -27,4 +25,4 @@ parser.add_argument('-k', '--keybindings', help='The file with the keybindings',
 parser.add_argument('-c', '--characters', help='The file with the character mappings for the graphics', type=argparse.FileType('r'))
 args = parser.parse_args()
 
-main.main(args.name, args.socket, args.address, args.keybindings, args.characters)
+client.main(args.name, args.socket, args.address, args.keybindings, args.characters)
