@@ -34,6 +34,11 @@ class Client:
         
         self.commands = {ord(key): command for key, command in keybindings['input'].items()}
         
+        self.controlsString = "Controls:\n"+'\n'.join(
+                chr(key) + ": " + ' '.join(action)
+                for key, action in self.commands.items()
+                if chr(key) in string.printable)
+        
         self.connection.send(json.dumps({"name": name}))
         
         self.fieldWidth = 0
@@ -44,6 +49,7 @@ class Client:
         
         threading.Thread(target=self.listen, daemon=True).start()
         self.command_loop()
+        
     
     def listen(self):
         self.connection.listen(self.update, self.close)
@@ -84,7 +90,7 @@ class Client:
         
         if 'info' in data:
             infostring = json.dumps(data['info'], indent=2)
-            infostring += "\n\n" + self.getControlsString()
+            infostring += "\n\n" + self.controlsString
             if infostring != self.lastinfostring:
                 self.screen.putPlayers(infostring, self.fieldWidth+2)
                 self.lastinfostring = infostring
@@ -98,12 +104,6 @@ class Client:
             if key in self.commands:
                 self.connection.send(json.dumps({"input": self.commands[key]}))
     
-    def getControlsString(self):
-        return "Controls:\n"+'\n'.join(
-            chr(key) + ": " + ' '.join(action)
-            for key, action in self.commands.items()
-            if chr(key) in string.printable)
-
 
 
 
