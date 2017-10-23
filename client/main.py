@@ -5,6 +5,7 @@ import curses
 import json
 import os
 import sys
+import getpass
 
 
 defaultAdresses = {
@@ -13,7 +14,7 @@ defaultAdresses = {
     "inet": "localhost:9021",
     }
 
-def main(name, socketType, address, keybindingsFile=None, characterFile=None):
+def main(name=getpass.getuser(), socketType="abstract", address=None, keybindingsFile=None, characterFile=None):
     
     
     if address == None:
