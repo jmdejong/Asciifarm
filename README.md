@@ -32,9 +32,10 @@ Run `rooms` or `playgame.py` to start the client
 ## Playing instructions
 
 Use the arrow keys or wasd to move around.
-Use 'g' to add an item from the ground into your inventory.
+Use 'e' to add an item from the ground into your inventory.
 Use 'q' to drop the top item in your inventory.
-Use 'e' to use/interact with the top item in your inventory.
+Use 'E' to use/interact with the top item in your inventory.
+Use 'f' interact with something in the same square as you.
 Use 'F' to attack an enemy in the same square as you.
 Use WASD to attack enemies in adjacent squares.
 

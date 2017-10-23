@@ -13,3 +13,7 @@ Other important parts of the model are Player, Room, RoomData, GroundPatch, Enti
 ## World class
 
 The World class is the main handle of the model to the outside world.
+
+Since most actual logic happens in the Rooms, this class is mainly for keeping track of them and the Players
+
+## 
