@@ -105,7 +105,7 @@ def makeSpawner(objType, number, delay, sprite="portal", name=None, objArgs=[], 
 entities["spawner"] = makeSpawner
 
 def makeSownSeed():
-    return Entity(sprite="seed", height=0.05, components={"grow": Growing("youngplant", 100)})
+    return Entity(sprite="seed", height=0.05, name="plantedseed", components={"grow": Growing("youngplant", 100)})
 entities["sownseed"] = makeSownSeed
 
 def makeYoungPlant():

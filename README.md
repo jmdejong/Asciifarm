@@ -21,7 +21,7 @@ A lot of functionality is actually working.
 
 Requires python3, tested to work on at least python 3.5.2 in linux
 
-Because of the use of NCURSES and Unix Domain Sockets, it probably won't work on windows (will be fixed later)
+Because of the use of NCURSES, it probably won't work on windows (will be fixed later)
 
 Not tested on mac. If anyone could test this for me this would be much appreciated.
 
