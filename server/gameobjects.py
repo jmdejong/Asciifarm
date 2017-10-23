@@ -37,7 +37,7 @@ def makeTree():
 entities["tree"] = makeTree
 
 def makeStone():
-    return Entity(sprite="stone", height=0.4, components={"item": Build("wall")})
+    return Entity(sprite="stone", height=0.4, components={"item": Build("builtwall")})
 entities["stone"] = makeStone
 
 def makePebble():
@@ -69,7 +69,7 @@ def makeRabbit():
 entities["rabbit"] = makeRabbit
 
 def makeDummy():
-    return Entity(sprite="dummy", height=1, components={"fighter": Fighter(maxHealth=20, strength=0), "alignment": Alignment(faction.EVIL)})
+    return Entity(sprite="dummy", height=1, components={"fighter": Fighter(maxHealth=20, strength=0), "alignment": Alignment(faction.NONE)})
 entities["dummy"] = makeDummy
 
 def makeSpikeTrap():
@@ -127,6 +127,11 @@ entities["food"] = makeFood
 def makeSeed():
     return Entity(sprite="seed", height=0.3, components={"item": Build("sownseed")})
 entities["seed"] = makeSeed
+
+
+def makeBuiltWall():
+    return Entity(sprite="wall", height=2, solid=True, components={"fighter": Fighter(maxHealth=100, strength=0), "alignment": Alignment(faction.NONE), "loot": Loot([("stone", 1)])})
+entities["builtwall"] = makeBuiltWall
 
 
 def makeEntity(entType, roomData, *args, **kwargs):

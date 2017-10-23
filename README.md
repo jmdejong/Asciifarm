@@ -60,11 +60,14 @@ The idea is to make 3 different kind of areas:
 ## TODO first
 
 - better code documentation
-- test server robustness
+- testing
 - nondeterminism in combat and grow times
 - only plant seeds in soil
 - make farming more work
+- follow player when room larger than terminal
 - equipment
+- autofight/autoretaliate/
+- display target enemy health
 - write converter to convert tiled map files to readable files
 - better reaction on player death
 - room unloading when there are no players
@@ -72,6 +75,8 @@ The idea is to make 3 different kind of areas:
 - multicharacter sprites in client
 - in-game chat
 - support websockets
+- windows comptibility (libtcod/tdl instead of ncurses?)
+- world persistence
 
 ## DONE
 

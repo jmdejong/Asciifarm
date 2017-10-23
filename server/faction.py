@@ -18,4 +18,9 @@ NEUTRAL = Faction() # doesn't hate anyone
 GOOD = Faction() # players and allies
 EVIL = Faction() # monsters and other enemies
 
-GOOD.hates(EVIL)
+EVIL.hates(GOOD)
+
+NONE = Faction() # things that can always be attacket
+
+GOOD.hates(NONE)
+EVIL.hates(NONE)

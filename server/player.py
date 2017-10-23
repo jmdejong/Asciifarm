@@ -5,6 +5,7 @@ from components.move import Move
 from components.fighter import Fighter
 from components.healing import Healing
 from components.alignment import Alignment
+from components.target import Target
 import faction
 import entity
 
@@ -54,7 +55,8 @@ class Player:
                 "controller": InputController(),
                 "fighter": Fighter(self.maxHealth, 5, slowness=2, health=self.health or self.maxHealth),
                 "alignment": Alignment(faction.GOOD),
-                "heal": Healing(interval=30)
+                "heal": Healing(interval=30),
+                "target": Target()
                 })
         self.entity.construct(room.getRoomData())
         self.entity.addListener(self.onPlayerAction)
