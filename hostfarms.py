@@ -8,7 +8,6 @@ if sys.version_info[0] < 3:
     sys.exit(-1)
 
 sys.path.append(sys.path[0]+"/server/")
-sys.path.append(sys.path[0]+"/shared/")
 import mainloop
 import argparse
 

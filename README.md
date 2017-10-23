@@ -62,6 +62,7 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
+- colours
 - nondeterminism in combat and grow times
 - only plant seeds in soil
 - make farming more work

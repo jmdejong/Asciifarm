@@ -7,7 +7,6 @@ if sys.version_info[0] < 3:
     sys.exit(-1)
 
 sys.path.append(sys.path[0]+"/client/")
-sys.path.append(sys.path[0]+"/shared/")
 
 import argparse
 import getpass
