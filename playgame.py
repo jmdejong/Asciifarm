@@ -14,7 +14,7 @@ import getpass
 import main
 
 
-parser = argparse.ArgumentParser(description="The client to Rooms. Run this to connect to to the server.", epilog="""
+parser = argparse.ArgumentParser(description="The client to AsciiFarm. Run this to connect to to the server.", epilog="""
 Gameplay information:
     Control your player with the arrow keys or wasd. Press escape to exit.
     You can pick up something with the 'e' key, and drop whatever you're holding with 'q'.

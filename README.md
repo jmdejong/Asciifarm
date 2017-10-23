@@ -1,10 +1,10 @@
-# rooms
+# AsciiFarm
 
-This is a multiplayer ascii game (or so far, only the framework for a game actually)
+_Formerly: **Rooms** _
 
-The goal now is to have players walk around in different rooms where they can interact with things.
+This is a multiplayer ascii farming/fighting game.
 
-A lot of functionality is actually working.
+![screenshot](screenshot.png)
 
 ## Working Features
 
@@ -27,7 +27,7 @@ Not tested on mac. If anyone could test this for me this would be much appreciat
 
 Run `hostrooms.py` from the same directory to start the server.
 
-Run `rooms` or `playgame.py` to start the client
+Run `asciifarm` or `playgame.py` to start the client
 
 ## Playing instructions
 

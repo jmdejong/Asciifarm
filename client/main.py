@@ -8,8 +8,8 @@ import sys
 
 
 defaultAdresses = {
-    "abstract": "roomtest",
-    "unix": "./roomstest.socket",
+    "abstract": "asciifarm",
+    "unix": "./asciifarm.socket",
     "inet": "localhost:9021",
     }
 
