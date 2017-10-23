@@ -22,7 +22,7 @@ class RoomData:
         self.targets.add(obj)
     
     def removeTarget(self, obj):
-        self.targets.remove(obj)
+        self.targets.discard(obj)
     
     def getTargets(self):
         return frozenset(self.targets)
