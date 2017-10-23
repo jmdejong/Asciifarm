@@ -16,4 +16,6 @@ The World class is the main handle of the model to the outside world.
 
 Since most actual logic happens in the Rooms, this class is mainly for keeping track of them and the Players
 
-## 
+## Room class
+
+Rooms contain a part of the world, and are actually a model in themselves.
