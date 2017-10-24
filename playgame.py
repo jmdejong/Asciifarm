@@ -9,20 +9,60 @@ if sys.version_info[0] < 3:
 import argparse
 import getpass
 import client
+import os
+import os.path
+import json
+
+thisPath = os.path.dirname(__file__)
+charMapPath = os.path.join(thisPath, "charmaps")
+keybindingsPath = os.path.join(thisPath, "keybindings")
+
+standardCharFiles = [name[:-5] for name in os.listdir(charMapPath) if name[-5:] == ".json"]
+standardKeyFiles = [name[:-5] for name in os.listdir(keybindingsPath) if name[-5:] == ".json"]
 
 
-parser = argparse.ArgumentParser(description="The client to AsciiFarm. Run this to connect to to the server.", epilog="""
-Gameplay information:
-    Control your player with the arrow keys or wasd. Press escape to exit.
-    You can pick up something with the 'e' key, and drop whatever you're holding with 'q'.
-    Currently you can't do much more than walking around and moving stones.
+defaultAdresses = {
+    "abstract": "asciifarm",
+    "unix": "asciifarm.socket",
+    "inet": "localhost:9021",
+    }
 
-~Troido""", formatter_class=argparse.RawDescriptionHelpFormatter)
-parser.add_argument('-n', '--name', help='Your player name (must be unique!). Defaults to username', default=getpass.getuser())
-parser.add_argument("-a", "--address", help="The address of the socket. When the socket type is 'abstract' this is just a name. When it is 'unix' this is a filename. When it is 'inet' is should be in the format 'address:port', eg 'localhost:8080'. Defaults depends on the socket type")
-parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
-parser.add_argument('-k', '--keybindings', help='The file with the keybindings', type=argparse.FileType('r'))
-parser.add_argument('-c', '--characters', help='The file with the character mappings for the graphics', type=argparse.FileType('r'))
-args = parser.parse_args()
+def main():
 
-client.main(args.name, args.socket, args.address, args.keybindings, args.characters)
+    parser = argparse.ArgumentParser(description="The client to AsciiFarm. Run this to connect to to the server.", epilog="""
+    Gameplay information:
+        Control your player with wasd. Press escape or ctrl-C to exit.
+
+    ~Troido""", formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('-n', '--name', help='Your player name (must be unique!). Defaults to username', default=getpass.getuser())
+    parser.add_argument("-a", "--address", help="The address of the socket. When the socket type is 'abstract' this is just a name. When it is 'unix' this is a filename. When it is 'inet' is should be in the format 'address:port', eg 'localhost:8080'. Defaults depends on the socket type")
+    parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
+    parser.add_argument('-k', '--keybindings', help='The file with the keybindings', default="default")
+    parser.add_argument('-c', '--characters', help='The file with the character mappings for the graphics', default="default")
+    args = parser.parse_args()
+    
+    charFile = args.characters
+    if charFile in standardCharFiles:
+        charFile = os.path.join(charMapPath, charFile + ".json")
+    with open(charFile, 'r') as cf:
+        charMap = json.load(cf)
+    keyFile = args.keybindings
+    if keyFile in standardKeyFiles:
+        keyFile = os.path.join(keybindingsPath, keyFile + ".json")
+    with open(keyFile, 'r') as kf:
+        keybindings = json.load(kf)
+    
+    address = args.address
+    if address == None:
+        address = defaultAdresses[args.socket]
+    if args.socket == "abstract":
+        address = '\0' + address
+    elif args.socket == "inet":
+        hostname, sep, port = address.partition(':')
+        address = (hostname, int(port))
+    
+    client.main(args.name, args.socket, address, keybindings, charMap)
+
+
+if __name__=="__main__":
+    main()

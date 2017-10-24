@@ -1,0 +1,31 @@
+{
+    "mapping":{
+        "tree": "Ｔ",
+        "wall": "＃",
+        "rock": "Ｘ",
+        "stone": "ｏ",
+        "pebble": "＊",
+        "player": "＠",
+        "ground": "．",
+        "grass1": "，",
+        "grass2": "＇",
+        "grass3": "｀",
+        "rabbit": "ｒ",
+        "water": "～",
+        "floor": "＋",
+        "portal": "＄",
+        "stairdown": "＞",
+        "stairup": "＜",
+        "dummy": "ｄ",
+        "spikes": "＾",
+        "goblin": "ｇ",
+        "seed": "：",
+        "plant": "Ｙ",
+        "youngplant": "ｖ",
+        "food": "８",
+        "troll": "Ｔ",
+        " ": "  "
+    },
+    "default": "？",
+    "charwidth": 2
+}

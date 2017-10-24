@@ -13,28 +13,7 @@ defaultAdresses = {
     "inet": "localhost:9021",
     }
 
-def main(name=getpass.getuser(), socketType="abstract", address=None, keybindingsFile=None, characterFile=None):
-    
-    
-    if address == None:
-        address = defaultAdresses[socketType]
-    if socketType == "abstract":
-        address = '\0' + address
-    elif socketType == "inet":
-        hostname, sep, port = address.partition(':')
-        address = (hostname, int(port))
-    
-    if keybindingsFile == None:
-        fname = os.path.join(os.path.dirname(__file__), "keybindings.json")
-        keybindingsFile = open(fname)
-    keybindings = json.load(keybindingsFile)
-    keybindingsFile.close()
-    
-    if characterFile == None:
-        fname = os.path.join(os.path.dirname(__file__), "characters.json")
-        characterFile = open(fname)
-    characters = json.load(characterFile)
-    characterFile.close()
+def main(name, socketType, address, keybindings, characters):
     
     connection = Connection(socketType)
     try:
