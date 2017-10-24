@@ -31,14 +31,15 @@ def main():
 
     parser = argparse.ArgumentParser(description="The client to AsciiFarm. Run this to connect to to the server.", epilog="""
     Gameplay information:
-        Control your player with wasd. Press escape or ctrl-C to exit.
+        Walk around and explore the rooms.
+        Kill the goblins and plant the seeds.
 
-    ~Troido""", formatter_class=argparse.RawDescriptionHelpFormatter)
+    ~troido""", formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('-n', '--name', help='Your player name (must be unique!). Defaults to username', default=getpass.getuser())
     parser.add_argument("-a", "--address", help="The address of the socket. When the socket type is 'abstract' this is just a name. When it is 'unix' this is a filename. When it is 'inet' is should be in the format 'address:port', eg 'localhost:8080'. Defaults depends on the socket type")
     parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
-    parser.add_argument('-k', '--keybindings', help='The file with the keybindings', default="default")
-    parser.add_argument('-c', '--characters', help='The file with the character mappings for the graphics', default="default")
+    parser.add_argument('-k', '--keybindings', help='The file with the keybindings. If it is either of these names: {} it will be loaded from the keybindings directory.'.format(standardKeyFiles), default="default")
+    parser.add_argument('-c', '--characters', help='The file with the character mappings for the graphics. If it is either of these names: {} it will be loaded from the charmaps directory.'.format(standardCharFiles), default="default")
     args = parser.parse_args()
     
     charFile = args.characters
