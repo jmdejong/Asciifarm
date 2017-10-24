@@ -45,7 +45,8 @@ class Client:
         self.fieldHeight = 0
         
         self.characters = characters["mapping"]
-        self.defaultChar = characters["default"]
+        self.defaultChar = characters.get("default", '?')
+        self.charWidth = characters.get("charwidth", 1)
         
         threading.Thread(target=self.listen, daemon=True).start()
         self.command_loop()
@@ -79,12 +80,12 @@ class Client:
                     ) for y in range(self.fieldHeight)
                 )
             if outputstring != self.lastoutputstring:
-                self.screen.put(outputstring, self.fieldWidth, self.fieldHeight)
+                self.screen.put(outputstring, self.fieldWidth*self.charWidth, self.fieldHeight)
                 self.lastoutputstring = outputstring
         
         if 'changecells' in data and len(data['changecells']):
             self.screen.changeCells((
-                    (x, y, self.characters.get(sprite, self.defaultChar)) 
+                    (x*self.charWidth, y, self.characters.get(sprite, self.defaultChar)) 
                     for ((x, y), sprite) in data['changecells']
                 ), self.fieldWidth, self.fieldHeight)
         
@@ -92,7 +93,7 @@ class Client:
             infostring = json.dumps(data['info'], indent=2)
             infostring += "\n\n" + self.controlsString
             if infostring != self.lastinfostring:
-                self.screen.putPlayers(infostring, self.fieldWidth+2)
+                self.screen.putPlayers(infostring, self.fieldWidth*self.charWidth+2)
                 self.lastinfostring = infostring
         self.screen.refresh()
     

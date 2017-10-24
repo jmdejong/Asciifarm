@@ -26,5 +26,6 @@
         "troll": "T",
         " ": " "
     },
-    "default": "?"
+    "default": "?",
+    "charwidth": 1
 }
