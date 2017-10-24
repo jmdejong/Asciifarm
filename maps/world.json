@@ -1,0 +1,8 @@
+{
+    "begin": "begin",
+    "rooms": {
+        "begin": "begin.json",
+        "basement": "basement.json"
+    }
+}
+    

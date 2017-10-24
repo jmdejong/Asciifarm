@@ -1,4 +1,5 @@
 
+import utils
 
 class Grid:
     
@@ -59,7 +60,7 @@ class Grid:
 
 def fromDict(data):
     width, height = data["width"], data["height"]
-    field = data["field"] if "field" in data else []
+    field = data["field"] if "field" in data else utils.concat(data["grid"]) if "grid" in data else []
     mapping = data["mapping"] if "mapping" in data else {}
     grid = Grid(width, height)
     for (i, val) in enumerate(field):

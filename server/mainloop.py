@@ -11,15 +11,17 @@ import sys
 import world
 import view
 import worldgen
+import json
+import loader
 
 
 class Game:
     
-    def __init__(self, socketType):
+    def __init__(self, socketType, worldData):
         
         self.server = gameserver.GameServer(self, socketType)
         
-        self.world = world.World(worldgen.generateWorld())
+        self.world = world.World(worldData)
         
         self.view = view.View(self.world)
     

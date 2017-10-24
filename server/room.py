@@ -28,6 +28,8 @@ class Room:
             })
         
         self.places = data.get("places", {})
+        for name, pos in self.places.items():
+            self.places[name] = tuple(pos)
         
         self.field = {}
         

@@ -82,6 +82,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- load world from files
 - more content (rooms, objects etc)
 - multiple socket types (regular unix, abstract unix, inet), selectable as command line arguments
 - configurable graphics

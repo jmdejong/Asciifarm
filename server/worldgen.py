@@ -126,7 +126,4 @@ def generateWorld():
             }
         }
     
-    #import json
-    #with open("worlddata.json", "w") as f:
-        #json.dump(worlddata, f, indent=2)
     return worlddata
