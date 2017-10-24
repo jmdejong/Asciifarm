@@ -87,7 +87,7 @@ class Client:
             self.screen.changeCells((
                     (x*self.charWidth, y, self.characters.get(sprite, self.defaultChar)) 
                     for ((x, y), sprite) in data['changecells']
-                ), self.fieldWidth, self.fieldHeight)
+                ), self.fieldWidth*self.charWidth, self.fieldHeight)
         
         if 'info' in data:
             infostring = json.dumps(data['info'], indent=2)
