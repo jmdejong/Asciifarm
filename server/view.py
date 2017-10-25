@@ -27,7 +27,8 @@ class View:
         data = [
             ["health", player.getHealth()],
             ["inventory", [obj.getSprite() for obj in player.getInventory()]],
-            ["ground", [obj.getSprite() for obj in player.getGroundObjs()]]
+            ["ground", [obj.getSprite() for obj in player.getGroundObjs()]],
+            ["playerpos", player.getPos()]
             #"interactions": [ action + ' ' + obj.getChar() for action, obj in player.getInteractions()]
         ]
         if room:

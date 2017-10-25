@@ -131,6 +131,11 @@ class Player:
         objs.discard(self.entity)
         return objs
     
+    def getPos(self):
+        if not self.entity:
+            return None
+        return self.entity.getGround().getPos()
+    
     def shouldResetView(self):
         return self.resetView
     

@@ -7,7 +7,7 @@
         "pebble": "*",
         "player": "@",
         "ground": ".",
-        "grass1": ",",
+        "grass1": [",", "green"],
         "grass2": "'",
         "grass3": "`",
         "rabbit": "r",

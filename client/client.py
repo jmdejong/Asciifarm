@@ -29,7 +29,6 @@ class Client:
         
         self.connection = connection
         
-        self.lastoutputstring = None
         self.lastinfostring = None
         
         self.commands = {ord(key): command for key, command in keybindings['input'].items()}
@@ -82,19 +81,15 @@ class Client:
                 self.fieldHeight = field['height']
                 fieldCells = field['field']
                 mapping = field['mapping']
-                outputstring = '\n'.join(
-                    ''.join(
-                        self.characters.get(mapping[fieldCells[x + y*self.fieldWidth]], self.defaultChar) for x in range(self.fieldWidth)
-                        ) for y in range(self.fieldHeight)
-                    )
-                if outputstring != self.lastoutputstring:
-                    self.screen.put(outputstring, self.fieldWidth*self.charWidth, self.fieldHeight)
-                    self.lastoutputstring = outputstring
+                self.screen.changeCells((
+                        ((i%self.fieldWidth)*self.charWidth, i//self.fieldWidth, self.getChar(mapping[sprite])) 
+                        for (i, sprite) in enumerate(fieldCells)
+                    ), self.fieldWidth*self.charWidth, self.fieldHeight)
             
             if msgType == 'changecells'and len(msg[1]):
                 changedCells = msg[1]
                 self.screen.changeCells((
-                        (x*self.charWidth, y, self.characters.get(sprite, self.defaultChar)) 
+                        (x*self.charWidth, y, self.getChar(sprite)) 
                         for ((x, y), sprite) in changedCells
                     ), self.fieldWidth*self.charWidth, self.fieldHeight)
             
@@ -111,6 +106,12 @@ class Client:
             self.screen.putPlayers(infostring, self.fieldWidth*self.charWidth+2)
             self.lastinfostring = infostring
         self.screen.refresh()
+    
+    def getChar(self, sprite):
+        char = self.characters.get(sprite, self.defaultChar)
+        if isinstance(char, str):
+            return char
+        return char[0]
     
     def command_loop(self):
         while self.keepalive:
