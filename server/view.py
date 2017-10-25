@@ -24,19 +24,19 @@ class View:
     def playerView(self, playerName):
         player = self.world.getPlayer(playerName)
         room = self.world.getRoom(player.getRoom())
-        data = {
-            "health": player.getHealth(),
-            "inventory": [obj.getSprite() for obj in player.getInventory()],
-            "ground": [obj.getSprite() for obj in player.getGroundObjs()]
+        data = [
+            ["health", player.getHealth()],
+            ["inventory", [obj.getSprite() for obj in player.getInventory()]],
+            ["ground", [obj.getSprite() for obj in player.getGroundObjs()]]
             #"interactions": [ action + ' ' + obj.getChar() for action, obj in player.getInteractions()]
-        }
+        ]
         if room:
             changedCells = room.getChangedCells()
-            data["changecells"] = list(changedCells.items())
+            data.append(["changecells", list(changedCells.items())])
             if player.shouldResetView():
                 field = self.viewRoom(room)
                 if field :
-                    data["field"] = field
+                    data.append(["field", field])
                     player.viewResetDone()
         
         return data

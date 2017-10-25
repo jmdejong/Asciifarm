@@ -39,7 +39,7 @@ class Client:
                 for key, action in self.commands.items()
                 if chr(key) in string.printable)
         
-        self.connection.send(json.dumps({"name": name}))
+        self.connection.send(json.dumps(["name", name]))
         
         self.fieldWidth = 0
         self.fieldHeight = 0
@@ -67,36 +67,44 @@ class Client:
             sys.exit()
         datastr = databytes.decode('utf-8')
         data = json.loads(datastr)
-        if 'error' in data:
-            if data['error'] == "nametaken":
-                print("error: name is already taken", file=sys.stderr)
-                self.close()
-        if 'field' in data:
-            self.fieldWidth = data['field']['width']
-            self.fieldHeight = data['field']['height']
-            fieldCells = data['field']['field']
-            mapping = data['field']['mapping']
-            outputstring = '\n'.join(
-                ''.join(
-                    self.characters.get(mapping[fieldCells[x + y*self.fieldWidth]], self.defaultChar) for x in range(self.fieldWidth)
-                    ) for y in range(self.fieldHeight)
-                )
-            if outputstring != self.lastoutputstring:
-                self.screen.put(outputstring, self.fieldWidth*self.charWidth, self.fieldHeight)
-                self.lastoutputstring = outputstring
+        if len(data) and isinstance(data[0], str):
+            data = [data]
+        for msg in data:
+            msgType = msg[0]
+            if msgType == 'error':
+                error = msg[1]
+                if error == "nametaken":
+                    print("error: name is already taken", file=sys.stderr)
+                    self.close()
+            if msgType == 'field':
+                field = msg[1]
+                self.fieldWidth = field['width']
+                self.fieldHeight = field['height']
+                fieldCells = field['field']
+                mapping = field['mapping']
+                outputstring = '\n'.join(
+                    ''.join(
+                        self.characters.get(mapping[fieldCells[x + y*self.fieldWidth]], self.defaultChar) for x in range(self.fieldWidth)
+                        ) for y in range(self.fieldHeight)
+                    )
+                if outputstring != self.lastoutputstring:
+                    self.screen.put(outputstring, self.fieldWidth*self.charWidth, self.fieldHeight)
+                    self.lastoutputstring = outputstring
+            
+            if msgType == 'changecells'and len(msg[1]):
+                changedCells = msg[1]
+                self.screen.changeCells((
+                        (x*self.charWidth, y, self.characters.get(sprite, self.defaultChar)) 
+                        for ((x, y), sprite) in changedCells
+                    ), self.fieldWidth*self.charWidth, self.fieldHeight)
+            
+            if msgType == "health":
+                self.info["health"] = msg[1]
+            if msgType == "inventory":
+                self.info["inventory"] = msg[1]
+            if msgType == "ground":
+                self.info["ground"] = msg[1]
         
-        if 'changecells' in data and len(data['changecells']):
-            self.screen.changeCells((
-                    (x*self.charWidth, y, self.characters.get(sprite, self.defaultChar)) 
-                    for ((x, y), sprite) in data['changecells']
-                ), self.fieldWidth*self.charWidth, self.fieldHeight)
-        
-        if "health" in data:
-            self.info["health"] = data["health"]
-        if "inventory" in data:
-            self.info["inventory"] = data["inventory"]
-        if "ground" in data:
-            self.info["ground"] = data["ground"]
         infostring = json.dumps(self.info, indent=2)
         infostring += "\n\n" + self.controlsString
         if infostring != self.lastinfostring:
@@ -110,7 +118,7 @@ class Client:
             if key == 27:
                 self.keepalive = False
             if key in self.commands:
-                self.connection.send(json.dumps({"input": self.commands[key]}))
+                self.connection.send(json.dumps(["input", self.commands[key]]))
     
 
 

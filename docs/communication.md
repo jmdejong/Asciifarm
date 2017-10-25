@@ -18,17 +18,17 @@ Both server and client use tcommunicate.py to achieve this.
 
 The message body is JSON text
 
-The top-level JSON value is always a dictionary.
-This dict can contain several messages of different types.
+The top-level JSON value is a message or a list of messages.
 
-For example, if the message is like this:
+A message is a list, where the first element is a string defining the message type.
 
-    {
-      "field": <something>
-      "info": <something>
-    }
+For example, the whole message could look like this:
 
-Then this should actually be treated as two independent messages: one of type "field" and the other of type "info"
+    [
+        ["health", 85],
+        ["inventory", ["seed"]]
+    ]
+
 
 
 ## Client to server messages
@@ -38,10 +38,10 @@ Currently there are two types of messages that the client can send to the server
 ### 'name' messages
 
 The 'name' message is used to pick the name of a player to connect to.
-The value of this message is a string.
+The value of this message is a single string.
 This message must be sent before any other communication.
 
-Example message: `{"name": "troido"}`
+Example message: `["name", "troido"]`
 
 If a player with that name did not exist yet, it will be created and the connection will be connecte that player.
 
@@ -58,12 +58,12 @@ If the connection is not connected to any player, these messages are ignored.
 The value of this message is a list with a length of at least 1.
 The first item in the list is the type of command, later items are arguments
 
-Example message: `{"input": ["move", "east"]}`
+Example message: `["input", ["move", "east"]]`
 
 
 ## Server to client messages
 
-There are 3 types of messages that the server can send to the client: 'field', 'info' and 'error'
+There are 5 types of messages that the server can send to the client: 'field', 'inventory', 'health', 'ground' and 'error'
 
 Currently, 'chanchedcells' and 'info' messages are always sent in the same dictionary.
 If there is a 'field' message, it will also be sent in that dictionary.
@@ -71,9 +71,9 @@ If there is a 'field' message, it will also be sent in that dictionary.
 ### 'error' messages
 
 'error' messages are sent when a player tries to connect with a name that is already connected or when the input is wrong.
-Wrong input is not always guaranteed to give an error message. The value is a string to give the type of error.
+Wrong input is not always guaranteed to give an error message. The first value is a string to give the type of error.
 
-Example message: `{"error": "nametaken"}
+Example message: `["error", "nametaken"]`
 
 
 ### 'field' messages
@@ -90,12 +90,12 @@ Only one sprite per cell is sent: the one with the larges height.
 
 Example message:
 
-    {"field":
+    ["field", {
         "width": 3,
         "height": 3,
         "field": [0,0,1,0,0,2,1,0,0],
         "mapping": ["grass", "stone", "player"]
-    }
+    }]
 
 When the character for grass is ',', for stone is 'o' and for player is '@', then this message would correspond to the field:
 
@@ -114,36 +114,34 @@ The position is also a list of 2 elements: first the x, position and then the y.
 
 Example message:
 
-    {"changecells": [
+    ["changecells", [
         [[1, 2], "grass],
         [[2, 2], "player"]
-    ]}
+    ]]
 
-### 'info' messages
+### 'health' messages
 
-'info' messages are used to send information about the player to the server.
-Currently the information includes the inventory, the health of the player and the objects on the same cell as the player.
+'health' messages send the health of the player.
 
-Example message:
-    "info": {
-        "health": 95,
-        "inventory": ["stone", "pebble"],
-        "ground": ["grass1"]
-    }
+Example `["health", 96]`
 
-See view.py for the implementation.
+
+### 'inventory' messages
+
+'inventory' messages send the inventory of the player.
+
+Example `["inventory", ["stone", "seed", "food"]]`
+
+
+### 'ground' messages
+
+'ground' messages send the objects that are on the same square as the player (excluding the player themselves).
+
+Example `["ground", ["stone", "seed", "ground"]]`
+
+
 
 # Suggested improvements
-
-
-
-## Lists as outer objects
-
-Currently all messages are dictionaries, which results in nonintuitive code where the key determines the type of the message, and where unrelated messages can be send in the same message.
-
-A solution would be to send lists as outer objects where the first element of the list is the type of message.
-
-Example: `["input", ["move", "north"]]`
 
 ## Human readable error messages
 
@@ -155,7 +153,17 @@ This has low priority and is only useful once the client has some console to pri
 
 
 
-## partial field update
+## [DONE] Lists as outer objects
+
+DONE
+
+Currently all messages are dictionaries, which results in nonintuitive code where the key determines the type of the message, and where unrelated messages can be send in the same message.
+
+A solution would be to send lists as outer objects where the first element of the list is the type of message.
+
+Example: `["input", ["move", "north"]]`
+
+## [DONE] partial field update
 
 DONE
 

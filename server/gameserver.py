@@ -42,22 +42,26 @@ class GameServer:
     def receive(self, n, data):
         try:
             data = json.loads(data.decode('utf-8'))
-        except json.JSONDecodeError as e:
-            self.serv.send(n, bytes(json.dumps({"error": "invalidjson"}), "utf-8"))
-        if "name" in data:
-            name = data["name"]
-            
-            if name in self.players:
-                self.serv.send(n, bytes(json.dumps({"error":"nametaken"}), "utf-8"))
-            else:
-                self.connections[n] = name
-                self.players[name] = n
-                self.messages.put(("join", name))
-                print("new player: "+name)
-            
-        if "input" in data:
-            if n in self.connections:
-                self.messages.put(("input", self.connections[n], data["input"]))
+            if isinstance(data[0], str):
+                data = [data]
+            for msg in data:
+                msgType = msg[0]
+                if msgType == "name":
+                    name = msg[1]
+                    
+                    if name in self.players:
+                        self.serv.send(n, bytes(json.dumps(["error", "nametaken"]), "utf-8"))
+                    else:
+                        self.connections[n] = name
+                        self.players[name] = n
+                        self.messages.put(("join", name))
+                        print("new player: "+name)
+                elif msgType == "input":
+                    if n in self.connections:
+                        self.messages.put(("input", self.connections[n], msg[1]))
+        except Exception as e:
+            self.serv.send(n, bytes(json.dumps(["error", "invalidmessage"]), "utf-8"))
+    
     
     def close(self, connection):
         if connection in self.connections:
