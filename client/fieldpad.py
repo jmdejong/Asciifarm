@@ -19,7 +19,7 @@ class FieldPad:
         self.pad.addstr(y, x*self.charSize, char)
     
     def getWidth(self):
-        return self.size[0]
+        return self.size[0]*self.charSize
     
     def getHeight(self):
         return self.size[1]
