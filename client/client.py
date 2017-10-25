@@ -11,8 +11,9 @@ import getpass
 import argparse
 from .screen import Screen
 import string
+from .fieldpad import FieldPad
+from .infopad import InfoPad
 
-# todo: remove references to tron
 
 #logging.basicConfig(filename="client.log", filemode='w', level=logging.DEBUG)
 
@@ -47,6 +48,8 @@ class Client:
         self.defaultChar = characters.get("default", '?')
         self.charWidth = characters.get("charwidth", 1)
         
+        self.fieldPad = FieldPad((64, 32), characters.get("charwidth", 1))
+        self.infoPad = InfoPad((100, 100))
         self.info = {}
         
         threading.Thread(target=self.listen, daemon=True).start()
@@ -81,17 +84,18 @@ class Client:
                 self.fieldHeight = field['height']
                 fieldCells = field['field']
                 mapping = field['mapping']
-                self.screen.changeCells((
-                        ((i%self.fieldWidth)*self.charWidth, i//self.fieldWidth, self.getChar(mapping[sprite])) 
-                        for (i, sprite) in enumerate(fieldCells)
-                    ), self.fieldWidth*self.charWidth, self.fieldHeight)
+                for i, spr in enumerate(fieldCells):
+                    y, x = divmod(i, self.fieldWidth)
+                    sprite = self.getChar(mapping[spr])
+                    self.fieldPad.changeCell(x, y, sprite)
+                self.screen.change()
             
             if msgType == 'changecells'and len(msg[1]):
-                changedCells = msg[1]
-                self.screen.changeCells((
-                        (x*self.charWidth, y, self.getChar(sprite)) 
-                        for ((x, y), sprite) in changedCells
-                    ), self.fieldWidth*self.charWidth, self.fieldHeight)
+                for cell in msg[1]:
+                    (x, y), spriteName = cell
+                    sprite = self.getChar(spriteName)
+                    self.fieldPad.changeCell(x, y, sprite)
+                self.screen.change()
             
             if msgType == "health":
                 self.info["health"] = msg[1]
@@ -103,9 +107,10 @@ class Client:
         infostring = json.dumps(self.info, indent=2)
         infostring += "\n\n" + self.controlsString
         if infostring != self.lastinfostring:
-            self.screen.putPlayers(infostring, self.fieldWidth*self.charWidth+2)
+            self.infoPad.putString(infostring)
+            self.screen.change()
             self.lastinfostring = infostring
-        self.screen.refresh()
+        self.screen.update(self.fieldPad, self.infoPad)
     
     def getChar(self, sprite):
         char = self.characters.get(sprite, self.defaultChar)
