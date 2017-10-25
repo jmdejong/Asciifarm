@@ -48,6 +48,8 @@ class Client:
         self.defaultChar = characters.get("default", '?')
         self.charWidth = characters.get("charwidth", 1)
         
+        self.info = {}
+        
         threading.Thread(target=self.listen, daemon=True).start()
         self.command_loop()
         
@@ -89,12 +91,17 @@ class Client:
                     for ((x, y), sprite) in data['changecells']
                 ), self.fieldWidth*self.charWidth, self.fieldHeight)
         
-        if 'info' in data:
-            infostring = json.dumps(data['info'], indent=2)
-            infostring += "\n\n" + self.controlsString
-            if infostring != self.lastinfostring:
-                self.screen.putPlayers(infostring, self.fieldWidth*self.charWidth+2)
-                self.lastinfostring = infostring
+        if "health" in data:
+            self.info["health"] = data["health"]
+        if "inventory" in data:
+            self.info["inventory"] = data["inventory"]
+        if "ground" in data:
+            self.info["ground"] = data["ground"]
+        infostring = json.dumps(self.info, indent=2)
+        infostring += "\n\n" + self.controlsString
+        if infostring != self.lastinfostring:
+            self.screen.putPlayers(infostring, self.fieldWidth*self.charWidth+2)
+            self.lastinfostring = infostring
         self.screen.refresh()
     
     def command_loop(self):

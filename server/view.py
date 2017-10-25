@@ -25,12 +25,10 @@ class View:
         player = self.world.getPlayer(playerName)
         room = self.world.getRoom(player.getRoom())
         data = {
-            "info":{
-                "health": player.getHealth(),
-                "inventory": [obj.getSprite() for obj in player.getInventory()],
-                "ground": [obj.getSprite() for obj in player.getGroundObjs()]
-                #"interactions": [ action + ' ' + obj.getChar() for action, obj in player.getInteractions()]
-            }
+            "health": player.getHealth(),
+            "inventory": [obj.getSprite() for obj in player.getInventory()],
+            "ground": [obj.getSprite() for obj in player.getGroundObjs()]
+            #"interactions": [ action + ' ' + obj.getChar() for action, obj in player.getInteractions()]
         }
         if room:
             changedCells = room.getChangedCells()

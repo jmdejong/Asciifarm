@@ -1,4 +1,4 @@
 #! /usr/bin/python3
 
-import client
-client.main()
+import playgame
+playgame.main()
