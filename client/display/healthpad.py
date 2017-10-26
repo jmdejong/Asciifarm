@@ -3,7 +3,7 @@ import curses
 
 
 
-class InfoPad:
+class HealthPad:
     
     
     
@@ -11,8 +11,9 @@ class InfoPad:
         self.pad = curses.newpad(size[1], size[0])
         self.size = size
     
-    def putString(self, string):
-        self.pad.addstr(0,0,string)
+    def setHealth(self, health, maxHealth):
+        self.pad.erase()
+        self.pad.addstr(0,0,"Health: {}/{}".format(health, maxHealth))
     
     def update(self, screen, x, y, xmax, ymax):
         self.pad.noutrefresh(
@@ -20,5 +21,5 @@ class InfoPad:
             0,
             y,
             x,
-            ymax,
-            xmax)
+            ymax-1,
+            xmax-1)

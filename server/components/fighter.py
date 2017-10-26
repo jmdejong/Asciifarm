@@ -57,7 +57,7 @@ class Fighter:
     
     
     def getHealth(self):
-        return self.health
+        return (self.health, self.maxHealth)
     
     def healthFull(self):
         return self.health >= self.maxHealth

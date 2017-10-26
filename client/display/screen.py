@@ -5,6 +5,7 @@ from .fieldpad import FieldPad
 import signal
 
 SIDEWIDTH = 15
+HEALTHHEIGHT = 1
 
 class Screen:
     
@@ -16,8 +17,10 @@ class Screen:
         self.changed = False
         signal.signal(signal.SIGWINCH, self.updateSize)
     
-    def updateSize(self, *args):
+    def updateSize(self, *args): # doesn't work properly yet
         self.height, self.width = self.stdscr.getmaxyx()
+        self.stdscr.clear()
+        self.change()
     
     def getWidth(self):
         return self.width
@@ -28,11 +31,12 @@ class Screen:
     def change(self):
         self.changed = True
     
-    def update(self, fieldPad, infoPad):
+    def update(self, fieldPad, infoPad, healthPad):
         if self.changed:
-            fieldEnd = min(fieldPad.getWidth()-1, self.getWidth()-SIDEWIDTH-2)
-            fieldPad.update(self, 0,0,fieldEnd, min(fieldPad.getHeight(), self.getHeight()-1))
-            infoPad.update(self, fieldEnd+2,0, self.getWidth()-1, self.getHeight()-1)
+            fieldEnd = min(fieldPad.getWidth(), self.getWidth()-SIDEWIDTH-1)
+            fieldPad.update(self, 0,0,fieldEnd, min(fieldPad.getHeight(), self.getHeight()))
+            healthPad.update(self, fieldEnd+1,0, self.getWidth(), HEALTHHEIGHT)
+            infoPad.update(self, fieldEnd+1,HEALTHHEIGHT+1, self.getWidth(), self.getHeight())
             curses.doupdate()
         self.changed = False
         

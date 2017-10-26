@@ -31,7 +31,7 @@ class Player:
     
     def leaveRoom(self):
         if self.entity:
-            self.health = self.getHealth()
+            self.health = self.getHealth()[0]
             self.entity.remove()
             self.entity = None
     

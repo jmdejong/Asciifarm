@@ -30,5 +30,5 @@ class FieldPad:
             0,
             y,
             x,
-            ymax,
-            xmax)
+            ymax-1,
+            xmax-1)

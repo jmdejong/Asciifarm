@@ -9,10 +9,11 @@ import threading
 import json
 import getpass
 import argparse
-from .screen import Screen
+from .display.screen import Screen
 import string
-from .fieldpad import FieldPad
-from .infopad import InfoPad
+from .display.fieldpad import FieldPad
+from .display.infopad import InfoPad
+from .display.healthpad import HealthPad
 
 
 #logging.basicConfig(filename="client.log", filemode='w', level=logging.DEBUG)
@@ -50,6 +51,7 @@ class Client:
         
         self.fieldPad = FieldPad((64, 32), characters.get("charwidth", 1))
         self.infoPad = InfoPad((100, 100))
+        self.healthPad = HealthPad((20, 1))
         self.info = {}
         
         threading.Thread(target=self.listen, daemon=True).start()
@@ -98,7 +100,7 @@ class Client:
                 self.screen.change()
             
             if msgType == "health":
-                self.info["health"] = msg[1]
+                self.healthPad.setHealth(*msg[1])
             if msgType == "inventory":
                 self.info["inventory"] = msg[1]
             if msgType == "ground":
@@ -110,7 +112,7 @@ class Client:
             self.infoPad.putString(infostring)
             self.screen.change()
             self.lastinfostring = infostring
-        self.screen.update(self.fieldPad, self.infoPad)
+        self.screen.update(self.fieldPad, self.infoPad, self.healthPad)
     
     def getChar(self, sprite):
         char = self.characters.get(sprite, self.defaultChar)
