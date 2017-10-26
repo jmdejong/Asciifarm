@@ -1,6 +1,6 @@
-
 import os.path
 import json
+
 
 def loadRoom(roomPath):
     with open(roomPath) as roomFile:
@@ -8,6 +8,7 @@ def loadRoom(roomPath):
     for name, pos in room["places"].items():
         room["places"][name] = tuple(pos)
     return room
+
 
 def loadWorld(worldPath):
     

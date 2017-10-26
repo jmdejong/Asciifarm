@@ -1,9 +1,9 @@
-
-import sys
-import socket
-import threading
 import os
-from tcommunicate import send, receive
+import socket
+import sys
+import threading
+
+from .tcommunicate import send, receive
 
 
 # Class to open a TCP Socket

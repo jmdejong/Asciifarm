@@ -1,13 +1,13 @@
+from .components.inventory import Inventory
+from .components.inputcontroller import InputController
+from .components.move import Move
+from .components.fighter import Fighter
+from .components.healing import Healing
+from .components.alignment import Alignment
+from .components.target import Target
+from . import faction
+from . import entity
 
-from components.inventory import Inventory
-from components.inputcontroller import InputController
-from components.move import Move
-from components.fighter import Fighter
-from components.healing import Healing
-from components.alignment import Alignment
-from components.target import Target
-import faction
-import entity
 
 class Player:
     

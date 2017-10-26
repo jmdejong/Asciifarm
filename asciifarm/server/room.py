@@ -1,11 +1,11 @@
-
 import random
-import ground
-import gameobjects
-import grid
-import event
-import entity
-import roomdata
+
+from . import ground
+from . import gameobjects
+from . import grid
+from . import event
+from . import entity
+from . import roomdata
 
 
 class Room:

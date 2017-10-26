@@ -1,12 +1,12 @@
 #! /usr/bin/python3
 
 
-
 import json
-import server
-import view
-import player
 import queue
+
+from . import view
+from . import server
+from . import player
 
 
 class GameServer:

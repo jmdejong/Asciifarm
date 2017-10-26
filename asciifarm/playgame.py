@@ -8,10 +8,11 @@ if sys.version_info[0] < 3:
 
 import argparse
 import getpass
-import client
+import json
 import os
 import os.path
-import json
+
+from . import client
 
 thisPath = os.path.dirname(__file__)
 charMapPath = os.path.join(thisPath, "charmaps")

@@ -1,5 +1,4 @@
-
-import grid
+from . import grid
 
 # this class extracts the data to send to the clients from the world
 
