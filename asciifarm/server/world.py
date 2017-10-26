@@ -1,7 +1,6 @@
+from . import room
+from . import player
 
-
-import room
-import player
 
 # The World class is like the model in the MVC pattern (though the rest is not that clear)
 

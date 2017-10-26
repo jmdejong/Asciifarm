@@ -1,23 +1,22 @@
-
-
 import random
-import entity
-import faction
-from entity import Entity
-from components.item import Item
-from components.randomwalkcontroller import RandomWalkController
-from components.move import Move
-from components.portal import Portal
-from components.trap import Trap
-from components.fighter import Fighter
-from components.monsterai import MonsterAi
-from components.spawner import Spawner
-from components.grow import Growing
-from components.alignment import Alignment
-from components.loot import Loot
-from components.build import Build
-from components.harvest import Harvest
-from components.food import Food
+
+from . import entity
+from . import faction
+from .entity import Entity
+from .components.item import Item
+from .components.randomwalkcontroller import RandomWalkController
+from .components.move import Move
+from .components.portal import Portal
+from .components.trap import Trap
+from .components.fighter import Fighter
+from .components.monsterai import MonsterAi
+from .components.spawner import Spawner
+from .components.grow import Growing
+from .components.alignment import Alignment
+from .components.loot import Loot
+from .components.build import Build
+from .components.harvest import Harvest
+from .components.food import Food
 
 """ This module contains factory functions for many placable entities, and a make function to call a factory by a string name """
 

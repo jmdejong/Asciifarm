@@ -1,6 +1,6 @@
-
-import pathfinding
 import random
+
+from .. import pathfinding
 
 
 class MonsterAi:

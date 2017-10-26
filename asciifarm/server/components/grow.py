@@ -1,6 +1,5 @@
-
-import timeout
-import gameobjects
+from .. import timeout
+from .. import gameobjects
 
 
 class Growing:

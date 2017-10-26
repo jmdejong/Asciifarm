@@ -1,5 +1,4 @@
-
-import timeout
+from .. import timeout
 
 class Move:
     

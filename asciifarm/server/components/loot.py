@@ -1,7 +1,6 @@
-
-
-import gameobjects
 import random
+from .. import gameobjects
+
 
 class Loot:
     """ entities that have this component will drop loot on death """

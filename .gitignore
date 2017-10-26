@@ -2,3 +2,6 @@
 *.sw[a-p]
 *.log
 devlog/
+*.pyc
+*.egg-info/
+**/dist/

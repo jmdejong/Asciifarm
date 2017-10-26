@@ -1,6 +1,4 @@
-
-import event
-
+from . import event
 
 
 class Entity:

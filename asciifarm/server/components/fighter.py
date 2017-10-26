@@ -1,6 +1,5 @@
-
-import timeout
-import utils
+from .. import timeout
+from .. import utils
 
 class Fighter:
     

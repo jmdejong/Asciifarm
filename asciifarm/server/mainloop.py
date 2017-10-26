@@ -1,9 +1,8 @@
-
-
-import gameserver
 import time
-import world
-import view
+
+from . import gameserver
+from . import world
+from . import view
 
 
 class Game:

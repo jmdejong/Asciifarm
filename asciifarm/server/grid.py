@@ -1,5 +1,5 @@
+from . import utils
 
-import utils
 
 class Grid:
     

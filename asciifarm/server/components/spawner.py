@@ -1,6 +1,6 @@
+from .. import gameobjects
+from .. import timeout
 
-import timeout
-import gameobjects
 
 class Spawner:
     

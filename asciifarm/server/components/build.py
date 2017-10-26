@@ -1,5 +1,5 @@
+from .. import gameobjects
 
-import gameobjects
 
 class Build:
     """ item type for item that can be placed on the map to become something more static (like buildable walls or crops)"""
