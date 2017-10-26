@@ -8,19 +8,20 @@ from .screen import Screen
 
 class Display:
     
-    def __init__(self, stdscr, charMap):
+    def __init__(self, stdscr, charMap, colours=False):
         
         self.screen = Screen(stdscr)
-        self.fieldPad = FieldPad((64, 32), charMap.get("charwidth", 1))
+        self.fieldPad = FieldPad((64, 32), charMap.get("charwidth", 1), colours)
         self.characters = charMap["mapping"]
         self.defaultChar = charMap.get("default", "?")
         self.infoPad = InfoPad((100, 100))
         self.healthPad = HealthPad((20, 1))
         self.lastinfostring = None
-        
-        curses.use_default_colors()
-        for i in range(0, curses.COLORS):
-            curses.init_pair(i+1, i, -1);
+        self.colours = colours
+        if colours:
+            curses.use_default_colors()
+            for i in range(0, min(256, curses.COLORS, curses.COLOR_PAIRS)):
+                curses.init_pair(i, i%16, i//16)
             
     
     def resizeField(self, size):

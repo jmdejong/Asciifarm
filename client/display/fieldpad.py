@@ -6,19 +6,20 @@ class FieldPad:
     
     
     
-    def __init__(self, size=(1,1), charSize=1, *args):
+    def __init__(self, size=(1,1), charSize=1, colours=False):
         self.pad = curses.newpad(size[1]+1, (size[0]+1)*charSize)
         self.size = size
         self.charSize = charSize
         self.center = (0, 0)
+        self.colours = colours
     
     def resize(self, width, height):
         self.size = (width, height)
         self.pad.resize(height+1, width*self.charSize1)
     
     def changeCell(self, x, y, char, colour=None):
-        if colour != None:
-            self.pad.addstr(y, x*self.charSize, char, curses.color_pair(colour+1))
+        if colour != None and self.colours:
+            self.pad.addstr(y, x*self.charSize, char, curses.color_pair(colour))
         else:
             self.pad.addstr(y, x*self.charSize, char)
     

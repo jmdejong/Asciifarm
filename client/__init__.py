@@ -14,7 +14,7 @@ defaultAdresses = {
     "inet": "localhost:9021",
     }
 
-def main(name, socketType, address, keybindings, characters):
+def main(name, socketType, address, keybindings, characters, colours=False):
     
     connection = Connection(socketType)
     try:
@@ -26,7 +26,7 @@ def main(name, socketType, address, keybindings, characters):
     caught_ctrl_c = False
     
     def start(stdscr):
-        display = Display(stdscr, characters)
+        display = Display(stdscr, characters, colours)
         client = Client(stdscr, display, name, connection, keybindings)
         nonlocal caught_ctrl_c
         try:

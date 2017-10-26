@@ -40,6 +40,7 @@ def main():
     parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
     parser.add_argument('-k', '--keybindings', help='The file with the keybindings. If it is either of these names: {} it will be loaded from the keybindings directory.'.format(standardKeyFiles), default="default")
     parser.add_argument('-c', '--characters', help='The file with the character mappings for the graphics. If it is either of these names: {} it will be loaded from the charmaps directory.'.format(standardCharFiles), default="default")
+    parser.add_argument('-l', '--colours', '--colors', help='', action="store_true")
     args = parser.parse_args()
     
     charFile = args.characters
@@ -62,7 +63,7 @@ def main():
         hostname, sep, port = address.partition(':')
         address = (hostname, int(port))
     
-    client.main(args.name, args.socket, address, keybindings, charMap)
+    client.main(args.name, args.socket, address, keybindings, charMap, args.colours)
 
 
 if __name__=="__main__":
