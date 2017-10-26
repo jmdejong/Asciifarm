@@ -27,6 +27,9 @@ class Display:
             self.fieldPad.changeCell(x, y, sprite)
         self.screen.change()
     
+    def setFieldCenter(self, pos):
+        self.fieldPad.setCenter(pos)
+    
     def showHealth(self, health, maxHealth):
         self.healthPad.setHealth(health, maxHealth)
         self.screen.change()

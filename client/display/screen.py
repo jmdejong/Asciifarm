@@ -36,7 +36,7 @@ class Screen:
             fieldEnd = min(fieldPad.getWidth(), self.getWidth()-SIDEWIDTH-1)
             fieldPad.update(self, 0,0,fieldEnd, min(fieldPad.getHeight(), self.getHeight()))
             healthPad.update(self, fieldEnd+1,0, self.getWidth(), HEALTHHEIGHT)
-            infoPad.update(self, fieldEnd+1,HEALTHHEIGHT+1, self.getWidth(), self.getHeight())
+            infoPad.update(self, fieldEnd+1,HEALTHHEIGHT, self.getWidth(), self.getHeight())
             curses.doupdate()
         self.changed = False
         

@@ -83,6 +83,9 @@ class Client:
             if msgType == 'changecells'and len(msg[1]):
                 self.display.drawFieldCells(msg[1])
             
+            if msgType == "playerpos":
+                self.display.setFieldCenter(msg[1])
+            
             if msgType == "health":
                 self.display.showHealth(*msg[1])
             if msgType == "inventory":

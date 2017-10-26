@@ -12,7 +12,7 @@ class InfoPad:
         self.size = size
     
     def showString(self, string):
-        self.pad.erase()
+        self.pad.clear()
         self.pad.addstr(0,0,string)
     
     def update(self, screen, x, y, xmax, ymax):
