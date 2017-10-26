@@ -17,6 +17,11 @@ class Display:
         self.infoPad = InfoPad((100, 100))
         self.healthPad = HealthPad((20, 1))
         self.lastinfostring = None
+        
+        curses.use_default_colors()
+        for i in range(0, curses.COLORS):
+            curses.init_pair(i+1, i, -1);
+            
     
     def resizeField(self, size):
         self.fieldPad.resize(*size)
@@ -25,7 +30,7 @@ class Display:
         for cell in cells:
             (x, y), spriteName = cell
             sprite = self.getChar(spriteName)
-            self.fieldPad.changeCell(x, y, sprite)
+            self.fieldPad.changeCell(x, y, *sprite)
         self.screen.change()
     
     def setFieldCenter(self, pos):
@@ -44,8 +49,8 @@ class Display:
     def getChar(self, sprite):
         char = self.characters.get(sprite, self.defaultChar)
         if isinstance(char, str):
-            return char
-        return char[0]
+            return [char]
+        return char
     
     def update(self):
         self.screen.update(self.fieldPad, self.infoPad, self.healthPad)

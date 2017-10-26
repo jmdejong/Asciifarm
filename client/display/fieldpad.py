@@ -16,8 +16,11 @@ class FieldPad:
         self.size = (width, height)
         self.pad.resize(height+1, width*self.charSize1)
     
-    def changeCell(self, x, y, char):
-        self.pad.addstr(y, x*self.charSize, char)
+    def changeCell(self, x, y, char, colour=None):
+        if colour != None:
+            self.pad.addstr(y, x*self.charSize, char, curses.color_pair(colour+1))
+        else:
+            self.pad.addstr(y, x*self.charSize, char)
     
     def setCenter(self, pos):
         self.center = pos
