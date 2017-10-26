@@ -19,9 +19,9 @@ from .display import Display
 
 class Client:
     
-    def __init__(self, stdscr, name, connection, keybindings, characters):
+    def __init__(self, stdscr, display, name, connection, keybindings):
         self.stdscr = stdscr
-        self.screen = Screen(stdscr)
+        self.display = display
         self.name = name
         self.keepalive = True
         self.connection = connection
@@ -34,9 +34,7 @@ class Client:
                 if chr(key) in string.printable)
         
         self.info = {}
-        self.display = Display(self.screen, characters)
         
-        self.start()
     
     def start(self):
         threading.Thread(target=self.listen, daemon=True).start()

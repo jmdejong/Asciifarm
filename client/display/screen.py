@@ -4,7 +4,7 @@ from .fieldpad import FieldPad
 
 import signal
 
-SIDEWIDTH = 15
+SIDEWIDTH = 20
 HEALTHHEIGHT = 1
 
 class Screen:

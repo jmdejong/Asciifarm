@@ -4,12 +4,13 @@ import curses
 from .fieldpad import FieldPad
 from .infopad import InfoPad
 from .healthpad import HealthPad
+from .screen import Screen
 
 class Display:
     
-    def __init__(self, screen, charMap):
+    def __init__(self, stdscr, charMap):
         
-        self.screen = screen
+        self.screen = Screen(stdscr)
         self.fieldPad = FieldPad((64, 32), charMap.get("charwidth", 1))
         self.characters = charMap["mapping"]
         self.defaultChar = charMap.get("default", "?")

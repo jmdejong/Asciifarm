@@ -6,6 +6,7 @@ import getpass
 import sys
 from .connection import Connection
 from .client import Client
+from .display import Display
 
 defaultAdresses = {
     "abstract": "asciifarm",
@@ -23,10 +24,13 @@ def main(name, socketType, address, keybindings, characters):
         return
     
     caught_ctrl_c = False
+    
     def start(stdscr):
+        display = Display(stdscr, characters)
+        client = Client(stdscr, display, name, connection, keybindings)
         nonlocal caught_ctrl_c
         try:
-            client = Client(stdscr, name, connection, keybindings, characters)
+            client.start()
         except KeyboardInterrupt:
             caught_ctrl_c = True
     
