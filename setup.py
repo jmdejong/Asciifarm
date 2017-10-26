@@ -7,7 +7,7 @@ setup(
     long_description="TODO",
     author="Troido",
     author_email='troido@tilde.town',
-    url='http://tilde.town/~troido',
+    url='https://github.com/jmdejong/Asciifarm',
     packages=find_packages(),
     include_package_data=True,
     data_files=[
@@ -19,11 +19,14 @@ setup(
             'hostfarm = asciifarm.hostfarms:main',
         ],
     },
-    license='TODO',
     install_requires=[
         # TODO: Put requirements here -wangofett, 2017-10-26
     ],
     tests_require=[
         # TODO: put tests requirements here -wangofett, 2017-10-26
-    ]
+    ],
+    license='GPLv3',
+    classifiers=[
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+    ],
 )
