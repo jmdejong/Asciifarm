@@ -12,6 +12,8 @@ class FieldPad:
         self.charSize = charSize
         self.center = (0, 0)
         self.colours = colours
+        self.changed = False
+        self.lastView = None
     
     def resize(self, width, height):
         self.size = (width, height)
@@ -22,6 +24,7 @@ class FieldPad:
             self.pad.addstr(y, x*self.charSize, char, curses.color_pair(colour))
         else:
             self.pad.addstr(y, x*self.charSize, char)
+        self.changed = True
     
     def setCenter(self, pos):
         self.center = pos
@@ -33,6 +36,10 @@ class FieldPad:
         return self.size[1]
     
     def update(self, screen, x, y, xmax, ymax):
+        if not self.changed and (x, y, xmax, ymax) == self.lastView:
+            return
+        self.lastView = (x, y, xmax, ymax)
+        self.changed = False
         width = xmax-x
         height = ymax-y
         self.pad.noutrefresh(

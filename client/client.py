@@ -13,9 +13,7 @@ from .display.screen import Screen
 import string
 from .display import Display
 
-
 #logging.basicConfig(filename="client.log", filemode='w', level=logging.DEBUG)
-
 
 class Client:
     
@@ -33,7 +31,8 @@ class Client:
                 for key, action in self.commands.items()
                 if chr(key) in string.printable)
         
-        self.info = {}
+        self.display.showInfo(self.controlsString)
+        
         
     
     def start(self):
@@ -82,15 +81,12 @@ class Client:
                 self.display.setFieldCenter(msg[1])
             
             if msgType == "health":
-                self.display.showHealth(*msg[1])
+                self.display.setHealth(*msg[1])
             if msgType == "inventory":
-                self.info["inventory"] = msg[1]
+                self.display.setInventory(msg[1])
             if msgType == "ground":
-                self.info["ground"] = msg[1]
+                self.display.setGround(msg[1])
         
-        infostring = json.dumps(self.info, indent=2)
-        infostring += "\n\n" + self.controlsString
-        self.display.showInfo(infostring)
         
         self.display.update()
     
