@@ -25,9 +25,12 @@ Because of the use of NCURSES, it probably won't work on windows (will be fixed 
 
 Not tested on mac. If anyone could test this for me this would be much appreciated.
 
-Run `hostrooms.py` from the same directory to start the server.
+Not on pypi yet, but you should be able to install it like this:
 
-Run `asciifarm` or `playgame.py` to start the client
+    python -m pip install git+https://github.com/jmdejong/Asciifarm.git
+
+Then you can run `hostfarm` to start the server and `asciifarm` to play the
+game!
 
 ## Playing instructions
 
@@ -38,6 +41,41 @@ Use 'E' to use/interact with the top item in your inventory.
 Use 'f' interact with something in the same square as you.
 Use 'F' to attack an enemy in the same square as you.
 Use WASD to attack enemies in adjacent squares.
+
+
+## Development/Hacking
+
+If you want to help us out, great!
+
+
+### Pipenv style
+
+If you don't have pipenv yet, go ahead and install it, clone the repo, and
+start up a new shell:
+
+    python3 -m pip install pipenv
+    git clone https://github.com/jmdejong/Asciifarm.git asciifarm
+    cd asciifarm
+    pipenv shell --three
+
+### `venv` style
+
+What's that? You can't install pipenv (not even with `--user`)? That's OK, you
+can use the built-in virtualenv:
+
+    python3 -m venv ~/.virtualenvs/asciifarm
+    source ~/.virtualenvs/asciifarm/bin/activate
+    git clone https://github.com/jmdejong/Asciifarm.git asciifarm
+    cd asciifarm
+
+### Install asciifarm
+
+Now you can install it:
+
+    python -m pip install -e .
+
+Now `asciifarm` and `hostfarm` should be on your path and you can start up the
+game. Cool. :sparkles:
 
 
 ## Vision/ideas
