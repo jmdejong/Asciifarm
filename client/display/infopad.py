@@ -11,7 +11,7 @@ class InfoPad:
         self.pad = curses.newpad(size[1], size[0])
         self.size = size
     
-    def putString(self, string):
+    def showString(self, string):
         self.pad.erase()
         self.pad.addstr(0,0,string)
     

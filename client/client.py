@@ -11,9 +11,7 @@ import getpass
 import argparse
 from .display.screen import Screen
 import string
-from .display.fieldpad import FieldPad
-from .display.infopad import InfoPad
-from .display.healthpad import HealthPad
+from .display import Display
 
 
 #logging.basicConfig(filename="client.log", filemode='w', level=logging.DEBUG)
@@ -31,7 +29,6 @@ class Client:
         
         self.connection = connection
         
-        self.lastinfostring = None
         
         self.commands = {ord(key): command for key, command in keybindings['input'].items()}
         
@@ -42,16 +39,8 @@ class Client:
         
         self.connection.send(json.dumps(["name", name]))
         
-        self.fieldWidth = 0
-        self.fieldHeight = 0
         
-        self.characters = characters["mapping"]
-        self.defaultChar = characters.get("default", '?')
-        self.charWidth = characters.get("charwidth", 1)
-        
-        self.fieldPad = FieldPad((64, 32), characters.get("charwidth", 1))
-        self.infoPad = InfoPad((100, 100))
-        self.healthPad = HealthPad((20, 1))
+        self.display = Display(self.screen, characters)
         self.info = {}
         
         threading.Thread(target=self.listen, daemon=True).start()
@@ -82,25 +71,20 @@ class Client:
                     self.close()
             if msgType == 'field':
                 field = msg[1]
-                self.fieldWidth = field['width']
-                self.fieldHeight = field['height']
+                fieldWidth = field['width']
+                fieldHeight = field['height']
                 fieldCells = field['field']
                 mapping = field['mapping']
-                for i, spr in enumerate(fieldCells):
-                    y, x = divmod(i, self.fieldWidth)
-                    sprite = self.getChar(mapping[spr])
-                    self.fieldPad.changeCell(x, y, sprite)
-                self.screen.change()
+                self.display.drawFieldCells(
+                    (tuple(reversed(divmod(i, fieldWidth))),
+                     mapping[spr])
+                    for i, spr in enumerate(fieldCells))
             
             if msgType == 'changecells'and len(msg[1]):
-                for cell in msg[1]:
-                    (x, y), spriteName = cell
-                    sprite = self.getChar(spriteName)
-                    self.fieldPad.changeCell(x, y, sprite)
-                self.screen.change()
+                self.display.drawFieldCells(msg[1])
             
             if msgType == "health":
-                self.healthPad.setHealth(*msg[1])
+                self.display.showHealth(*msg[1])
             if msgType == "inventory":
                 self.info["inventory"] = msg[1]
             if msgType == "ground":
@@ -108,17 +92,9 @@ class Client:
         
         infostring = json.dumps(self.info, indent=2)
         infostring += "\n\n" + self.controlsString
-        if infostring != self.lastinfostring:
-            self.infoPad.putString(infostring)
-            self.screen.change()
-            self.lastinfostring = infostring
-        self.screen.update(self.fieldPad, self.infoPad, self.healthPad)
-    
-    def getChar(self, sprite):
-        char = self.characters.get(sprite, self.defaultChar)
-        if isinstance(char, str):
-            return char
-        return char[0]
+        self.display.showInfo(infostring)
+        
+        self.display.update()
     
     def command_loop(self):
         while self.keepalive:
