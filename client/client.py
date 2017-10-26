@@ -22,13 +22,9 @@ class Client:
     def __init__(self, stdscr, name, connection, keybindings, characters):
         self.stdscr = stdscr
         self.screen = Screen(stdscr)
-        
         self.name = name
-        
         self.keepalive = True
-        
         self.connection = connection
-        
         
         self.commands = {ord(key): command for key, command in keybindings['input'].items()}
         
@@ -37,13 +33,14 @@ class Client:
                 for key, action in self.commands.items()
                 if chr(key) in string.printable)
         
-        self.connection.send(json.dumps(["name", name]))
-        
-        
-        self.display = Display(self.screen, characters)
         self.info = {}
+        self.display = Display(self.screen, characters)
         
+        self.start()
+    
+    def start(self):
         threading.Thread(target=self.listen, daemon=True).start()
+        self.connection.send(json.dumps(["name", self.name]))
         self.command_loop()
         
     

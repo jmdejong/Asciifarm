@@ -13,11 +13,13 @@ class Screen:
     def __init__(self, stdscr, maxSize=(float("inf"),float("inf")), charSize=1):
         curses.curs_set(0)
         self.stdscr = stdscr
-        self.updateSize()
+        self.height, self.width = self.stdscr.getmaxyx()
         self.changed = False
         signal.signal(signal.SIGWINCH, self.updateSize)
     
-    def updateSize(self, *args): # doesn't work properly yet
+    def updateSize(self, *args):
+        curses.endwin()
+        curses.initscr()
         self.height, self.width = self.stdscr.getmaxyx()
         self.stdscr.clear()
         self.change()

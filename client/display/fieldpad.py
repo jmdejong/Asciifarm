@@ -32,8 +32,8 @@ class FieldPad:
         width = xmax-x
         height = ymax-y
         self.pad.noutrefresh(
-            min(self.getHeight()-height, max(0, self.center[1] - int(height/2))),
-            min(self.getWidth()-width, max(0, self.center[0]*self.charSize - int(width/2))),
+            max(0, min(self.getHeight()-height, self.center[1] - int(height/2))),
+            max(0, min(self.getWidth()-width, self.center[0]*self.charSize - int(width/2))),
             y,
             x,
             ymax-1,
