@@ -22,7 +22,7 @@ class Display:
         self.characters = charMap["mapping"]
         self.defaultChar = charMap.get("default", "?")
         self.infoPad = InfoPad((100, 100))
-        self.healthPad = HealthPad(20)
+        self.healthPad = HealthPad(20, ("@",39), ("-",23), colours)
         self.inventoryPad = InventoryPad("Inventory", 16)
         self.groundPad = InventoryPad("Ground", 8)
         self.lastinfostring = None
