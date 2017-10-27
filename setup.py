@@ -16,7 +16,7 @@ setup(
     entry_points={
         'console_scripts': [
             'asciifarm = asciifarm.playgame:main',
-            'hostfarm = asciifarm.hostfarms:main',
+            'hostfarms = asciifarm.hostfarms:main',
             # TODO: troido, if you want just one asciifarm command, change 
             # this to asccifarm and remove the previous two lines -wangofett, 2017-10-27
             'testasciifarm = asciifarm.__main__:main',

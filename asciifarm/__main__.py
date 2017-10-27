@@ -7,8 +7,9 @@ if sys.version_info[0] < 3:
     sys.exit('asciifarm currently only supports python3. Try `python3 {}`'.format(' '.join(sys.argv)))
 
 # Munge the path if we're called without `-m`
+
+import pathlib
 if not __package__:
-    import pathlib
     sys.path.append(str(pathlib.Path(__file__).parent.parent.absolute()))
 
 import argparse
