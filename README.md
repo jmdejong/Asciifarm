@@ -5,6 +5,7 @@ Formerly: **Rooms**
 This is a multiplayer ascii farming/fighting game.
 
 ![screenshot](screenshot.png)
+<!-- why doesn't the screenshot get updated? -->
 
 ## Working Features
 
