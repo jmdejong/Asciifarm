@@ -6,9 +6,8 @@ neighbourdirs = {"north":(0,-1), "south":(0,1), "east":(1,0), "west":(-1,0)}
 
 class GroundPatch:
     
-    def __init__(self, room, pos, sprite=' '):
+    def __init__(self, room, pos):
         self.objects = []
-        self.sprite = sprite
         self.room = room
         self.pos = pos
         self.neighbours = None
@@ -18,27 +17,31 @@ class GroundPatch:
         return not any(obj.isSolid() for obj in self.objects)
     
     def addObj(self, obj):
-        oldTop = self.getTopObj()
+        oldTop = self._getTopObj()
         self.objects.append(obj)
         self.objects.sort(key=(lambda o: -o.getHeight()))
-        if self.getTopObj() != oldTop:
-            self.event.trigger("changesprite", self.getPos(), obj.getSprite())
+        if self._getTopObj() != oldTop:
+            self.event.trigger("changesprite", self.getPos(), self.getTopSprite())
     
     def removeObj(self, obj):
+        oldTop = self._getTopObj()
         if obj in self.objects:
             self.objects.remove(obj)
-            topObj = self.getTopObj()
-            if obj.getHeight() >= topObj.getHeight():
-                self.event.trigger("changesprite", self.getPos(), topObj.getSprite())
+            if obj == oldTop:
+                self.event.trigger("changesprite", self.getPos(), self.getTopSprite())
+    
+    def getTopSprite(self):
+        topObj = self._getTopObj()
+        if topObj:
+            return topObj.getSprite()
+        else:
+            return ' '
     
     def getObjs(self):
         return tuple(self.objects)
     
-    def getTopObj(self):
+    def _getTopObj(self):
         return self.objects[0] if len(self.objects) else None
-    
-    def getSprite(self):
-        return self.sprite
     
     def onEnter(self, obj):
         for o in frozenset(self.objects):
@@ -59,9 +62,6 @@ class GroundPatch:
     
     def getPos(self):
         return self.pos
-    
-    def getHeight(self):
-        return -1
     
     
     def addListener(self, callback, key=None):
