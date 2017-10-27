@@ -103,7 +103,6 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
-- sort objects on ground on height
 - make idle NPC's stay around spawn
 - nondeterminism in combat and grow times
 - only plant seeds in soil
@@ -125,6 +124,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- sort objects on ground on height
 - follow player when room larger than terminal
 - multiple actions per keypress
 - healthbar

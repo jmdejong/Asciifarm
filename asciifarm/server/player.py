@@ -128,8 +128,9 @@ class Player:
     def getGroundObjs(self):
         if not self.entity:
             return []
-        objs = set(self.entity.getGround().getObjs())
-        objs.discard(self.entity)
+        objs = list(self.entity.getGround().getObjs())
+        if self.entity in objs:
+            objs.remove(self.entity)
         return objs
     
     def getPos(self):

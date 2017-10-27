@@ -70,7 +70,7 @@ class Room:
         self.roomData.getEvent("update").trigger(1)
     
     def getSprite(self, pos):
-        return self._getGround(pos).getTopObj().getSprite()
+        return self._getGround(pos).getTopSprite()
     
     def isValidPos(self, pos):
         x, y = pos

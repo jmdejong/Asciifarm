@@ -19,7 +19,6 @@ class Screen:
         curses.initscr()
         self.height, self.width = self.stdscr.getmaxyx()
         self.stdscr.clear()
-        self.change()
     
     def getWidth(self):
         return self.width
