@@ -18,6 +18,8 @@ class Display:
         
         if colours:
             self.colours = Colours()
+        else:
+                self.colours = None
         self.screen = Screen(stdscr)
         self.fieldPad = FieldPad((1, 1), charMap.get("charwidth", 1), self.colours)
         self.characters = charMap["mapping"]
@@ -25,7 +27,7 @@ class Display:
         self.infoPad = InfoPad((100, 100))
         self.healthPad = HealthPad(20, 
                     charMap.get("healthfull", ("@",7, 2)),
-                    charMap.get("healthfull", ("-",7, 1)),
+                    charMap.get("healthempty", ("-",7, 1)),
                     self.colours)
         self.inventoryPad = InventoryPad("Inventory", 16)
         self.groundPad = InventoryPad("Ground", 8)
