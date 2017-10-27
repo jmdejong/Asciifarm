@@ -37,7 +37,7 @@ default_addresses = {
     "unix": "asciifarm.socket",
     "inet": "localhost:9021",
 }
-default_world = pathlib.Path(__file__).parent.joinpath('maps', 'worlddata.json')
+default_world = pathlib.Path(__file__).parent.joinpath('maps', 'world.json')
 
 def main():
     parser = argparse.ArgumentParser(
@@ -100,10 +100,15 @@ def main():
         '''.format(standardCharFiles),
         default="default",
     )
-    client_parser.add_argument('-l', '--colours', '--colors',
-        help='Use ANSI color escape sequences',
-        action="store_true",
-    )
+    colourGroup = client_parser.add_mutually_exclusive_group()
+    colourGroup.add_argument('-l', '--colours', '--colors',
+        help='enable colours! :)',
+        action="store_true")
+    colourGroup.add_argument('-b', '--nocolours', '--nocolors',
+        help='disable colours',
+        action="store_true")
+    
+    
     server_parser.add_argument("-w", "--world",
         help="A file to load the world from.",
         default=str(default_world),  # str is only needed for python 3.5<=
@@ -135,7 +140,13 @@ def main():
         with open(keyFile, 'r') as kf:
             keybindings = json.load(kf)
         
-        client.main(args.name, args.socket, address, keybindings, charMap, args.colours)
+        colours = True
+        if args.colours:
+            colours = True
+        elif args.nocolours:
+            colours = False
+        
+        client.main(args.name, args.socket, address, keybindings, charMap, colours)
     elif args.command == 'server':
         args = parser.parse_args()
         
