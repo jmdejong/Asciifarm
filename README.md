@@ -62,7 +62,6 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
-- colours
 - nondeterminism in combat and grow times
 - only plant seeds in soil
 - make farming more work
@@ -75,7 +74,6 @@ The idea is to make 3 different kind of areas:
 - room unloading when there are no players
 - better interaction selection
 - messages in the client
-- better interface
 - runtime-created rooms
 - multicharacter sprites in client
 - in-game chat
@@ -85,6 +83,8 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- healthbar
+- colours
 - fullwidth characters as sprites
 - load world from files
 - more content (rooms, objects etc)
