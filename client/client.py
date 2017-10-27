@@ -24,11 +24,15 @@ class Client:
         self.keepalive = True
         self.connection = connection
         
-        self.commands = {ord(key): command for key, command in keybindings['input'].items()}
+        self.commands = {}
+        for key, commands in keybindings["input"].items():
+            if isinstance(commands[0], str):
+                commands = [commands]
+            self.commands[ord(key)] = [["input", command] for command in commands]
         
         self.controlsString = "Controls:\n"+'\n'.join(
-                chr(key) + ": " + ' '.join(action)
-                for key, action in self.commands.items()
+                chr(key) + ": " + ', '.join(' '.join(action[1]) for action in actions)
+                for key, actions in self.commands.items()
                 if chr(key) in string.printable)
         
         self.display.showInfo(self.controlsString)
@@ -99,7 +103,7 @@ class Client:
             if key == 27:
                 self.keepalive = False
             if key in self.commands:
-                self.connection.send(json.dumps(["input", self.commands[key]]))
+                self.connection.send(json.dumps(self.commands[key]))
     
 
 

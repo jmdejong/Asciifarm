@@ -6,7 +6,7 @@
         "a": ["move", "west"],
         "e": ["take"],
         "q": ["drop"],
-        "F": ["attack"],
+        "F": [["attack"],["attack", "north"],["attack", "south"],["attack", "east"],["attack", "west"]],
         "W": ["attack", "north"],
         "S": ["attack", "south"],
         "D": ["attack", "east"],

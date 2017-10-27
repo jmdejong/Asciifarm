@@ -84,6 +84,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- multiple actions per keypress
 - healthbar
 - colours
 - fullwidth characters as sprites

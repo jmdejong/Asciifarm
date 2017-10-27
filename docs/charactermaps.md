@@ -9,6 +9,8 @@ For example:
 
     asciifarm -c fullwidth
 
+or
+
     asciifarm -c /home/troido/asciifarm/charmaps/fullwidth.json
 
 ## mapping
@@ -32,7 +34,7 @@ These colours can differ per terminal, but in most terminals they look like this
 7. white
 
 On terminals that have more than 8 colours, the next 8 colours will be the lighter version of the same colour.
-On terminals that only have 8 colours, the nex 8 colours will be the same as the first 8 (colour = coulor % 8).
+On terminals that only have 8 colours, the next 8 colours will be the same as the first 8 (colour = colour % 8).
 
 run the script test/colourpairs.py to see how the colour combinations look in your terminal.
 
