@@ -13,7 +13,7 @@
         "water": ["~", 6, 4],
         "rabbit": "r",
         "floor": ["+", 8],
-        "portal": "$",
+        "portal": ["$", 5],
         "stairdown": ">",
         "stairup": "<",
         "dummy": "d",
