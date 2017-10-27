@@ -20,6 +20,8 @@ import os.path
 from textwrap import dedent
 
 from asciifarm import client
+from asciifarm.server import mainloop
+from asciifarm.server import loader
 
 
 thisPath = os.path.dirname(__file__)
@@ -35,6 +37,7 @@ default_addresses = {
     "unix": "asciifarm.socket",
     "inet": "localhost:9021",
 }
+default_world = pathlib.Path(__file__).parent.joinpath('maps', 'worlddata.json')
 
 def main():
     parser = argparse.ArgumentParser(
@@ -100,6 +103,10 @@ def main():
     client_parser.add_argument('-l', '--colours', '--colors',
         help='Use ANSI color escape sequences',
         action="store_true",
+    )
+    server_parser.add_argument("-w", "--world",
+        help="A file to load the world from.",
+        default=str(default_world),  # str is only needed for python 3.5<=
     )
 
     args = parser.parse_args()
