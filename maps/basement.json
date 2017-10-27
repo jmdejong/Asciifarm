@@ -48,8 +48,8 @@
         "*": ["grass", "pebble"],
         "d": ["grass", "dummy"],
         "#": "wall",
-        ":": ["ground", "seed"],
-        ".": "ground",
+        ":": ["floor", "seed"],
+        ".": "floor",
         "^": ["spiketrap"],
         "r": ["grass", "rabbit"],
         "<": {
@@ -60,7 +60,7 @@
         "$": {
             "type": "roomexit",
             "args": ["arena"],
-            "kwargs": {"sprite": "ground"}
+            "kwargs": {"sprite": "floor"}
         },
         " ": []
     }

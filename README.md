@@ -63,17 +63,17 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
+- make idle NPC's stay around spawn
 - nondeterminism in combat and grow times
 - only plant seeds in soil
 - make farming more work
-- follow player when room larger than terminal
 - equipment
 - autofight/autoretaliate?
 - display target enemy health
 - write converter to convert tiled map files to readable files
 - better reaction on player death
 - room unloading when there are no players
-- better interaction selection
+- better inventory selection
 - messages in the client
 - runtime-created rooms
 - multicharacter sprites in client
@@ -84,6 +84,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- follow player when room larger than terminal
 - multiple actions per keypress
 - healthbar
 - colours

@@ -12,7 +12,7 @@
         "grass3": ["`", 10],
         "water": ["~", 6, 4],
         "rabbit": ["r", 15],
-        "floor": ["+", 8],
+        "floor": [".", 8],
         "portal": ["$", 5],
         "stairdown": [">",7],
         "stairup": ["<",7],

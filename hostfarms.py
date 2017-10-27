@@ -24,7 +24,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-a", "--address", help="The address of the socket. When the socket type is 'abstract' this is just a name. When it is 'unix' this is a filename. When it is 'inet' is should be in the format 'address:port', eg 'localhost:8080'. Defaults depends on the socket type")
     parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
-    parser.add_argument("-w", "--world", help="A file to load the world from.", default="maps/worlddata.json")
+    parser.add_argument("-w", "--world", help="A file to load the world from.", default="maps/world.json")
     
     args = parser.parse_args()
     address = args.address
