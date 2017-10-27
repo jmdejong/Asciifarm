@@ -17,10 +17,13 @@ setup(
         'console_scripts': [
             'asciifarm = asciifarm.playgame:main',
             'hostfarm = asciifarm.hostfarms:main',
+            # TODO: troido, if you want just one asciifarm command, change 
+            # this to asccifarm and remove the previous two lines -wangofett, 2017-10-27
+            'testasciifarm = asciifarm.__main__:main',
         ],
     },
     install_requires=[
-        # TODO: Put requirements here -wangofett, 2017-10-26
+        # TODO: Put other requirements here -wangofett, 2017-10-26
     ],
     tests_require=[
         # TODO: put tests requirements here -wangofett, 2017-10-26
