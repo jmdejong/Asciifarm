@@ -3,7 +3,7 @@ import curses
 
 class HealthPad:
     
-    def __init__(self, width=1, char=('@',0), emptyChar=('-',0), colours=False):
+    def __init__(self, width=1, char=('@',7,0), emptyChar=('-',7,0), colours=False):
         self.char = char
         self.emptyChar = emptyChar
         self.pad = curses.newpad(2, width+1)
@@ -17,8 +17,8 @@ class HealthPad:
         barEnd = round(health/maxHealth * self.width)
         self.pad.addstr(0,0,"Health: {}/{}".format(health, maxHealth)[:self.width])
         if self.colours:
-            self.pad.addstr(1,0, self.char[0]*barEnd, curses.color_pair(self.char[1]))
-            self.pad.addstr(1,barEnd, self.emptyChar[0]*(self.width-barEnd), curses.color_pair(self.emptyChar[1]))
+            self.pad.addstr(1,0, self.char[0]*barEnd, self.colours.get(*self.char[1:]))
+            self.pad.addstr(1,barEnd, self.emptyChar[0]*(self.width-barEnd), self.colours.get(*self.emptyChar[1:]))
         else:
             self.pad.addstr(1,0, self.char[0]*barEnd)
             self.pad.addstr(1,barEnd, self.emptyChar[0]*(self.width-barEnd))

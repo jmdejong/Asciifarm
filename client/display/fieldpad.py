@@ -19,9 +19,9 @@ class FieldPad:
         self.size = (width, height)
         self.pad.resize(height+1, width*self.charSize1)
     
-    def changeCell(self, x, y, char, colour=None):
+    def changeCell(self, x, y, char, colour=None, bgcolour=0):
         if colour != None and self.colours:
-            self.pad.addstr(y, x*self.charSize, char, curses.color_pair(colour))
+            self.pad.addstr(y, x*self.charSize, char, self.colours.get(colour, bgcolour))
         else:
             self.pad.addstr(y, x*self.charSize, char)
         self.changed = True

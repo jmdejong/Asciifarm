@@ -81,7 +81,9 @@ class Client:
                 self.display.setFieldCenter(msg[1])
             
             if msgType == "health":
-                self.display.setHealth(*msg[1])
+                health = msg[1]
+                if health:
+                    self.display.setHealth(*health)
             if msgType == "inventory":
                 self.display.setInventory(msg[1])
             if msgType == "ground":
