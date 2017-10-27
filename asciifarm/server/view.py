@@ -31,13 +31,13 @@ class View:
             #"interactions": [ action + ' ' + obj.getChar() for action, obj in player.getInteractions()]
         ]
         if room:
-            changedCells = room.getChangedCells()
-            data.append(["changecells", list(changedCells.items())])
             if player.shouldResetView():
                 field = self.viewRoom(room)
                 if field :
                     data.append(["field", field])
                     player.viewResetDone()
+            changedCells = room.getChangedCells()
+            data.append(["changecells", list(changedCells.items())])
         
         return data
 

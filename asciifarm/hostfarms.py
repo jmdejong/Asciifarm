@@ -18,7 +18,7 @@ defaultAdresses = {
     "unix": "asciifarm.socket",
     "inet": "localhost:9021",
 }
-default_world = pathlib.Path(__file__).parent.joinpath('maps', 'worlddata.json')
+default_world = pathlib.Path(__file__).parent.joinpath('maps', 'world.json')
 
 
 def main():

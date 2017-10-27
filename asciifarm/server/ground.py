@@ -8,7 +8,7 @@ neighbourdirs = {"north":(0,-1), "south":(0,1), "east":(1,0), "west":(-1,0)}
 class GroundPatch:
     
     def __init__(self, room, pos, sprite=' '):
-        self.objects = set()
+        self.objects = []
         self.sprite = sprite
         self.room = room
         self.pos = pos
@@ -19,9 +19,11 @@ class GroundPatch:
         return not any(obj.isSolid() for obj in self.objects)
     
     def addObj(self, obj):
-        if obj.getHeight() >= self.getTopObj().getHeight():
+        oldTop = self.getTopObj()
+        self.objects.append(obj)
+        self.objects.sort(key=(lambda o: -o.getHeight()))
+        if self.getTopObj() != oldTop:
             self.event.trigger("changesprite", self.getPos(), obj.getSprite())
-        self.objects.add(obj)
     
     def removeObj(self, obj):
         if obj in self.objects:
@@ -31,14 +33,10 @@ class GroundPatch:
                 self.event.trigger("changesprite", self.getPos(), topObj.getSprite())
     
     def getObjs(self):
-        return frozenset(self.objects)
+        return tuple(self.objects)
     
     def getTopObj(self):
-        topObj = self
-        for obj in self.getObjs():
-            if obj.getHeight() > topObj.getHeight():
-                topObj = obj
-        return topObj
+        return self.objects[0] if len(self.objects) else None
     
     def getSprite(self):
         return self.sprite

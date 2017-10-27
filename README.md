@@ -5,6 +5,7 @@ Formerly: **Rooms**
 This is a multiplayer ascii farming/fighting game.
 
 ![screenshot](screenshot.png)
+<!-- why doesn't the screenshot get updated? -->
 
 ## Working Features
 
@@ -100,29 +101,32 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
-- colours
+- sort objects on ground on height
+- make idle NPC's stay around spawn
 - nondeterminism in combat and grow times
 - only plant seeds in soil
 - make farming more work
-- follow player when room larger than terminal
 - equipment
 - autofight/autoretaliate?
 - display target enemy health
 - write converter to convert tiled map files to readable files
 - better reaction on player death
 - room unloading when there are no players
-- better interaction selection
+- better inventory selection
 - messages in the client
-- better interface
 - runtime-created rooms
-- multicharacter sprites in client
 - in-game chat
+- world persistence
 - support websockets
 - windows comptibility (libtcod/tdl instead of ncurses?)
-- world persistence
+- multicharacter sprites in client
 
 ## DONE
 
+- follow player when room larger than terminal
+- multiple actions per keypress
+- healthbar
+- colours
 - fullwidth characters as sprites
 - load world from files
 - more content (rooms, objects etc)

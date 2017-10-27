@@ -6,32 +6,33 @@ from .infopad import InfoPad
 from .healthpad import HealthPad
 from .inventorypad import InventoryPad
 from .screen import Screen
+from .colours import Colours
 
 
 SIDEWIDTH = 20
-HEALTHHEIGHT = 2
-INVENTORYHEIGHT = 12
 
 
 class Display:
     
     def __init__(self, stdscr, charMap, colours=False):
         
+        if colours:
+            self.colours = Colours()
+        else:
+                self.colours = None
         self.screen = Screen(stdscr)
-        self.fieldPad = FieldPad((64, 32), charMap.get("charwidth", 1), colours)
+        self.fieldPad = FieldPad((1, 1), charMap.get("charwidth", 1), self.colours)
         self.characters = charMap["mapping"]
         self.defaultChar = charMap.get("default", "?")
         self.infoPad = InfoPad((100, 100))
-        self.healthPad = HealthPad(20, ("@",39), ("-",23), colours)
+        self.healthPad = HealthPad(20, 
+                    charMap.get("healthfull", ("@",7, 2)),
+                    charMap.get("healthempty", ("-",7, 1)),
+                    self.colours)
         self.inventoryPad = InventoryPad("Inventory", 16)
         self.groundPad = InventoryPad("Ground", 8)
         self.lastinfostring = None
-        self.colours = colours
         self.changed = False
-        if colours:
-            curses.use_default_colors()
-            for i in range(0, min(256, curses.COLORS, curses.COLOR_PAIRS)):
-                curses.init_pair(i, i%16, i//16)
             
     
     def resizeField(self, size):

@@ -53,9 +53,9 @@ class Player:
                 "inventory": self.inventory,
                 "move": Move(slowness=2),
                 "controller": InputController(),
-                "fighter": Fighter(self.maxHealth, 5, slowness=2, health=self.health or self.maxHealth),
+                "fighter": Fighter(self.maxHealth, 5, slowness=4, health=self.health or self.maxHealth),
                 "alignment": Alignment(faction.GOOD),
-                "heal": Healing(interval=30),
+                "heal": Healing(interval=50),
                 "target": Target()
                 })
         self.entity.construct(room.getRoomData())
@@ -98,6 +98,7 @@ class Player:
             self.entity = None
             self.roomname = None
             self.place = None
+            self.health = self.maxHealth
         
     
     def control(self, action):

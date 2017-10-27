@@ -3,10 +3,10 @@
     "height": 32,
     "spawn": [30, 20],
     "places": {
-        "stairup": [30, 20]
+        "stairup": [30, 20],
+        "toarena": [30, 30]
     },
     "grid": [
-    
         "                                                                ",
         "                                                                ",
         "                                                                ",
@@ -32,13 +32,13 @@
         "                    #...................#                       ",
         "                    #...................#                       ",
         "                    #...................#                       ",
-        "                    #####################                       ",
-        "                                                                ",
-        "                                                                ",
-        "                                                                ",
-        "                                                                ",
-        "                                                                ",
-        "                                                                "
+        "                    #########...#########                       ",
+        "                            #...#                               ",
+        "                            #...#                               ",
+        "                            #...#                               ",
+        "                            #...#                               ",
+        "                            #...#                               ",
+        "                            #$$$#                               "
     ],
     "mapping": {
         ",": "grass",
@@ -48,14 +48,19 @@
         "*": ["grass", "pebble"],
         "d": ["grass", "dummy"],
         "#": "wall",
-        ":": ["ground", "seed"],
-        ".": "ground",
+        ":": ["floor", "seed"],
+        ".": "floor",
         "^": ["spiketrap"],
         "r": ["grass", "rabbit"],
         "<": {
             "type": "roomexit",
             "args": ["begin", "stairdown"],
             "kwargs": {"sprite": "stairup"}
+        },
+        "$": {
+            "type": "roomexit",
+            "args": ["arena"],
+            "kwargs": {"sprite": "floor"}
         },
         " ": []
     }
