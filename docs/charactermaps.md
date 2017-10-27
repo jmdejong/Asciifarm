@@ -36,7 +36,9 @@ These colours can differ per terminal, but in most terminals they look like this
 On terminals that have more than 8 colours, the next 8 colours will be the lighter version of the same colour.
 On terminals that only have 8 colours, the next 8 colours will be the same as the first 8 (colour = colour % 8).
 
-run the script test/colourpairs.py to see how the colour combinations look in your terminal.
+Run the script test/colourpairs.py to see how the colour combinations look in your terminal.
+
+The combination 0,0 will always produce the default colour pair for the terminal (which usually looks like 7,0)
 
 ## default
 

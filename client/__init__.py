@@ -33,6 +33,7 @@ def main(name, socketType, address, keybindings, characters, colours=False):
             client.start()
         except KeyboardInterrupt:
             caught_ctrl_c = True
+            client.keepAlive = False
     
     curses.wrapper(start)
     

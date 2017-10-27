@@ -18,7 +18,7 @@
         "stairup": ["<",7],
         "dummy": ["d", 3],
         "spikes": ["^",7],
-        "goblin": ["g",1],
+        "goblin": ["g",2],
         "seed": [":",10],
         "plant": ["Y",10],
         "youngplant": ["v",10],
