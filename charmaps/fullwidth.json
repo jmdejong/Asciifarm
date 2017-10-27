@@ -27,7 +27,7 @@
         " ": "  "
     },
     "default": "？",
-    "charwidth": 2,,
+    "charwidth": 2,
     "healthfull": ["@", 7, 2],
     "healthemtpy": ["-", 7, 1]
 }

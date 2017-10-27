@@ -10,8 +10,6 @@ from .colours import Colours
 
 
 SIDEWIDTH = 20
-HEALTHHEIGHT = 2
-INVENTORYHEIGHT = 12
 
 
 class Display:
