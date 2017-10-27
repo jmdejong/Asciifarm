@@ -6,12 +6,13 @@
         "a": ["move", "west"],
         "e": ["take"],
         "q": ["drop"],
-        "F": [["attack"],["attack", "north"],["attack", "south"],["attack", "east"],["attack", "west"]],
+        "f": [["attack"],["attack", "north"],["attack", "south"],["attack", "east"],["attack", "west"]],
+        "F": ["attack"],
         "W": ["attack", "north"],
         "S": ["attack", "south"],
         "D": ["attack", "east"],
         "A": ["attack", "west"],
         "E": ["use"],
-        "f": ["interact"]
+        "r": ["interact"]
     }
 }
