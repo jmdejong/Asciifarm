@@ -21,7 +21,7 @@ class Display:
         if colours:
             self.colours = Colours()
         self.screen = Screen(stdscr)
-        self.fieldPad = FieldPad((64, 32), charMap.get("charwidth", 1), self.colours)
+        self.fieldPad = FieldPad((1, 1), charMap.get("charwidth", 1), self.colours)
         self.characters = charMap["mapping"]
         self.defaultChar = charMap.get("default", "?")
         self.infoPad = InfoPad((100, 100))

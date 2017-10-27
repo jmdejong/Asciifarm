@@ -67,6 +67,7 @@ class Client:
                 field = msg[1]
                 fieldWidth = field['width']
                 fieldHeight = field['height']
+                self.display.resizeField((fieldWidth, fieldHeight))
                 fieldCells = field['field']
                 mapping = field['mapping']
                 self.display.drawFieldCells(
