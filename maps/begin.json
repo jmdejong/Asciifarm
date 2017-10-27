@@ -46,7 +46,7 @@
         "~": "water",
         "o": ["grass", "stone"],
         "*": ["grass", "pebble"],
-        "d": ["grass", "dummy"],
+        "d": ["ground", "dummy"],
         "#": "wall",
         ":": ["ground", "seed"],
         ".": "ground",

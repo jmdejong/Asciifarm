@@ -28,6 +28,6 @@
     },
     "default": "?",
     "charwidth": 1,
-    "healthfull": ["@", 7, 2],
-    "healthemtpy": ["-", 7, 1]
+    "healthfull": ["#", 7, 2],
+    "healthempty": ["_", 7, 1]
 }

@@ -63,6 +63,7 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
+- sort objects on ground on height
 - make idle NPC's stay around spawn
 - nondeterminism in combat and grow times
 - only plant seeds in soil
@@ -76,11 +77,11 @@ The idea is to make 3 different kind of areas:
 - better inventory selection
 - messages in the client
 - runtime-created rooms
-- multicharacter sprites in client
 - in-game chat
+- world persistence
 - support websockets
 - windows comptibility (libtcod/tdl instead of ncurses?)
-- world persistence
+- multicharacter sprites in client
 
 ## DONE
 
