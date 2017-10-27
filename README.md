@@ -59,6 +59,8 @@ start up a new shell:
     cd asciifarm
     pipenv shell --three
 
+Next time you'll just need to `cd asciifarm && pipenv shell`.
+
 ### `venv` style
 
 What's that? You can't install pipenv (not even with `--user`)? That's OK, you
