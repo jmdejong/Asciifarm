@@ -3,6 +3,12 @@ import grid
 
 # this class extracts the data to send to the clients from the world
 
+changeActions = {
+    "health": lambda p: ["health", p.getHealth()],
+    "inventory": lambda p: ["inventory", [obj.getSprite() for obj in p.getInventory()]],
+    "ground": lambda p: ["ground", [obj.getSprite() for obj in p.getGroundObjs()]],
+    "pos": lambda p: ["playerpos", p.getPos()]
+    }
 
 class View:
     
@@ -23,14 +29,17 @@ class View:
     
     def playerView(self, playerName):
         player = self.world.getPlayer(playerName)
+        
+        data = []
+        changes = player.getChanges()
+        player.resetChanges()
+        if player.shouldResetView():
+            changes |= {"health", "inventory", "ground", "pos"}
+        for change in changes:
+            if change in changeActions:
+                data.append(changeActions[change](player))
+        
         room = self.world.getRoom(player.getRoom())
-        data = [
-            ["health", player.getHealth()],
-            ["inventory", [obj.getSprite() for obj in player.getInventory()]],
-            ["ground", [obj.getSprite() for obj in player.getGroundObjs()]],
-            ["playerpos", player.getPos()]
-            #"interactions": [ action + ' ' + obj.getChar() for action, obj in player.getInteractions()]
-        ]
         if room:
             if player.shouldResetView():
                 field = self.viewRoom(room)
@@ -38,7 +47,8 @@ class View:
                     data.append(["field", field])
                     player.viewResetDone()
             changedCells = room.getChangedCells()
-            data.append(["changecells", list(changedCells.items())])
+            if len(changedCells):
+                data.append(["changecells", list(changedCells.items())])
         
         return data
 

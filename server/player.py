@@ -28,6 +28,8 @@ class Player:
         
         self.resetView = True
         
+        self.changes = set()
+        
     
     def leaveRoom(self):
         if self.entity:
@@ -86,11 +88,13 @@ class Player:
         if action == "damage":
             obj, damage = data
             print("{} got {} damage from {}".format(self.name, damage, obj.getName()))
+            self.changes.add("health")
         
         if action == "heal":
             obj, health = data
             if obj:
                 print("{} got {} health from {}".format(self.name, health, obj.getName()))
+            self.changes.add("health")
         
         if action == "die":
             obj = data[0]
@@ -99,6 +103,16 @@ class Player:
             self.roomname = None
             self.place = None
             self.health = self.maxHealth
+        
+        if action == "inventorychange":
+            self.changes.add("inventory")
+        
+        if action == "objectenter" or action == "objectleave":
+            self.changes.add("ground")
+        
+        if action == "move":
+            self.changes.add("ground")
+            self.changes.add("pos")
         
     
     def control(self, action):
@@ -143,3 +157,10 @@ class Player:
     
     def viewResetDone(self):
         self.resetView = False
+    
+    
+    def getChanges(self):
+        return self.changes
+    
+    def resetChanges(self):
+        self.changes = set()
