@@ -40,7 +40,7 @@ class View:
                 data.append(changeActions[change](player))
         
         for message in player.readMessages():
-            data.append("message", message)
+            data.append(["message", message])
         
         room = self.world.getRoom(player.getRoom())
         if room:
