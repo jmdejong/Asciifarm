@@ -19,8 +19,9 @@ class Inventory:
         self.owner.trigger("inventorychange")
     
     def drop(self, item):
-        self.items.remove(item) # should I catch here?
-        self.owner.trigger("inventorychange")
+        if item in self.items:
+            self.items.remove(item)
+            self.owner.trigger("inventorychange")
     
     def getItems(self):
         return list(self.items)

@@ -20,7 +20,7 @@ EVIL = Faction() # monsters and other enemies
 
 EVIL.hates(GOOD)
 
-NONE = Faction() # things that can always be attacket
+NONE = Faction() # things that can always be attacked
 
 GOOD.hates(NONE)
 EVIL.hates(NONE)

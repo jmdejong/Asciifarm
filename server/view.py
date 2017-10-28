@@ -6,7 +6,7 @@ import grid
 changeActions = {
     "health": lambda p: ["health", p.getHealth()],
     "inventory": lambda p: ["inventory", [obj.getSprite() for obj in p.getInventory()]],
-    "ground": lambda p: ["ground", [obj.getSprite() for obj in p.getGroundObjs()]],
+    "ground": lambda p: ["ground", [obj.getName() for obj in p.getGroundObjs()]],
     "pos": lambda p: ["playerpos", p.getPos()]
     }
 
@@ -38,6 +38,9 @@ class View:
         for change in changes:
             if change in changeActions:
                 data.append(changeActions[change](player))
+        
+        for message in player.readMessages():
+            data.append("message", message)
         
         room = self.world.getRoom(player.getRoom())
         if room:

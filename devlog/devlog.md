@@ -74,5 +74,10 @@ This quickly made me realize that health lowered way to fast, so I doubled the a
 There is only one main change I want to make to the client now: add a message log.
 Ok, maybe 2: select items in the inventory for using.
 
+## 28/7
+
+I made some more changes, that any change in the groundPatch can trigger an onEnter event.
+This turned out to be slightly problematic since now, teleporting to another 'portal' (including stairs to change rooms) now teleports the player back the moment that they arrive.
+This keeps going on and on, until the maximum recursion depth is exceeded.
 
 

@@ -8,6 +8,7 @@ from components.alignment import Alignment
 from components.target import Target
 import faction
 import entity
+import queue
 
 class Player:
     
@@ -20,15 +21,17 @@ class Player:
         
         self.entity = None
         
-        self.data = {}
-        # todo: ensure that items have correct roomData when inventory changes room
         self.inventory = Inventory(10)
         self.health = None
         self.maxHealth = 100
         
+        self.messages = queue.Queue()
+        
         self.resetView = True
         
         self.changes = set()
+        
+        self.canChangeRoom=False
         
     
     def leaveRoom(self):
@@ -38,6 +41,7 @@ class Player:
             self.entity = None
     
     def joinRoom(self, roomname, place=None):
+        self.canChangeRoom = False
         room = self.world.getRoom(roomname)
         if not room:
             raise Exception("Invalid Room")
@@ -63,42 +67,41 @@ class Player:
         self.entity.construct(room.getRoomData())
         self.entity.addListener(self.onPlayerAction)
         room.addObj(pos, self.entity)
-        
         self.roomname = roomname
         self.place = pos
-        
         self.resetView = True
+        self.canChangeRoom = True
     
     def getRoom(self):
         return self.roomname
     
     def onPlayerAction(self, o, action, *data):
-        if action == "changeroom":
+        if action == "changeroom" and self.canChangeRoom:
             room, pos = data
             self.joinRoom(room, pos)
         
         if action == "attack":
             obj, damage = data
-            print("{} attacks {} for {} damage".format(self.name, obj.getName(), damage))
+            self.log("{} attacks {} for {} damage".format(self.name, obj.getName(), damage))
         
         if action == "kill":
             obj = data[0]
-            print("{} kills {}".format(self.name, obj.getName()))
+            self.log("{} kills {}".format(self.name, obj.getName()))
         
         if action == "damage":
             obj, damage = data
-            print("{} got {} damage from {}".format(self.name, damage, obj.getName()))
+            self.log("{} got {} damage from {}".format(self.name, damage, obj.getName()))
             self.changes.add("health")
         
         if action == "heal":
             obj, health = data
             if obj:
-                print("{} got {} health from {}".format(self.name, health, obj.getName()))
+                self.log("{} got {} health from {}".format(self.name, health, obj.getName()))
             self.changes.add("health")
         
         if action == "die":
             obj = data[0]
-            print("{} got killed by {}".format(self.name, obj.getName()))
+            self.log("{} got killed by {}".format(self.name, obj.getName()))
             self.entity = None
             self.roomname = None
             self.place = None
@@ -158,6 +161,15 @@ class Player:
     def viewResetDone(self):
         self.resetView = False
     
+    def log(self, msg):
+        self.messages.put(msg)
+        print(msg)
+    
+    def readMessages(self):
+        m = []
+        while not self.messages.empty():
+            m.append(self.messages.get())
+        return m
     
     def getChanges(self):
         return self.changes
