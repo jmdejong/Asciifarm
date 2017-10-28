@@ -40,8 +40,8 @@ class Entity:
     def place(self, ground):
         if self.ground:
             self.ground.removeObj(self)
-        ground.addObj(self)
         self.ground = ground
+        ground.addObj(self)
     
     def remove(self):
         if self.ground:

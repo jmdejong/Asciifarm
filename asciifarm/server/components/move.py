@@ -32,7 +32,8 @@ class Move:
                 self.owner.place(newPlace)
                 self.canMove = False
                 self.timeout = timeout.Timeout(self.updateEvent, self.slowness, self.makeReady)
-                newPlace.onEnter(self.owner)
+                #newPlace.onEnter(self.owner)
+                self.owner.trigger("move")
             
         self.direction = None
         self.moveEvent.removeListener(self.doMove)

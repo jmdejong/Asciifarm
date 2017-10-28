@@ -23,6 +23,7 @@ class GroundPatch:
         self.objects.sort(key=(lambda o: -o.getHeight()))
         if self._getTopObj() != oldTop:
             self.event.trigger("changesprite", self.getPos(), self.getTopSprite())
+        self.onEnter(obj)
     
     def removeObj(self, obj):
         oldTop = self._getTopObj()
@@ -30,6 +31,7 @@ class GroundPatch:
             self.objects.remove(obj)
             if obj == oldTop:
                 self.event.trigger("changesprite", self.getPos(), self.getTopSprite())
+        self.onLeave(obj)
     
     def getTopSprite(self):
         topObj = self._getTopObj()
@@ -49,6 +51,12 @@ class GroundPatch:
             if o == obj:
                 continue
             o.trigger("objectenter", obj)
+    
+    def onLeave(self, obj):
+        for o in frozenset(self.objects):
+            if o == obj:
+                continue
+            o.trigger("objectleave", obj)
     
     def getNeighbours(self):
         if not self.neighbours:
