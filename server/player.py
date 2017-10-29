@@ -52,7 +52,6 @@ class Player:
         pos = place or room.getEntrance()
         self.entity = entity.Entity(
             sprite = "player",
-            solid = False,
             height = 2,
             name = '~' + self.name,
             components={

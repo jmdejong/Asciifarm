@@ -13,8 +13,12 @@ class GroundPatch:
         self.neighbours = None
         self.event = event.Event()
     
+    def getFlags(self):
+        return set().union(*[obj.getFlags() for obj in self.getObjs()])
+    
     def accessible(self):
-        return not any(obj.isSolid() for obj in self.objects)
+        flags = self.getFlags()
+        return "floor" in flags and "solid" not in flags
     
     def addObj(self, obj):
         oldTop = self._getTopObj()

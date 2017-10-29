@@ -69,7 +69,6 @@ The idea is to make 3 different kind of areas:
 - equipment
 - autofight/autoretaliate?
 - display target enemy health
-- write converter to convert tiled map files to readable files
 - better reaction on player death
 - room unloading when there are no players
 - better inventory selection
@@ -78,7 +77,12 @@ The idea is to make 3 different kind of areas:
 - world persistence
 - support websockets
 - windows comptibility (libtcod/tdl instead of ncurses?)
-- multicharacter sprites in client
+- write converter to convert tiled map files to readable files
+
+## Other Ideas
+
+- multicharacter sprites
+- plants growing as cellular automata
 
 ## DONE
 

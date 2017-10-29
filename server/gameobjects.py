@@ -25,15 +25,15 @@ entities = {}
 
 
 def makeWall():
-    return Entity(sprite="wall", height=2, solid=True)
+    return Entity(sprite="wall", height=2, flags={"solid"})
 entities["wall"] = makeWall
 
 def makeRock():
-    return Entity(sprite="rock", height=10, solid=True)
+    return Entity(sprite="rock", height=10, flags={"solid"})
 entities["rock"] = makeRock
 
 def makeTree():
-    return Entity(sprite="tree", height=3, solid=True)
+    return Entity(sprite="tree", height=3, flags={"solid"})
 entities["tree"] = makeTree
 
 def makeStone():
@@ -45,22 +45,22 @@ def makePebble():
 entities["pebble"] = makePebble
 
 def makeGrass():
-    return Entity(sprite=random.choice(["ground", "grass1", "grass2", "grass3"]), height=0.1)
+    return Entity(sprite=random.choice(["ground", "grass1", "grass2", "grass3"]), height=0.1, flags={"floor"})
 entities["grass"] = makeGrass
 
 def makeFloor():
-    return Entity(sprite="floor", height=0)
+    return Entity(sprite="floor", height=0.1, flags={"floor"})
 entities["floor"] = makeFloor
     
 def makeGround():
-    return Entity(sprite="ground", height=0)
+    return Entity(sprite="ground", height=0.1, flags={"floor"})
 entities["ground"] = makeGround
     
 def makeWater():
-    return Entity(sprite="water", height=0, solid=True)
+    return Entity(sprite="water", height=0)
 entities["water"] = makeWater
 
-def makeRoomExit(destRoom, destPos=None, sprite="exit", size=1):
+def makeRoomExit(destRoom, destPos=None, sprite="exit", size=0):
     return Entity(sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos)})
 entities["roomexit"] = makeRoomExit
 
@@ -130,7 +130,7 @@ entities["seed"] = makeSeed
 
 
 def makeBuiltWall():
-    return Entity(sprite="wall", height=2, solid=True, components={"fighter": Fighter(maxHealth=100, strength=0), "alignment": Alignment(faction.NONE), "loot": Loot([("stone", 1)])})
+    return Entity(sprite="wall", height=2, components={"fighter": Fighter(maxHealth=100, strength=0), "alignment": Alignment(faction.NONE), "loot": Loot([("stone", 1)])}, flags={"solid"})
 entities["builtwall"] = makeBuiltWall
 
 

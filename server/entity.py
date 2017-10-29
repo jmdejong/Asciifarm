@@ -14,13 +14,13 @@ class Entity:
     Remove methods are for cleanup, like unsubscribing from events.
     """
     
-    def __init__(self, sprite=' ', solid=False, height=0, name=None, components={}):
+    def __init__(self, sprite=' ', height=0, name=None, components={}, flags=set()):
         self.sprite = sprite # the name of the image to display for this entity
-        self.solid = solid
         self.height = height # if multiple objects are on a square, the tallest one is drawn
         self.name = name if name else sprite # human readable name/description
         self.components = components
         self.observable = event.Event()
+        self.flags = frozenset(flags)
         
         self.ground = None
         self.roomData = None
@@ -84,6 +84,6 @@ class Entity:
         objects.discard(self)
         return objects
     
-    def isSolid(self):
-        return self.solid
+    def getFlags(self):
+        return self.flags
     

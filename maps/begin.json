@@ -52,11 +52,11 @@
         ".": "ground",
         "+": "floor",
         "^": ["spiketrap"],
-        ">": {
+        ">": [{
             "type": "roomexit",
             "args": ["basement","stairup"],
-            "kwargs": {"sprite": "stairdown"}
-        },
+            "kwargs": {"sprite": "stairdown", "size": 1}
+        }, "floor"],
         "r": ["grass", "rabbit"]
     }
 }
