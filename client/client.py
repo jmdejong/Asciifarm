@@ -88,18 +88,27 @@ class Client:
                 health = msg[1]
                 if health:
                     self.display.setHealth(*health)
+                else:
+                    self.log("You have died. Restart the client to respawn")
             if msgType == "inventory":
                 self.display.setInventory(msg[1])
             if msgType == "ground":
                 self.display.setGround(msg[1])
             if msgType == "message":
-                self.display.addMessage(msg[1])
-                if self.logFile:
-                    with(open(self.logFile, 'a')) as f:
-                        f.write(msg[1]+'\n')
+                self.log(msg[1])
+                #self.display.addMessage(msg[1])
+                #if self.logFile:
+                    #with(open(self.logFile, 'a')) as f:
+                        #f.write(msg[1]+'\n')
         
         
         self.display.update()
+    
+    def log(self, text):
+        self.display.addMessage(text)
+        if self.logFile:
+            with(open(self.logFile, 'a')) as f:
+                f.write(text+'\n')
     
     def command_loop(self):
         while self.keepalive:

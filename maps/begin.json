@@ -51,7 +51,7 @@
         ":": ["floor", "seed"],
         ".": "ground",
         "+": "floor",
-        "^": ["spiketrap"],
+        "^": ["spiketrap", "ground"],
         ">": [{
             "type": "roomexit",
             "args": ["basement","stairup"],
