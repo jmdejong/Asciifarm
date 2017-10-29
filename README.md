@@ -64,7 +64,6 @@ The idea is to make 3 different kind of areas:
 - better code documentation
 - testing
 - nondeterminism in combat and grow times
-- only plant seeds in soil
 - make farming more work
 - equipment
 - autofight/autoretaliate?
@@ -86,6 +85,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- only plant seeds in soil
 - make idle NPC's stay around spawn
 - messages in the client
 - sort objects on ground on height

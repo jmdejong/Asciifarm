@@ -45,7 +45,7 @@ def makePebble():
 entities["pebble"] = makePebble
 
 def makeGrass():
-    return Entity(sprite=random.choice(["ground", "grass1", "grass2", "grass3"]), height=0.1, flags={"floor"})
+    return Entity(sprite=random.choice(["ground", "grass1", "grass2", "grass3"]), height=0.1, flags={"floor", "soil"})
 entities["grass"] = makeGrass
 
 def makeFloor():
@@ -53,7 +53,7 @@ def makeFloor():
 entities["floor"] = makeFloor
     
 def makeGround():
-    return Entity(sprite="ground", height=0.1, flags={"floor"})
+    return Entity(sprite="ground", height=0.1, flags={"floor", "soil"})
 entities["ground"] = makeGround
     
 def makeWater():
@@ -125,7 +125,7 @@ entities["food"] = makeFood
 
 
 def makeSeed():
-    return Entity(sprite="seed", height=0.3, components={"item": Build("sownseed")})
+    return Entity(sprite="seed", height=0.3, components={"item": Build("sownseed", flagsNeeded={"soil"})})
 entities["seed"] = makeSeed
 
 
