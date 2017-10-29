@@ -76,22 +76,22 @@ def makeSpikeTrap():
     return Entity(sprite="spikes", height=1, components={"fighter": Fighter(maxHealth=25, strength=25), "collision": Trap()})
 entities["spiketrap"] = makeSpikeTrap
 
-def makeGoblin():
+def makeGoblin(home=None):
     return Entity(sprite="goblin", height=1.2, components={
         "move": Move(slowness=3),
         "fighter": Fighter(maxHealth=25, strength=5, slowness=6),
         "alignment": Alignment(faction.EVIL),
-        "controller": MonsterAi(viewDist=8, moveChance=0.01),
+        "controller": MonsterAi(viewDist=8, moveChance=0.01, home=home),
         "loot": Loot([("seed", .5), ("seed", .1)])
         })
 entities["goblin"] = makeGoblin
 
-def makeTroll():
+def makeTroll(home=None):
     return Entity(sprite="troll", height=1.8, components={
         "move": Move(slowness=4),
         "fighter": Fighter(maxHealth=125, strength=12, slowness=10),
         "alignment": Alignment(faction.EVIL),
-        "controller": MonsterAi(viewDist=8, moveChance=0.01),
+        "controller": MonsterAi(viewDist=8, moveChance=0.01, home=home),
         "loot": Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5)])
         })
 entities["troll"] = makeTroll

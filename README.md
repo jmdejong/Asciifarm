@@ -63,7 +63,6 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
-- make idle NPC's stay around spawn
 - nondeterminism in combat and grow times
 - only plant seeds in soil
 - make farming more work
@@ -74,7 +73,6 @@ The idea is to make 3 different kind of areas:
 - better reaction on player death
 - room unloading when there are no players
 - better inventory selection
-- messages in the client
 - runtime-created rooms
 - in-game chat
 - world persistence
@@ -84,6 +82,8 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- make idle NPC's stay around spawn
+- messages in the client
 - sort objects on ground on height
 - follow player when room larger than terminal
 - multiple actions per keypress
