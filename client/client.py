@@ -93,6 +93,8 @@ class Client:
                 self.display.setInventory(msg[1])
             if msgType == "ground":
                 self.display.setGround(msg[1])
+            if msgType == "message":
+                self.display.addMessage(msg[1])
         
         
         self.display.update()
