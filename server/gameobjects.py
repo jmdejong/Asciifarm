@@ -78,7 +78,7 @@ entities["spiketrap"] = makeSpikeTrap
 
 def makeGoblin():
     return Entity(sprite="goblin", height=1.2, components={
-        "move": Move(slowness=4),
+        "move": Move(slowness=3),
         "fighter": Fighter(maxHealth=25, strength=5, slowness=6),
         "alignment": Alignment(faction.EVIL),
         "controller": MonsterAi(viewDist=8, moveChance=0.01),
@@ -88,7 +88,7 @@ entities["goblin"] = makeGoblin
 
 def makeTroll():
     return Entity(sprite="troll", height=1.8, components={
-        "move": Move(slowness=5),
+        "move": Move(slowness=4),
         "fighter": Fighter(maxHealth=125, strength=12, slowness=10),
         "alignment": Alignment(faction.EVIL),
         "controller": MonsterAi(viewDist=8, moveChance=0.01),
