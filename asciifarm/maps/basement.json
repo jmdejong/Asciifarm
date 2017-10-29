@@ -52,16 +52,15 @@
         ".": "floor",
         "^": ["spiketrap"],
         "r": ["grass", "rabbit"],
-        "<": {
+        "<": [{
             "type": "roomexit",
             "args": ["begin", "stairdown"],
-            "kwargs": {"sprite": "stairup"}
-        },
-        "$": {
+            "kwargs": {"sprite": "stairup", "size": 1}
+        }, "floor"],
+        "$": [{
             "type": "roomexit",
-            "args": ["arena"],
-            "kwargs": {"sprite": "floor"}
-        },
+            "args": ["arena"]
+        }, "floor"],
         " ": []
     }
 }

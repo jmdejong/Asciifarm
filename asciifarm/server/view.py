@@ -30,6 +30,9 @@ class View:
         player = self.world.getPlayer(playerName)
         
         data = []
+        for message in player.readMessages():
+            data.append(["message", message])
+        
         changes = player.getChanges()
         player.resetChanges()
         if player.shouldResetView():
@@ -37,9 +40,6 @@ class View:
         for change in changes:
             if change in changeActions:
                 data.append(changeActions[change](player))
-        
-        for message in player.readMessages():
-            data.append(["message", message])
         
         room = self.world.getRoom(player.getRoom())
         if room:

@@ -53,11 +53,10 @@
         "+": "floor",
         "^": ["spiketrap"],
         "r": ["grass", "rabbit"],
-        "$": {
+        "$": [{
             "type": "roomexit",
-            "args": ["basement", "toarena"],
-            "kwargs": {"sprite": "floor"}
-        },
+            "args": ["basement", "toarena"]
+        }, "floor"],
         "g": [
             "ground", 
             {

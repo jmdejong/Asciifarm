@@ -103,27 +103,31 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
-- make idle NPC's stay around spawn
 - nondeterminism in combat and grow times
-- only plant seeds in soil
 - make farming more work
 - equipment
 - autofight/autoretaliate?
 - display target enemy health
-- write converter to convert tiled map files to readable files
 - better reaction on player death
 - room unloading when there are no players
 - better inventory selection
-- messages in the client
 - runtime-created rooms
 - in-game chat
 - world persistence
 - support websockets
 - windows comptibility (libtcod/tdl instead of ncurses?)
-- multicharacter sprites in client
+- write converter to convert tiled map files to readable files
+
+## Other Ideas
+
+- multicharacter sprites
+- plants growing as cellular automata
 
 ## DONE
 
+- only plant seeds in soil
+- make idle NPC's stay around spawn
+- messages in the client
 - sort objects on ground on height
 - follow player when room larger than terminal
 - multiple actions per keypress

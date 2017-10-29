@@ -7,7 +7,7 @@ class Spawner:
     def __init__(self, objectType, amount=1, respawnDelay=1, objectArgs=[], objectKwargs={}):
         self.objectType = objectType
         self.amount = amount
-        self.respawnDelay = respawnDelay # currently ignored
+        self.respawnDelay = respawnDelay
         self.spawned = set()
         self.objectArgs = objectArgs
         self.objectKwargs = objectKwargs
@@ -27,7 +27,7 @@ class Spawner:
         self.timeouts.add(to)
     
     def spawn(self, to):
-        obj = gameobjects.makeEntity(self.objectType, self.roomData, *self.objectArgs, **self.objectKwargs)
+        obj = gameobjects.makeEntity(self.objectType, self.roomData, *self.objectArgs, home=self.owner, **self.objectKwargs)
         obj.place(self.owner.getGround())
         self.spawned.add(obj)
         self.timeouts.remove(to)

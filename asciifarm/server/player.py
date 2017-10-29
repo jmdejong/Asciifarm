@@ -1,3 +1,4 @@
+
 from .components.inventory import Inventory
 from .components.inputcontroller import InputController
 from .components.move import Move
@@ -51,7 +52,6 @@ class Player:
         pos = place or room.getEntrance()
         self.entity = entity.Entity(
             sprite = "player",
-            solid = False,
             height = 2,
             name = '~' + self.name,
             components={

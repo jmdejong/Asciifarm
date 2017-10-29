@@ -24,15 +24,15 @@ entities = {}
 
 
 def makeWall():
-    return Entity(sprite="wall", height=2, solid=True)
+    return Entity(sprite="wall", height=2, flags={"solid"})
 entities["wall"] = makeWall
 
 def makeRock():
-    return Entity(sprite="rock", height=10, solid=True)
+    return Entity(sprite="rock", height=10, flags={"solid"})
 entities["rock"] = makeRock
 
 def makeTree():
-    return Entity(sprite="tree", height=3, solid=True)
+    return Entity(sprite="tree", height=3, flags={"solid"})
 entities["tree"] = makeTree
 
 def makeStone():
@@ -44,22 +44,22 @@ def makePebble():
 entities["pebble"] = makePebble
 
 def makeGrass():
-    return Entity(sprite=random.choice(["ground", "grass1", "grass2", "grass3"]), height=0.1)
+    return Entity(sprite=random.choice(["ground", "grass1", "grass2", "grass3"]), height=0.1, flags={"floor", "soil"})
 entities["grass"] = makeGrass
 
 def makeFloor():
-    return Entity(sprite="floor", height=0)
+    return Entity(sprite="floor", height=0.1, flags={"floor"})
 entities["floor"] = makeFloor
     
 def makeGround():
-    return Entity(sprite="ground", height=0)
+    return Entity(sprite="ground", height=0.1, flags={"floor", "soil"})
 entities["ground"] = makeGround
     
 def makeWater():
-    return Entity(sprite="water", height=0, solid=True)
+    return Entity(sprite="water", height=0)
 entities["water"] = makeWater
 
-def makeRoomExit(destRoom, destPos=None, sprite="exit", size=1):
+def makeRoomExit(destRoom, destPos=None, sprite="exit", size=0):
     return Entity(sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos)})
 entities["roomexit"] = makeRoomExit
 
@@ -75,22 +75,22 @@ def makeSpikeTrap():
     return Entity(sprite="spikes", height=1, components={"fighter": Fighter(maxHealth=25, strength=25), "collision": Trap()})
 entities["spiketrap"] = makeSpikeTrap
 
-def makeGoblin():
+def makeGoblin(home=None):
     return Entity(sprite="goblin", height=1.2, components={
-        "move": Move(slowness=4),
+        "move": Move(slowness=3),
         "fighter": Fighter(maxHealth=25, strength=5, slowness=6),
         "alignment": Alignment(faction.EVIL),
-        "controller": MonsterAi(viewDist=8, moveChance=0.01),
+        "controller": MonsterAi(viewDist=8, moveChance=0.01, home=home),
         "loot": Loot([("seed", .5), ("seed", .1)])
         })
 entities["goblin"] = makeGoblin
 
-def makeTroll():
+def makeTroll(home=None):
     return Entity(sprite="troll", height=1.8, components={
-        "move": Move(slowness=5),
+        "move": Move(slowness=4),
         "fighter": Fighter(maxHealth=125, strength=12, slowness=10),
         "alignment": Alignment(faction.EVIL),
-        "controller": MonsterAi(viewDist=8, moveChance=0.01),
+        "controller": MonsterAi(viewDist=8, moveChance=0.01, home=home),
         "loot": Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5)])
         })
 entities["troll"] = makeTroll
@@ -124,12 +124,12 @@ entities["food"] = makeFood
 
 
 def makeSeed():
-    return Entity(sprite="seed", height=0.3, components={"item": Build("sownseed")})
+    return Entity(sprite="seed", height=0.3, components={"item": Build("sownseed", flagsNeeded={"soil"})})
 entities["seed"] = makeSeed
 
 
 def makeBuiltWall():
-    return Entity(sprite="wall", height=2, solid=True, components={"fighter": Fighter(maxHealth=100, strength=0), "alignment": Alignment(faction.NONE), "loot": Loot([("stone", 1)])})
+    return Entity(sprite="wall", height=2, components={"fighter": Fighter(maxHealth=100, strength=0), "alignment": Alignment(faction.NONE), "loot": Loot([("stone", 1)])}, flags={"solid"})
 entities["builtwall"] = makeBuiltWall
 
 

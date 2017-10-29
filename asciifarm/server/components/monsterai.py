@@ -6,9 +6,11 @@ from .. import pathfinding
 class MonsterAi:
     
     
-    def __init__(self, viewDist, moveChance=1):
+    def __init__(self, viewDist, moveChance=1, home=None, homesickness=0.25):
         self.moveChance = moveChance
         self.viewDist = viewDist
+        self.home = home
+        self.homesickness = homesickness
     
     
     def attach(self, obj, roomData):
@@ -41,7 +43,10 @@ class MonsterAi:
                 self.move.move(pathfinding.stepTo(self.owner, closest))
         else:
             if random.random() < self.moveChance:
-                direction = random.choice(["north", "south", "east", "west"])
+                if (self.home and self.home.inRoom() and random.random() < self.homesickness):
+                    direction = pathfinding.stepTo(self.owner, self.home)
+                else: 
+                    direction = random.choice(["north", "south", "east", "west"])
                 self.move.move(direction)
     
     def remove(self):
