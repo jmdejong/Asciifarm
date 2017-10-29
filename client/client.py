@@ -5,7 +5,6 @@ import sys
 
 import curses
 import threading
-#import logging
 import json
 import getpass
 import argparse
@@ -13,16 +12,16 @@ from .display.screen import Screen
 import string
 from .display import Display
 
-#logging.basicConfig(filename="client.log", filemode='w', level=logging.DEBUG)
 
 class Client:
     
-    def __init__(self, stdscr, display, name, connection, keybindings):
+    def __init__(self, stdscr, display, name, connection, keybindings, logFile=None):
         self.stdscr = stdscr
         self.display = display
         self.name = name
         self.keepalive = True
         self.connection = connection
+        self.logFile = logFile
         
         self.commands = {}
         for key, commands in keybindings["input"].items():
@@ -95,6 +94,9 @@ class Client:
                 self.display.setGround(msg[1])
             if msgType == "message":
                 self.display.addMessage(msg[1])
+                if self.logFile:
+                    with(open(self.logFile, 'a')) as f:
+                        f.write(msg[1]+'\n')
         
         
         self.display.update()
