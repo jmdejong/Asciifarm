@@ -126,6 +126,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- merge package brach
 - only plant seeds in soil
 - make idle NPC's stay around spawn
 - messages in the client

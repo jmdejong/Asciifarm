@@ -2,7 +2,7 @@
 import argparse
 import pathlib
 
-from . import mainloop
+from . import game
 from . import loader
 
 
@@ -31,4 +31,4 @@ def main(argv=None):
         address = (hostname, int(port))
     
     worldData = loader.loadWorld(args.world)
-    mainloop.Game(args.socket, worldData).start(address)
+    game.Game(args.socket, worldData).start(address)
