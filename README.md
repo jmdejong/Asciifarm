@@ -48,6 +48,7 @@ Use WASD to attack enemies in adjacent squares.
 
 If you want to help us out, great!
 
+These instructions are untested (much has changed since the last tests)
 
 ### Pipenv style
 
@@ -77,7 +78,7 @@ Now you can install it:
 
     python -m pip install -e .
 
-Now `asciifarm` and `hostfarm` should be on your path and you can start up the
+Now `asciifarm` and `hostfarms` should be on your path and you can start up the
 game. Cool. :sparkles:
 
 
