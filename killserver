@@ -1,0 +1,2 @@
+#!/bin/sh
+pkill -f asciifarm.server -u troido
