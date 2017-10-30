@@ -1,10 +1,5 @@
 #! /usr/bin/python3
 
-import sys
-
-if sys.version_info[0] < 3:
-    print("This game is written in python 3.\nRun 'python3 "+sys.argv[0]+"' or './"+sys.argv[0]+"'")
-    sys.exit(-1)
 
 import argparse
 import getpass
@@ -12,11 +7,12 @@ import json
 import os
 import os.path
 
-from . import client
+from .start import main as clientmain
 
 thisPath = os.path.dirname(__file__)
-charMapPath = os.path.join(thisPath, "charmaps")
-keybindingsPath = os.path.join(thisPath, "keybindings")
+farmsPath = os.path.join(thisPath, "..")
+charMapPath = os.path.join(farmsPath, "charmaps")
+keybindingsPath = os.path.join(farmsPath, "keybindings")
 
 standardCharFiles = [name[:-5] for name in os.listdir(charMapPath) if name[-5:] == ".json"]
 standardKeyFiles = [name[:-5] for name in os.listdir(keybindingsPath) if name[-5:] == ".json"]
@@ -28,7 +24,7 @@ defaultAdresses = {
     "inet": "localhost:9021",
     }
 
-def main():
+def main(argv=None):
 
     parser = argparse.ArgumentParser(description="The client to AsciiFarm. Run this to connect to to the server.", epilog="""
     Gameplay information:
@@ -45,7 +41,7 @@ def main():
     colourGroup = parser.add_mutually_exclusive_group()
     colourGroup.add_argument('-l', '--colours', '--colors', help='enable colours! :)', action="store_true")
     colourGroup.add_argument('-b', '--nocolours', '--nocolors', help='disable colours! :)', action="store_true")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     
     charFile = args.characters
     if charFile in standardCharFiles:
@@ -73,8 +69,5 @@ def main():
     elif args.nocolours:
         colours = False
     
-    client.main(args.name, args.socket, address, keybindings, charMap, colours)
+    clientmain(args.name, args.socket, address, keybindings, charMap, colours)
 
-
-if __name__=="__main__":
-    main()

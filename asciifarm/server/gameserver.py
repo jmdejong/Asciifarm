@@ -5,7 +5,7 @@ import json
 import queue
 
 from . import view
-from . import server
+from . import socketserver as server
 from . import player
 
 

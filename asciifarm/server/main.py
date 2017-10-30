@@ -1,16 +1,9 @@
-#!/usr/bin/python3 -u
-
 
 import argparse
 import pathlib
-import sys
 
-if sys.version_info[0] < 3:
-    print("This game is written in python 3.\nRun 'python3 "+sys.argv[0]+"' or './"+sys.argv[0]+"'")
-    sys.exit(-1)
-
-from .server import mainloop
-from .server import loader
+from . import mainloop
+from . import loader
 
 
 defaultAdresses = {
@@ -18,16 +11,16 @@ defaultAdresses = {
     "unix": "asciifarm.socket",
     "inet": "localhost:9021",
 }
-default_world = pathlib.Path(__file__).parent.joinpath('maps', 'world.json')
+default_world = pathlib.Path(__file__).parent.parent.joinpath('maps', 'world.json')
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("-a", "--address", help="The address of the socket. When the socket type is 'abstract' this is just a name. When it is 'unix' this is a filename. When it is 'inet' is should be in the format 'address:port', eg 'localhost:8080'. Defaults depends on the socket type")
     parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
     parser.add_argument("-w", "--world", help="A file to load the world from.", default=str(default_world))  # str is only needed for python 3.5<
     
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     address = args.address
     if address == None:
         address = defaultAdresses[args.socket]
@@ -39,7 +32,3 @@ def main():
     
     worldData = loader.loadWorld(args.world)
     mainloop.Game(args.socket, worldData).start(address)
-
-
-if __name__ == '__main__':
-    main()
