@@ -39,6 +39,7 @@ class Player:
             self.health = self.getHealth()[0]
             self.entity.remove()
             self.entity = None
+        self.world.deactivateRoom(self.roomname)
     
     def joinRoom(self, roomname, place=None):
         self.canChangeRoom = False
@@ -48,6 +49,9 @@ class Player:
         
         if self.entity:
             self.leaveRoom()
+            
+            
+        self.world.activateRoom(roomname)
         
         pos = place or room.getEntrance()
         self.entity = entity.Entity(
@@ -175,3 +179,6 @@ class Player:
     
     def resetChanges(self):
         self.changes = set()
+    
+    def isActive(self):
+        return bool(self.roomname and self.entity)

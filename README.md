@@ -110,7 +110,6 @@ The idea is to make 3 different kind of areas:
 - autofight/autoretaliate?
 - display target enemy health
 - better reaction on player death
-- room unloading when there are no players
 - better inventory selection
 - runtime-created rooms
 - in-game chat
@@ -126,6 +125,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- room unloading when there are no players
 - merge package brach
 - only plant seeds in soil
 - make idle NPC's stay around spawn

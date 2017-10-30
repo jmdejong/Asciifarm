@@ -20,6 +20,8 @@ class Room:
         self.changedCells = {} # this probably doesn't belong in this class, but for now it will do
         # It's probably better to make the view component more elaborate
         
+        self.lastStepStamp = 0
+        
         self.roomData = roomdata.RoomData(events={
             "control": event.Event(),
             "move": event.Event(),
@@ -57,17 +59,25 @@ class Room:
     def getEntrance(self):
         return self.entrance
     
-    def update(self):
+    def update(self, stepStamp):
         """ call several update events for components
         
         These events are separate to ensure that everything happens in the right order
         
-        'update' also has the number of steps as argument. This will be useful when room unloading becomes a thing, and when the room loads again a lot of steps have to be simulated.
+        'update' also has the number of steps as argument.
+        If the room has been unloaded for a while, it will make a large step next.
+        This is useful for allowing plants to grow for example
         """
+        if self.lastStepStamp == None:
+            timePassed = 1
+        else:
+            timePassed = stepStamp - self.lastStepStamp
+        
         self.roomData.getEvent("control").trigger()
         self.roomData.getEvent("move").trigger()
         self.roomData.getEvent("fight").trigger()
-        self.roomData.getEvent("update").trigger(1)
+        self.roomData.getEvent("update").trigger(timePassed)
+        self.lastStepStamp = stepStamp
     
     def getSprite(self, pos):
         return self._getGround(pos).getTopSprite()
