@@ -63,6 +63,7 @@ class World:
     
     def activateRoom(self, name):
         self.activeRooms[name] = self.rooms[name]
+        self.activeRooms[name].update(self.stepStamp)
     
     def deactivateRoom(self, name):
         
