@@ -8,7 +8,6 @@ from .components.alignment import Alignment
 from .components.target import Target
 from . import faction
 from . import entity
-import queue
 
 class Player:
     
@@ -25,7 +24,7 @@ class Player:
         self.health = None
         self.maxHealth = 100
         
-        self.messages = queue.Queue()
+        self.messages = [] # actually a queue
         
         self.resetView = True
         
@@ -165,13 +164,14 @@ class Player:
         self.resetView = False
     
     def log(self, msg):
-        self.messages.put(msg)
+        self.messages.append(msg)
         print(msg)
     
     def readMessages(self):
-        m = []
-        while not self.messages.empty():
-            m.append(self.messages.get())
+        m = self.messages#[]
+        self.messages = []
+        #while not self.messages.empty():
+            #m.append(self.messages.get())
         return m
     
     def getChanges(self):
