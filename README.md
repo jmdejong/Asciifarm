@@ -105,7 +105,6 @@ The idea is to make 3 different kind of areas:
 - better code documentation
 - testing
 - nondeterminism in combat and grow times
-- log messages in client to file
 - make farming more work
 - equipment
 - autofight/autoretaliate?
@@ -126,6 +125,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- log messages in client to file
 - room unloading when there are no players
 - merge package brach
 - only plant seeds in soil

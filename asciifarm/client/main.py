@@ -37,6 +37,7 @@ def main(argv=None):
     parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
     parser.add_argument('-k', '--keybindings', help='The file with the keybindings. If it is either of these names: {} it will be loaded from the keybindings directory.'.format(standardKeyFiles), default="default")
     parser.add_argument('-c', '--characters', help='The file with the character mappings for the graphics. If it is either of these names: {} it will be loaded from the charmaps directory.'.format(standardCharFiles), default="default")
+    parser.add_argument('-o', '--logfile', help='All game messages will be written to this file.'.format(standardCharFiles), default=None)
     
     colourGroup = parser.add_mutually_exclusive_group()
     colourGroup.add_argument('-l', '--colours', '--colors', help='enable colours! :)', action="store_true")
@@ -69,5 +70,5 @@ def main(argv=None):
     elif args.nocolours:
         colours = False
     
-    clientmain(args.name, args.socket, address, keybindings, charMap, colours)
+    clientmain(args.name, args.socket, address, keybindings, charMap, colours, args.logfile)
 

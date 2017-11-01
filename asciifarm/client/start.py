@@ -14,7 +14,7 @@ defaultAdresses = {
     "inet": "localhost:9021",
     }
 
-def main(name, socketType, address, keybindings, characters, colours=False):
+def main(name, socketType, address, keybindings, characters, colours=False, logfile=None):
     
     connection = Connection(socketType)
     try:
@@ -27,13 +27,13 @@ def main(name, socketType, address, keybindings, characters, colours=False):
     
     def start(stdscr):
         display = Display(stdscr, characters, colours)
-        client = Client(stdscr, display, name, connection, keybindings)
+        client = Client(stdscr, display, name, connection, keybindings, logfile)
         nonlocal caught_ctrl_c
         try:
             client.start()
         except KeyboardInterrupt:
-            caught_ctrl_c = True
             client.keepAlive = False
+            caught_ctrl_c = True
     
     curses.wrapper(start)
     
