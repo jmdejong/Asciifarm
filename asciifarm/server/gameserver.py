@@ -30,7 +30,8 @@ class GameServer:
     def sendState(self, view):
         
         for connection, name in list(self.connections.items()):
-            
+            if not view.hasPlayer(name):
+                continue
             data = view.playerView(name)
             databytes = bytes(json.dumps(data), 'utf-8')
             

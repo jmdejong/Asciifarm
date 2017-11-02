@@ -64,6 +64,7 @@ class InputController:
             else:
                 objs = self.owner.getNearObjects()
             for obj in objs:
+                print(obj, obj.getComponent("fighter"), self.alignment.isEnemy(obj))
                 if obj.getComponent("fighter") != None and self.alignment.isEnemy(obj):
                     self.fighter.attack(obj)
                     break

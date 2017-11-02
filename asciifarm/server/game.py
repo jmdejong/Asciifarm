@@ -9,13 +9,18 @@ import os
 
 class Game:
     
-    def __init__(self, socketType, worldData):
+    def __init__(self, socketType, worldData=None, worldSave=None, saveAs=None, saveInterval=1):
         
         self.server = gameserver.GameServer(self, socketType)
         
-        #self.world = world.World(worldData)
-        with open("savegame", "rb") as f:
-            self.world = pickle.load(f)
+        if worldSave:
+            with open(worldSave, "rb") as f:
+                self.world = pickle.load(f)
+        elif worldData:
+            self.world = world.World(worldData)
+        
+        self.saveAs = saveAs
+        self.saveInterval = saveInterval
         
         self.view = view.View(self.world)
         
@@ -56,11 +61,11 @@ class Game:
             
         self.world.update()
         
-        if not self.counter % 5:
+        if self.saveAs and not self.counter % self.saveInterval:
             with open(".savegame.tmp", "wb") as f:
                 pickle.dump(self.world, f, 0)
                 print("saved", self.counter)
-            os.rename(".savegame.tmp", "savegame")
+            os.rename(".savegame.tmp", self.saveAs)
         
         self.counter += 1
         

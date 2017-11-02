@@ -53,6 +53,9 @@ class View:
                 data.append(["changecells", list(changedCells.items())])
         
         return data
+    
+    def hasPlayer(self, name):
+        return self.world.hasPlayer(name)
 
 def view(room):
     width = room.width

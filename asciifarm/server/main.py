@@ -18,7 +18,10 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("-a", "--address", help="The address of the socket. When the socket type is 'abstract' this is just a name. When it is 'unix' this is a filename. When it is 'inet' is should be in the format 'address:port', eg 'localhost:8080'. Defaults depends on the socket type")
     parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
-    parser.add_argument("-w", "--world", help="A file to load the world from.", default=str(default_world))  # str is only needed for python 3.5<
+    loadGroup = parser.add_mutually_exclusive_group()
+    loadGroup.add_argument("-w", "--world", help="A json file to load the world from.", default=str(default_world))  # str is only needed for python 3.5<
+    loadGroup.add_argument("-l", "--load", help="A save file to load the world from")
+    parser.add_argument("-e", "--saveas", help="File to save the world to periodically")
     
     args = parser.parse_args(argv)
     address = args.address
@@ -31,4 +34,4 @@ def main(argv=None):
         address = (hostname, int(port))
     
     worldData = loader.loadWorld(args.world)
-    game.Game(args.socket, worldData).start(address)
+    game.Game(args.socket, worldData, args.load, args.saveas, 10).start(address)

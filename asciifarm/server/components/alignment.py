@@ -1,4 +1,5 @@
 
+from .. import faction
 
 class Alignment:
     
@@ -13,3 +14,7 @@ class Alignment:
         if not alignment:
             return False
         return self.faction.isEnemy(alignment.getFaction())
+    
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self.faction = faction.factions[self.faction.getName()]
