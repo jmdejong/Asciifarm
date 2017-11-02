@@ -1,10 +1,10 @@
 
-import queue
+#import queue
 
 class InputController:
     
     def __init__(self):
-        self.actions = queue.Queue()
+        self.actions = [] #queue.Queue()
     
     def attach(self, obj, roomData):
         self.owner = obj
@@ -21,13 +21,17 @@ class InputController:
         self.controlEvent.addListener(self.control)
     
     def addAction(self, action):
-        self.actions.put(action)
+        self.actions.append(action)
     
     
     def control(self):
-        while not self.actions.empty():
-            action = self.actions.get()
+        actions = self.actions
+        self.actions = []
+        for action in actions:
             self.executeAction(action)
+        #while not self.actions.empty():
+            #action = self.actions.get()
+            #self.executeAction(action)
     
     def executeAction(self, action):
         kind = action[0]

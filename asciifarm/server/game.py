@@ -3,6 +3,8 @@ import time
 from . import gameserver
 from . import world
 from . import view
+import pickle
+import os
 
 
 class Game:
@@ -11,9 +13,13 @@ class Game:
         
         self.server = gameserver.GameServer(self, socketType)
         
-        self.world = world.World(worldData)
+        #self.world = world.World(worldData)
+        with open("savegame", "rb") as f:
+            self.world = pickle.load(f)
         
         self.view = view.View(self.world)
+        
+        self.counter = 0
     
         
     def start(self, address):
@@ -48,8 +54,15 @@ class Game:
             elif t == "input":
                 self.world.controlPlayer(name, msg[2])
             
-        
         self.world.update()
+        
+        if not self.counter % 5:
+            with open(".savegame.tmp", "wb") as f:
+                pickle.dump(self.world, f, 0)
+                print("saved", self.counter)
+            os.rename(".savegame.tmp", "savegame")
+        
+        self.counter += 1
         
     
     def sendState(self):

@@ -82,4 +82,9 @@ class GroundPatch:
     
     def removeListener(self, key):
         self.event.removeListener(key)
+    
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        state['neighbours'] = None
+        return state
 
