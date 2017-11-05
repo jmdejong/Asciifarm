@@ -104,9 +104,8 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
-- nondeterminism in combat and grow times
+- nondeterminism in grow times
 - make farming more work
-- equipment
 - autofight/autoretaliate?
 - display target enemy health
 - better reaction on player death
@@ -114,6 +113,7 @@ The idea is to make 3 different kind of areas:
 - runtime-created rooms
 - in-game chat
 - custom world persistence (json)
+- tutorial room
 - support websockets
 - windows comptibility (libtcod/tdl instead of ncurses?)
 - write converter to convert tiled map files to readable files
@@ -125,6 +125,8 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- equipment
+- nondeterminism in combat
 - world persistence
 - log messages in client to file
 - room unloading when there are no players

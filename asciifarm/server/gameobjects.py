@@ -17,6 +17,7 @@ from .components.loot import Loot
 from .components.build import Build
 from .components.harvest import Harvest
 from .components.food import Food
+from .components.equippable import Equippable
 
 """ This module contains factory functions for many placable entities, and a make function to call a factory by a string name """
 
@@ -78,9 +79,9 @@ entities["spiketrap"] = makeSpikeTrap
 def makeGoblin(home=None):
     return Entity(sprite="goblin", height=1.2, components={
         "move": Move(slowness=3),
-        "fighter": Fighter(maxHealth=25, strength=5, slowness=6),
+        "fighter": Fighter(maxHealth=15, strength=5, slowness=8),
         "alignment": Alignment(faction.EVIL),
-        "controller": MonsterAi(viewDist=8, moveChance=0.01, home=home),
+        "controller": MonsterAi(viewDist=8, moveChance=0.02, home=home),
         "loot": Loot([("seed", .5), ("seed", .1)])
         })
 entities["goblin"] = makeGoblin
@@ -88,7 +89,7 @@ entities["goblin"] = makeGoblin
 def makeTroll(home=None):
     return Entity(sprite="troll", height=1.8, components={
         "move": Move(slowness=4),
-        "fighter": Fighter(maxHealth=125, strength=12, slowness=10),
+        "fighter": Fighter(maxHealth=75, strength=15, slowness=10),
         "alignment": Alignment(faction.EVIL),
         "controller": MonsterAi(viewDist=8, moveChance=0.01, home=home),
         "loot": Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5)])
@@ -131,6 +132,14 @@ entities["seed"] = makeSeed
 def makeBuiltWall():
     return Entity(sprite="wall", height=2, components={"fighter": Fighter(maxHealth=100, strength=0), "alignment": Alignment(faction.NONE), "loot": Loot([("stone", 1)])}, flags={"solid"})
 entities["builtwall"] = makeBuiltWall
+
+def makeSword():
+    return Entity(sprite="sword", height=0.5, components={"item": Equippable("hand", {"strength": 5})})
+entities["sword"] = makeSword
+
+def makeClub():
+    return Entity(sprite="club", height=0.5, components={"item": Equippable("hand", {"strength": 3})})
+entities["club"] = makeClub
 
 
 def makeEntity(entType, roomData, *args, **kwargs):

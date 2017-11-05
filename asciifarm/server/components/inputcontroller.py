@@ -45,8 +45,8 @@ class InputController:
         if kind == "take":
             for obj in self.owner.getNearObjects():
                 if obj.getComponent("item") != None and self.inventory.canAdd(obj):
+                    self.owner.trigger("take", obj)
                     obj.remove()
-                    self.inventory.add(obj)
                     break
         
         if kind == "drop":
@@ -64,7 +64,6 @@ class InputController:
             else:
                 objs = self.owner.getNearObjects()
             for obj in objs:
-                print(obj, obj.getComponent("fighter"), self.alignment.isEnemy(obj))
                 if obj.getComponent("fighter") != None and self.alignment.isEnemy(obj):
                     self.fighter.attack(obj)
                     break

@@ -9,6 +9,7 @@ class Inventory:
     
     def attach(self, obj, roomData):
         self.owner = obj
+        self.owner.addListener(self.onEvent)
     
     def canAdd(self, item):
         return len(self.items) < self.capacity
@@ -29,6 +30,10 @@ class Inventory:
     def onItemUpdate(self, item, action, *data):
         if action == "drop":
             self.drop(item)
+    
+    def onEvent(self, o, action, item=None, *data):
+        if action == "take":
+            self.add(item)
     
     def remove(self):
         self.owner = None

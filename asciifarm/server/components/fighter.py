@@ -1,5 +1,6 @@
 from .. import timeout
 from .. import utils
+import random
 
 class Fighter:
     
@@ -35,7 +36,10 @@ class Fighter:
         if other and other.hasComponent("fighter") and self.canAttack:
             otherFighter = other.getComponent("fighter")
             if otherFighter:
-                damage = self.strength
+                strength = self.strength
+                if self.owner.hasComponent("equipment"):
+                    strength += self.owner.getComponent("equipment").getBonus("strength")
+                damage = random.randint(0, strength)
                 otherFighter.damage(damage, self.owner)
                 
                 self.canAttack = False

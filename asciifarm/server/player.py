@@ -6,6 +6,7 @@ from .components.fighter import Fighter
 from .components.healing import Healing
 from .components.alignment import Alignment
 from .components.target import Target
+from .components.equipment import Equipment
 from . import faction
 from . import entity
 
@@ -21,8 +22,9 @@ class Player:
         self.entity = None
         
         self.inventory = Inventory(10)
+        self.equipment = Equipment({"hand": None, "body": None})
         self.health = None
-        self.maxHealth = 100
+        self.maxHealth = 50
         
         self.messages = [] # actually a queue
         
@@ -61,10 +63,11 @@ class Player:
                 "inventory": self.inventory,
                 "move": Move(slowness=2),
                 "controller": InputController(),
-                "fighter": Fighter(self.maxHealth, 5, slowness=4, health=self.health or self.maxHealth),
+                "fighter": Fighter(self.maxHealth, 5, slowness=8, health=self.health or self.maxHealth),
                 "alignment": Alignment(faction.GOOD),
                 "heal": Healing(interval=50),
-                "target": Target()
+                "target": Target(),
+                "equipment": self.equipment
                 })
         self.entity.construct(room.getRoomData())
         self.entity.addListener(self.onPlayerAction)

@@ -6,7 +6,7 @@ from .. import pathfinding
 class MonsterAi:
     
     
-    def __init__(self, viewDist, moveChance=1, home=None, homesickness=0.25):
+    def __init__(self, viewDist, moveChance=1, home=None, homesickness=0.025):
         self.moveChance = moveChance
         self.viewDist = viewDist
         self.home = home
@@ -43,7 +43,7 @@ class MonsterAi:
                 self.move.move(pathfinding.stepTo(self.owner, closest))
         else:
             if random.random() < self.moveChance:
-                if (self.home and self.home.inRoom() and random.random() < self.homesickness):
+                if self.home and self.home.inRoom() and random.random() < (self.homesickness * pathfinding.distanceBetween(self.owner, self.home)):
                     direction = pathfinding.stepTo(self.owner, self.home)
                 else: 
                     direction = random.choice(["north", "south", "east", "west"])
