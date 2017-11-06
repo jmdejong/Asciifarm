@@ -1,15 +1,16 @@
 from .. import timeout
 from .. import gameobjects
+import random
 
 
 class Growing:
     
     
-    def __init__(self, nextStage, duration, stepsPassed=0, nextArgs=[], nextKwargs={}):
+    def __init__(self, nextStage, duration, stepsPassed=None, nextArgs=[], nextKwargs={}):
         
         self.nextStage = nextStage
-        self.duration = duration
-        self.stepsPassed = stepsPassed
+        self.duration = duration if stepsPassed != None else int(random.triangular(duration/2, duration*2, duration))
+        self.stepsPassed = stepsPassed or 0
         self.nextArgs = nextArgs
         self.nextKwargs = nextKwargs
     
