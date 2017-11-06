@@ -30,8 +30,8 @@ class Display:
                     charMap.get("healthfull", ("@",7, 2)),
                     charMap.get("healthempty", ("-",7, 1)),
                     self.colours)
-        self.inventoryPad = InventoryPad("Inventory", 16)
-        self.groundPad = InventoryPad("Ground", 8)
+        self.inventoryPad = InventoryPad("Inventory", 10)
+        self.groundPad = InventoryPad("Ground", 5)
         self.lastinfostring = None
         self.changed = False
         self.messagePad = messagepad.MessagePad(5)
@@ -86,14 +86,14 @@ class Display:
             fieldRight = min(self.fieldPad.getWidth(), self.screen.getWidth()-SIDEWIDTH-1)
             fieldBottom = min(self.fieldPad.getHeight(), self.screen.getHeight()-self.messagePad.getHeight())
             healthBottom = self.healthPad.getHeight()
-            inventoryBottom = healthBottom + self.inventoryPad.getHeight()
-            groundBottom = inventoryBottom + self.groundPad.getHeight()
+            groundBottom = healthBottom + self.groundPad.getHeight()
+            inventoryBottom = groundBottom + self.inventoryPad.getHeight()
             self.fieldPad.update(self, 0,0,fieldRight, fieldBottom)
             self.messagePad.update(self, 0,fieldBottom, fieldRight, min(self.screen.getHeight(), fieldBottom+self.messagePad.getHeight()))
             self.healthPad.update(self, fieldRight+1,0, self.screen.getWidth(), healthBottom)
-            self.inventoryPad.update(self, fieldRight+1, healthBottom, self.screen.getWidth(), min(self.screen.getHeight(), inventoryBottom))
-            self.groundPad.update(self, fieldRight+1, inventoryBottom, self.screen.getWidth(), min(self.screen.getHeight(), groundBottom))
-            self.infoPad.update(self, fieldRight+1,groundBottom+1, self.screen.getWidth(), self.screen.getHeight())
+            self.groundPad.update(self, fieldRight+1, healthBottom, self.screen.getWidth(), min(self.screen.getHeight(), groundBottom))
+            self.inventoryPad.update(self, fieldRight+1, groundBottom, self.screen.getWidth(), min(self.screen.getHeight(), inventoryBottom))
+            self.infoPad.update(self, fieldRight+1,inventoryBottom+1, self.screen.getWidth(), self.screen.getHeight())
             
             curses.doupdate()
         self.changed = False

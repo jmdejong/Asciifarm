@@ -2,7 +2,7 @@
 import curses
 import textwrap
 
-class MessagePad:
+class MessagePad():
     
     def __init__(self, maxLines=10):
         self.maxLines = maxLines
@@ -16,10 +16,10 @@ class MessagePad:
         self.changed = True
     
     def getHeight(self):
-        return min(len(self.messages), self.maxLines)
+        return self.maxLines
     
     def update(self, screen, x, y, xmax, ymax):
-        if not self.changed and (x, y, xmax, ymax) == self.lastView :
+        if not self.changed and (x, y, xmax, ymax) == self.lastView or xmax <= x or ymax <= y:
             return
         width = xmax - x
         height = ymax - y # should equal self.getHeight()

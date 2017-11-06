@@ -36,7 +36,7 @@ class FieldPad:
         return self.size[1]
     
     def update(self, screen, x, y, xmax, ymax):
-        if not self.changed and (x, y, xmax, ymax) == self.lastView:
+        if not self.changed and (x, y, xmax, ymax) == self.lastView or xmax <= x or ymax <= y:
             return
         self.lastView = (x, y, xmax, ymax)
         self.changed = False
