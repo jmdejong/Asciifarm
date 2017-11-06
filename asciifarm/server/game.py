@@ -62,10 +62,10 @@ class Game:
         self.world.update()
         
         if self.saveAs and not self.counter % self.saveInterval:
-            with open(".savegame.tmp", "wb") as f:
+            tempName = self.saveas+".tmp"
+            with open(tempName, "wb") as f:
                 pickle.dump(self.world, f, 0)
-                print("saved", self.counter)
-            os.rename(".savegame.tmp", self.saveAs)
+            os.rename(tempName, self.saveAs)
         
         self.counter += 1
         
