@@ -81,7 +81,7 @@ def makeGoblin(home=None):
         "move": Move(slowness=3),
         "fighter": Fighter(maxHealth=15, strength=5, slowness=8),
         "alignment": Alignment(faction.EVIL),
-        "controller": MonsterAi(viewDist=8, moveChance=0.2, home=home),
+        "controller": MonsterAi(viewDist=8, moveChance=0.02, home=home),
         "loot": Loot([("sword", .05), ("club", .1), ("food", .25)])
         })
 entities["goblin"] = makeGoblin
