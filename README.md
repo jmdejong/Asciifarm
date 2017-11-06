@@ -104,6 +104,7 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
+- display equipment
 - make farming more work
 - autofight/autoretaliate?
 - display target enemy health
@@ -124,9 +125,8 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
-- nondeterminism in grow times
+- nondeterminism in combat, grow times and spawn times
 - equipment
-- nondeterminism in combat
 - world persistence
 - log messages in client to file
 - room unloading when there are no players

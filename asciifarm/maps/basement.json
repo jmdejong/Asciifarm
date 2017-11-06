@@ -100,7 +100,9 @@
                     2,
                     50,
                     "portal",
-                    "goblinspawner"
+                    "goblinspawner",
+                    1,
+                    true
                 ]
             }
         ],
@@ -113,7 +115,9 @@
                     1,
                     200,
                     "portal",
-                    "trollspawner"
+                    "trollspawner",
+                    1,
+                    true
                 ]
             }
         ],

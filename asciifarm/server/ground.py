@@ -38,11 +38,13 @@ class GroundPatch:
         self.onLeave(obj)
     
     def getTopSprite(self):
-        topObj = self._getTopObj()
-        if topObj:
-            return topObj.getSprite()
+        for obj in self.objects:
+            spr = obj.getSprite()
+            if spr:
+                break
         else:
             return ' '
+        return spr
     
     def getObjs(self):
         return tuple(self.objects)

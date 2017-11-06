@@ -5,7 +5,7 @@ from . import grid
 changeActions = {
     "health": lambda p: ["health", p.getHealth()],
     "inventory": lambda p: ["inventory", [obj.getSprite() for obj in p.getInventory()]],
-    "ground": lambda p: ["ground", [obj.getName() for obj in p.getGroundObjs()]],
+    "ground": lambda p: ["ground", [obj.getName() for obj in p.getGroundObjs() if obj.getName()]],
     "pos": lambda p: ["playerpos", p.getPos()]
     }
 

@@ -1,10 +1,11 @@
 from .. import gameobjects
 from .. import timeout
+import random
 
 
 class Spawner:
     
-    def __init__(self, objectType, amount=1, respawnDelay=1, objectArgs=[], objectKwargs={}):
+    def __init__(self, objectType, amount=1, respawnDelay=1, setHome=False, objectArgs=[], objectKwargs={}):
         self.objectType = objectType
         self.amount = amount
         self.respawnDelay = respawnDelay
@@ -12,6 +13,7 @@ class Spawner:
         self.objectArgs = objectArgs
         self.objectKwargs = objectKwargs
         self.timeouts = set()
+        self.setHome = setHome
     
     def attach(self, obj, roomData):
         
@@ -23,11 +25,15 @@ class Spawner:
             self.goSpawn()
     
     def goSpawn(self):
-        to = timeout.Timeout(self.updateEvent, self.respawnDelay, callback=self.spawn)
+        duration= self.respawnDelay
+        to = timeout.Timeout(self.updateEvent, random.triangular(duration/2, duration*2, duration), callback=self.spawn)
         self.timeouts.add(to)
     
     def spawn(self, to):
-        obj = gameobjects.makeEntity(self.objectType, self.roomData, *self.objectArgs, home=self.owner, **self.objectKwargs)
+        objectKwargs = self.objectKwargs.copy()
+        if self.setHome:
+            objectKwargs["home"] = self.owner
+        obj = gameobjects.makeEntity(self.objectType, self.roomData, *self.objectArgs, **objectKwargs)
         obj.place(self.owner.getGround())
         self.spawned.add(obj)
         self.timeouts.remove(to)
@@ -36,7 +42,7 @@ class Spawner:
     
     def onObjEvent(self, obj, action, *data):
         """ handle spawned object death """
-        if action == "die":
+        if action == "remove":
             self.spawned.remove(obj)
             obj.removeListener(self.onObjEvent)
             self.goSpawn()

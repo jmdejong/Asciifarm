@@ -62,7 +62,7 @@ class Game:
         self.world.update()
         
         if self.saveAs and not self.counter % self.saveInterval:
-            tempName = self.saveas+".tmp"
+            tempName = self.saveAs+".savetmp"
             with open(tempName, "wb") as f:
                 pickle.dump(self.world, f, 0)
             os.rename(tempName, self.saveAs)

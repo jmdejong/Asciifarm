@@ -81,8 +81,8 @@ def makeGoblin(home=None):
         "move": Move(slowness=3),
         "fighter": Fighter(maxHealth=15, strength=5, slowness=8),
         "alignment": Alignment(faction.EVIL),
-        "controller": MonsterAi(viewDist=8, moveChance=0.02, home=home),
-        "loot": Loot([("seed", .5), ("seed", .1)])
+        "controller": MonsterAi(viewDist=8, moveChance=0.2, home=home),
+        "loot": Loot([("sword", .05), ("club", .1), ("food", .25)])
         })
 entities["goblin"] = makeGoblin
 
@@ -100,8 +100,8 @@ def makeGoblinSpawner(): # I should probably generalize this...
     return Entity(sprite="portal", height=1, name="goblinspawner", components={"spawn": Spawner("goblin", 2, 20)})
 entities["goblinspawner"] = makeGoblinSpawner
 
-def makeSpawner(objType, number, delay, sprite="portal", name=None, objArgs=[], objKwargs={}):
-    return Entity(sprite=sprite, height=1, name=name, components={"spawn": Spawner(objType, number, delay, objArgs, objKwargs)})
+def makeSpawner(objType, number, delay, sprite=None, name=None, height=0, setHome=False, objArgs=[], objKwargs={}):
+    return Entity(sprite=sprite, height=height, name=name, components={"spawn": Spawner(objType, number, delay, setHome, objArgs, objKwargs)})
 entities["spawner"] = makeSpawner
 
 def makeSownSeed():
