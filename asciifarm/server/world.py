@@ -69,7 +69,7 @@ class World:
         
         # only deactivate a room when it's empty
         for player in self.players.values():
-            if player.isActive() and player.getRoom == name:
+            if player.isActive() and player.getRoom() == name:
                 return
         
         self.activeRooms.pop(name, None)
