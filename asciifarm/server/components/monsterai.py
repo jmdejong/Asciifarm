@@ -6,7 +6,7 @@ from .. import pathfinding
 class MonsterAi:
     
     
-    def __init__(self, viewDist, moveChance=1, home=None, homesickness=0.025):
+    def __init__(self, viewDist, moveChance=1, home=None, homesickness=0.05):
         self.moveChance = moveChance
         self.viewDist = viewDist
         self.home = home

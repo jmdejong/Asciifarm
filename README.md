@@ -104,6 +104,7 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
+- remove code duplication in display
 - display equipment
 - make farming more work
 - autofight/autoretaliate?
@@ -125,6 +126,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- defense/armour
 - nondeterminism in combat, grow times and spawn times
 - equipment
 - world persistence

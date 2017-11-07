@@ -141,6 +141,10 @@ def makeClub():
     return Entity(sprite="club", height=0.5, components={"item": Equippable("hand", {"strength": 3})})
 entities["club"] = makeClub
 
+def makeArmour():
+    return Entity(sprite="armour", height=0.5, components={"item": Equippable("body", {"defense": 100})})
+entities["armour"] = makeArmour
+
 
 def makeEntity(entType, roomData, *args, **kwargs):
     entity = entities[entType](*args, **kwargs)

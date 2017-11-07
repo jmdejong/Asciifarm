@@ -4,13 +4,14 @@ import random
 
 class Fighter:
     
-    def __init__(self, maxHealth, strength=0, slowness=1, health=None):
+    def __init__(self, maxHealth, strength=0, slowness=1, health=None, defense=0):
         self.maxHealth = maxHealth
         self.health = health or maxHealth
         self.strength = strength
         self.target = None
         self.slowness = slowness
         self.canAttack = True
+        self.defense = defense
     
     def attach(self, owner, roomData):
         self.owner = owner
@@ -36,10 +37,9 @@ class Fighter:
         if other and other.hasComponent("fighter") and self.canAttack:
             otherFighter = other.getComponent("fighter")
             if otherFighter:
-                strength = self.strength
-                if self.owner.hasComponent("equipment"):
-                    strength += self.owner.getComponent("equipment").getBonus("strength")
-                damage = random.randint(0, strength)
+                strength = self.getStrength()
+                defense = otherFighter.getDefense()
+                damage = random.randint(0, int(100*strength / (defense + 100)))
                 otherFighter.damage(damage, self.owner)
                 
                 self.canAttack = False
@@ -58,6 +58,18 @@ class Fighter:
         
         self.owner.remove()
     
+    def getStrength(self):
+        strength = self.strength
+        if self.owner.hasComponent("equipment"):
+            strength += self.owner.getComponent("equipment").getBonus("strength")
+        return strength
+    
+    
+    def getDefense(self):
+        defense = self.defense
+        if self.owner.hasComponent("equipment"):
+            defense += self.owner.getComponent("equipment").getBonus("defense")
+        return defense
     
     def getHealth(self):
         return (self.health, self.maxHealth)

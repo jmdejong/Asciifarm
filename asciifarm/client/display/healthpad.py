@@ -11,6 +11,8 @@ class HealthPad:
         self.changed = False
         self.lastView = None
         self.colours = colours
+        self.health = 0
+        self.maxHealth = 0
     
     def setHealth(self, health, maxHealth):
         self.pad.erase()
