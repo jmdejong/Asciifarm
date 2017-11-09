@@ -24,7 +24,8 @@ Requires python3, tested to work on at least python 3.5.2 in linux
 
 Because of the use of NCURSES, it probably won't work on windows (will be fixed later)
 
-Not tested on mac. If anyone could test this for me this would be much appreciated.
+It works on a mac, but when testing abstract domain sockets didn't work.
+Use the command line argument `-s inet` for both client and server to run this on a mac.
 
 Not on pypi yet, but you should be able to install it like this:
 
