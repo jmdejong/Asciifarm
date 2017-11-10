@@ -18,8 +18,8 @@ class MessagePad():
     def getHeight(self):
         return self.maxLines
     
-    def update(self, screen, x, y, xmax, ymax):
-        if not self.changed and (x, y, xmax, ymax) == self.lastView or xmax <= x or ymax <= y:
+    def update(self, screen, x, y, xmax, ymax, force=False):
+        if not self.changed and (x, y, xmax, ymax) == self.lastView or xmax <= x or ymax <= y and not force:
             return
         width = xmax - x
         height = ymax - y # should equal self.getHeight()
