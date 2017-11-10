@@ -35,6 +35,9 @@ class FieldPad:
     def getHeight(self):
         return self.size[1]
     
+    def roundWidth(self, x):
+        return x // self.charSize * self.charSize
+    
     def update(self, screen, x, y, xmax, ymax, force=False):
         if not self.changed and (x, y, xmax, ymax) == self.lastView or xmax <= x or ymax <= y and not force:
             return
@@ -44,7 +47,9 @@ class FieldPad:
         height = ymax-y
         self.pad.noutrefresh(
             max(0, min(self.getHeight()-height, self.center[1] - int(height/2))),
-            max(0, min(self.getWidth()-width, self.center[0]*self.charSize - int(width/2))),
+            max(0, min(
+                self.roundWidth(self.getWidth()-width),
+                self.roundWidth(self.center[0]*self.charSize - int(width/2)))),
             y,
             x,
             ymax-1,
