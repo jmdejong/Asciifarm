@@ -26,9 +26,9 @@
         "troll": ["Ｔ",1],
         "sword": ["／", 7],
         "club": ["！", 3],
-        " ": "  "
+        " ": ["  ", 7]
     },
-    "default": "？",
+    "default": ["？", 7],
     "charwidth": 2,
     "healthfull": ["#", 7, 2],
     "healthemtpy": ["_", 7, 1],
