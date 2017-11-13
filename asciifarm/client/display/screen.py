@@ -11,7 +11,6 @@ class Screen:
         self.display = display
         curses.curs_set(0)
         self.stdscr = stdscr
-        #self.height, self.width = self.stdscr.getmaxyx()
         self.setWins()
         signal.signal(signal.SIGWINCH, self.updateSize)
     
@@ -35,17 +34,16 @@ class Screen:
         infoH = self._limitHeight(20, infoY)
         
         self.windows = {
-            "field": self.makeWin(0, 0, sideX - 1, msgY),#curses.newwin(msgY, sideX - 1, 0, 0),
-            "msg": self.makeWin(0, msgY, sideX - 1, msgH),#curses.newwin(msgH, sideX - 1, msgY, 0),
-            "health": self.makeWin(sideX, healthY, sideW, healthH),#curses.newwin(healthH, sideW, healthY, sideX),
-            "ground": self.makeWin(sideX, groundY, sideW, groundH),#curses.newwin(groundH, sideW, groundY, sideX),
-            "inventory": self.makeWin(sideX, invY, sideW, invH),#curses.newwin(invH, sideW, invY, sideX),
-            "info": self.makeWin(sideX, infoY, sideW, infoH)#curses.newwin(infoH, sideW, infoY, sideX)
+            "field": self.makeWin(0, 0, sideX - 1, msgY),
+            "msg": self.makeWin(0, msgY, sideX - 1, msgH),
+            "health": self.makeWin(sideX, healthY, sideW, healthH),
+            "ground": self.makeWin(sideX, groundY, sideW, groundH),
+            "inventory": self.makeWin(sideX, invY, sideW, invH),
+            "info": self.makeWin(sideX, infoY, sideW, infoH)
         }
     
     def makeWin(self, x, y, width, height):
         if width < 1 or height < 1:
-            #raise Exception("too small"+str((x, y, width, height)))
             return None
         return curses.newwin(height, width, y, x)
     
@@ -54,7 +52,6 @@ class Screen:
         curses.endwin()
         curses.initscr()
         self.setWins()
-        #self.height, self.width = self.stdscr.getmaxyx()
         self.stdscr.clear()
         self.update(True)
     
@@ -66,6 +63,8 @@ class Screen:
         d.groundPad.update(self.windows["ground"], force)
         d.inventoryPad.update(self.windows["inventory"], force)
         d.infoPad.update(self.windows["info"], force)
+        
+        curses.doupdate()
     
     def getWidth(self):
         return self.width

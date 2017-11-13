@@ -13,7 +13,6 @@ class FieldPad:
         self.center = (0, 0)
         self.colours = colours
         self.changed = False
-        #self.lastView = None
     
     def resize(self, width, height):
         self.size = (width, height)
@@ -38,10 +37,9 @@ class FieldPad:
     def _roundWidth(self, x):
         return x // self.charSize * self.charSize
     
-    def update(self, win, force=False):
+    def update(self, win, force):
         if not self.changed and not force or not win:
             return
-        #self.lastView = (x, y, xmax, ymax)
         height, width = win.getmaxyx()
         y, x = win.getparyx()
         xmax = x + width
