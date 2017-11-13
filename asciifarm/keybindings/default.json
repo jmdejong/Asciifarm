@@ -13,6 +13,10 @@
         "D": ["attack", "east"],
         "A": ["attack", "west"],
         "E": ["use"],
-        "r": ["interact"]
+        "r": ["interact"],
+        "KEY_UP": ["move", "north"],
+        "KEY_DOWN": ["move", "south"],
+        "KEY_RIGHT": ["move", "east"],
+        "KEY_LEFT": ["move", "west"]
     }
 }

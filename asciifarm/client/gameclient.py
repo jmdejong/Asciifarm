@@ -27,12 +27,12 @@ class Client:
         for key, commands in keybindings["input"].items():
             if isinstance(commands[0], str):
                 commands = [commands]
-            self.commands[ord(key)] = [["input", command] for command in commands]
+            self.commands[key] = [["input", command] for command in commands]
         
         self.controlsString = "Controls:\n"+'\n'.join(
-                chr(key) + ": " + ', '.join(' '.join(action[1]) for action in actions)
+                key + ": " + ', '.join(' '.join(action[1]) for action in actions)
                 for key, actions in self.commands.items()
-                if chr(key) in string.printable)
+                if key in string.printable)
         
         self.display.showInfo(self.controlsString)
         
@@ -96,10 +96,6 @@ class Client:
                 self.display.setGround(msg[1])
             if msgType == "message":
                 self.log(msg[1])
-                #self.display.addMessage(msg[1])
-                #if self.logFile:
-                    #with(open(self.logFile, 'a')) as f:
-                        #f.write(msg[1]+'\n')
         
         
         self.display.update()
@@ -115,8 +111,10 @@ class Client:
             key = self.stdscr.getch()
             if key == 27:
                 self.keepalive = False
-            if key in self.commands:
-                self.connection.send(json.dumps(self.commands[key]))
+                return
+            keyname = str(curses.keyname(key), "utf-8")
+            if keyname in self.commands:
+                self.connection.send(json.dumps(self.commands[keyname]))
     
 
 
