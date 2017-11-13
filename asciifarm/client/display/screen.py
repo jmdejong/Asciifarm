@@ -34,14 +34,14 @@ class Screen:
         infoY = invY + invH
         infoH = self._limitHeight(20, infoY)
         
-        
-        self.fieldWin = curses.newwin(msgY, sideX - 1, 0, 0)
-        self.msgWin = curses.newwin(msgH, sideX - 1, msgY, 0)
-        self.healthWin = curses.newwin(healthH, sideW, healthY, sideX)
-        self.groundWin = curses.newwin(groundH, sideW, groundY, sideX)
-        self.inventoryWin = curses.newwin(invH, sideW, invY, sideX)
-        self.infoWin = curses.newwin(infoH, sideW, infoY, sideX)
-    
+        self.windows = {
+            "field": curses.newwin(msgY, sideX - 1, 0, 0),
+            "msg": curses.newwin(msgH, sideX - 1, msgY, 0),
+            "health": curses.newwin(healthH, sideW, healthY, sideX),
+            "ground": curses.newwin(groundH, sideW, groundY, sideX),
+            "inventory": curses.newwin(invH, sideW, invY, sideX),
+            "info": curses.newwin(infoH, sideW, infoY, sideX)
+        }
     
     
     def updateSize(self, *args):
@@ -54,12 +54,12 @@ class Screen:
     
     def update(self, force=False):
         d = self.display
-        d.fieldPad.update(self.fieldWin, force)
-        d.messagePad.update(self.msgWin, force)
-        d.healthPad.update(self.healthWin, force)
-        d.groundPad.update(self.groundWin, force)
-        d.inventoryPad.update(self.inventoryWin, force)
-        d.infoPad.update(self.infoWin, force)
+        d.fieldPad.update(self.windows["field"], force)
+        d.messagePad.update(self.windows["msg"], force)
+        d.healthPad.update(self.windows["health"], force)
+        d.groundPad.update(self.windows["ground"], force)
+        d.inventoryPad.update(self.windows["inventory"], force)
+        d.infoPad.update(self.windows["info"], force)
     
     def getWidth(self):
         return self.width
@@ -67,4 +67,3 @@ class Screen:
     def getHeight(self):
         return self.height
     
-    #def update(self
