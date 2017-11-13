@@ -50,7 +50,7 @@ class FieldPad:
                 self._roundWidth(self.getWidth()-width),
                 self._roundWidth(self.center[0]*self.charSize - int(width/2)))),
             y,
-            x,
+            x + max(0, (width - self.getWidth()) // 2),
             ymax,
             xmax)
         self.changed = False
