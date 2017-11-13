@@ -112,7 +112,10 @@ class Client:
             if key == 27:
                 self.keepalive = False
                 return
-            keyname = str(curses.keyname(key), "utf-8")
+            try:
+                keyname = str(curses.keyname(key), "utf-8")
+            except ValueError:
+                continue
             if keyname in self.commands:
                 self.connection.send(json.dumps(self.commands[keyname]))
     
