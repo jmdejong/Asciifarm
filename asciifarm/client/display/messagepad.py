@@ -5,24 +5,23 @@ import textwrap
 class MessagePad():
     
     def __init__(self, maxLines=10):
-        self.maxLines = maxLines
-        self.pad = curses.newpad(maxLines+2, 200)
+        #self.maxLines = maxLines
+        #self.pad = curses.newpad(maxLines+2, 200)
         self.changed = False
-        self.lastView = None
+        #self.lastView = None
         self.messages = []
     
     def addMessage(self, message):
         self.messages.append(message)
         self.changed = True
     
-    def getHeight(self):
-        return self.maxLines
+    #def getHeight(self):
+        #return self.maxLines
     
-    def update(self, screen, x, y, xmax, ymax, force=False):
-        if not self.changed and (x, y, xmax, ymax) == self.lastView or xmax <= x or ymax <= y and not force:
+    def update(self, win, force=False):
+        if not self.changed and not force or not win:
             return
-        width = xmax - x
-        height = ymax - y # should equal self.getHeight()
+        height, width = win.getmaxyx()
         if height < 1:
             return
         lines = []
@@ -30,13 +29,13 @@ class MessagePad():
             lines += textwrap.wrap(message, width)
         if len(lines) > height:
             lines = lines[len(lines)-height:]
-        self.pad.erase()
-        self.pad.addstr(0,0,'\n'.join(lines))
+        win.erase()
+        win.addstr(0,0,'\n'.join(lines))
         self.changed = False
-        self.pad.noutrefresh(
-            0,
-            0,
-            y,
-            x,
-            ymax-1,
-            xmax-1)
+        win.noutrefresh()
+            #0,
+            #0,
+            #y,
+            #x,
+            #ymax-1,
+            #xmax-1)
