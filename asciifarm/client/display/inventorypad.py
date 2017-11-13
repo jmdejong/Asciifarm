@@ -29,7 +29,7 @@ class InventoryPad:
         self.changed = False
         height, width = win.getmaxyx()
         win.erase()
-        win.addstr(0,0, self.title + ":\n")
+        win.addstr(0,0, (self.title + ":")[:width])
         for i, item in enumerate(self.items[:height-1]):
             win.addstr(i+1, 2, item)
         win.noutrefresh()

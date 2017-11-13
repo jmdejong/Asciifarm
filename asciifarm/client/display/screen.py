@@ -35,13 +35,19 @@ class Screen:
         infoH = self._limitHeight(20, infoY)
         
         self.windows = {
-            "field": curses.newwin(msgY, sideX - 1, 0, 0),
-            "msg": curses.newwin(msgH, sideX - 1, msgY, 0),
-            "health": curses.newwin(healthH, sideW, healthY, sideX),
-            "ground": curses.newwin(groundH, sideW, groundY, sideX),
-            "inventory": curses.newwin(invH, sideW, invY, sideX),
-            "info": curses.newwin(infoH, sideW, infoY, sideX)
+            "field": self.makeWin(0, 0, sideX - 1, msgY),#curses.newwin(msgY, sideX - 1, 0, 0),
+            "msg": self.makeWin(0, msgY, sideX - 1, msgH),#curses.newwin(msgH, sideX - 1, msgY, 0),
+            "health": self.makeWin(sideX, healthY, sideW, healthH),#curses.newwin(healthH, sideW, healthY, sideX),
+            "ground": self.makeWin(sideX, groundY, sideW, groundH),#curses.newwin(groundH, sideW, groundY, sideX),
+            "inventory": self.makeWin(sideX, invY, sideW, invH),#curses.newwin(invH, sideW, invY, sideX),
+            "info": self.makeWin(sideX, infoY, sideW, infoH)#curses.newwin(infoH, sideW, infoY, sideX)
         }
+    
+    def makeWin(self, x, y, width, height):
+        if width < 1 or height < 1:
+            #raise Exception("too small"+str((x, y, width, height)))
+            return None
+        return curses.newwin(height, width, y, x)
     
     
     def updateSize(self, *args):

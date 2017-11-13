@@ -39,7 +39,7 @@ class FieldPad:
         return x // self.charSize * self.charSize
     
     def update(self, win, force=False):
-        if not self.changed and not force:
+        if not self.changed and not force or not win:
             return
         #self.lastView = (x, y, xmax, ymax)
         height, width = win.getmaxyx()

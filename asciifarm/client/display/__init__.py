@@ -35,6 +35,8 @@ class Display:
         self.lastinfostring = None
         self.changed = False
         self.messagePad = messagepad.MessagePad(5)
+        
+        self.screen.update(True)
             
     
     def resizeField(self, size):

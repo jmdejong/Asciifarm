@@ -35,13 +35,13 @@ class HealthPad:
         #return 2
     
     def update(self, win, force=False):
-        if not self.changed and not force:
+        if not self.changed and not force or not win:
             return
         #self.lastView = (x, y, xmax, ymax)
         self.changed = False
         height, width = win.getmaxyx()
         width -= 1
-        barEnd = round(self.health/self.maxHealth * width)
+        barEnd = round(self.health/self.maxHealth * width) if self.maxHealth > 0 else 0
         win.erase()
         win.addstr(0,0,"Health: {}/{}".format(self.health, self.maxHealth)[:width])
         if self.colours:
