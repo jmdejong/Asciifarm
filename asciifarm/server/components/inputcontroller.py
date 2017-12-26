@@ -1,7 +1,7 @@
 
-#import queue
+from ..component import Component
 
-class InputController:
+class InputController(Component):
     
     def __init__(self):
         self.actions = [] #queue.Queue()

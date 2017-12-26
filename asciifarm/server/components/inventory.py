@@ -1,6 +1,7 @@
 
+from ..component import Component
 
-class Inventory:
+class Inventory(Component):
     
     def __init__(self, capacity):
         self.capacity = capacity
@@ -37,3 +38,15 @@ class Inventory:
     
     def remove(self):
         self.owner = None
+    
+    
+    def toJSON(self):
+        return {
+            "capacity": self.capacity,
+            "items": self.items
+        }
+    
+    @classmethod
+    def fromJSON(cls, data):
+        obj = cls(data["capacity"])
+        obj.items = items

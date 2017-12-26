@@ -1,7 +1,8 @@
+
 from .. import gameobjects
+from ..component import Component
 
-
-class Build:
+class Build(Component):
     """ item type for item that can be placed on the map to become something more static (like buildable walls or crops)"""
     
     def __init__(self, objType, objArgs=[], objKwargs={}, flagsNeeded=set()):
@@ -23,4 +24,12 @@ class Build:
         obj = gameobjects.makeEntity(self.buildType, self.roomData, *self.buildArgs, **self.buildKwargs)
         obj.place(user.getGround())
         self.owner.trigger("drop")
+        
+    def toJSON(self):
+        return {
+            "objType": self.buildType,
+            "objArgs": self.buildArgs,
+            "objKwargs": self.buildKwargs,
+            "flagsNeeded": self.flagsNeeded
+        }
     

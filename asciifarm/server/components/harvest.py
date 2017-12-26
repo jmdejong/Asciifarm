@@ -1,6 +1,7 @@
 
+from ..component import Component
 
-class Harvest:
+class Harvest(Component):
     
     
     def attach(self, obj, roomData):

@@ -1,6 +1,7 @@
 
+from ..component import Component
 
-class Trap:
+class Trap(Component):
     
     
     def attach(self, obj, roomData):

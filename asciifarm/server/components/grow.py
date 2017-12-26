@@ -1,9 +1,10 @@
 from .. import timeout
 from .. import gameobjects
 import random
+from ..component import Component
 
 
-class Growing:
+class Growing(Component):
     
     
     def __init__(self, nextStage, duration, stepsPassed=None, nextArgs=[], nextKwargs={}):
@@ -32,3 +33,14 @@ class Growing:
     
     def remove(self):
         self.timeout.remove()
+    
+    
+    def toJSON(self):
+        return {
+            "nextStage": self.nextStage,
+            "duration": self.duration,
+            "stepsPassed": self.stepsPassed,
+            "nextArgs": self.nextArgs,
+            "nextKwargs": self.nextKwargs
+        }
+    

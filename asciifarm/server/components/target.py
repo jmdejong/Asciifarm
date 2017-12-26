@@ -1,6 +1,7 @@
 
+from ..component import Component
 
-class Target:
+class Target(Component):
     
     
     def attach(self, obj, roomData):

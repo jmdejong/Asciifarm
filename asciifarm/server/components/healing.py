@@ -1,6 +1,7 @@
 
+from ..component import Component
 
-class Healing:
+class Healing(Component):
     
     """ A component to automatically heal its entity over time"""
     
@@ -48,4 +49,10 @@ class Healing:
     
     def remove(self):
         self.timeEvent.removeListener(self.time)
+    
+    def toJSON(self):
+        return {
+            "interval": self.interval,
+            "amount": self.amount
+        }
         

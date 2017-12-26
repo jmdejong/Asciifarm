@@ -1,8 +1,9 @@
 from .. import timeout
 from .. import utils
 import random
+from ..component import Component
 
-class Fighter:
+class Fighter(Component):
     
     def __init__(self, maxHealth, strength=0, slowness=1, health=None, defense=0):
         self.maxHealth = maxHealth
@@ -91,5 +92,15 @@ class Fighter:
     def makeReady(self, to):
         self.canAttack = True
         self.timeout = None
+    
+    def toJSON(self):
+        return {
+            "maxHealth": self.maxHealth,
+            "strength": self.strength,
+            "slowness": self.slowness,
+            "health": self.health,
+            "defence": self.defence
+        }
+    
 
 

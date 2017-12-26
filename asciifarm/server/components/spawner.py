@@ -1,9 +1,10 @@
 from .. import gameobjects
 from .. import timeout
 import random
+from ..component import Component
 
 
-class Spawner:
+class Spawner(Component):
     
     def __init__(self, objectType, amount=1, respawnDelay=1, setHome=False, objectArgs=[], objectKwargs={}):
         self.objectType = objectType
@@ -50,3 +51,16 @@ class Spawner:
     def remove(self):
         for to in self.timeouts:
             to.remove()
+    
+    
+    def toJSON(self):
+        return {
+            "objectType": self.objectType,
+            "amount": self.amount,
+            "respawnDelay": self.respawnDelay,
+            "setHome": self.setHome,
+            "objectArgs": self.objectArgs,
+            "objectKwargs": self.objectKwargs
+        } # it won't keep track of spawned entities. It will just spawn new entities again
+    
+

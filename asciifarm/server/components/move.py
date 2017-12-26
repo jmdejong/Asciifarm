@@ -1,6 +1,7 @@
 from .. import timeout
+from ..component import Component
 
-class Move:
+class Move(Component):
     
     def __init__(self, slowness=1):
         self.direction = None
@@ -45,4 +46,7 @@ class Move:
     def remove(self):
         self.moveEvent.removeListener(self.doMove)
         self.timeout and self.timeout.remove()
+    
+    def toJSON(self):
+        return {"slowness": self.slowness}
 

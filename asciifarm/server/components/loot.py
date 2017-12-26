@@ -1,8 +1,9 @@
 import random
 from .. import gameobjects
+from ..component import Component
 
 
-class Loot:
+class Loot(Component):
     """ entities that have this component will drop loot on death """
     
     def __init__(self, items):
@@ -33,3 +34,6 @@ class Loot:
                 if chance > random.random():
                     obj = gameobjects.makeEntity(item, self.roomData, *args, **kwargs)
                     obj.place(self.owner.getGround())
+    
+    def toJSON(self):
+        return {"items": self.items}

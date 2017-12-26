@@ -1,7 +1,8 @@
 
+from ..component import Component
 
 
-class Food:
+class Food(Component):
     
     
     def __init__(self, health):
@@ -17,3 +18,5 @@ class Food:
             fighter.heal(self.healing, self.owner)
             self.owner.trigger("drop")
     
+    def toJSON(self):
+        return {"health": self.healing}

@@ -1,15 +1,16 @@
 import random
 
 from .. import pathfinding
+from ..component import Component
 
 
-class MonsterAi:
+class MonsterAi(Component):
     
     
     def __init__(self, viewDist, moveChance=1, home=None, homesickness=0.05):
         self.moveChance = moveChance
         self.viewDist = viewDist
-        self.home = home
+        self.home = home # Should home be a place instead of object? that would reduce references
         self.homesickness = homesickness
     
     
@@ -51,4 +52,11 @@ class MonsterAi:
     
     def remove(self):
         self.controlEvent.removeListener(self.control)
+    
+    def toJSON(self):
+        return {
+            "viewDist": self.viewDist,
+            "moveChance": self.moveChance,
+            "homesickness": self.homesickness
+        } # home is not saved now ...
 

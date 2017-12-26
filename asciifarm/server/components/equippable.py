@@ -1,7 +1,8 @@
 
+from ..component import Component
 
 
-class Equippable:
+class Equippable(Component):
     """ item type for item that can be placed on the map to become something more static (like buildable walls or crops)"""
     
     def __init__(self, slot, stats={}):
@@ -23,3 +24,10 @@ class Equippable:
     def getStat(self, stat):
         return self.stats.get(stat, 0)
     
+    def toJSON(self):
+        return {
+            "slot": self.slot,
+            "stats": self.stats
+        }
+    
+

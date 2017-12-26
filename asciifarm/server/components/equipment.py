@@ -1,8 +1,9 @@
 
+from ..component import Component
+from ..entity import Entity
 
 
-
-class Equipment:
+class Equipment(Component):
     
     
     def __init__(self, slots={}):
@@ -33,5 +34,19 @@ class Equipment:
     
     def canEquip(self, item):
         return item.getSlot() in self.slots
+    
+    
+    def toJSON(self):
+        return {
+            slotName: item.toJSON()
+            for slotName, item in self.slots.items()
+        }
+    
+    @classmethod
+    def fromJSON(cls, slots):
+        return cls({
+            slotName: Entity.fromJSON(item)
+            for slotname, item in slots.items()
+        })
     
     

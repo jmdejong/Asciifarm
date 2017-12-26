@@ -1,7 +1,8 @@
 
+from ..component import Component
 import random
 
-class RandomWalkController:
+class RandomWalkController(Component):
     
     def __init__(self, moveChance=1):
         self.moveChance = moveChance
@@ -28,3 +29,7 @@ class RandomWalkController:
     def remove(self):
         self.controlEvent.removeListener(self.control)
         
+    def toJSON(self):
+        return {
+            "moveChange": self.moveChance
+        }
