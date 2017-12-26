@@ -49,7 +49,15 @@ Use WASD to attack enemies in adjacent squares.
 
 If you want to help us out, great!
 
-These instructions are untested (much has changed since the last tests)
+### Raw style (no pip)
+
+    git clone https://github.com/jmdejong/Asciifarm.git
+    cd asciifarm
+    ./hostfarms
+
+And then in another terminal, in the asciifarm directory:
+
+    ./playgame
 
 ### Pipenv style
 
