@@ -1,4 +1,5 @@
 from . import event
+from . import serialize
 
 
 class Entity:
@@ -22,7 +23,6 @@ class Entity:
         
         self.ground = None
         self.roomData = None
-        pass
     
     def construct(self, roomData):
         self.roomData = roomData
@@ -84,4 +84,29 @@ class Entity:
     
     def getFlags(self):
         return self.flags
+    
+    def toJSON(self):
+        return {
+            "sprite": self.sprite,
+            "name": self.name,
+            "height": self.height,
+            "flags": list(self.flags),
+            "components": {
+                name: serialize.serialize(comp)
+                for name, comp in self.components.items()
+            }
+        }
+    
+    @classmethod
+    def fromJSON(cls, data):
+        return cls(
+            sprite = data["sprite"],
+            name = data["name"],
+            height = data["height"],
+            flags = data["flags"],
+            components = {
+                name: serialize.unserialize(comp)
+                for name, comp in data["components"]
+            }
+        )
     

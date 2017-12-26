@@ -12,7 +12,7 @@ if __package__:
     from . import main
 else:
     import os.path
-    sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-    from server import main
+    sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
+    from asciifarm.server import main
 
 main.main()
