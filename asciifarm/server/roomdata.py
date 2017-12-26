@@ -12,11 +12,13 @@ class RoomData:
         
         self.events = events
         self.targets = set()
-    
+        
+        self.preservedObjects = set()
     
     
     def getEvent(self, name):
         return self.events[name]
+    
     
     def addTarget(self, obj):
         self.targets.add(obj)
@@ -26,3 +28,13 @@ class RoomData:
     
     def getTargets(self):
         return frozenset(self.targets)
+    
+    def preserveObject(self, obj):
+        self.preservedObjects.add(obj)
+    
+    def removePreserved(self, obj):
+        self.preservedObjects.discard(obj)
+    
+    def getPreserved(self):
+        return frozenset(self.preserved)
+    

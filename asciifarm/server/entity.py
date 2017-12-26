@@ -19,7 +19,7 @@ class Entity:
         self.name = name if name else sprite # human readable name/description
         self.components = components
         self.observable = event.Event()
-        self.flags = frozenset(flags)
+        self.flags = set(flags)
         
         self.ground = None
         self.roomData = None
@@ -27,10 +27,11 @@ class Entity:
     
     def construct(self, roomData, preserve=False):
         self.roomData = roomData
+        if preserve:
+            roomData.preserveObject(self)
+            self._preserve()
         for component in self.components.values():
             component.attach(self, roomData)
-        if preserve:
-            self.preserve()
     
     def hasComponent(self, name):
         return name in self.components
@@ -86,7 +87,7 @@ class Entity:
     def getFlags(self):
         return self.flags
     
-    def preserve(self):
+    def _preserve(self):
         self.flags.add("preserve")
     
     def isPreserved(self):
