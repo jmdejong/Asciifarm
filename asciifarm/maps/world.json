@@ -2,8 +2,7 @@
     "begin": "begin",
     "rooms": {
         "begin": "begin.json",
-        "basement": "basement.json",
-        "arena": "arena.json"
+        "basement": "basement.json"
     }
 }
     

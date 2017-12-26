@@ -96,12 +96,8 @@ def makeTroll(home=None):
         })
 entities["troll"] = makeTroll
 
-def makeGoblinSpawner(): # I should probably generalize this...
-    return Entity(sprite="portal", height=1, name="goblinspawner", components={"spawn": Spawner("goblin", 2, 20)})
-entities["goblinspawner"] = makeGoblinSpawner
-
-def makeSpawner(objType, number, delay, sprite=None, name=None, height=0, setHome=False, objArgs=[], objKwargs={}):
-    return Entity(sprite=sprite, height=height, name=name, components={"spawn": Spawner(objType, number, delay, setHome, objArgs, objKwargs)})
+def makeSpawner(objType, number, delay, sprite=None, name=None, height=0, setHome=False, initialSpawn=False, objArgs=[], objKwargs={}):
+    return Entity(sprite=sprite, height=height, name=name, components={"spawn": Spawner(objType, number, delay, setHome, initialSpawn, objArgs, objKwargs)})
 entities["spawner"] = makeSpawner
 
 def makeSownSeed():

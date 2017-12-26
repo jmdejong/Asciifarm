@@ -102,6 +102,7 @@
                     "portal",
                     "goblinspawner",
                     1,
+                    true,
                     true
                 ]
             }
@@ -117,6 +118,7 @@
                     "portal",
                     "trollspawner",
                     1,
+                    true,
                     true
                 ]
             }

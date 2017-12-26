@@ -6,7 +6,7 @@ from ..component import Component
 
 class Spawner(Component):
     
-    def __init__(self, objectType, amount=1, respawnDelay=1, setHome=False, objectArgs=[], objectKwargs={}):
+    def __init__(self, objectType, amount=1, respawnDelay=1, setHome=False, initialSpawn=False, objectArgs=[], objectKwargs={}):
         self.objectType = objectType
         self.amount = amount
         self.respawnDelay = respawnDelay
@@ -15,6 +15,7 @@ class Spawner(Component):
         self.objectKwargs = objectKwargs
         self.timeouts = set()
         self.setHome = setHome
+        self.initialSpawn = initialSpawn
     
     def attach(self, obj, roomData):
         
@@ -23,21 +24,26 @@ class Spawner(Component):
         self.updateEvent = roomData.getEvent("update")
         
         for i in range(self.amount):
-            self.goSpawn()
+            if self.initialSpawn:
+                self.goSpawn(1)
+            else:
+                self.goSpawn()
     
-    def goSpawn(self):
-        duration= self.respawnDelay
+    def goSpawn(self, duration=None):
+        if duration == None:
+            duration = self.respawnDelay
         to = timeout.Timeout(self.updateEvent, random.triangular(duration/2, duration*2, duration), callback=self.spawn)
         self.timeouts.add(to)
     
-    def spawn(self, to):
+    def spawn(self, to=None):
         objectKwargs = self.objectKwargs.copy()
         if self.setHome:
             objectKwargs["home"] = self.owner
         obj = gameobjects.makeEntity(self.objectType, self.roomData, *self.objectArgs, **objectKwargs)
         obj.place(self.owner.getGround())
         self.spawned.add(obj)
-        self.timeouts.remove(to)
+        if to:
+            self.timeouts.remove(to)
         obj.addListener(self.onObjEvent)
         print("{} spawned a {}".format(self.owner.getName(), self.objectType))
     
@@ -60,7 +66,8 @@ class Spawner(Component):
             "respawnDelay": self.respawnDelay,
             "setHome": self.setHome,
             "objectArgs": self.objectArgs,
-            "objectKwargs": self.objectKwargs
+            "objectKwargs": self.objectKwargs,
+            "initialSpawn": self.initialSpawn
         } # it won't keep track of spawned entities. It will just spawn new entities again
     
 

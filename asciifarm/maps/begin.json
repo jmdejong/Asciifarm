@@ -83,7 +83,8 @@
         "#": "wall",
         ":": ["floor", {
             "type": "spawner",
-            "args": ["seed", 1, 600]
+            "args": ["seed", 1, 600],
+            "kwargs": {"initialSpawn": true}
         }],
         ";": ["floor", "seed"],
         ".": "ground",
