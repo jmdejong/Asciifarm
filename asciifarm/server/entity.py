@@ -23,12 +23,14 @@ class Entity:
         
         self.ground = None
         self.roomData = None
+        
     
-    def construct(self, roomData):
+    def construct(self, roomData, preserve=False):
         self.roomData = roomData
         for component in self.components.values():
-            if hasattr(component, "attach"):
-                component.attach(self, roomData)
+            component.attach(self, roomData)
+        if preserve:
+            self.preserve()
     
     def hasComponent(self, name):
         return name in self.components
@@ -48,8 +50,7 @@ class Entity:
             self.ground.removeObj(self)
             self.ground = None
         for component in self.components.values():
-            if hasattr(component, "remove"):
-                component.remove()
+            component.remove()
         self.trigger("remove")
         self.roomData = None
     
@@ -85,6 +86,12 @@ class Entity:
     def getFlags(self):
         return self.flags
     
+    def preserve(self):
+        self.flags.add("preserve")
+    
+    def isPreserved(self):
+        return "preserve" in self.flags
+    
     def toJSON(self):
         return {
             "sprite": self.sprite,
@@ -106,7 +113,7 @@ class Entity:
             flags = data["flags"],
             components = {
                 name: serialize.unserialize(comp)
-                for name, comp in data["components"]
+                for name, comp in data["components"].items()
             }
         )
     

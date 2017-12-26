@@ -100,6 +100,9 @@ class Room:
             return self._getGround(pos)
         return None
     
+    def getAllObjs(self):
+        return set().union(*[{(pos, obj) for obj in gr.getObjs()} for (pos, gr) in self.field.items()])
+    
     def getRoomData(self):
         return self.roomData
     

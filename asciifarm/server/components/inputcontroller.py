@@ -52,7 +52,7 @@ class InputController(Component):
         if kind == "drop":
             for obj in self.inventory.getItems():
                 self.inventory.drop(obj)
-                obj.construct(self.roomData)
+                obj.construct(self.roomData, preserve=True)
                 obj.place(self.owner.getGround())
                 break
         

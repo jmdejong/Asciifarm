@@ -23,7 +23,7 @@ class Growing(Component):
     
     def grow(self, to):
         
-        obj = gameobjects.makeEntity(self.nextStage, self.roomData, *self.nextArgs, **self.nextKwargs)
+        obj = gameobjects.makeEntity(self.nextStage, self.roomData, *self.nextArgs, preserve=self.owner.isPreserved(), **self.nextKwargs)
         obj.place(self.owner.getGround())
         
         self.owner.trigger("grow", obj)

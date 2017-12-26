@@ -17,6 +17,7 @@
         "KEY_UP": ["move", "north"],
         "KEY_DOWN": ["move", "south"],
         "KEY_RIGHT": ["move", "east"],
-        "KEY_LEFT": ["move", "west"]
+        "KEY_LEFT": ["move", "west"],
+        "t": ["chat", "hey everybody"]
     }
 }

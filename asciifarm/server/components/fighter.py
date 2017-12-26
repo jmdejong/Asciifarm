@@ -99,7 +99,7 @@ class Fighter(Component):
             "strength": self.strength,
             "slowness": self.slowness,
             "health": self.health,
-            "defence": self.defence
+            "defense": self.defense
         }
     
 

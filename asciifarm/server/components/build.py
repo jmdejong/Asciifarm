@@ -21,7 +21,7 @@ class Build(Component):
         groundFlags = user.getGround().getFlags()
         if not self.flagsNeeded <= groundFlags: # <= means subset when applied on sets
             return
-        obj = gameobjects.makeEntity(self.buildType, self.roomData, *self.buildArgs, **self.buildKwargs)
+        obj = gameobjects.makeEntity(self.buildType, self.roomData, *self.buildArgs, preserve=True, **self.buildKwargs)
         obj.place(user.getGround())
         self.owner.trigger("drop")
         

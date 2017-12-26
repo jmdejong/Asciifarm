@@ -146,8 +146,8 @@ def makeArmour():
 entities["armour"] = makeArmour
 
 
-def makeEntity(entType, roomData, *args, **kwargs):
+def makeEntity(entType, roomData, *args, preserve=False, **kwargs):
     entity = entities[entType](*args, **kwargs)
-    entity.construct(roomData)
+    entity.construct(roomData, preserve)
     return entity
     

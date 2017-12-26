@@ -31,5 +31,5 @@ class RandomWalkController(Component):
         
     def toJSON(self):
         return {
-            "moveChange": self.moveChance
+            "moveChance": self.moveChance
         }

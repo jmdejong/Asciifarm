@@ -32,7 +32,7 @@ class Loot(Component):
                             kwargs = itemData[3]
                 
                 if chance > random.random():
-                    obj = gameobjects.makeEntity(item, self.roomData, *args, **kwargs)
+                    obj = gameobjects.makeEntity(item, self.roomData, *args, preserve=True, **kwargs)
                     obj.place(self.owner.getGround())
     
     def toJSON(self):

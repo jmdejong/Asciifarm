@@ -15,5 +15,7 @@ class Component:
         return None
     
     @classmethod
-    def fromJSON(cls, data):
+    def fromJSON(cls, data=None):
+        if data == None:
+            return cls()
         return cls(**data)

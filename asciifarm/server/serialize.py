@@ -12,10 +12,10 @@ def getClass(name):
     return componentClass
 
 def serialize(component):
-    module, name = getName(type(component))
+    name = getName(type(component))
     return [name, component.toJSON()]
 
 def unserialize(component):
     name, data = component
-    return getClass(component).fromJSON(data)
+    return getClass(name).fromJSON(data)
 
