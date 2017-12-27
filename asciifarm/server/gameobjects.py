@@ -18,6 +18,7 @@ from .components.build import Build
 from .components.harvest import Harvest
 from .components.food import Food
 from .components.equippable import Equippable
+from .components.roomedge import RoomEdge
 
 """ This module contains factory functions for many placable entities, and a make function to call a factory by a string name """
 
@@ -35,6 +36,14 @@ entities["rock"] = makeRock
 def makeTree():
     return Entity(sprite="tree", height=3, flags={"solid"})
 entities["tree"] = makeTree
+
+def makeHouse():
+    return Entity(sprite="house", height=3, flags={"solid"})
+entities["house"] = makeHouse
+
+def makeFence():
+    return Entity(sprite="fence", height=1, flags={"solid"})
+entities["fence"] = makeFence
 
 def makeStone():
     return Entity(sprite="stone", height=0.4, components={"item": Build("builtwall")})
@@ -55,7 +64,12 @@ entities["floor"] = makeFloor
 def makeGround():
     return Entity(sprite="ground", height=0.1, flags={"floor", "soil"})
 entities["ground"] = makeGround
-    
+
+def makeBridge(small=False):
+    sprite = "smallbridge" if small else "bridge"
+    return Entity(sprite=sprite, height=0.1, flags={"floor"})
+entities["bridge"] = makeBridge
+
 def makeWater():
     return Entity(sprite="water", height=0)
 entities["water"] = makeWater
@@ -63,6 +77,10 @@ entities["water"] = makeWater
 def makeRoomExit(destRoom, destPos=None, sprite="exit", size=0):
     return Entity(sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos)})
 entities["roomexit"] = makeRoomExit
+
+def makeRoomBoundary(destRoom, destPos=None, mask=(True, True)):
+    return Entity(sprite=" ", height=0, components={"collision": RoomEdge(destRoom, destPos, mask)})
+entities["roomboundary"] = makeRoomBoundary
 
 def makeRabbit():
     return Entity(sprite="rabbit", height=1, components={"move": Move(slowness=4), "controller": RandomWalkController(moveChance=0.05)})

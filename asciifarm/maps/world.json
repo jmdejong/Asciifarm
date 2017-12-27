@@ -2,7 +2,10 @@
     "begin": "begin",
     "rooms": {
         "begin": "begin.json",
-        "basement": "basement.json"
+        "basement": "basement.json",
+        "right": "right.json",
+        "overview": "overview.json",
+        "town": "town.json"
     }
 }
     

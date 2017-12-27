@@ -97,7 +97,10 @@ class Room:
         if isinstance(pos, str):
             pos = self.places.get(pos)
         if pos:
-            return self._getGround(pos)
+            x, y = pos
+            x %= self.width
+            y %= self.height
+            return self._getGround((x, y))
         return None
     
     def getAllObjs(self):
