@@ -1,7 +1,7 @@
 from .. import timeout
 from .. import gameobjects
 import random
-from ..component import Component
+from .component import Component
 
 
 class Growing(Component):

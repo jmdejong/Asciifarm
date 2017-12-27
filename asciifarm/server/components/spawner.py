@@ -1,7 +1,7 @@
 from .. import gameobjects
 from .. import timeout
 import random
-from ..component import Component
+from .component import Component
 
 
 class Spawner(Component):

@@ -1,7 +1,7 @@
 import random
 
 from .. import pathfinding
-from ..component import Component
+from .component import Component
 
 
 class MonsterAi(Component):

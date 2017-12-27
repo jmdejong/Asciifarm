@@ -1,6 +1,6 @@
 
 from .. import faction
-from ..component import Component
+from .component import Component
 
 class Alignment(Component):
     

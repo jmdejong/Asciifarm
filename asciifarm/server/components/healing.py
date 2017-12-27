@@ -1,5 +1,5 @@
 
-from ..component import Component
+from .component import Component
 
 class Healing(Component):
     

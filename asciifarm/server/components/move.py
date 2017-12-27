@@ -1,5 +1,5 @@
 from .. import timeout
-from ..component import Component
+from .component import Component
 
 class Move(Component):
     

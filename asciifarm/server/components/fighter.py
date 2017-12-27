@@ -1,7 +1,7 @@
 from .. import timeout
 from .. import utils
 import random
-from ..component import Component
+from .component import Component
 
 class Fighter(Component):
     

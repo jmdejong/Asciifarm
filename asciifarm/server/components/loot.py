@@ -1,6 +1,6 @@
 import random
 from .. import gameobjects
-from ..component import Component
+from .component import Component
 
 
 class Loot(Component):
