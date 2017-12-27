@@ -70,7 +70,7 @@ class World:
     def deactivateRoom(self, name):
         
         # only deactivate a room when it's empty
-        for player in self.activeplayers.values():
+        for player in self.activePlayers.values():
             if player.getRoom() == name:
                 return
         
