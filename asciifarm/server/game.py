@@ -69,14 +69,21 @@ class Game:
         self.counter += 1
     
     def save(self):
-        playerDir = os.path.join(self.saveDir, "players")
+        
         try:
-            os.mkdir(playerDir, 0o700)
+            os.mkdir(self.saveDir, 0o755)
         except FileExistsError:
             # This is the expected scenario.
             # The save function should just create the file if it doesn't exist
             # The only problem is when there is a file (not directory) with the same name, or a directory with the wrong permissions
             # These errors won;t be caught now and happen later
+            pass
+        
+        playerDir = os.path.join(self.saveDir, "players")
+        try:
+            os.mkdir(playerDir, 0o700)
+        except FileExistsError:
+            # same here
             pass
         activePlayers = set(self.world.getActivePlayers())
         for player in activePlayers.union(self.lastActivePlayers):
@@ -88,7 +95,7 @@ class Game:
         try:
             os.mkdir(roomDir, 0o755)
         except FileExistsError:
-            # same as with playerdir
+            # same again
             pass
         for room in self.world.getActiveRooms():
             utils.writeFileSafe(os.path.join(roomDir, room + saveExt), json.dumps(self.world.getPreserved(room)))
