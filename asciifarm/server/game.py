@@ -110,7 +110,7 @@ class Game:
                 with open(os.path.join(roomDir, fname), 'r') as f:
                     data = json.load(f)
                     self.world.loadPreserved(room, data)
-                    print("loaded save forroom:", room)
+                    print("loaded saved room:", room)
         
         playerDir = os.path.join(loadDir, "players")
         try:
@@ -124,7 +124,7 @@ class Game:
                 with open(os.path.join(playerDir, fname), 'r') as f:
                     data = json.load(f)
                     self.world.loadPlayer(player, data)
-                    print("loaded save for player:", player)
+                    print("loaded saved player:", player)
     
     def sendState(self):
         
