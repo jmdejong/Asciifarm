@@ -73,7 +73,15 @@ class World:
                 return
         
         self.activeRooms.pop(name, None)
-        
+    
+    def getActiveRooms(self):
+        return list(self.activeRooms.keys())
+    
+    def getPreserved(self, roomName):
+        return self.getRoom(roomName).getPreserved()
+    
+    def loadPreserved(self, roomName, data):
+        self.getRoom(roomName).loadPreserved(data)
     
     def controlPlayer(self, playername, action):
         self.players[playername].control(action)

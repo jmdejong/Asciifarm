@@ -1,5 +1,5 @@
 
-
+import os
 
 def clamp(val, lower, upper):
     """ val if it's between lower and upper, else the closest of the two"""
@@ -24,3 +24,12 @@ def concat(arr):
         return tuple(l)
     else:
         raise ValueError("type {} can't be concatenated".format(type(arr[0])))
+
+
+def writeFileSafe(filename, data, tempname=None):
+    if tempname == None:
+        tempname = filename + ".tempfile"
+    with open(tempname, 'w') as f:
+        f.write(data)
+    os.rename(tempname, filename)
+    

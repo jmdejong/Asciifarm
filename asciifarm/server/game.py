@@ -3,23 +3,29 @@ import time
 from . import gameserver
 from . import world
 from . import view
-import pickle
+from . import utils
 import os
+import json
+
+saveExt = ".save.json"
 
 
 class Game:
     
-    def __init__(self, socketType, worldData=None, worldSave=None, saveAs=None, saveInterval=1):
+    def __init__(self, socketType, worldData=None, loadDir=None, saveDir=None, saveInterval=1):
         
         self.server = gameserver.GameServer(self, socketType)
         
-        if worldSave:
-            with open(worldSave, "rb") as f:
-                self.world = pickle.load(f)
-        elif worldData:
-            self.world = world.World(worldData)
+        self.world = world.World(worldData)
+        for fname in os.listdir(loadDir):
+            if fname.endswith(saveExt):
+                room = fname[:-len(saveExt)]
+                with open(os.path.join(loadDir, fname), 'r') as f:
+                    data = json.load(f)
+                    self.world.loadPreserved(room, data)
+                    print("loaded save for:", room)
         
-        self.saveAs = saveAs
+        self.saveDir = saveDir
         self.saveInterval = saveInterval
         
         self.view = view.View(self.world)
@@ -61,13 +67,16 @@ class Game:
             
         self.world.update()
         
-        if self.saveAs and not self.counter % self.saveInterval:
-            tempName = self.saveAs+".savetmp"
-            with open(tempName, "wb") as f:
-                pickle.dump(self.world, f, 0)
-            os.rename(tempName, self.saveAs)
+        if self.saveDir and not self.counter % self.saveInterval:
+            self.save()
         
         self.counter += 1
+    
+    def save(self):
+        for room in self.world.getActiveRooms():
+            utils.writeFileSafe(os.path.join(self.saveDir, room + saveExt), json.dumps(self.world.getPreserved(room)))
+            self.world.deactivateRoom(room)
+            print("saved room:", room)
         
     
     def sendState(self):

@@ -40,7 +40,6 @@ class Player:
             self.health = self.getHealth()[0]
             self.entity.remove()
             self.entity = None
-        self.world.deactivateRoom(self.roomname)
     
     def joinRoom(self, roomname, place=None):
         self.canChangeRoom = False

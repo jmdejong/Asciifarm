@@ -121,5 +121,14 @@ class Room:
     
     def resetChangedCells(self):
         self.changedCells = {}
+    
+    def getPreserved(self):
+        return [(obj.getGround().getPos(), obj.toJSON()) for obj in self.roomData.getPreserved()]
+    
+    def loadPreserved(self, objects):
+        for (pos, objData) in objects:
+            obj = entity.Entity.fromJSON(objData)
+            obj.construct(self.roomData, preserve=True)
+            self.addObj(tuple(pos), obj)
         
 

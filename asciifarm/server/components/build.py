@@ -9,7 +9,7 @@ class Build(Component):
         self.buildType = objType
         self.buildArgs = objArgs
         self.buildKwargs = objKwargs
-        self.flagsNeeded = flagsNeeded
+        self.flagsNeeded = set(flagsNeeded)
     
     def attach(self, obj, roomData):
         
@@ -30,6 +30,6 @@ class Build(Component):
             "objType": self.buildType,
             "objArgs": self.buildArgs,
             "objKwargs": self.buildKwargs,
-            "flagsNeeded": self.flagsNeeded
+            "flagsNeeded": list(self.flagsNeeded)
         }
     

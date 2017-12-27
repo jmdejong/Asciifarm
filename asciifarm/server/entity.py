@@ -50,6 +50,8 @@ class Entity:
         if self.ground:
             self.ground.removeObj(self)
             self.ground = None
+        if self.isPreserved():
+            self.roomData.removePreserved(self)
         for component in self.components.values():
             component.remove()
         self.trigger("remove")

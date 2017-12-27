@@ -36,5 +36,5 @@ class RoomData:
         self.preservedObjects.discard(obj)
     
     def getPreserved(self):
-        return frozenset(self.preserved)
+        return frozenset(self.preservedObjects)
     
