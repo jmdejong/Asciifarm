@@ -122,7 +122,6 @@ The idea is to make 3 different kind of areas:
 - better inventory selection
 - runtime-created rooms
 - in-game chat
-- custom world persistence (json)
 - tutorial room
 - support websockets
 - windows comptibility (libtcod/tdl instead of ncurses?)
@@ -135,6 +134,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- custom world persistence (json)
 - defense/armour
 - nondeterminism in combat, grow times and spawn times
 - equipment
