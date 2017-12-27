@@ -1,5 +1,6 @@
 
 from .component import Component
+from ..entity import Entity
 
 class Inventory(Component):
     
@@ -43,10 +44,11 @@ class Inventory(Component):
     def toJSON(self):
         return {
             "capacity": self.capacity,
-            "items": self.items
+            "items": [item.toJSON() for item in self.items]
         }
     
     @classmethod
     def fromJSON(cls, data):
         obj = cls(data["capacity"])
-        obj.items = items
+        obj.items = [Entity.fromJSON(item) for item in data["items"]]
+        return obj

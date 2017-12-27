@@ -109,6 +109,8 @@ class Entity:
     
     @classmethod
     def fromJSON(cls, data):
+        if data == None:
+            return None
         return cls(
             sprite = data["sprite"],
             name = data["name"],

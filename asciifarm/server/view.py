@@ -3,7 +3,7 @@ from . import grid
 # this class extracts the data to send to the clients from the world
 
 changeActions = {
-    "health": lambda p: ["health", p.getHealth()],
+    "health": lambda p: ["health", p.getHealthPair()],
     "inventory": lambda p: ["inventory", [obj.getSprite() for obj in p.getInventory()]],
     "ground": lambda p: ["ground", [obj.getName() for obj in p.getGroundObjs() if obj.getName()]],
     "pos": lambda p: ["playerpos", p.getPos()]

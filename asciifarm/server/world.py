@@ -14,6 +14,7 @@ class World:
         self.players = {}
         
         self.activeRooms = {}
+        self.activePlayers = {}
         
         for roomname, roomdata in data["rooms"].items():
             self.makeRoom(roomname, roomdata)
@@ -35,6 +36,7 @@ class World:
         if not r:
             r = self.beginRoom
         pl.joinRoom(r)
+        self.activePlayers[name] = pl
         return pl
     
     def makeRoom(self, name, data):
@@ -77,6 +79,9 @@ class World:
     def getActiveRooms(self):
         return list(self.activeRooms.keys())
     
+    def getActivePlayers(self):
+        return list(self.activePlayers.keys())
+    
     def getPreserved(self, roomName):
         return self.getRoom(roomName).getPreserved()
     
@@ -91,7 +96,14 @@ class World:
             return
         pl = self.players[name]
         pl.leaveRoom()
+        self.activePlayers.pop(name, None)
     
     def resetChangedCells(self):
         for room in self.rooms.values():
             room.resetChangedCells()
+    
+    def savePlayer(self, name):
+        return self.players[name].toJSON()
+    
+    def loadPlayer(self, name, data):
+        self.players[name] = player.Player.fromJSON(data, self)

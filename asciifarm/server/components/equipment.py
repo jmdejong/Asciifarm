@@ -38,14 +38,14 @@ class Equipment(Component):
     
     def toJSON(self):
         return {
-            slotName: item.toJSON()
+            slotName: item.toJSON() if item else None
             for slotName, item in self.slots.items()
         }
     
     @classmethod
     def fromJSON(cls, slots):
         return cls({
-            slotName: Entity.fromJSON(item)
+            slotname: Entity.fromJSON(item) if item else None
             for slotname, item in slots.items()
         })
     

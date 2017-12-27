@@ -37,9 +37,10 @@ class Player:
     
     def leaveRoom(self):
         if self.entity:
-            self.health = self.getHealth()[0]
+            self.health = self.getHealthPair()[0]
             self.entity.remove()
             self.entity = None
+        self.roomname = None
     
     def joinRoom(self, roomname, place=None):
         self.canChangeRoom = False
@@ -128,11 +129,19 @@ class Player:
         controller = self.entity.getComponent("controller")
         controller.addAction(action)
     
-    def getHealth(self):
+    def getHealthPair(self):
         if self.entity:
             return self.entity.getComponent("fighter").getHealth()
         else:
             return None
+    
+    def getHealth(self):
+        h = self.getHealthPair()
+        if h:
+            return h[0]
+        if not self.isActive():
+            return self.health
+        return None
     
     def getInventory(self):
         if self.entity:
@@ -184,3 +193,24 @@ class Player:
     
     def isActive(self):
         return bool(self.roomname and self.entity)
+    
+    def toJSON(self):
+        return {
+            "name": self.name,
+            "roomname": self.roomname,
+            "inventory": self.inventory.toJSON(),
+            "equipment": self.equipment.toJSON(),
+            "health": self.getHealth(),
+            "maxhealth": self.maxHealth
+        }
+    
+    @classmethod
+    def fromJSON(cls, data, world):
+        self = cls(data["name"], world)
+        self.health = data["health"]
+        self.maxHealth = data["maxhealth"]
+        self.inventory = Inventory.fromJSON(data["inventory"])
+        self.equipment = Equipment.fromJSON(data["equipment"])
+        self.roomname = data["roomname"]
+        
+        return self

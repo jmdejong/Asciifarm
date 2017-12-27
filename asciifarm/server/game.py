@@ -22,6 +22,8 @@ class Game:
         self.saveDir = saveDir
         self.saveInterval = saveInterval
         
+        self.lastActivePlayers = set()
+        
         self.view = view.View(self.world)
         
         self.counter = 0
@@ -67,33 +69,62 @@ class Game:
         self.counter += 1
     
     def save(self):
+        playerDir = os.path.join(self.saveDir, "players")
         try:
-            os.mkdir(self.saveDir, 0o755)
+            os.mkdir(playerDir, 0o700)
         except FileExistsError:
             # This is the expected scenario.
             # The save function should just create the file if it doesn't exist
             # The only problem is when there is a file (not directory) with the same name, or a directory with the wrong permissions
             # These errors won;t be caught now and happen later
             pass
+        activePlayers = set(self.world.getActivePlayers())
+        for player in activePlayers.union(self.lastActivePlayers):
+            utils.writeFileSafe(os.path.join(playerDir, player + saveExt), json.dumps(self.world.savePlayer(player)))
+            print("saved player:", player)
+        self.lastActivePlayers = activePlayers
+        
+        roomDir = os.path.join(self.saveDir, "rooms")
+        try:
+            os.mkdir(roomDir, 0o755)
+        except FileExistsError:
+            # same as with playerdir
+            pass
         for room in self.world.getActiveRooms():
-            utils.writeFileSafe(os.path.join(self.saveDir, room + saveExt), json.dumps(self.world.getPreserved(room)))
+            utils.writeFileSafe(os.path.join(roomDir, room + saveExt), json.dumps(self.world.getPreserved(room)))
             self.world.deactivateRoom(room)
             print("saved room:", room)
+        
     
     def load(self, loadDir):
+        
+        roomDir = os.path.join(loadDir, "rooms")
         try:
-            fnames = os.listdir(loadDir)
+            fnames = os.listdir(roomDir)
         except FileNotFoundError:
-            # Just continue, the game can and should also run without loading a save
-            print("no saves loaded")
+            print("no room saves loaded")
             return
         for fname in fnames:
             if fname.endswith(saveExt):
                 room = fname[:-len(saveExt)]
-                with open(os.path.join(loadDir, fname), 'r') as f:
+                with open(os.path.join(roomDir, fname), 'r') as f:
                     data = json.load(f)
                     self.world.loadPreserved(room, data)
-                    print("loaded save for:", room)
+                    print("loaded save forroom:", room)
+        
+        playerDir = os.path.join(loadDir, "players")
+        try:
+            fnames = os.listdir(playerDir)
+        except FileNotFoundError:
+            print("no player saves loaded")
+            return
+        for fname in fnames:
+            if fname.endswith(saveExt):
+                player = fname[:-len(saveExt)]
+                with open(os.path.join(playerDir, fname), 'r') as f:
+                    data = json.load(f)
+                    self.world.loadPlayer(player, data)
+                    print("loaded save for player:", player)
     
     def sendState(self):
         
