@@ -33,7 +33,11 @@ class Game:
         
         self.server.start(address)
         
-        self.game_loop()
+        try:
+            self.game_loop()
+        except KeyboardInterrupt:
+            print("^C caught, saving")
+            self.save()
     
     
     def game_loop(self):
@@ -88,7 +92,6 @@ class Game:
         activePlayers = set(self.world.getActivePlayers())
         for player in activePlayers.union(self.lastActivePlayers):
             utils.writeFileSafe(os.path.join(playerDir, player + saveExt), json.dumps(self.world.savePlayer(player)))
-            print("saved player:", player)
         self.lastActivePlayers = activePlayers
         
         roomDir = os.path.join(self.saveDir, "rooms")
@@ -100,7 +103,6 @@ class Game:
         for room in self.world.getActiveRooms():
             utils.writeFileSafe(os.path.join(roomDir, room + saveExt), json.dumps(self.world.getPreserved(room)))
             self.world.deactivateRoom(room)
-            print("saved room:", room)
         
     
     def load(self, loadDir):
