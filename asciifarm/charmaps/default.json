@@ -37,5 +37,5 @@
     "charwidth": 1,
     "healthfull": ["#", 7, 2],
     "healthempty": ["_", 7, 1],
-    "alphabet": "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+    "alphabet": "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 }
