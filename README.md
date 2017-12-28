@@ -123,7 +123,6 @@ The idea is to make 3 different kind of areas:
 - better reaction on player death
 - better inventory selection
 - runtime-created rooms
-- in-game chat
 - tutorial room
 - support websockets
 - windows comptibility (libtcod/tdl instead of ncurses?)
@@ -136,6 +135,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- in-game chat
 - relative position room transitions
 - custom world persistence (json)
 - defense/armour
