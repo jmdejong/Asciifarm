@@ -1,7 +1,7 @@
 {
     "width": 64,
     "height": 64,
-    "spawn": [60, 15],
+    "spawn": [10, 15],
     "places": {
         "stairdown": [30, 30],
         "right": [62, 10]
