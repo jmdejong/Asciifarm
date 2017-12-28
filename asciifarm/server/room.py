@@ -26,7 +26,8 @@ class Room:
             "control": event.Event(),
             "move": event.Event(),
             "fight": event.Event(),
-            "update": event.Event()
+            "update": event.Event(),
+            "sound": event.Event()
             })
         
         self.places = data.get("places", {})

@@ -115,6 +115,8 @@ The idea is to make 3 different kind of areas:
 - testing
 - remove code duplication in display
 - display equipment
+- transparent background on sprites
+- labels
 - make farming more work
 - autofight/autoretaliate?
 - display target enemy health
@@ -134,6 +136,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- relative position room transitions
 - custom world persistence (json)
 - defense/armour
 - nondeterminism in combat, grow times and spawn times

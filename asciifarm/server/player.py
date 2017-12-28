@@ -7,6 +7,7 @@ from .components.healing import Healing
 from .components.alignment import Alignment
 from .components.target import Target
 from .components.equipment import Equipment
+from .components.listen import Listen
 from . import faction
 from . import entity
 
@@ -67,7 +68,8 @@ class Player:
                 "alignment": Alignment(faction.GOOD),
                 "heal": Healing(interval=50),
                 "target": Target(),
-                "equipment": self.equipment
+                "equipment": self.equipment,
+                "listen": Listen()
                 })
         self.entity.construct(room.getRoomData())
         self.entity.addListener(self.onPlayerAction)
@@ -121,6 +123,10 @@ class Player:
         if action == "move":
             self.changes.add("ground")
             self.changes.add("pos")
+        
+        if action == "sound":
+            source, text = data
+            self.messages.append(source.getName() + ": " + text)
         
     
     def control(self, action):

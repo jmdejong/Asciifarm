@@ -80,6 +80,9 @@ class InputController(Component):
                 if obj.getComponent("interact") != None:
                     obj.getComponent("interact").interact(self.owner)
                     break
+        
+        if kind == "say":
+            self.roomData.getEvent("sound").trigger(self.owner, action[1])
     
     def getInteractions(self):
         return []
