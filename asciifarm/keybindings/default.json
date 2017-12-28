@@ -17,7 +17,9 @@
         "KEY_UP": ["move", "north"],
         "KEY_DOWN": ["move", "south"],
         "KEY_RIGHT": ["move", "east"],
-        "KEY_LEFT": ["move", "west"],
-        "t": ["say", "hey everybody"]
+        "KEY_LEFT": ["move", "west"]
+    },
+    "control": {
+        "t": ["text"]
     }
 }

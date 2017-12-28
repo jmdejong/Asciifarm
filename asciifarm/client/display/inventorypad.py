@@ -7,6 +7,10 @@ class InventoryPad:
         self.title = title
         self.setInventory([])
         self.changed = False
+        self.win = None
+    
+    def setWin(self, win):
+        self.win = win
     
     def setInventory(self, items):
         self.items = items
@@ -15,9 +19,10 @@ class InventoryPad:
     def getHeight(self):
         return self.maxItems+2
     
-    def update(self, win, force):
-        if not self.changed and not force or not win:
+    def update(self, force):
+        if not self.changed and not force or not self.win:
             return
+        win = self.win
         self.changed = False
         height, width = win.getmaxyx()
         win.erase()

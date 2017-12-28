@@ -22,8 +22,10 @@ class Screen:
         
         sideW = 20
         sideX = width-sideW
-        msgH = max(3, min(height // 5, 6))
-        msgY = height - msgH
+        msgH = max(3, min(height // 5, 5))
+        msgY = height - msgH-1
+        inputH = 1
+        inputY = msgY + msgH
         healthY = 0
         healthH = self._limitHeight(2, healthY)
         groundY = healthY + healthH
@@ -36,6 +38,7 @@ class Screen:
         self.windows = {
             "field": self.makeWin(0, 0, sideX - 1, msgY),
             "msg": self.makeWin(0, msgY, sideX - 1, msgH),
+            "textinput": self.makeWin(0, inputY, sideX - 1, inputH),
             "health": self.makeWin(sideX, healthY, sideW, healthH),
             "ground": self.makeWin(sideX, groundY, sideW, groundH),
             "inventory": self.makeWin(sideX, invY, sideW, invH),
@@ -47,22 +50,18 @@ class Screen:
             return None
         return curses.newwin(height, width, y, x)
     
+    def getWin(self, name):
+        return self.windows[name]
+    
     
     def updateSize(self, *args):
         curses.endwin()
         curses.initscr()
         self.setWins()
         self.stdscr.clear()
-        self.update(True)
+        self.display.update(True)
     
-    def update(self, force=False):
-        d = self.display
-        d.fieldPad.update(self.windows["field"], force)
-        d.messagePad.update(self.windows["msg"], force)
-        d.healthPad.update(self.windows["health"], force)
-        d.groundPad.update(self.windows["ground"], force)
-        d.inventoryPad.update(self.windows["inventory"], force)
-        d.infoPad.update(self.windows["info"], force)
+    def update(self):
         
         curses.doupdate()
     

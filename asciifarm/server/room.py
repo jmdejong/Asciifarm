@@ -94,15 +94,17 @@ class Room:
             groundPatch.addListener(self.onGroundChange)
         return self.field.get(pos)
     
-    def get(self, pos):
+    def get(self, pos, modular=False):
         if isinstance(pos, str):
             pos = self.places.get(pos)
-        if pos:
-            x, y = pos
-            x %= self.width
-            y %= self.height
-            return self._getGround((x, y))
-        return None
+        if not pos:
+            return None
+        x, y = pos
+        # todo: make sure modularity is only used when entering a room
+        x %= self.width
+        y %= self.height
+        return self._getGround((x, y))
+        
     
     def getAllObjs(self):
         return set().union(*[{(pos, obj) for obj in gr.getObjs()} for (pos, gr) in self.field.items()])

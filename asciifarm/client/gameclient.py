@@ -10,7 +10,7 @@ import getpass
 import argparse
 from .display.screen import Screen
 import string
-from .display import Display
+from .display.display import Display
 
 
 class Client:
@@ -24,19 +24,41 @@ class Client:
         self.logFile = logFile
         
         self.commands = {}
-        for key, commands in keybindings["input"].items():
-            if isinstance(commands[0], str):
-                commands = [commands]
-            self.commands[key] = [["input", command] for command in commands]
+        if "input" in keybindings:
+            for key, commands in keybindings["input"].items():
+                if isinstance(commands[0], str):
+                    commands = [commands]
+                self.commands[key] = [("send", ["input", command]) for command in commands]
+        if "control" in keybindings:
+            for key, commands in keybindings["control"].items():
+                if isinstance(commands[0], str):
+                    commands = [commands]
+                self.commands[key] = commands
         
-        self.controlsString = "Controls:\n"+'\n'.join(
-                key + ": " + ', '.join(' '.join(action[1]) for action in actions)
-                for key, actions in self.commands.items()
-                if key in string.printable)
+        self.controlsString = """\
+Default Controls:
+ wasd or arrows:
+    Move around
+ e: Grab
+ q: Drop
+ E: Use
+ r: Interact
+ f: Attack
+ t: Chat"""
         
         self.display.showInfo(self.controlsString)
         
+        self.actions = {
+            "send": (lambda data: self.connection.send(json.dumps(data))),
+            "text": (lambda: self.readString())
+        }
         
+    
+    def readString(self):
+        text = self.display.getString()
+        string = str(text, "utf-8")
+        if string:
+            self.connection.send(json.dumps(["input", ["say", string]]))
     
     def start(self):
         threading.Thread(target=self.listen, daemon=True).start()
@@ -117,7 +139,8 @@ class Client:
             except ValueError:
                 continue
             if keyname in self.commands:
-                self.connection.send(json.dumps(self.commands[keyname]))
+                for command, *data in self.commands[keyname]:
+                    self.actions[command](*data)
     
 
 

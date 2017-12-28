@@ -6,7 +6,7 @@ import getpass
 import sys
 from .connection import Connection
 from .gameclient import Client
-from .display import Display
+from .display.display import Display
 
 defaultAdresses = {
     "abstract": "asciifarm",

@@ -5,7 +5,6 @@ import curses
 class FieldPad:
     
     
-    
     def __init__(self, size=(1,1), charSize=1, colours=False):
         self.pad = curses.newpad(size[1]+1, (size[0]+1)*charSize)
         self.size = size
@@ -13,6 +12,10 @@ class FieldPad:
         self.center = (0, 0)
         self.colours = colours
         self.changed = False
+        self.win = None
+    
+    def setWin(self, win):
+        self.win = win
     
     def resize(self, width, height):
         self.size = (width, height)
@@ -37,9 +40,10 @@ class FieldPad:
     def _roundWidth(self, x):
         return x // self.charSize * self.charSize
     
-    def update(self, win, force):
-        if not self.changed and not force or not win:
+    def update(self, force):
+        if not self.changed and not force or not self.win:
             return
+        win = self.win
         height, width = win.getmaxyx()
         y, x = win.getparyx()
         xmax = x + width
