@@ -19,7 +19,10 @@ class FieldPad:
     
     def resize(self, width, height):
         self.size = (width, height)
-        self.pad.resize(height+1, width*self.charSize+1)
+        self.pad.resize(height+1, width*self.charSize)
+        if self.win:
+            self.win.erase()
+            self.win.noutrefresh()
     
     def changeCell(self, x, y, char, colour=None, bgcolour=0):
         if colour != None and self.colours:

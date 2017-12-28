@@ -41,7 +41,6 @@ class Player:
             self.health = self.getHealthPair()[0]
             self.entity.remove()
             self.entity = None
-        self.roomname = None
     
     def joinRoom(self, roomname, place=None):
         self.canChangeRoom = False
