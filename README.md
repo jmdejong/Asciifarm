@@ -57,6 +57,11 @@ See [install.md](docs/install.md).
 
 ## Vision/ideas
 
+> basically farmville where you can visit friends gardens to see stuff. maybe leave an ascii character as a present        ~m455
+
+> ... makes me wish instead of irc we were hanging out in a central plaza or bazaar of a roguelike, with little @ signs talking to each other, walking into private buildings to send PMs, etc      ~d_m
+
+
 The idea is to make 3 different kind of areas:
 
 - private areas, where players can build their own house/farm
