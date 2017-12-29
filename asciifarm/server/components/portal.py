@@ -11,12 +11,10 @@ class Portal(Component):
             destPos = tuple(destPos)
     
     def attach(self, obj, roomData):
-        obj.addListener(self.onObjEvent)
-        
+        obj.addListener("objectenter", self.onEnter)
     
-    def onObjEvent(self, owner, action, obj=None, *data):
-        if action == "objectenter":
-            obj.trigger("changeroom", self.destRoom, self.destPos)
+    def onEnter(self, owner, obj=None, *data):
+        obj.trigger("changeroom", self.destRoom, self.destPos)
     
     def toJSON(self):
         return {

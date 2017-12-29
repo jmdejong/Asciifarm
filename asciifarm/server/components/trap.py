@@ -13,11 +13,10 @@ class Trap(Component):
         self.owner = obj
         self.fighter = obj.getComponent("fighter")
         
-        obj.addListener(self.onObjEvent)
+        obj.addListener("objectenter", self.onEnter)
         
     
-    def onObjEvent(self, owner, action, obj=None, *data):
-        if action == "objectenter":
-            self.fighter.attack(obj)
+    def onEnter(self, owner, obj=None, *data):
+        self.fighter.attack(obj)
     
 

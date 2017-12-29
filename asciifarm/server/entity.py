@@ -1,5 +1,6 @@
-from . import event
+#from . import event
 from . import serialize
+from .eventtarget import EventTarget
 
 
 class Entity:
@@ -18,7 +19,7 @@ class Entity:
         self.height = height # if multiple objects are on a square, the tallest one is drawn
         self.name = name if name else sprite # human readable name/description
         self.components = components
-        self.observable = event.Event()
+        self.observable = EventTarget()
         self.flags = set(flags)
         
         self.ground = None
@@ -57,14 +58,14 @@ class Entity:
         self.trigger("remove")
         self.roomData = None
     
-    def addListener(self, callback, key=None):
-        self.observable.addListener(callback, key)
+    def addListener(self, event, callback, key=None):
+        self.observable.addListener(event, callback, key)
     
-    def removeListener(self, key):
-        self.observable.removeListener(key)
+    def removeListener(self, event, key):
+        self.observable.removeListener(event, key)
     
-    def trigger(self, *args):
-        self.observable.trigger(self, *args)
+    def trigger(self, event, *args, **kwargs):
+        self.observable.trigger(event, self, *args, **kwargs)
     
     def getSprite(self):
         return self.sprite

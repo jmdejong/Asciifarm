@@ -20,13 +20,12 @@ class Healing(Component):
             
         self.fighter = obj.getComponent("fighter")
         self.timeEvent = roomData.getEvent("update")
-        obj.addListener(self.onObjEvent)
+        obj.addListener("damage", self.onDamage)
         
         self.startHealing()
     
-    def onObjEvent(self, o, action, *data):
-        if action == "damage":
-            self.startHealing()
+    def onDamage(self, o, *data):
+        self.startHealing()
     
     def startHealing(self):
         """ start healing if it is not happening already """

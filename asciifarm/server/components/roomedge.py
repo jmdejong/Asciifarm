@@ -1,6 +1,7 @@
 
 from .component import Component
 
+# todo: combine with portal
 
 class RoomEdge(Component):
     
@@ -10,18 +11,17 @@ class RoomEdge(Component):
         self.mask = mask
     
     def attach(self, obj, roomData):
-        obj.addListener(self.onObjEvent)
+        obj.addListener("objectenter", self.onEnter)
         self.owner = obj
         
     
-    def onObjEvent(self, owner, action, obj=None, *data):
-        if action == "objectenter":
-            offset = self.owner.getGround().getPos()
-            dest = tuple(
-                self.origin[i] + (offset[i] if self.mask[i] else 0)
-                for i in range(2)
-            )
-            obj.trigger("changeroom", self.destRoom, dest)
+    def onEnter(self, owner, obj=None, *data):
+        offset = self.owner.getGround().getPos()
+        dest = tuple(
+            self.origin[i] + (offset[i] if self.mask[i] else 0)
+            for i in range(2)
+        )
+        obj.trigger("changeroom", self.destRoom, dest)
     
     def toJSON(self):
         return {

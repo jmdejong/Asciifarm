@@ -15,25 +15,24 @@ class Loot(Component):
         
         self.owner = obj
         self.roomData = roomData
-        obj.addListener(self.dropLoot)
+        obj.addListener("die", self.dropLoot)
     
-    def dropLoot(self, obj, action, *data):
-        if action == "die":
-            for itemData in self.items:
-                item = itemData[0]
-                chance = 1
-                args = []
-                kwargs = {}
-                if len(itemData) > 1:
-                    chance = itemData[1]
-                    if len(itemData) > 2:
-                        args = itemData[2]
-                        if len(itemData) > 3:
-                            kwargs = itemData[3]
-                
-                if chance > random.random():
-                    obj = gameobjects.makeEntity(item, self.roomData, *args, preserve=True, **kwargs)
-                    obj.place(self.owner.getGround())
+    def dropLoot(self, obj, *data):
+        for itemData in self.items:
+            item = itemData[0]
+            chance = 1
+            args = []
+            kwargs = {}
+            if len(itemData) > 1:
+                chance = itemData[1]
+                if len(itemData) > 2:
+                    args = itemData[2]
+                    if len(itemData) > 3:
+                        kwargs = itemData[3]
+            
+            if chance > random.random():
+                obj = gameobjects.makeEntity(item, self.roomData, *args, preserve=True, **kwargs)
+                obj.place(self.owner.getGround())
     
     def toJSON(self):
         return {"items": self.items}

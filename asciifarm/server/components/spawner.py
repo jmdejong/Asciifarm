@@ -44,15 +44,14 @@ class Spawner(Component):
         self.spawned.add(obj)
         if to:
             self.timeouts.remove(to)
-        obj.addListener(self.onObjEvent)
+        obj.addListener("remove", self.onSpawnedRemove)
         print("{} spawned a {}".format(self.owner.getName(), self.objectType))
     
-    def onObjEvent(self, obj, action, *data):
+    def onSpawnedRemove(self, obj, *data):
         """ handle spawned object death """
-        if action == "remove":
-            self.spawned.remove(obj)
-            obj.removeListener(self.onObjEvent)
-            self.goSpawn()
+        self.spawned.remove(obj)
+        obj.removeListener(self.onObjEvent)
+        self.goSpawn()
     
     def remove(self):
         for to in self.timeouts:

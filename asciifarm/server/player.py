@@ -17,22 +17,15 @@ class Player:
         
         self.name = name
         self.world = world
-        
         self.roomname = None
-        
         self.entity = None
-        
         self.inventory = Inventory(10)
         self.equipment = Equipment({"hand": None, "body": None})
         self.health = None
         self.maxHealth = 50
-        
         self.messages = [] # actually a queue
-        
         self.resetView = True
-        
         self.changes = set()
-        
         self.canChangeRoom=False
         
     
@@ -71,7 +64,9 @@ class Player:
                 "listen": Listen()
                 })
         self.entity.construct(room.getRoomData())
-        self.entity.addListener(self.onPlayerAction)
+        for attr in dir(self):
+            if attr.startswith("on_"):
+                self.entity.addListener(attr[3:], self.__getattribute__(attr))
         room.addObj(pos, self.entity)
         self.roomname = roomname
         self.place = pos
@@ -81,51 +76,47 @@ class Player:
     def getRoom(self):
         return self.roomname
     
-    def onPlayerAction(self, o, action, *data):
-        if action == "changeroom" and self.canChangeRoom:
-            room, pos = data
-            self.joinRoom(room, pos)
-        
-        if action == "attack":
-            obj, damage = data
-            self.log("{} attacks {} for {} damage".format(self.name, obj.getName(), damage))
-        
-        if action == "kill":
-            obj = data[0]
-            self.log("{} kills {}".format(self.name, obj.getName()))
-        
-        if action == "damage":
-            obj, damage = data
-            self.log("{} got {} damage from {}".format(self.name, damage, obj.getName()))
-            self.changes.add("health")
-        
-        if action == "heal":
-            obj, health = data
-            if obj:
-                self.log("{} got {} health from {}".format(self.name, health, obj.getName()))
-            self.changes.add("health")
-        
-        if action == "die":
-            obj = data[0]
-            self.log("{} got killed by {}".format(self.name, obj.getName()))
-            self.entity = None
-            self.roomname = None
-            self.place = None
-            self.health = self.maxHealth
-        
-        if action == "inventorychange":
-            self.changes.add("inventory")
-        
-        if action == "objectenter" or action == "objectleave":
-            self.changes.add("ground")
-        
-        if action == "move":
-            self.changes.add("ground")
-            self.changes.add("pos")
-        
-        if action == "sound":
-            source, text = data
-            self.messages.append(source.getName() + ": " + text)
+    
+    def on_changeroom(self, o, room, pos):
+        self.joinRoom(room, pos)
+    
+    def on_attack(self, o, obj, damage):
+        self.log("{} attacks {} for {} damage".format(self.name, obj.getName(), damage))
+    
+    def on_kill(self, o, obj):
+        self.log("{} kills {}".format(self.name, obj.getName()))
+    
+    def on_damage(self, o, obj, damage):
+        self.log("{} got {} damage from {}".format(self.name, damage, obj.getName()))
+        self.changes.add("health")
+    
+    def on_heal(self, o, obj, health):
+        if obj:
+            self.log("{} got {} health from {}".format(self.name, health, obj.getName()))
+        self.changes.add("health")
+    
+    def on_die(self, o, obj):
+        self.log("{} got killed by {}".format(self.name, obj.getName()))
+        self.entity = None
+        self.roomname = None
+        self.place = None
+        self.health = self.maxHealth
+    
+    def on_inventorychange(self, o):
+        self.changes.add("inventory")
+    
+    def on_objectenter(self, o):
+        self.changes.add("ground")
+    
+    def on_objectleave(self, o):
+        self.changes.add("ground")
+    
+    def on_move(self, o):
+        self.changes.add("ground")
+        self.changes.add("pos")
+    
+    def on_sound(self, o, source, text):
+        self.messages.append(source.getName() + ": " + text)
         
     
     def control(self, action):

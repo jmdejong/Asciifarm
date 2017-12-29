@@ -11,14 +11,14 @@ class Inventory(Component):
     
     def attach(self, obj, roomData):
         self.owner = obj
-        self.owner.addListener(self.onEvent)
+        obj.addListener("take", self.onTake)
     
     def canAdd(self, item):
         return len(self.items) < self.capacity
     
     def add(self, item):
         self.items.insert(0, item)
-        item.addListener(self.onItemUpdate)
+        item.addListener("drop", self.onDrop)
         self.owner.trigger("inventorychange")
     
     def drop(self, item):
@@ -29,13 +29,11 @@ class Inventory(Component):
     def getItems(self):
         return list(self.items)
     
-    def onItemUpdate(self, item, action, *data):
-        if action == "drop":
-            self.drop(item)
+    def onDrop(self, item, action, *data):
+        self.drop(item)
     
-    def onEvent(self, o, action, item=None, *data):
-        if action == "take":
-            self.add(item)
+    def onTake(self, o, item=None, *data):
+        self.add(item)
     
     def remove(self):
         self.owner = None
