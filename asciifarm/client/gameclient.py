@@ -12,6 +12,8 @@ from .display.screen import Screen
 import string
 from .display.display import Display
 
+import hy
+import importlib
 
 class Client:
     
@@ -23,17 +25,7 @@ class Client:
         self.connection = connection
         self.logFile = logFile
         
-        self.commands = {}
-        if "input" in keybindings:
-            for key, commands in keybindings["input"].items():
-                if isinstance(commands[0], str):
-                    commands = [commands]
-                self.commands[key] = [("send", ["input", command]) for command in commands]
-        if "control" in keybindings:
-            for key, commands in keybindings["control"].items():
-                if isinstance(commands[0], str):
-                    commands = [commands]
-                self.commands[key] = commands
+        self.commands = importlib.import_module(".keybindings", __package__).commands
         
         self.controlsString = """\
 Default Controls:
@@ -48,11 +40,12 @@ Default Controls:
         
         self.display.showInfo(self.controlsString)
         
-        self.actions = {
-            "send": (lambda data: self.connection.send(json.dumps(data))),
-            "text": (lambda: self.readString())
-        }
         
+    def send(self, data):
+        self.connection.send(json.dumps(data))
+    
+    def getDisplay(self):
+        return self.display
     
     def readString(self):
         text = self.display.getString()
@@ -139,8 +132,7 @@ Default Controls:
             except ValueError:
                 continue
             if keyname in self.commands:
-                for command, *data in self.commands[keyname]:
-                    self.actions[command](*data)
+                self.commands[keyname](self)
     
 
 

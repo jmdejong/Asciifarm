@@ -48,10 +48,23 @@ class Display:
         setwin(self.textInput, "textinput")
         
         self.lastinfostring = None
+        
+        
+        self.widgets = {
+            "field": self.fieldPad,
+            "info": self.infoPad,
+            "health": self.healthPad,
+            "inventory": self.inventoryPad,
+            "ground": self.groundPad,
+            "msg": self.messagePad,
+            "textinput": self.textInput
+        }
         self.changed = False
         
-        self.update(True)
-            
+        self.update()
+    
+    def getWidget(self, name):
+        return self.widgets.get(name, None)
     
     def resizeField(self, size):
         self.fieldPad.resize(*size)
@@ -83,7 +96,14 @@ class Display:
     def setGround(self, items):
         self.groundPad.setInventory(items)
         self.change()
+    
+    def getSelector(self, name):
+        widget = self.getWidget(name)
+        if not widget or not hasattr(widget, "getSelector"):
+            return None
+        return widget.getSelector()
         
+    
     def addMessage(self, message):
         self.messagePad.addMessage(message)
         self.change()

@@ -60,6 +60,7 @@ class Screen:
         self.setWins()
         self.stdscr.clear()
         self.display.update(True)
+        raise Exception("size updated")
     
     def update(self):
         
