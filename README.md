@@ -17,6 +17,8 @@ This is a multiplayer ascii farming/fighting game.
 - NPC's
 - Farming
 - Building
+- Chat
+- World persistence
 
 ## Installation/starting instructions
 
@@ -34,62 +36,24 @@ Not on pypi yet, but you should be able to install it like this:
 Then you can run `hostfarm` to start the server and `asciifarm` to play the
 game!
 
-## Playing instructions
+### Playing instructions
+
+Controls can be configured.
+These are the default controls:
 
 Use the arrow keys or wasd to move around.
 Use 'e' to add an item from the ground into your inventory.
 Use 'q' to drop the top item in your inventory.
 Use 'E' to use/interact with the top item in your inventory.
-Use 'f' interact with something in the same square as you.
+Use 'r' interact with something in the same square as you.
+Use 'f' to attack an enemy nearby.
 Use 'F' to attack an enemy in the same square as you.
 Use WASD to attack enemies in adjacent squares.
+Use 't' to open the chat input
 
+### Advanced installation instructions
 
-## Development/Hacking
-
-If you want to help us out, great!
-
-### Raw style (no pip)
-
-    git clone https://github.com/jmdejong/Asciifarm.git
-    cd asciifarm
-    ./hostfarms
-
-And then in another terminal, in the asciifarm directory:
-
-    ./playgame
-
-### Pipenv style
-
-If you don't have pipenv yet, go ahead and install it, clone the repo, and
-start up a new shell:
-
-    python3 -m pip install pipenv
-    git clone https://github.com/jmdejong/Asciifarm.git asciifarm
-    cd asciifarm
-    pipenv shell --three
-
-Next time you'll just need to `cd asciifarm && pipenv shell`.
-
-### `venv` style
-
-What's that? You can't install pipenv (not even with `--user`)? That's OK, you
-can use the built-in virtualenv:
-
-    python3 -m venv ~/.virtualenvs/asciifarm
-    source ~/.virtualenvs/asciifarm/bin/activate
-    git clone https://github.com/jmdejong/Asciifarm.git asciifarm
-    cd asciifarm
-
-### Install asciifarm
-
-Now you can install it:
-
-    python -m pip install -e .
-
-Now `asciifarm` and `hostfarms` should be on your path and you can start up the
-game. Cool. :sparkles:
-
+See [install.md](docs/install.md).
 
 ## Vision/ideas
 

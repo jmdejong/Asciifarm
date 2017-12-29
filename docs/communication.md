@@ -140,7 +140,6 @@ Example `["inventory", ["stone", "seed", "food"]]`
 Example `["ground", ["stone", "seed", "ground"]]`
 
 
-
 # Suggested improvements
 
 ## Human readable error messages
