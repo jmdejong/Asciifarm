@@ -59,7 +59,7 @@ class Display:
             "msg": self.messagePad,
             "textinput": self.textInput
         }
-        self.changed = False
+        #self.changed = False
         
         self.update()
     
@@ -74,28 +74,28 @@ class Display:
             (x, y), spriteName = cell
             sprite = self.getChar(spriteName)
             self.fieldPad.changeCell(x, y, *sprite)
-        self.change()
+        #self.change()
     
     def setFieldCenter(self, pos):
         self.fieldPad.setCenter(pos)
     
     def setHealth(self, health, maxHealth):
         self.healthPad.setHealth(health, maxHealth)
-        self.change()
+        #self.change()
     
     def showInfo(self, infostring):
         if infostring != self.lastinfostring:
             self.infoPad.showString(infostring)
-            self.change()
+            #self.change()
             self.lastinfostring = infostring
     
     def setInventory(self, items):
         self.inventoryPad.setInventory(items)
-        self.change()
+        #self.change()
     
     def setGround(self, items):
         self.groundPad.setInventory(items)
-        self.change()
+        #self.change()
     
     def getSelector(self, name):
         widget = self.getWidget(name)
@@ -106,7 +106,7 @@ class Display:
     
     def addMessage(self, message):
         self.messagePad.addMessage(message)
-        self.change()
+        #self.change()
     
     def getChar(self, sprite):
         """This returns the character belonging to some spritename. This does not read a character"""
@@ -119,12 +119,12 @@ class Display:
         """This does actually read input"""
         return self.textInput.getString()
     
-    def change(self):
-        self.changed = True
+    #def change(self):
+        #self.changed = True
     
     def update(self, force=False):
-        if not self.changed and not force:
-            return
+        #if not self.changed and not force:
+            #return
         
         self.fieldPad.update(force)
         self.messagePad.update(force)
@@ -137,5 +137,5 @@ class Display:
         
         self.screen.update()
             
-        self.changed = False
+        #self.changed = False
 

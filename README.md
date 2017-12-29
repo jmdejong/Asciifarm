@@ -82,7 +82,7 @@ The idea is to make 3 different kind of areas:
 
 - better code documentation
 - testing
-- remove code duplication in display
+- refactor display
 - display equipment
 - transparent background on sprites
 - labels
@@ -90,7 +90,6 @@ The idea is to make 3 different kind of areas:
 - autofight/autoretaliate?
 - display target enemy health
 - better reaction on player death
-- better inventory selection
 - runtime-created rooms
 - tutorial room
 - support websockets
@@ -104,6 +103,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- better inventory selection
 - in-game chat
 - relative position room transitions
 - custom world persistence (json)
