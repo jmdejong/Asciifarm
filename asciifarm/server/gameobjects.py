@@ -57,6 +57,10 @@ def makeGrass():
     return Entity(sprite=random.choice(["ground", "grass1", "grass2", "grass3"]), height=0.1, flags={"floor", "soil"})
 entities["grass"] = makeGrass
 
+def makeGreenGrass():
+    return Entity(sprite=random.choice(["grass1", "grass2", "grass3"]), height=0.1, flags={"floor", "soil"})
+entities["greengrass"] = makeGreenGrass
+
 def makeFloor():
     return Entity(sprite="floor", height=0.1, flags={"floor"})
 entities["floor"] = makeFloor

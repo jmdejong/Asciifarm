@@ -82,9 +82,7 @@ class Entity:
         return self.ground
     
     def getNearObjects(self):
-        objects = set(self.ground.getObjs())
-        objects.discard(self)
-        return objects
+        return [obj for obj in self.ground.getObjs() if obj != self]
     
     def getFlags(self):
         return self.flags

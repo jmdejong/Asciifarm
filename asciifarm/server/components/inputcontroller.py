@@ -5,6 +5,17 @@ class InputController(Component):
     
     def __init__(self):
         self.actions = [] #queue.Queue()
+        
+        self.handlers = {
+            "move": self.do_move,
+            "take": self.do_take,
+            "drop": self.do_drop,
+            "use": self.do_use,
+            "interact": self.do_interact,
+            "attack": self.do_attack,
+            "say": self.do_say
+        }
+            
     
     def attach(self, obj, roomData):
         self.owner = obj
@@ -36,53 +47,71 @@ class InputController(Component):
     def executeAction(self, action):
         kind = action[0]
         
-        # probably time to make this a dict with the action as keys and the function as value
-        
-        if kind == "move" and len(action) > 1:
-            self.move.move(action[1])
-        
-        
-        if kind == "take":
-            for obj in self.owner.getNearObjects():
-                if obj.getComponent("item") != None and self.inventory.canAdd(obj):
-                    self.owner.trigger("take", obj)
-                    obj.remove()
-                    break
-        
-        if kind == "drop":
-            for obj in self.inventory.getItems():
-                self.inventory.drop(obj)
-                obj.construct(self.roomData, preserve=True)
-                obj.place(self.owner.getGround())
+        if kind in self.handlers:
+            try:
+                self.handlers[kind](*action[1:])
+            except TypeError:
+                # invalid command.
+                # We can't notify the client from here
+                # The server can't really do anything with a notification
+                pass
+    
+    def do_move(self, direction):
+            self.move.move(direction)
+    
+    def do_take(self, rank=None):
+        objects = self.owner.getNearObjects()
+        if rank != None:
+            if rank not in range(len(objects)):
+                return
+            objects = [objects[rank]]
+        for obj in objects:
+            if obj.getComponent("item") != None and self.inventory.canAdd(obj):
+                self.owner.trigger("take", obj)
+                obj.remove()
                 break
+    
+    def do_drop(self, rank=0):
+        items = self.inventory.getItems()
+        if rank not in range(len(items)):
+            return
+        obj = items[rank]
+        self.inventory.drop(obj)
+        obj.construct(self.roomData, preserve=True)
+        obj.place(self.owner.getGround())
         
-        
-        if kind == "attack":
-            nearPlaces = self.owner.getGround().getNeighbours()
-            if len(action) > 1 and action[1] in nearPlaces:
-                objs = nearPlaces[action[1]].getObjs()
-            else:
-                objs = self.owner.getNearObjects()
-            for obj in objs:
-                if obj.getComponent("fighter") != None and self.alignment.isEnemy(obj):
-                    self.fighter.attack(obj)
-                    break
-        
-        
-        if kind == "use":
-            for obj in self.inventory.getItems():
-                obj.getComponent("item").use(self.owner)
+    def do_use(self, rank=0):
+        items = self.inventory.getItems()
+        if rank not in range(len(items)):
+            return
+        obj = items[rank]
+        obj.getComponent("item").use(self.owner)
+    
+    def do_interact(self, rank=None):
+        nearPlaces = self.owner.getGround().getNeighbours()
+        objects = self.owner.getNearObjects()
+        if rank != None:
+            if rank not in range(len(objects)):
+                return
+            objects = [objects[rank]]
+        for obj in objects:
+            if obj.getComponent("interact") != None:
+                obj.getComponent("interact").interact(self.owner)
                 break
-        
-        
-        if kind == "interact":
-            for obj in self.owner.getNearObjects():
-                if obj.getComponent("interact") != None:
-                    obj.getComponent("interact").interact(self.owner)
-                    break
-        
-        if kind == "say":
-            self.roomData.getEvent("sound").trigger(self.owner, action[1])
+    
+    def do_attack(self, direction=None):
+        nearPlaces = self.owner.getGround().getNeighbours()
+        if direction in nearPlaces:
+            objs = nearPlaces[direction].getObjs()
+        else:
+            objs = self.owner.getNearObjects()
+        for obj in objs:
+            if obj.getComponent("fighter") != None and self.alignment.isEnemy(obj):
+                self.fighter.attack(obj)
+                break
+    
+    def do_say(self, text):
+        self.roomData.getEvent("sound").trigger(self.owner, text)
     
     def getInteractions(self):
         return []

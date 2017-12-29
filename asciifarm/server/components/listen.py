@@ -14,7 +14,6 @@ class Listen(Component):
     
     
     def notify(self, source, text):
-        print(source, text)
         self.owner.trigger("sound", source, text)
     
     def remove(self):

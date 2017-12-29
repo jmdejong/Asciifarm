@@ -47,7 +47,7 @@ class GroundPatch:
         return spr
     
     def getObjs(self):
-        return tuple(self.objects)
+        return list(self.objects)
     
     def _getTopObj(self):
         return self.objects[0] if len(self.objects) else None
