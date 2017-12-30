@@ -102,7 +102,7 @@
         "!": ["grass", "club"],
         "]": ["grass", "armour"],
         "1": [{
-            "type": "roomboundary",
+            "type": "roomexit",
             "args": ["right", [1, 0], [false, true]]
         }, "grass"],
         " ": []

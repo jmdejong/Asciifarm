@@ -3,7 +3,7 @@ import time
 from . import gameserver
 from . import world
 from . import view
-from . import utils
+from asciifarm.common import utils
 import os
 import json
 

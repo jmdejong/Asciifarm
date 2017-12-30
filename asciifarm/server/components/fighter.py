@@ -1,5 +1,5 @@
 from .. import timeout
-from .. import utils
+from asciifarm.common import utils
 import random
 from .component import Component
 

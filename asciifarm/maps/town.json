@@ -94,7 +94,7 @@
         "X": "rock",
         "^": ["spiketrap", "ground"],
         "1": [{
-            "type": "roomboundary",
+            "type": "roomexit",
             "args": ["begin", [-2, 0], [false, true]]
         }, "grass"],
         "%": [{

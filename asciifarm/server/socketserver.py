@@ -3,7 +3,7 @@ import socket
 import sys
 import threading
 
-from .tcommunicate import send, receive
+from asciifarm.common.tcommunicate import send, receive
 
 
 # Class to open a TCP Socket

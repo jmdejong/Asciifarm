@@ -15,11 +15,11 @@ if len(sys.argv)>1 and sys.argv[1] in {"server", "client"}:
     else:
         # make it work even if it wasn't executed as module
         import os.path
-        sys.path.append(os.path.join(os.path.dirname(__file__)))
+        sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
         if sys.argv[1] == "server":
-            from server import main
+            from asciifarm.server import main
         else:
-            from client import main
+            from asciifarm.client import main
     
     main.main(sys.argv[2:])
 else:

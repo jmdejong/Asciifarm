@@ -1,4 +1,4 @@
-from . import utils
+from asciifarm.common import utils
 
 
 class Grid:

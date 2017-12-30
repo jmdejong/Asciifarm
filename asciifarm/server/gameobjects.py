@@ -18,7 +18,6 @@ from .components.build import Build
 from .components.harvest import Harvest
 from .components.food import Food
 from .components.equippable import Equippable
-from .components.roomedge import RoomEdge
 
 """ This module contains factory functions for many placable entities, and a make function to call a factory by a string name """
 
@@ -78,13 +77,9 @@ def makeWater():
     return Entity(sprite="water", height=0)
 entities["water"] = makeWater
 
-def makeRoomExit(destRoom, destPos=None, sprite="exit", size=0):
-    return Entity(sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos)})
+def makeRoomExit(destRoom, destPos=None, mask=(False, False), sprite=" ", size=0):
+    return Entity(sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos, mask)})
 entities["roomexit"] = makeRoomExit
-
-def makeRoomBoundary(destRoom, destPos=None, mask=(True, True)):
-    return Entity(sprite=" ", height=0, components={"collision": RoomEdge(destRoom, destPos, mask)})
-entities["roomboundary"] = makeRoomBoundary
 
 def makeRabbit():
     return Entity(sprite="rabbit", height=1, components={"move": Move(slowness=4), "controller": RandomWalkController(moveChance=0.05)})
