@@ -13,11 +13,12 @@ import string
 from .display.display import Display
 
 import hy
+from . import keybindings as defaultkeybindings
 import importlib
 
 class Client:
     
-    def __init__(self, stdscr, display, name, connection, keybindings, logFile=None):
+    def __init__(self, stdscr, display, name, connection, keybindings=None, logFile=None):
         self.stdscr = stdscr
         self.display = display
         self.name = name
@@ -25,8 +26,9 @@ class Client:
         self.connection = connection
         self.logFile = logFile
         
-        
-        keymodule = importlib.import_module(".keybindings", __package__)
+        keymodule = defaultkeybindings
+        if keybindings:
+            keymodule = importlib.import_module(keybindings)
         self.commands = keymodule.commands
         self.controlsString = keymodule.docs
         
