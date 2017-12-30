@@ -49,6 +49,8 @@ class Display:
         setwin(self.inventoryPad, "inventory")
         self.groundPad = InventoryPad("Ground")
         setwin(self.groundPad, "ground")
+        self.equipment = InventoryPad("Equipment")
+        setwin(self.equipment, "equipment")
         self.messagePad = MessagePad()
         setwin(self.messagePad, "msg")
         self.textInput = TextInput()
@@ -58,7 +60,7 @@ class Display:
         
         #self.changed = False
         
-        self.update()
+        self.update(True)
     
     def getWidget(self, name):
         if name in self.widgets:
@@ -92,6 +94,14 @@ class Display:
     def setInventory(self, items):
         self.inventoryPad.setInventory(items)
         #self.change()
+    
+    def setEquipment(self, slots):
+        self.equipment.setInventory(
+            sorted([
+                slot + ": " + (item if item else "")
+                for slot, item in slots.items()
+            ])
+        )
     
     def setGround(self, items):
         self.groundPad.setInventory(items)

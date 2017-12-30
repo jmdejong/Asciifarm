@@ -32,7 +32,9 @@ class Screen:
         groundH = self._limitHeight(7, groundY)
         invY = groundY + groundH
         invH = self._limitHeight(12, invY)
-        infoY = invY + invH
+        eqY = invY + invH
+        eqH = self._limitHeight(5, eqY)
+        infoY = eqY + eqH
         infoH = self._limitHeight(20, infoY)
         
         self.windows = {
@@ -42,6 +44,7 @@ class Screen:
             "health": self.makeWin(sideX, healthY, sideW, healthH),
             "ground": self.makeWin(sideX, groundY, sideW, groundH),
             "inventory": self.makeWin(sideX, invY, sideW, invH),
+            "equipment": self.makeWin(sideX, eqY, sideW, eqH),
             "info": self.makeWin(sideX, infoY, sideW, infoH)
         }
     

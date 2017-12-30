@@ -17,7 +17,8 @@
   "r" (input ["interact" (selectorvalue "ground")])
   "v" (fn [client] (.select (selector "inventory") 1 True True))
   "c" (fn [client] (.select (selector "ground") 1 True True))
-;;   "x" (fn [client] (.select (selector "equipment") 1 True True))
+  "x" (fn [client] (.select (selector "equipment") 1 True True))
+  "z" (input ["unequip" (selectorvalue "equipment")])
   "f" (doall [
         (input ["attack"])
         (input ["attack" "north"])

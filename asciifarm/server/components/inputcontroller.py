@@ -84,6 +84,9 @@ class InputController(Component):
         self.inventory.drop(obj)
         obj.construct(self.roomData, preserve=True)
         obj.place(self.owner.getGround())
+    
+    def do_unequip(self, rank):
+        pass
         
     def do_use(self, rank):
         items = self.inventory.getItems()

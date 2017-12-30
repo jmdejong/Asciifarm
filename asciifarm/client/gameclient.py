@@ -107,6 +107,8 @@ Default Controls:
                     self.log("You have died. Restart the client to respawn")
             if msgType == "inventory":
                 self.display.setInventory(msg[1])
+            if msgType == "equipment":
+                self.display.setEquipment(msg[1])
             if msgType == "ground":
                 self.display.setGround(msg[1])
             if msgType == "message":
