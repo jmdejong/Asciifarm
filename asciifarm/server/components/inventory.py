@@ -27,7 +27,8 @@ class Inventory(Component):
     def drop(self, item):
         if item in self.items:
             self.items.remove(item)
-            self.owner.trigger("inventorychange")
+            if self.owner:
+                self.owner.trigger("inventorychange")
     
     def getItems(self):
         return list(self.items)

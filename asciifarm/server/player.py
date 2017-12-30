@@ -104,6 +104,9 @@ class Player:
     
     def on_inventorychange(self, o):
         self.changes.add("inventory")
+        
+    def on_equipmentchange(self, o):
+        self.changes.add("equipment")
     
     def on_objectenter(self, o):
         self.changes.add("ground")
@@ -145,6 +148,12 @@ class Player:
         else:
             return []
     
+    def getEquipment(self):
+        if self.entity:
+            return self.equipment.getSlots()
+        else:
+            return {}
+    
     def getInteractions(self):
         if not self.entity:
             return []
@@ -175,7 +184,7 @@ class Player:
         print(msg)
     
     def readMessages(self):
-        m = self.messages#[]
+        m = self.messages #[]
         self.messages = []
         #while not self.messages.empty():
             #m.append(self.messages.get())

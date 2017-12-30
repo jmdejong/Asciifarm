@@ -24,6 +24,8 @@ class Equipment(Component):
             if oldItem:
                 self.owner.trigger("take", oldItem)
             self.slots[slot] = item
+            if self.owner:
+                self.owner.trigger("equipmentchange")
         else:
             # todo: better exception
             raise Exception("No such slot")
@@ -31,6 +33,8 @@ class Equipment(Component):
     def unEquip(self, slot):
         if slot in self.slots:
             self.slots[slot] = None
+            if self.owner:
+                self.owner.trigger("equipmentchange")
     
     def getSlots(self):
         return self.slots.copy()
