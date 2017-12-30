@@ -5,8 +5,11 @@ from .component import Component
 class Listen(Component):
     
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         self.owner = obj
+        obj.addListener("roomjoin", self.roomJoin)
+    
+    def roomJoin(self, o, roomData):
         
         self.soundEvent = roomData.getEvent("sound")
         self.soundEvent.addListener(self.notify)

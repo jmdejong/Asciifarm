@@ -4,7 +4,7 @@
 class Component:
     
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         pass
     
     

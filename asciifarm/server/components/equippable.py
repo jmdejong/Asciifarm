@@ -9,7 +9,7 @@ class Equippable(Component):
         self.slot = slot
         self.stats = stats
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         self.owner = obj
     
     def getSlot(self):

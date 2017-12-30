@@ -4,7 +4,7 @@ from .component import Component
 class Harvest(Component):
     
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         self.owner = obj
     
     def interact(self, obj):

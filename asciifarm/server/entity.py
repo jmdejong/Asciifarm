@@ -21,9 +21,10 @@ class Entity:
         self.components = components
         self.observable = EventTarget()
         self.flags = set(flags)
-        
         self.ground = None
         self.roomData = None
+        for component in self.components.values():
+            component.attach(self)
         
     
     def construct(self, roomData, preserve=False):
@@ -31,8 +32,7 @@ class Entity:
         if preserve:
             roomData.preserveObject(self)
             self._preserve()
-        for component in self.components.values():
-            component.attach(self, roomData)
+        self.trigger("roomjoin", roomData)
     
     def hasComponent(self, name):
         return name in self.components

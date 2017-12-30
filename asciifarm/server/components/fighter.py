@@ -14,8 +14,11 @@ class Fighter(Component):
         self.canAttack = True
         self.defense = defense
     
-    def attach(self, owner, roomData):
-        self.owner = owner
+    def attach(self, obj):
+        self.owner = obj
+        obj.addListener("roomjoin", self.roomJoin)
+    
+    def roomJoin(self, o, roomData):
         self.fightEvent = roomData.getEvent("fight")
         self.updateEvent = roomData.getEvent("update")
         self.timeout = timeout.Timeout(roomData.getEvent("update"), self.slowness)

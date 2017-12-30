@@ -17,9 +17,12 @@ class Spawner(Component):
         self.setHome = setHome
         self.initialSpawn = initialSpawn
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         
         self.owner = obj
+        obj.addListener("roomjoin", self.roomJoin)
+    
+    def roomJoin(self, o, roomData):
         self.roomData = roomData
         self.updateEvent = roomData.getEvent("update")
         

@@ -9,7 +9,7 @@ class Equipment(Component):
     def __init__(self, slots={}):
         self.slots = slots
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         self.owner = obj
     
     def getBonus(self, skill):

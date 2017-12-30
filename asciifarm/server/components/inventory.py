@@ -9,7 +9,7 @@ class Inventory(Component):
         self.items = []
         self.owner = None
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         self.owner = obj
         obj.addListener("take", self.onTake)
     

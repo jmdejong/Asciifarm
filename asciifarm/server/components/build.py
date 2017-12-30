@@ -11,9 +11,11 @@ class Build(Component):
         self.buildKwargs = objKwargs
         self.flagsNeeded = set(flagsNeeded)
     
-    def attach(self, obj, roomData):
-        
+    def attach(self, obj):
         self.owner = obj
+        obj.addListener("roomjoin", self.roomJoin)
+    
+    def roomJoin(self, obj, roomData):
         self.roomData = roomData
     
     

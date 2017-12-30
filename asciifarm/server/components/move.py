@@ -9,8 +9,11 @@ class Move(Component):
         self.canMove = False
         self.timeout = None
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         self.owner = obj
+        obj.addListener("roomjoin", self.roomJoin)
+    
+    def roomJoin(self, o, roomData):
         self.moveEvent = roomData.getEvent("move")
         self.updateEvent = roomData.getEvent("update")
         self.canMove = True

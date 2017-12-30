@@ -14,16 +14,18 @@ class MonsterAi(Component):
         self.homesickness = homesickness
     
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         self.owner = obj
         
         for dep in {"move", "fighter", "alignment"}:
             if not obj.getComponent(dep):
                 # todo: better exception
                 raise Exception("Controller needs object with " + dep + " component")
-            
             setattr(self, dep, obj.getComponent(dep))
         
+        obj.addListener("roomjoin", self.roomJoin)
+    
+    def roomJoin(self, o, roomData):
         self.controlEvent = roomData.getEvent("control")
         self.controlEvent.addListener(self.control)
         self.roomData = roomData

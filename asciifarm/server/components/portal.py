@@ -10,7 +10,7 @@ class Portal(Component):
         if isinstance(self.destPos, list):
             destPos = tuple(destPos)
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         obj.addListener("objectenter", self.onEnter)
     
     def onEnter(self, owner, obj=None, *data):

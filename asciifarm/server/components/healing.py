@@ -12,16 +12,18 @@ class Healing(Component):
         self.delay = 0
         self.isHealing = False
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         
         if not obj.getComponent("fighter"):
             # todo: better exception
             raise Exception("Healing Component needs object with fighter component")
             
         self.fighter = obj.getComponent("fighter")
-        self.timeEvent = roomData.getEvent("update")
         obj.addListener("damage", self.onDamage)
-        
+        obj.addListener("roomjoin", self.roomJoin)
+    
+    def roomJoin(self, o, roomData):
+        self.timeEvent = roomData.getEvent("update")
         self.startHealing()
     
     def onDamage(self, o, *data):

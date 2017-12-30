@@ -8,7 +8,7 @@ class Food(Component):
     def __init__(self, health):
         self.healing = health
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         self.owner = obj
     
     

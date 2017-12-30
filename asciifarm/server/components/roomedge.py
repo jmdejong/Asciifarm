@@ -10,7 +10,7 @@ class RoomEdge(Component):
         self.origin = destOrigin
         self.mask = mask
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         obj.addListener("objectenter", self.onEnter)
         self.owner = obj
         

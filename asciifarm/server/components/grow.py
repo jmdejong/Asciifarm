@@ -16,8 +16,11 @@ class Growing(Component):
         self.nextKwargs = nextKwargs
     
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         self.owner = obj
+        obj.addListener("roomjoin", self.roomJoin)
+    
+    def roomJoin(self, o, roomData):
         self.roomData = roomData
         self.timeout = timeout.Timeout(roomData.getEvent("update"), self.duration - self.stepsPassed, self.grow)
     

@@ -4,7 +4,7 @@ from .component import Component
 class Trap(Component):
     
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         
         if not obj.getComponent("fighter"):
             # todo: better exception

@@ -11,11 +11,14 @@ class Loot(Component):
         
         self.items = items
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         
         self.owner = obj
-        self.roomData = roomData
         obj.addListener("die", self.dropLoot)
+        obj.addListener("roomjoin", self.roomJoin)
+    
+    def roomJoin(self, o, roomData):
+        self.roomData = roomData
     
     def dropLoot(self, obj, *data):
         for itemData in self.items:

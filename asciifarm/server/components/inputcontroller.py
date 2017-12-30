@@ -17,9 +17,8 @@ class InputController(Component):
         }
             
     
-    def attach(self, obj, roomData):
+    def attach(self, obj):
         self.owner = obj
-        self.roomData = roomData
         
         for dep in {"inventory", "move", "fighter", "alignment"}:
             if not obj.getComponent(dep):
@@ -28,6 +27,10 @@ class InputController(Component):
             
             setattr(self, dep, obj.getComponent(dep))
         
+        obj.addListener("roomjoin", self.roomJoin)
+    
+    def roomJoin(self, o, roomData):
+        self.roomData = roomData
         self.controlEvent = roomData.getEvent("control")
         self.controlEvent.addListener(self.control)
     
