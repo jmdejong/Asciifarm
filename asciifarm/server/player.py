@@ -108,7 +108,7 @@ class Player:
     def on_objectenter(self, o):
         self.changes.add("ground")
     
-    def on_objectleave(self, o):
+    def on_objectleave(self, o, obj):
         self.changes.add("ground")
     
     def on_move(self, o):

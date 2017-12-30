@@ -58,6 +58,8 @@ class InputController(Component):
             self.handlers[kind](arg)
     
     def do_move(self, direction):
+        if direction not in {"north", "south", "east", "west"}:
+            return
         self.move.move(direction)
     
     def do_take(self, rank):
@@ -106,16 +108,20 @@ class InputController(Component):
     
     def do_attack(self, direction):
         nearPlaces = self.owner.getGround().getNeighbours()
-        if direction in nearPlaces:
+        if direction == None:
+            objs = self.owner.getNearObjects()
+        elif direction in nearPlaces:
             objs = nearPlaces[direction].getObjs()
         else:
-            objs = self.owner.getNearObjects()
+            return
         for obj in objs:
             if obj.getComponent("fighter") != None and self.alignment.isEnemy(obj):
                 self.fighter.attack(obj)
                 break
     
     def do_say(self, text):
+        if type(text) != str:
+            return
         self.roomData.getEvent("sound").trigger(self.owner, text)
     
     def getInteractions(self):
