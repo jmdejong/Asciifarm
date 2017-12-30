@@ -11,6 +11,7 @@ class InputController(Component):
             "take": self.do_take,
             "drop": self.do_drop,
             "use": self.do_use,
+            "unequip": self.do_unequip,
             "interact": self.do_interact,
             "attack": self.do_attack,
             "say": self.do_say
@@ -20,7 +21,7 @@ class InputController(Component):
     def attach(self, obj):
         self.owner = obj
         
-        for dep in {"inventory", "move", "fighter", "alignment"}:
+        for dep in {"inventory", "move", "fighter", "alignment", "equipment"}:
             if not obj.getComponent(dep):
                 # todo: better exception
                 raise Exception("InputController needs object with " + dep + " component")
@@ -56,6 +57,8 @@ class InputController(Component):
             else:
                 arg = None
             self.handlers[kind](arg)
+        else:
+            print("invalid action", action)
     
     def do_move(self, direction):
         if direction not in {"north", "south", "east", "west"}:
@@ -84,9 +87,6 @@ class InputController(Component):
         self.inventory.drop(obj)
         obj.construct(self.roomData, preserve=True)
         obj.place(self.owner.getGround())
-    
-    def do_unequip(self, rank):
-        pass
         
     def do_use(self, rank):
         items = self.inventory.getItems()
@@ -96,6 +96,17 @@ class InputController(Component):
             return
         obj = items[rank]
         obj.getComponent("item").use(self.owner)
+    
+    def do_unequip(self, rank):
+        slots = sorted(self.equipment.getSlots().items())
+        if rank != None:
+            if rank not in range(len(slots)):
+                return
+            slots = [slots[rank]]
+        for (slot, item) in slots:
+            if item != None and self.inventory.canAdd(item):
+                self.equipment.unEquip(slot)
+                self.owner.trigger("take", item)
     
     def do_interact(self, rank):
         nearPlaces = self.owner.getGround().getNeighbours()
