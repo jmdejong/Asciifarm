@@ -7,31 +7,27 @@ class InventoryPad:
     def __init__(self, title):
         self.title = title
         self.selector = Selector(self)
-        self.setInventory([])
-        self.changed = False
-        self.win = None
+        self.widget = None
+        self.items = []
     
-    def setWin(self, win):
-        self.win = win
+    def setWidget(self, widget):
+        self.widget = widget
     
     def getSelector(self):
         return self.selector
     
     def change(self):
-        self.changed = True
+        self.widget.change()
     
     def setInventory(self, items):
         self.items = items
-        self.changed = True
+        self.widget.change()
     
     def getNumItems(self):
         return len(self.items)
     
-    def update(self, force):
-        if not self.changed and not force or not self.win:
-            return
-        win = self.win
-        self.changed = False
+    def update(self):
+        win = self.widget.getWin()
         height, width = win.getmaxyx()
         win.erase()
         win.addstr(0,0, (self.title + ":")[:width])

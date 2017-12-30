@@ -9,6 +9,7 @@ from .screen import Screen
 from .colours import Colours
 from .messagepad import MessagePad
 from .textinput import TextInput
+from .widget import Widget
 
 
 SIDEWIDTH = 20
@@ -26,8 +27,14 @@ class Display:
         self.defaultChar = charMap.get("default", "?")
         self.screen = Screen(self, stdscr)
         
-        def setwin(pad, winname):
-            pad.setWin(self.screen.getWin(winname))
+        self.widgets = {}
+        
+        def setwin(pad, widgetName, winname=None):
+            if not winname:
+                winname = widgetName
+            widget = Widget(pad)
+            self.widgets[widgetName] = widget
+            widget.setWin(self.screen.getWin(winname))
         
         self.fieldPad = FieldPad((1, 1), charMap.get("charwidth", 1), self.colours)
         setwin(self.fieldPad, "field")
@@ -49,22 +56,15 @@ class Display:
         
         self.lastinfostring = None
         
-        
-        self.widgets = {
-            "field": self.fieldPad,
-            "info": self.infoPad,
-            "health": self.healthPad,
-            "inventory": self.inventoryPad,
-            "ground": self.groundPad,
-            "msg": self.messagePad,
-            "textinput": self.textInput
-        }
         #self.changed = False
         
         self.update()
     
     def getWidget(self, name):
-        return self.widgets.get(name, None)
+        if name in self.widgets:
+            return self.widgets[name].getImpl()
+        else:
+            return None
     
     def resizeField(self, size):
         self.fieldPad.resize(*size)
@@ -125,15 +125,8 @@ class Display:
     def update(self, force=False):
         #if not self.changed and not force:
             #return
-        
-        self.fieldPad.update(force)
-        self.messagePad.update(force)
-        self.healthPad.update(force)
-        self.groundPad.update(force)
-        self.inventoryPad.update(force)
-        self.infoPad.update(force)
-        
-        self.textInput.update(force)
+        for widget in self.widgets.values():
+            widget.update(force)
         
         self.screen.update()
             

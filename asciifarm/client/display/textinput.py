@@ -5,25 +5,26 @@ class TextInput:
     
     def __init__(self):
         self.reading = False
-        self.win = None
+        self.widget = None
     
-    def setWin(self, win):
-        self.win = win
+    def setWidget(self, widget):
+        self.widget = widget
     
     def getString(self):
-        if not self.win:
+        win = self.widget.getWin()
+        if not win:
             return None
         self.reading = True
         curses.echo()
         curses.nocbreak()
-        self.win.addstr(0, 0, ">")
-        string = self.win.getstr(0,2)
+        win.addstr(0, 0, ">")
+        string = win.getstr(0,2)
         curses.noecho()
         curses.cbreak()
         self.reading = False
-        self.win.erase()
-        self.win.noutrefresh()
+        win.erase()
+        win.noutrefresh()
         return string
     
-    def update(self, force=False):
+    def update(self):
         pass

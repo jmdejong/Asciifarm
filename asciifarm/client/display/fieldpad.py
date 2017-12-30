@@ -12,27 +12,30 @@ class FieldPad:
         self.center = (0, 0)
         self.colours = colours
         self.changed = False
-        self.win = None
+        self.widget = None
     
-    def setWin(self, win):
-        self.win = win
+    def setWidget(self, widget):
+        self.widget = widget
     
     def resize(self, width, height):
         self.size = (width, height)
         self.pad.resize(height+1, width*self.charSize)
-        if self.win:
-            self.win.erase()
-            self.win.noutrefresh()
+        self.widget.change()
+        win = self.widget.getWin()
+        if win:
+            win.erase()
+            win.noutrefresh()
     
     def changeCell(self, x, y, char, colour=None, bgcolour=0):
         if colour != None and self.colours:
             self.pad.addstr(y, x*self.charSize, char, self.colours.get(colour, bgcolour))
         else:
             self.pad.addstr(y, x*self.charSize, char)
-        self.changed = True
+        self.widget.change()
     
     def setCenter(self, pos):
         self.center = pos
+        self.widget.change()
     
     def getWidth(self):
         return self.size[0]*self.charSize
@@ -43,10 +46,8 @@ class FieldPad:
     def _roundWidth(self, x):
         return x // self.charSize * self.charSize
     
-    def update(self, force):
-        if not self.changed and not force or not self.win:
-            return
-        win = self.win
+    def update(self):
+        win = self.widget.getWin()
         height, width = win.getmaxyx()
         y, x = win.getparyx()
         xmax = x + width
@@ -60,4 +61,3 @@ class FieldPad:
             x + max(0, (width - self.getWidth()) // 2),
             ymax,
             xmax)
-        self.changed = False

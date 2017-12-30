@@ -10,22 +10,18 @@ class HealthPad:
         self.colours = colours
         self.health = 0
         self.maxHealth = 0
-        self.win = None
+        self.widget = None
     
-    def setWin(self, win):
-        self.win = win
+    def setWidget(self, widget):
+        self.widget = widget
     
     def setHealth(self, health, maxHealth):
         self.health = health
         self.maxHealth = maxHealth
-            
-        self.changed = True
+        self.widget.change()
     
-    def update(self, force):
-        if not self.changed and not force or not self.win:
-            return
-        win = self.win
-        self.changed = False
+    def update(self):
+        win = self.widget.getWin()
         height, width = win.getmaxyx()
         width -= 1
         barEnd = round(self.health/self.maxHealth * width) if self.maxHealth > 0 else 0
