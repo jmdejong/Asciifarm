@@ -15,15 +15,16 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'asciifarm = asciifarm.client.main:main',
-            'hostfarms = asciifarm.server.main:main',
+            #'asciifarm = asciifarm.client.main:main',
+            #'hostfarms = asciifarm.server.main:main',
             # TODO: troido, if you want just one asciifarm command, change 
             # this to asccifarm and remove the previous two lines -wangofett, 2017-10-27
-            'testasciifarm = asciifarm.__main__:main',
+            'asciifarm = asciifarm.__main__:main',
         ],
     },
     install_requires=[
         # TODO: Put other requirements here -wangofett, 2017-10-26
+        "hy" # is this the correct syntax? ~troido, 2017-12-30
     ],
     tests_require=[
         # TODO: put tests requirements here -wangofett, 2017-10-26

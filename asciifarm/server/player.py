@@ -108,7 +108,7 @@ class Player:
     def on_equipmentchange(self, o):
         self.changes.add("equipment")
     
-    def on_objectenter(self, o):
+    def on_objectenter(self, o, obj):
         self.changes.add("ground")
     
     def on_objectleave(self, o, obj):

@@ -24,6 +24,8 @@ This is a multiplayer ascii farming/fighting game.
 
 Requires python3, tested to work on at least python 3.5.2 in linux
 
+Requires Hy to be installed.
+
 Because of the use of NCURSES, it probably won't work on windows (will be fixed later)
 
 It works on a mac, but when testing abstract domain sockets didn't work.
