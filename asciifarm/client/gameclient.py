@@ -25,22 +25,14 @@ class Client:
         self.connection = connection
         self.logFile = logFile
         
-        self.commands = importlib.import_module(".keybindings", __package__).commands
         
-        self.controlsString = """\
-Default Controls:
- wasd or arrows:
-    Move around
- e: Grab
- q: Drop
- E: Use
- r: Interact
- f: Attack
- t: Chat"""
+        keymodule = importlib.import_module(".keybindings", __package__)
+        self.commands = keymodule.commands
+        self.controlsString = keymodule.docs
         
         self.display.showInfo(self.controlsString)
         
-        
+    
     def send(self, data):
         self.connection.send(json.dumps(data))
     
@@ -57,7 +49,6 @@ Default Controls:
         threading.Thread(target=self.listen, daemon=True).start()
         self.connection.send(json.dumps(["name", self.name]))
         self.command_loop()
-        
     
     def listen(self):
         self.connection.listen(self.update, self.close)

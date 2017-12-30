@@ -26,3 +26,17 @@
         (input ["attack" "east"])
         (input ["attack" "west"])])
   "t" (fn [client] (client.readString)) })
+
+(setv docs "\
+Controls:
+ wasd or arrows:
+    Move around
+ e: Grab
+ q: Drop
+ E: Use
+ r: Interact
+ f: Attack
+ t: Chat
+ z: Unequip
+ xcv: scroll")
+
