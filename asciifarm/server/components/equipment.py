@@ -7,7 +7,10 @@ class Equipment(Component):
     
     
     def __init__(self, slots={}):
-        self.slots = slots
+        self.slots = {key: None for key in slots}
+        self.owner = None
+        for slot, item in slots.items():
+            self.equip(slot, item)
     
     def attach(self, obj):
         self.owner = obj

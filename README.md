@@ -84,6 +84,8 @@ The idea is to make 3 different kind of areas:
 - testing
 - refactor display
 - display equipment
+- list scrolling (inventory, ground, equipment)
+- authentication
 - transparent background on sprites
 - labels
 - make farming more work

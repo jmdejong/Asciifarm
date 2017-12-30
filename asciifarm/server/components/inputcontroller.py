@@ -51,18 +51,16 @@ class InputController(Component):
         kind = action[0]
         
         if kind in self.handlers:
-            try:
-                self.handlers[kind](*action[1:])
-            except TypeError:
-                # invalid command.
-                # We can't notify the client from here
-                # The server can't really do anything with a notification
-                pass
+            if len(action) > 1:
+                arg = action[1]
+            else:
+                arg = None
+            self.handlers[kind](arg)
     
     def do_move(self, direction):
-            self.move.move(direction)
+        self.move.move(direction)
     
-    def do_take(self, rank=None):
+    def do_take(self, rank):
         objects = self.owner.getNearObjects()
         if rank != None:
             if rank not in range(len(objects)):
@@ -74,8 +72,10 @@ class InputController(Component):
                 obj.remove()
                 break
     
-    def do_drop(self, rank=0):
+    def do_drop(self, rank):
         items = self.inventory.getItems()
+        if rank == None:
+            rank = 0
         if rank not in range(len(items)):
             return
         obj = items[rank]
@@ -83,14 +83,16 @@ class InputController(Component):
         obj.construct(self.roomData, preserve=True)
         obj.place(self.owner.getGround())
         
-    def do_use(self, rank=0):
+    def do_use(self, rank):
         items = self.inventory.getItems()
+        if rank == None:
+            rank = 0
         if rank not in range(len(items)):
             return
         obj = items[rank]
         obj.getComponent("item").use(self.owner)
     
-    def do_interact(self, rank=None):
+    def do_interact(self, rank):
         nearPlaces = self.owner.getGround().getNeighbours()
         objects = self.owner.getNearObjects()
         if rank != None:
@@ -102,7 +104,7 @@ class InputController(Component):
                 obj.getComponent("interact").interact(self.owner)
                 break
     
-    def do_attack(self, direction=None):
+    def do_attack(self, direction):
         nearPlaces = self.owner.getGround().getNeighbours()
         if direction in nearPlaces:
             objs = nearPlaces[direction].getObjs()
