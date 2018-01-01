@@ -1,11 +1,11 @@
 
 import curses
 from .fieldpad import FieldPad
+from asciifarm.common.utils import clamp
 
 import signal
 
 class Screen:
-    
     
     def __init__(self, display, stdscr):
         self.display = display
@@ -22,16 +22,16 @@ class Screen:
         
         sideW = 20
         sideX = width-sideW
-        msgH = max(3, min(height // 5, 5))
+        msgH = clamp(height // 5, 3, 5)
         msgY = height - msgH-1
         inputH = 1
         inputY = msgY + msgH
         healthY = 0
         healthH = self._limitHeight(2, healthY)
         groundY = healthY + healthH
-        groundH = self._limitHeight(7, groundY)
+        groundH = self._limitHeight(6, groundY)
         invY = groundY + groundH
-        invH = self._limitHeight(12, invY)
+        invH = self._limitHeight(9, invY)
         eqY = invY + invH
         eqH = self._limitHeight(5, eqY)
         infoY = eqY + eqH

@@ -82,19 +82,17 @@ The idea is to make 3 different kind of areas:
 
 ## TODO first
 
-- better code documentation
-- testing
 - refactor display
-- display equipment
-- list scrolling (inventory, ground, equipment)
 - authentication
 - transparent background on sprites
 - labels
 - make farming more work
 - autofight/autoretaliate?
-- display target enemy health
 - better reaction on player death
-- runtime-created rooms
+- runtime-created roomson
+- display target enemy heal
+- better code documentatith
+- testing
 - tutorial room
 - support websockets
 - windows comptibility (libtcod/tdl instead of ncurses?)
@@ -107,6 +105,8 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- list scrolling (inventory, ground, equipment)
+- display equipment
 - better inventory selection
 - in-game chat
 - relative position room transitions
