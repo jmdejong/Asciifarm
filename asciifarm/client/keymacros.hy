@@ -2,7 +2,7 @@
 (defmacro send [data]
     `(fn [client] (client.send ~data)))
 
-(defmacro input [action]
+(defmacro inp [action]
     `(send ["input" ~action]))
 
 (defmacro doall [actions]
