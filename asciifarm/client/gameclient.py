@@ -13,12 +13,15 @@ import string
 from .display.display import Display
 
 import hy
-from . import keybindings as defaultkeybindings
-import importlib
+
+hywrapper = """\
+(do
+  (require [asciifarm.client.keymacros [*]])
+  {{ {} }})"""
 
 class Client:
     
-    def __init__(self, stdscr, display, name, connection, keybindings=None, logFile=None):
+    def __init__(self, stdscr, display, name, connection, keybindings, logFile=None):
         self.stdscr = stdscr
         self.display = display
         self.name = name
@@ -26,11 +29,8 @@ class Client:
         self.connection = connection
         self.logFile = logFile
         
-        keymodule = defaultkeybindings
-        if keybindings:
-            keymodule = importlib.import_module(keybindings)
-        self.commands = keymodule.commands
-        self.controlsString = keymodule.docs
+        self.commands = hy.eval(hy.read_str(hywrapper.format(keybindings)))
+        self.controlsString = self.commands.get("help", "")
         
         self.display.showInfo(self.controlsString)
         

@@ -32,4 +32,9 @@ def writeFileSafe(filename, data, tempname=None):
     with open(tempname, 'w') as f:
         f.write(data)
     os.rename(tempname, filename)
-    
+
+
+def readFile(filepath):
+    with open(filepath, "r") as f:
+        text = f.read()
+    return text

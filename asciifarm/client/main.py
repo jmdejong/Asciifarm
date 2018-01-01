@@ -15,7 +15,7 @@ charMapPath = os.path.join(farmsPath, "charmaps")
 keybindingsPath = os.path.join(farmsPath, "keybindings")
 
 standardCharFiles = [name[:-5] for name in os.listdir(charMapPath) if name[-5:] == ".json"]
-standardKeyFiles = [name[:-5] for name in os.listdir(keybindingsPath) if name[-5:] == ".json"]
+standardKeyFiles = [name[:-3] for name in os.listdir(keybindingsPath) if name[-3:] == ".hy"]
 
 
 defaultAdresses = {
@@ -35,7 +35,7 @@ def main(argv=None):
     parser.add_argument('-n', '--name', help='Your player name (must be unique!). Defaults to username', default=getpass.getuser())
     parser.add_argument("-a", "--address", help="The address of the socket. When the socket type is 'abstract' this is just a name. When it is 'unix' this is a filename. When it is 'inet' is should be in the format 'address:port', eg 'localhost:8080'. Defaults depends on the socket type")
     parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
-    parser.add_argument('-k', '--keybindings', help='The script with the keybindings. This can be either a python3 or a hy script.')
+    parser.add_argument('-k', '--keybindings', help='The script with the keybindings. This file is a snippet of hy script.', default="keybindings")
     parser.add_argument('-c', '--characters', help='The file with the character mappings for the graphics. If it is either of these names: {} it will be loaded from the charmaps directory.'.format(standardCharFiles), default="default")
     parser.add_argument('-o', '--logfile', help='All game messages will be written to this file.'.format(standardCharFiles), default=None)
     
@@ -49,12 +49,12 @@ def main(argv=None):
         charFile = os.path.join(charMapPath, charFile + ".json")
     with open(charFile, 'r') as cf:
         charMap = json.load(cf)
+    
     keyFile = args.keybindings
-    if keyFile:
-        with open(keyFile, 'r') as kf:
-            keybindings = json.load(kf)
-    else:
-        keybindings = None
+    if keyFile in standardKeyFiles:
+        keyFile = os.path.join(keybindingsPath, keyFile + ".hy")
+    with open(keyFile, 'r') as kf:
+        keybindings = kf.read()
     
     address = args.address
     if address == None:
