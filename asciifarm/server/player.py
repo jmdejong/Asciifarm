@@ -78,7 +78,8 @@ class Player:
     
     
     def on_changeroom(self, o, room, pos):
-        self.joinRoom(room, pos)
+        if self.canChangeRoom:
+            self.joinRoom(room, pos)
     
     def on_attack(self, o, obj, damage):
         self.log("{} attacks {} for {} damage".format(self.name, obj.getName(), damage))
