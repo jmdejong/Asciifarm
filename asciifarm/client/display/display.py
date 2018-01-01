@@ -60,7 +60,7 @@ class Display:
         
         #self.changed = False
         
-        self.update(True)
+        self.update()
     
     def getWidget(self, name):
         if name in self.widgets:
@@ -137,7 +137,9 @@ class Display:
         #if not self.changed and not force:
             #return
         for widget in self.widgets.values():
-            widget.update(force)
+            if force:
+                widget.change()
+            widget.update()
         
         self.screen.update()
             

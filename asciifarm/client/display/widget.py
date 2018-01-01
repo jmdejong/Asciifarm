@@ -23,8 +23,8 @@ class Widget:
     def change(self):
         self.changed = True
     
-    def update(self, force=False):
-        if not (force or self.changed) or not self.win:
+    def update(self):
+        if not self.changed or not self.win:
             return
         self.impl.update()
         self.changed = False
