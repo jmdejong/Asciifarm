@@ -72,6 +72,11 @@ class Game:
         
         self.counter += 1
     
+    def sendState(self):
+        
+        self.server.sendState(self.view)
+        self.world.resetChangedCells()
+    
     def save(self):
         
         try:
@@ -134,10 +139,5 @@ class Game:
                     data = json.load(f)
                     self.world.loadPlayer(player, data)
                     print("loaded saved player:", player)
-    
-    def sendState(self):
-        
-        self.server.sendState(self.view)
-        self.world.resetChangedCells()
         
 

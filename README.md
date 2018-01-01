@@ -89,9 +89,9 @@ The idea is to make 3 different kind of areas:
 - make farming more work
 - autofight/autoretaliate?
 - better reaction on player death
-- runtime-created roomson
-- display target enemy heal
-- better code documentatith
+- runtime-created rooms
+- display target enemy health
+- better code documentation
 - testing
 - tutorial room
 - support websockets

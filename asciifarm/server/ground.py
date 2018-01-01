@@ -1,6 +1,6 @@
 import random
 
-from . import event
+from .eventtarget import EventTarget
 
 neighbourdirs = {"north":(0,-1), "south":(0,1), "east":(1,0), "west":(-1,0)}
 
@@ -12,7 +12,7 @@ class GroundPatch:
         self.room = room
         self.pos = pos
         self.neighbours = None
-        self.event = event.Event()
+        self.event = EventTarget()
     
     def getFlags(self):
         return set().union(*[obj.getFlags() for obj in self.getObjs()])
@@ -22,35 +22,23 @@ class GroundPatch:
         return "floor" in flags and "solid" not in flags
     
     def addObj(self, obj):
-        oldTop = self._getTopObj()
         self.objects.append(obj)
         self.objects.sort(key=(lambda o: -o.getHeight()))
-        if self._getTopObj() != oldTop:
-            self.event.trigger("changesprite", self.getPos(), self.getTopSprite())
+        self.event.trigger("changesprite", self)
         self.onEnter(obj)
     
     def removeObj(self, obj):
-        oldTop = self._getTopObj()
         if obj in self.objects:
             self.objects.remove(obj)
-            if obj == oldTop:
-                self.event.trigger("changesprite", self.getPos(), self.getTopSprite())
-        self.onLeave(obj)
+            self.event.trigger("changesprite", self)
+            self.onLeave(obj)
     
-    def getTopSprite(self):
-        for obj in self.objects:
-            spr = obj.getSprite()
-            if spr:
-                break
-        else:
-            return ' '
-        return spr
+    def getSprites(self):
+        sprites = [obj.getSprite() for obj in self.objects if obj.getSprite()]
+        return sprites
     
     def getObjs(self):
         return list(self.objects)
-    
-    def _getTopObj(self):
-        return self.objects[0] if len(self.objects) else None
     
     def onEnter(self, obj):
         for o in frozenset(self.objects):
@@ -79,11 +67,11 @@ class GroundPatch:
         return self.pos
     
     
-    def addListener(self, callback, key=None):
-        self.event.addListener(callback, key)
+    def addListener(self, event, callback, key=None):
+        self.event.addListener(event, callback, key)
     
-    def removeListener(self, key):
-        self.event.removeListener(key)
+    def removeListener(self, event, key):
+        self.event.removeListener(event, key)
     
     def __getstate__(self):
         state = self.__dict__.copy()

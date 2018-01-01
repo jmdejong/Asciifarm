@@ -73,7 +73,8 @@ class Display:
     
     def drawFieldCells(self, cells):
         for cell in cells:
-            (x, y), spriteName = cell
+            (x, y), spriteNames = cell
+            spriteName = spriteNames[0] if len(spriteNames) else " "
             sprite = self.getChar(spriteName)
             self.fieldPad.changeCell(x, y, *sprite)
         #self.change()

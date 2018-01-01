@@ -86,7 +86,7 @@ class Client:
                      mapping[spr])
                     for i, spr in enumerate(fieldCells))
             
-            if msgType == 'changecells'and len(msg[1]):
+            if msgType == 'changecells' and len(msg[1]):
                 self.display.drawFieldCells(msg[1])
             
             if msgType == "playerpos":

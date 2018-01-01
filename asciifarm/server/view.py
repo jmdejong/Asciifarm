@@ -24,7 +24,7 @@ class View:
         screen = grid.Grid(width, height)
         for x in range(width):
             for y in range(height):
-                screen.set(x, y, room.getSprite((x, y)))
+                screen.set(x, y, room.getSprites((x, y)))
         return screen.toDict()
     
     def playerView(self, playerName):
@@ -58,14 +58,3 @@ class View:
     def hasPlayer(self, name):
         return self.world.hasPlayer(name)
 
-def view(room):
-    width = room.width
-    height = room.height
-    
-    screen = grid.Grid(width, height)
-    
-    for x in range(width):
-        for y in range(height):
-            screen.set(x, y, room.getChar((x, y)))
-    
-    return screen

@@ -84,8 +84,8 @@ class Room:
         self.roomData.getEvent("update").trigger(timePassed)
         self.lastStepStamp = stepStamp
     
-    def getSprite(self, pos):
-        return self._getGround(pos).getTopSprite()
+    def getSprites(self, pos):
+        return self._getGround(pos).getSprites()
     
     def isValidPos(self, pos):
         x, y = pos
@@ -95,7 +95,7 @@ class Room:
         if pos not in self.field and self.isValidPos(pos):
             groundPatch = ground.GroundPatch(self, pos)
             self.field[pos] = groundPatch
-            groundPatch.addListener(self.onGroundChange)
+            groundPatch.addListener("changesprite", self.onGroundChange)
         return self.field.get(pos)
     
     def get(self, pos):
@@ -123,9 +123,8 @@ class Room:
     def removeObj(self, pos, obj):
         self._getGround(pos).removeObj(obj)
     
-    def onGroundChange(self, action, pos, sprite):
-        if action == "changesprite":
-            self.changedCells[pos] = sprite
+    def onGroundChange(self, obj):
+        self.changedCells[obj.getPos()] = self.getSprites(obj.getPos())
     
     def getChangedCells(self):
         return self.changedCells
