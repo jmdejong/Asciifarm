@@ -15,13 +15,14 @@
 "c" (.select (selector "ground") 1 True True)
 "x" (.select (selector "equipment") 1 True True)
 "z" (inp ["unequip" (selectorvalue "equipment")])
-"f" (doall [
+"f" (do [
     (inp ["attack"])
     (inp ["attack" "north"])
     (inp ["attack" "south"])
     (inp ["attack" "east"])
     (inp ["attack" "west"])])
-"t" (self.parseMessage (self.display.getString)) ; This should not work, but somehow it does
+"t" (self.parseMessage (self.display.getString))
+"KEY_ENTER" (self.parseMessage (self.display.getString))
 "help" "\
 Controls:
  wasd or arrows:
