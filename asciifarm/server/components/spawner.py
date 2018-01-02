@@ -53,7 +53,7 @@ class Spawner(Component):
     def onSpawnedRemove(self, obj, *data):
         """ handle spawned object death """
         self.spawned.remove(obj)
-        obj.removeListener(self.onObjEvent)
+        obj.removeListener("remove", self.onSpawnedRemove)
         self.goSpawn()
     
     def remove(self):

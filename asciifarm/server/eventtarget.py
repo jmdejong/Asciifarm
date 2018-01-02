@@ -13,7 +13,7 @@ class EventTarget:
         self.events[name].addListener(func, key)
     
     def removeListener(self, name, key):
-        self.events[name].reamoveListener(key)
+        self.events[name].removeListener(key)
     
     def trigger(self, event, *args, **kwargs):
         if event in self.events:
