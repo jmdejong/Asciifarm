@@ -35,7 +35,10 @@
                 [[key value] (.items (read-str commandsstring))])))
     
     (defn runCommand [self commandstring]
-          (eval (read-str (+ "(" commandstring ")"))))
+          (try 
+              (eval (read-str (+ "(" commandstring ")")))
+              (except [e Exception]
+                    (self.display.addMessage (repr e)))))
     
     (defn parseMessage [self message]
         (if message
