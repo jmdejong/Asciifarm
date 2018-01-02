@@ -38,3 +38,10 @@ def readFile(filepath):
     with open(filepath, "r") as f:
         text = f.read()
     return text
+
+
+def get(collection, i, default=None):
+    """ Get an element in an indexed collection, or the default in case the index is out of bounds """
+    if i < 0 or i >= len(collection):
+        return default
+    return collection[i]

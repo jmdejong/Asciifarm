@@ -26,7 +26,16 @@ class FieldPad:
             win.erase()
             win.noutrefresh()
     
-    def changeCell(self, x, y, char, colour=None, bgcolour=0):
+    def changeCell(self, x, y, sprites):
+        """ sprites must always have at least one element """
+        char, colour, bgcolour = sprites[0]
+        if bgcolour == None:
+            for (ch, co, bg) in sprites:
+                if bg != None:
+                    bgcolour = bg
+                    break
+            else:
+                bgcolour = 0
         if colour != None and self.colours:
             self.pad.addstr(y, x*self.charSize, char, self.colours.get(colour, bgcolour))
         else:

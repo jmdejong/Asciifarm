@@ -84,7 +84,6 @@ The idea is to make 3 different kind of areas:
 
 - refactor display
 - authentication
-- transparent background on sprites
 - labels
 - make farming more work
 - autofight/autoretaliate?
@@ -105,6 +104,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- transparent background on sprites
 - list scrolling (inventory, ground, equipment)
 - display equipment
 - better inventory selection

@@ -11,6 +11,8 @@ from .messagepad import MessagePad
 from .textinput import TextInput
 from .widget import Widget
 
+from asciifarm.common.utils import get
+
 
 SIDEWIDTH = 20
 
@@ -23,7 +25,15 @@ class Display:
             self.colours = Colours()
         else:
                 self.colours = None
-        self.characters = charMap["mapping"]
+        self.characters = {}
+        for name, sprite in charMap["mapping"].items():
+            if isinstance(sprite, str):
+                self.characters[name] = (sprite, None, None)
+                continue
+            char = get(sprite, 0, " ")
+            fg = get(sprite, 1)
+            bg = get(sprite, 2)
+            self.characters[name] = (char, fg, bg)
         self.defaultChar = charMap.get("default", "?")
         self.screen = Screen(self, stdscr)
         
@@ -74,9 +84,10 @@ class Display:
     def drawFieldCells(self, cells):
         for cell in cells:
             (x, y), spriteNames = cell
-            spriteName = spriteNames[0] if len(spriteNames) else " "
-            sprite = self.getChar(spriteName)
-            self.fieldPad.changeCell(x, y, *sprite)
+            sprites = [self.getChar(spriteName) for spriteName in spriteNames]
+            if not len(sprites):
+                sprites = [self.getChar(" ")]
+            self.fieldPad.changeCell(x, y, sprites)
         #self.change()
     
     def setFieldCenter(self, pos):
@@ -121,10 +132,7 @@ class Display:
     
     def getChar(self, sprite):
         """This returns the character belonging to some spritename. This does not read a character"""
-        char = self.characters.get(sprite, self.defaultChar)
-        if isinstance(char, str):
-            return [char]
-        return char
+        return self.characters.get(sprite, self.defaultChar)
     
     def getString(self):
         """This does actually read input"""
