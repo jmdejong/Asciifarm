@@ -104,6 +104,7 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- fix window resizing
 - transparent background on sprites
 - list scrolling (inventory, ground, equipment)
 - display equipment

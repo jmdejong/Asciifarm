@@ -44,7 +44,7 @@ class Display:
                 winname = widgetName
             widget = Widget(pad)
             self.widgets[widgetName] = widget
-            widget.setWin(self.screen.getWin(winname))
+            widget.setWin(winname, self.screen)
         
         self.fieldPad = FieldPad((1, 1), charMap.get("charwidth", 1), self.colours)
         setwin(self.fieldPad, "field")
@@ -68,8 +68,7 @@ class Display:
         
         self.lastinfostring = None
         
-        #self.changed = False
-        
+        self.forced = False
         self.update()
     
     def getWidget(self, name):
@@ -88,24 +87,24 @@ class Display:
             if not len(sprites):
                 sprites = [self.getChar(" ")]
             self.fieldPad.changeCell(x, y, sprites)
-        #self.change()
+        
     
     def setFieldCenter(self, pos):
         self.fieldPad.setCenter(pos)
     
     def setHealth(self, health, maxHealth):
         self.healthPad.setHealth(health, maxHealth)
-        #self.change()
+        
     
     def showInfo(self, infostring):
         if infostring != self.lastinfostring:
             self.infoPad.showString(infostring)
-            #self.change()
+            
             self.lastinfostring = infostring
     
     def setInventory(self, items):
         self.inventoryPad.setInventory(items)
-        #self.change()
+        
     
     def setEquipment(self, slots):
         self.equipment.setInventory(
@@ -117,7 +116,6 @@ class Display:
     
     def setGround(self, items):
         self.groundPad.setInventory(items)
-        #self.change()
     
     def getSelector(self, name):
         widget = self.getWidget(name)
@@ -128,7 +126,6 @@ class Display:
     
     def addMessage(self, message):
         self.messagePad.addMessage(message)
-        #self.change()
     
     def getChar(self, sprite):
         """This returns the character belonging to some spritename. This does not read a character"""
@@ -138,18 +135,17 @@ class Display:
         """This does actually read input"""
         return self.textInput.getString()
     
-    #def change(self):
-        #self.changed = True
-    
-    def update(self, force=False):
-        #if not self.changed and not force:
-            #return
+    def update(self):
+        changed = False
         for widget in self.widgets.values():
-            if force:
-                widget.change()
-            widget.update()
+            if self.forced or widget.isChanged():
+                widget.update()
+                changed = True
         
-        self.screen.update()
-            
-        #self.changed = False
+        if changed:
+            self.screen.update()
+        self.forced = False
+    
+    def forceUpdate(self):
+        self.forced = True
 

@@ -54,7 +54,7 @@ class Screen:
         return curses.newwin(height, width, y, x)
     
     def getWin(self, name):
-        return self.windows[name]
+        return self.windows.get(name, None)
     
     
     def updateSize(self, *args):
@@ -62,7 +62,7 @@ class Screen:
         curses.initscr()
         self.setWins()
         self.stdscr.clear()
-        self.display.update(True)
+        self.display.forceUpdate()
     
     def update(self):
         

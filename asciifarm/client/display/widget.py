@@ -9,13 +9,15 @@ class Widget:
         self.impl.setWidget(self)
         
         self.win = None
+        self.screen = None
         self.changed = False
     
-    def setWin(self, win):
+    def setWin(self, win, screen):
         self.win = win
+        self.screen = screen
     
     def getWin(self):
-        return self.win
+        return self.win and self.screen and self.screen.getWin(self.win)
     
     def getImpl(self):
         return self.impl
@@ -23,8 +25,11 @@ class Widget:
     def change(self):
         self.changed = True
     
+    def isChanged(self):
+        return self.changed
+    
     def update(self):
-        if not self.changed or not self.win:
+        if not self.getWin():
             return
         self.impl.update()
         self.changed = False
