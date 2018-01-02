@@ -1,4 +1,4 @@
-
+{
 "w" (inp ["move" "north"])
 "s" (inp ["move" "south"])
 "d" (inp ["move" "east"])
@@ -11,9 +11,9 @@
 "q" (inp ["drop" (selectorvalue "inventory")])
 "E" (inp ["use" (selectorvalue "inventory")])
 "r" (inp ["interact" (selectorvalue "ground")])
-"v" (fn [client] (.select (selector "inventory") 1 True True))
-"c" (fn [client] (.select (selector "ground") 1 True True))
-"x" (fn [client] (.select (selector "equipment") 1 True True))
+"v" (.select (selector "inventory") 1 True True)
+"c" (.select (selector "ground") 1 True True)
+"x" (.select (selector "equipment") 1 True True)
 "z" (inp ["unequip" (selectorvalue "equipment")])
 "f" (doall [
     (inp ["attack"])
@@ -21,7 +21,7 @@
     (inp ["attack" "south"])
     (inp ["attack" "east"])
     (inp ["attack" "west"])])
-"t" (fn [client] (client.readString))
+"t" (self.parseMessage (self.display.getString)) ; This should not work, but somehow it does
 "help" "\
 Controls:
  wasd or arrows:
@@ -34,4 +34,4 @@ Controls:
  t: Chat
  z: Unequip
  xcv: scroll"
-
+}

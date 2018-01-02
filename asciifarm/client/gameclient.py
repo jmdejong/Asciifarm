@@ -13,11 +13,7 @@ import string
 from .display.display import Display
 
 import hy
-
-hywrapper = """\
-(do
-  (require [asciifarm.client.keymacros [*]])
-  {{ {} }})"""
+from .inputhandling import InputHandler
 
 class Client:
     
@@ -29,23 +25,16 @@ class Client:
         self.connection = connection
         self.logFile = logFile
         
-        self.commands = hy.eval(hy.read_str(hywrapper.format(keybindings)))
-        self.controlsString = self.commands.get("help", "")
+        self.inputHandler = InputHandler(self, self.display, self.connection)
+        self.inputHandler.readCommands(keybindings)
+        
+        self.controlsString = self.inputHandler.getDocs()
         
         self.display.showInfo(self.controlsString)
         
     
     def send(self, data):
         self.connection.send(json.dumps(data))
-    
-    def getDisplay(self):
-        return self.display
-    
-    def readString(self):
-        text = self.display.getString()
-        string = str(text, "utf-8")
-        if string:
-            self.connection.send(json.dumps(["input", ["say", string]]))
     
     def start(self):
         threading.Thread(target=self.listen, daemon=True).start()
@@ -126,8 +115,7 @@ class Client:
                 keyname = str(curses.keyname(key), "utf-8")
             except ValueError:
                 continue
-            if keyname in self.commands:
-                self.commands[keyname](self)
+            self.inputHandler.onKey(keyname)
     
 
 

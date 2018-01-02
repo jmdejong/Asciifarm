@@ -1,15 +1,16 @@
 
+
 (defmacro send [data]
-    `(fn [client] (client.send ~data)))
+    `(self.client.send ~data))
 
 (defmacro inp [action]
     `(send ["input" ~action]))
 
 (defmacro doall [actions]
-    `(fn [client] (for [action ~actions] (action client))))
+    `(for [action ~actions] (action)))
 
 (defmacro selector [name]
-    `(.getSelector (.getDisplay client) ~name))
+    `(self.display.getSelector ~name))
 
 (defmacro selectorvalue [name]
     `(.getValue (selector ~name)))

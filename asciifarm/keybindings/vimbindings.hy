@@ -1,5 +1,7 @@
 
 
+;; Outdated! Don't use
+
 ;; mainly intended as example for using different keybindings
 "k" (input ["move" "north"])
 "j" (input ["move" "south"])

@@ -82,6 +82,7 @@ The idea is to make 3 different kind of areas:
 
 ## TODO first
 
+- typable commands
 - refactor display
 - authentication
 - labels

@@ -133,7 +133,7 @@ class Display:
     
     def getString(self):
         """This does actually read input"""
-        return self.textInput.getString()
+        return str(self.textInput.getString(), "utf-8")
     
     def update(self):
         changed = False
