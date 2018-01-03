@@ -105,17 +105,21 @@ class Client:
             with(open(self.logFile, 'a')) as f:
                 f.write(text+'\n')
     
+    def nameFromKey(self, keynum): # this probably belongs in inputhandler...
+        prenamed = {
+            10: "KEY_ENTER"
+        }
+        if keynum in prenamed:
+            return prenamed[keynum]
+        return str(curses.keyname(keynum), "utf-8")
+    
     def command_loop(self):
         while self.keepalive:
             key = self.stdscr.getch()
             if key == 27:
                 self.keepalive = False
                 return
-            try:
-                keyname = str(curses.keyname(key), "utf-8")
-            except ValueError:
-                continue
-            self.inputHandler.onKey(keyname)
+            self.inputHandler.onKey(key)
     
 
 

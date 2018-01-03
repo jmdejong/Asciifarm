@@ -1,18 +1,15 @@
 
 (require [asciifarm.client.keymacros [*]])
+(import [curses])
 
-(defmacro eval-in-context [code] 
-    `(
-        (eval `(do
-            (require [asciifarm.client.keymacros [*]])
-            (fn [client display connection]
-                ~~code)))
-        self.client
-        self.display
-        self.connection))
+(setv prenamedkeys { ; or should this be def?
+    10 "KEY_ENTER"
+})
 
-(defmacro sendinput [message] `(
-    self.client.send ["input" ~message]))
+(defn nameFromKey [key]
+    (if (in key prenamedkeys)
+        (get prenamedkeys key)
+        (str (curses.keyname key) "utf-8")))
 
 (defclass InputHandler []
     
@@ -38,7 +35,7 @@
           (try 
               (eval (read-str (+ "(" commandstring ")")))
               (except [e Exception]
-                    (self.display.addMessage (repr e)))))
+                    (self.client.log (repr e)))))
     
     (defn parseMessage [self message]
         (if message
@@ -53,6 +50,7 @@
     (defn getDocs [self]
           (if (in "help" self.commands) ((get self.commands "help")) ""))
     
-    (defn onKey [self key]
-          (if (in key self.commands) ((get self.commands key))))
+    (defn onKey [self key] (do
+        (setv keyname (nameFromKey key))
+        (if (in keyname self.commands) ((get self.commands keyname)))))
 )
