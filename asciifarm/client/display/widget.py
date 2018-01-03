@@ -25,6 +25,9 @@ class Widget:
     def change(self):
         self.changed = True
     
+    def doUpdate(self):
+        self.screen.update()
+    
     def isChanged(self):
         return self.changed
     

@@ -24,7 +24,7 @@ class TextInput:
         self.reading = False
         win.erase()
         win.noutrefresh()
-        self.widget.change()
+        self.widget.doUpdate()
         return string
     
     def update(self):
