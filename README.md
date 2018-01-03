@@ -82,9 +82,7 @@ The idea is to make 3 different kind of areas:
 
 ## TODO first
 
-- chat scrolling
 - chat colours
-- world chat
 - trading
 - currency?
 - refactor display
@@ -110,6 +108,8 @@ The idea is to make 3 different kind of areas:
 
 ## DONE
 
+- world chat
+- chat scrolling
 - typable commands
 - fix window resizing
 - transparent background on sprites

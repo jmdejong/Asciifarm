@@ -43,7 +43,7 @@
                 (do
                     (setv msg (.join "" (drop 1 message)))
                     (if (= (first msg) "/")
-                        (inp ["say" msg])
+                        (send ["chat" msg])
                         (self.runCommand msg)))
                 (inp ["say" message]))))
     
