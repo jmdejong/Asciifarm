@@ -29,7 +29,7 @@ Controls:
     Move around
  e: Grab
  q: Drop
- E: Use
+ E: Use/Equip
  r: Interact
  f: Attack
  t: Chat

@@ -14,7 +14,7 @@ class Selector:
         invLen = self.inventory.getNumItems()
         if relative:
             value += self.value
-        if modular:
+        if modular and invLen:
             value %= invLen
         if value < 0:
             value = 0
