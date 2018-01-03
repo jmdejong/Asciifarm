@@ -35,7 +35,7 @@ class Display:
             bg = get(sprite, 2)
             self.characters[name] = (char, fg, bg)
         self.defaultChar = charMap.get("default", "?")
-        self.screen = Screen(self, stdscr)
+        self.screen = Screen(self, stdscr, self.colours)
         
         self.widgets = {}
         

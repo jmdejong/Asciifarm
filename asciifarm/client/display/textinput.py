@@ -17,8 +17,8 @@ class TextInput:
         self.reading = True
         curses.echo()
         curses.nocbreak()
-        win.addstr(0, 0, ">")
-        string = win.getstr(0,2)
+        win.addLine((0, 0), ">")
+        string = win.getStr((2,0))
         curses.noecho()
         curses.cbreak()
         self.reading = False

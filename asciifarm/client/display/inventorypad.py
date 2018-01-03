@@ -28,28 +28,20 @@ class InventoryPad:
     
     def update(self):
         win = self.widget.getWin()
-        height, width = win.getmaxyx()
+        width, height = win.getSize()
         height -= 1
         selected = self.selector.getValue()
         start = min(selected - height//2, len(self.items)-height)
         start = max(start, 0)
         end = start + height
         win.erase()
-        win.addstr(0,0, (self.title + ":")[:width])
+        win.addLine((0,0), (self.title + ":")[:width])
         for i, item in enumerate(self.items[start:end]):
             if i + start == selected:
-                win.addstr(i+1, 0, '*')
-            win.addstr(i+1, 1, item)
+                win.addLine((0, i+1), '*')
+            win.addLine((1, i+1), item)
         if end < len(self.items):
-            try:
-                win.addstr(height, width-1, "+")
-            except curses.error:
-                # ncurses has a weird problem:
-                # it always raises an error when drawing to the last character in the window
-                # it draws first and then raises the error
-                # therefore to draw in the last place of the window the last character needs to be ingored
-                # other solutions might be possible, but are more hacky
-                pass
+            win.addLine((width-1, height), "+")
         if start > 0:
-            win.addstr(1, width-1, "-")
+            win.addLine((width-1, 1), "-")
         win.noutrefresh()

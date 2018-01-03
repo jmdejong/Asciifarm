@@ -18,7 +18,7 @@ class MessagePad():
     
     def update(self):
         win = self.widget.getWin()
-        height, width = win.getmaxyx()
+        width, height = win.getSize()
         if height < 1:
             return
         lines = []
@@ -27,5 +27,5 @@ class MessagePad():
         if len(lines) > height:
             lines = lines[len(lines)-height:]
         win.erase()
-        win.addstr(0,0,'\n'.join(lines))
+        win.addLine((0,0),'\n'.join(lines))
         win.noutrefresh()

@@ -21,9 +21,9 @@ class InfoPad:
     
     def update(self):
         win = self.widget.getWin()
-        height, width = win.getmaxyx()
+        width, height = win.getSize()
         lines = [line[:width-1] for line in self.lines][:height]
         text = '\n'.join(lines)
         win.erase()
-        win.addstr(0, 0, text)
+        win.addLine((0, 0), text)
         win.noutrefresh()

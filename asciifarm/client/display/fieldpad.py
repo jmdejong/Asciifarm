@@ -57,8 +57,8 @@ class FieldPad:
     
     def update(self):
         win = self.widget.getWin()
-        height, width = win.getmaxyx()
-        y, x = win.getparyx()
+        width, height = win.getSize()
+        x, y = win.getPos()
         xmax = x + width
         ymax = y + height
         self.pad.noutrefresh(

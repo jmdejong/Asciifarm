@@ -2,15 +2,17 @@
 import curses
 from .fieldpad import FieldPad
 from asciifarm.common.utils import clamp
+from .window import Window
 
 import signal
 
 class Screen:
     
-    def __init__(self, display, stdscr):
+    def __init__(self, display, stdscr, colours):
         self.display = display
         curses.curs_set(0)
         self.stdscr = stdscr
+        self.colours = colours
         self.setWins()
         signal.signal(signal.SIGWINCH, self.updateSize)
     
@@ -50,12 +52,12 @@ class Screen:
     
     def makeWin(self, x, y, width, height):
         if width < 1 or height < 1:
-            return None
-        return curses.newwin(height, width, y, x)
+            win = None
+        win = curses.newwin(height, width, y, x)
+        return Window(win, self.colours)
     
     def getWin(self, name):
         return self.windows.get(name, None)
-    
     
     def updateSize(self, *args):
         curses.endwin()
