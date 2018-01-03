@@ -83,10 +83,14 @@ The idea is to make 3 different kind of areas:
 ## TODO first
 
 - typable commands
+- world chat
+- trading
+- currency?
 - refactor display
 - authentication
 - labels
 - make farming more work
+- more crops
 - autofight/autoretaliate?
 - better reaction on player death
 - runtime-created rooms
