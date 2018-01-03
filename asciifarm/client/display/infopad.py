@@ -23,7 +23,7 @@ class InfoPad:
         win = self.widget.getWin()
         width, height = win.getSize()
         lines = [line[:width-1] for line in self.lines][:height]
-        text = '\n'.join(lines)
         win.erase()
-        win.addLine((0, 0), text)
+        for i, line in enumerate(lines):
+            win.addLine((0, i), line)
         win.noutrefresh()
