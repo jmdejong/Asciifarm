@@ -39,37 +39,30 @@ class Display:
         
         self.widgets = {}
         
-        def setwin(pad, widgetName, winname=None):
-            if not winname:
-                winname = widgetName
-            widget = Widget(pad)
-            self.widgets[widgetName] = widget
-            widget.setWin(winname, self.screen)
-        
-        self.fieldPad = FieldPad((1, 1), charMap.get("charwidth", 1), self.colours)
-        setwin(self.fieldPad, "field")
-        self.infoPad = InfoPad()
-        setwin(self.infoPad, "info")
-        self.healthPad = HealthPad(
+        self.addWidget(FieldPad((1, 1), charMap.get("charwidth", 1), self.colours), "field")
+        self.addWidget(InfoPad(), "info")
+        self.addWidget(HealthPad(
                     charMap.get("healthfull", ("@",7, 2)),
                     charMap.get("healthempty", ("-",7, 1)),
-                    self.colours)
-        setwin(self.healthPad, "health")
-        self.inventoryPad = InventoryPad("Inventory")
-        setwin(self.inventoryPad, "inventory")
-        self.groundPad = InventoryPad("Ground")
-        setwin(self.groundPad, "ground")
-        self.equipment = InventoryPad("Equipment")
-        setwin(self.equipment, "equipment")
-        self.messagePad = MessagePad()
-        setwin(self.messagePad, "msg")
-        self.textInput = TextInput()
-        setwin(self.textInput, "textinput")
+                    self.colours),
+            "health")
+        self.addWidget(InventoryPad("Inventory"), "inventory")
+        self.addWidget(InventoryPad("Ground"), "ground")
+        self.addWidget(InventoryPad("Equipment"), "equipment")
+        self.addWidget(MessagePad(), "msg")
+        self.addWidget(TextInput(), "textinput")
         
         self.lastinfostring = None
         
         self.forced = False
         self.update()
+    
+    def addWidget(self, pad, name, winname=None):
+            if not winname:
+                winname = name
+            widget = Widget(pad)
+            self.widgets[name] = widget
+            widget.setWin(winname, self.screen)
     
     def getWidget(self, name):
         if name in self.widgets:
@@ -78,36 +71,37 @@ class Display:
             return None
     
     def resizeField(self, size):
-        self.fieldPad.resize(*size)
+        self.getWidget("field").resize(*size)
     
     def drawFieldCells(self, cells):
+        field = self.getWidget("field")
         for cell in cells:
             (x, y), spriteNames = cell
             sprites = [self.getChar(spriteName) for spriteName in spriteNames]
             if not len(sprites):
                 sprites = [self.getChar(" ")]
-            self.fieldPad.changeCell(x, y, sprites)
+            field.changeCell(x, y, sprites)
         
     
     def setFieldCenter(self, pos):
-        self.fieldPad.setCenter(pos)
+        self.getWidget("field").setCenter(pos)
     
     def setHealth(self, health, maxHealth):
-        self.healthPad.setHealth(health, maxHealth)
+        self.getWidget("health").setHealth(health, maxHealth)
         
     
     def showInfo(self, infostring):
         if infostring != self.lastinfostring:
-            self.infoPad.showString(infostring)
+            self.getWidget("info").showString(infostring)
             
             self.lastinfostring = infostring
     
     def setInventory(self, items):
-        self.inventoryPad.setInventory(items)
+        self.getWidget("inventory").setInventory(items)
         
     
     def setEquipment(self, slots):
-        self.equipment.setInventory(
+        self.getWidget("equipment").setInventory(
             sorted([
                 slot + ": " + (item if item else "")
                 for slot, item in slots.items()
@@ -115,7 +109,7 @@ class Display:
         )
     
     def setGround(self, items):
-        self.groundPad.setInventory(items)
+        self.getWidget("ground").setInventory(items)
     
     def getSelector(self, name):
         widget = self.getWidget(name)
@@ -125,7 +119,7 @@ class Display:
         
     
     def addMessage(self, message):
-        self.messagePad.addMessage(message)
+        self.getWidget("msg").addMessage(message)
     
     def getChar(self, sprite):
         """This returns the character belonging to some spritename. This does not read a character"""
@@ -133,7 +127,7 @@ class Display:
     
     def getString(self):
         """This does actually read input"""
-        return str(self.textInput.getString(), "utf-8")
+        return str(self.getWidget("textinput").getString(), "utf-8")
     
     def update(self):
         changed = False
