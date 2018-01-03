@@ -63,6 +63,8 @@ class Client:
                 if error == "nametaken":
                     print("error: name is already taken", file=sys.stderr)
                     self.close()
+                    return
+                self.log(error)
             if msgType == 'field':
                 field = msg[1]
                 fieldWidth = field['width']

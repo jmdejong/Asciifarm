@@ -49,7 +49,8 @@ class MessagePad():
         elif len(lines) < height:
             lines = (height-len(lines)) * [""] + lines
         win.erase()
-        win.addLine((0,0),'\n'.join(lines))
+        for i, line in enumerate(lines):
+            win.addLine((0,i),line)
         if moreUp:
             win.addLine((width-1, 0), '-')
         if moreDown:

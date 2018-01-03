@@ -64,12 +64,13 @@ class GameServer:
                     if n in self.connections:
                         name = self.connections[n]
                         message = name + ": " + msg[1]
-                        databytes = bytes(json.dumps(["message", message]))
                         print(message)
-                        self.serv.broadcast(databytes)
+                        databytes = bytes(json.dumps(["message", message]), "utf-8")
+                        for connection in self.connections:
+                            self.serv.send(connection, databytes)
         
         except Exception as e:
-            self.serv.send(n, bytes(json.dumps(["error", "invalidmessage"]), "utf-8"))
+            self.serv.send(n, bytes(json.dumps(["error", "invalidmessage", repr(e)]), "utf-8"))
     
     
     def close(self, connection):
