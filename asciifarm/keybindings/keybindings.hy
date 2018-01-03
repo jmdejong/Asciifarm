@@ -26,7 +26,7 @@
     (inp ["attack" "east"])
     (inp ["attack" "west"])])
 "t" (self.parseMessage (self.display.getString))
-"KEY_ENTER" (self.parseMessage (self.display.getString))
+"NEWLINE" (self.parseMessage (self.display.getString))
 "KEY_PPAGE" (self.display.scrollBack 1)
 "KEY_NPAGE" (self.display.scrollBack -1)
 "help" "\

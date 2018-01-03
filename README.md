@@ -82,10 +82,11 @@ The idea is to make 3 different kind of areas:
 
 ## TODO first
 
+- custom getstr
+- tiled soil
 - chat colours
 - trading
 - currency?
-- refactor display
 - authentication
 - labels
 - make farming more work
@@ -110,6 +111,7 @@ The idea is to make 3 different kind of areas:
 
 - world chat
 - chat scrolling
+- refactor display
 - typable commands
 - fix window resizing
 - transparent background on sprites

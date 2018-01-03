@@ -1,15 +1,6 @@
 
 (require [asciifarm.client.keymacros [*]])
-(import [curses])
-
-(setv prenamedkeys { ; or should this be def?
-    10 "KEY_ENTER"
-})
-
-(defn nameFromKey [key]
-    (if (in key prenamedkeys)
-        (get prenamedkeys key)
-        (str (curses.keyname key) "utf-8")))
+(import [asciifarm.client.keynames [nameFromKey]])
 
 (defclass InputHandler []
     

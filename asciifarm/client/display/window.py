@@ -67,5 +67,9 @@ class Window:
         x, y = pos
         return self.win.getstr(y, x)
     
+    def getCh(self, pos):
+        x, y = pos
+        return self.win.getch(y, x)
+    
     
     
