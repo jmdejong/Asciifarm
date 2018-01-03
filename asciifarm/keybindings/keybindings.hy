@@ -7,6 +7,10 @@
 "KEY_DOWN" (inp ["move" "south"])
 "KEY_RIGHT" (inp ["move" "east"])
 "KEY_LEFT" (inp ["move" "west"])
+"k" (inp ["move" "north"])
+"j" (inp ["move" "south"])
+"l" (inp ["move" "east"])
+"h" (inp ["move" "west"])
 "e" (inp ["take" (selectorvalue "ground")])
 "q" (inp ["drop" (selectorvalue "inventory")])
 "E" (inp ["use" (selectorvalue "inventory")])
@@ -23,6 +27,8 @@
     (inp ["attack" "west"])])
 "t" (self.parseMessage (self.display.getString))
 "KEY_ENTER" (self.parseMessage (self.display.getString))
+"KEY_PPAGE" (self.display.scrollBack 1)
+"KEY_NPAGE" (self.display.scrollBack -1)
 "help" "\
 Controls:
  wasd or arrows:

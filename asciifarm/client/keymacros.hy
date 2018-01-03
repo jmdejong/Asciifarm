@@ -14,3 +14,6 @@
 
 (defmacro selectorvalue [name]
     `(.getValue (selector ~name)))
+
+(defmacro log [text]
+    `(self.client.log ~text))

@@ -121,6 +121,9 @@ class Display:
     def addMessage(self, message):
         self.getWidget("msg").addMessage(message)
     
+    def scrollBack(self, amount, relative=True):
+        self.getWidget("msg").scroll(amount, relative)
+    
     def getChar(self, sprite):
         """This returns the character belonging to some spritename. This does not read a character"""
         return self.characters.get(sprite, self.defaultChar)
