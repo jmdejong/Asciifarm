@@ -63,8 +63,10 @@ class GameServer:
                 elif msgType == "chat":
                     if n in self.connections:
                         name = self.connections[n]
-                        message = bytes(json.dumps(["message", name + ": "+msg[1]]))
-                        self.serv.broadcast(message)
+                        message = name + ": " + msg[1]
+                        databytes = bytes(json.dumps(["message", message]))
+                        print(message)
+                        self.serv.broadcast(databytes)
         
         except Exception as e:
             self.serv.send(n, bytes(json.dumps(["error", "invalidmessage"]), "utf-8"))

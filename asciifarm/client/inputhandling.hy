@@ -45,7 +45,7 @@
                     (if (= (first msg) "/")
                         (send ["chat" msg])
                         (self.runCommand msg)))
-                (inp ["say" message]))))
+                (send ["chat" message]))))
     
     (defn getDocs [self]
           (if (in "help" self.commands) ((get self.commands "help")) ""))
