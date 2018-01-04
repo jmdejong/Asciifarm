@@ -80,6 +80,12 @@ The idea is to make 3 different kind of areas:
   * if the player dies they can not return to the same dungeon
   * group dungeons would be great too
 
+## Helping out
+
+Any help is very welcome.
+
+If you don't know how to help, [I made a list of suggestions on how to help](docs/contributing.md)
+
 ## TODO first
 
 - custom getstr
@@ -159,4 +165,3 @@ The idea is to make 3 different kind of areas:
 - improve inventory: probably store it in Player instead of Playerent
 - better interaction system
 - more code reusability in gameobjects
-- avoid long files
