@@ -6,18 +6,17 @@ from . import player
 
 class World:
     
-    def __init__(self, data={"begin": None, "rooms": {}}):
+    def __init__(self, template, begin=None):
         
         self.rooms = {}
-        self.beginRoom = data["begin"]
+        self.beginRoom = begin
         
         self.players = {}
         
         self.activeRooms = {}
         self.activePlayers = {}
         
-        for roomname, roomdata in data["rooms"].items():
-            self.makeRoom(roomname, roomdata)
+        self.template = template
         
         self.stepStamp = 0 # like a timestamp but with the number of ticks instead of the time
     
@@ -60,11 +59,16 @@ class World:
     def hasPlayer(self, playername):
         return playername in self.players
     
-    def getRoom(self, roomname):
-        return self.rooms.get(roomname)
+    def getRoom(self, name):
+        if name in self.rooms:
+            return self.rooms[name]
+        data = self.template.getTemplate(name)
+        if data:
+            return self.makeRoom(name, data)
+        return None
     
     def activateRoom(self, name):
-        self.activeRooms[name] = self.rooms[name]
+        self.activeRooms[name] = self.getRoom(name)
         self.activeRooms[name].update(self.stepStamp)
     
     def deactivateRoom(self, name):

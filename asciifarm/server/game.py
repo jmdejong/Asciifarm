@@ -3,6 +3,7 @@ import time
 from . import gameserver
 from . import world
 from . import view
+from .worldtemplate import WorldTemplate
 from asciifarm.common import utils
 import os
 import json
@@ -12,11 +13,14 @@ saveExt = ".save.json"
 
 class Game:
     
-    def __init__(self, socketType, worldData=None, loadDir=None, saveDir=None, saveInterval=1):
+    def __init__(self, socketType, worldData={"begin": None, "rooms": {}}, loadDir=None, saveDir=None, saveInterval=1):
         
         self.server = gameserver.GameServer(self, socketType)
         
-        self.world = world.World(worldData)
+        
+        template = WorldTemplate()
+        template.addPrefabs(worldData["rooms"])
+        self.world = world.World(template, worldData["begin"])
         self.load(loadDir)
         
         self.saveDir = saveDir
@@ -36,7 +40,7 @@ class Game:
         try:
             self.game_loop()
         except KeyboardInterrupt:
-            print("^C caught, saving")
+            print("\n^C caught, saving")
             self.save()
     
     
