@@ -13,7 +13,7 @@
     (defn readCommands [self commandsstring]
         (setv self.commands
             (dict-comp 
-                (eval key)
+                (str key)
                 (
                     (eval `(do
                         (require [asciifarm.client.keymacros [*]])
