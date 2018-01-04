@@ -38,11 +38,6 @@ class World:
         self.activePlayers[name] = pl
         return pl
     
-    def makeRoom(self, name, data):
-        ro = room.Room(name, data)
-        self.rooms[name] = ro
-        return ro
-    
     def update(self):
         
         for r in list(self.activeRooms.values()):
@@ -60,12 +55,11 @@ class World:
         return playername in self.players
     
     def getRoom(self, name):
-        if name in self.rooms:
-            return self.rooms[name]
-        data = self.template.getTemplate(name)
-        if data:
-            return self.makeRoom(name, data)
-        return None
+        if name not in self.rooms:
+            room = self.template.getRoom(name)
+            if room:
+                self.rooms[name] = room
+        return self.rooms.get(name, None)
     
     def activateRoom(self, name):
         self.activeRooms[name] = self.getRoom(name)

@@ -1,4 +1,5 @@
 
+from .room import Room
 
 
 class WorldTemplate:
@@ -22,3 +23,9 @@ class WorldTemplate:
             return self.prefabs[name]
         
         return None
+    
+    def getRoom(self, name):
+        template = self.getTemplate(name)
+        if not template:
+            return None
+        return Room(name, template)
