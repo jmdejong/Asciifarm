@@ -10,7 +10,7 @@ if __package__ == "asciifarm.client":
     from . import main
 else:
     import os.path
-    sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-    from client import main
+    sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
+    from asciifarm.client import main
 
 main.main()

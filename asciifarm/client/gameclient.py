@@ -64,6 +64,10 @@ class Client:
                     print("error: name is already taken", file=sys.stderr)
                     self.close()
                     return
+                if error == "invalidname":
+                    print("error: "+ msg[2], file=sys.stderr)
+                    self.close()
+                    return
                 self.log(error)
             if msgType == 'field':
                 field = msg[1]
