@@ -11,7 +11,7 @@ from . import roomdata
 class Room:
     
     
-    def __init__(self, name, data):
+    def __init__(self, name, data, preserved=[]):
         self.name = name
         self.width = data["width"]
         self.height = data["height"]

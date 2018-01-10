@@ -40,5 +40,6 @@ Controls:
  f: Attack
  t: Chat
  z: Unequip
- xcv: scroll"
+ xcv: scroll
+ ctrl-c: close client"
 }

@@ -3,6 +3,7 @@
 
 import json
 import queue
+import string
 
 from . import view
 from . import socketserver as server
@@ -51,12 +52,26 @@ class GameServer:
                     name = msg[1]
                     
                     if name in self.players:
-                        self.serv.send(n, bytes(json.dumps(["error", "nametaken"]), "utf-8"))
-                    else:
-                        self.connections[n] = name
-                        self.players[name] = n
-                        self.messages.put(("join", name))
-                        print("new player: "+name)
+                        self.error(n, "nametaken", "another connection to this player already exists")
+                        return
+                    if len(name) < 1:
+                        self.error(n, "invalidname", "name needs at least one character")
+                        return
+                    if name[0] not in string.ascii_letters + string.digits:
+                        if name[0] != "~":
+                            self.error(n, "invalidname", "custom name must start with an alphanumeric character")
+                            return
+                        if name[1:] != self.serv.getUsername(n):
+                            self.error(n, "invalidname", "tildenames are only available on unix sockets and when the rest of the name equals the username")
+                            return
+                    if any(char not in string.ascii_letters + string.digits + string.punctuation for char in name):
+                        self.error(n, "invalidname", "names can only consist of printable ascii characters")
+                        return
+                    self.connections[n] = name
+                    self.players[name] = n
+                    self.messages.put(("join", name))
+                    print("new player: "+name)
+                    return
                 elif msgType == "input":
                     if n in self.connections:
                         self.messages.put(("input", self.connections[n], msg[1]))
@@ -70,8 +85,11 @@ class GameServer:
                             self.serv.send(connection, databytes)
         
         except Exception as e:
-            self.serv.send(n, bytes(json.dumps(["error", "invalidmessage", repr(e)]), "utf-8"))
+            self.error(n, "invalidmessage", repr(e))
     
+    
+    def error(self, n, errtype, *data):
+        self.serv.send(n, bytes(json.dumps(["error", errtype]+list(data)), "utf-8"))
     
     def close(self, connection):
         if connection in self.connections:

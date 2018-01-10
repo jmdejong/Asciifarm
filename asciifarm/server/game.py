@@ -24,6 +24,8 @@ class Game:
         self.load(loadDir)
         
         self.saveDir = saveDir
+        self.playerSaveDir = os.path.join(self.saveDir, "players")
+        self.roomSaveDir = os.path.join(self.saveDir, "rooms")
         self.saveInterval = saveInterval
         
         self.lastActivePlayers = set()
@@ -64,6 +66,7 @@ class Game:
                 if not self.world.hasPlayer(name):
                     self.world.createPlayer(name)
                 self.world.playerJoin(name)
+                self.lastActivePlayers.add(name)
             elif t == "leave":
                 self.world.removePlayer(name)
             elif t == "input":
@@ -81,34 +84,35 @@ class Game:
         self.server.sendState(self.view)
         self.world.resetChangedCells()
     
-    def save(self):
-        
+    def makeSaveDirs(self):
         try:
             os.mkdir(self.saveDir, 0o755)
         except FileExistsError:
             # This is the expected scenario.
             # The save function should just create the file if it doesn't exist
             # The only problem is when there is a file (not directory) with the same name, or a directory with the wrong permissions
-            # These errors won;t be caught now and happen later
+            # These errors won't be caught now and happen later
             pass
-        
-        playerDir = os.path.join(self.saveDir, "players")
         try:
-            os.mkdir(playerDir, 0o700)
+            os.mkdir(self.playerSaveDir, 0o700)
         except FileExistsError:
             # same here
             pass
+        try:
+            os.mkdir(self.roomSaveDir, 0o755)
+        except FileExistsError:
+            # same again
+            pass
+    
+    def save(self):
+        
+        playerDir = self.playerSaveDir
         activePlayers = set(self.world.getActivePlayers())
         for player in activePlayers.union(self.lastActivePlayers):
             utils.writeFileSafe(os.path.join(playerDir, player + saveExt), json.dumps(self.world.savePlayer(player)))
         self.lastActivePlayers = activePlayers
         
-        roomDir = os.path.join(self.saveDir, "rooms")
-        try:
-            os.mkdir(roomDir, 0o755)
-        except FileExistsError:
-            # same again
-            pass
+        roomDir = self.roomSaveDir
         for room in self.world.getActiveRooms():
             utils.writeFileSafe(os.path.join(roomDir, room + saveExt), json.dumps(self.world.getPreserved(room)))
             self.world.deactivateRoom(room)

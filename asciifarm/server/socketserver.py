@@ -2,6 +2,7 @@ import os
 import socket
 import sys
 import threading
+import struct
 
 from asciifarm.common.tcommunicate import send, receive
 
@@ -16,12 +17,12 @@ class Server:
     def __init__(self, socketType, onConnection=(lambda *_:None), onMessage=(lambda *_:None), onConnectionClose=(lambda *_:None)):
         
         if socketType == "abstract" or socketType == "unix":
-            sockType = socket.AF_UNIX
+            self.sockType = socket.AF_UNIX
         elif socketType == "inet":
-            sockType = socket.AF_INET
+            self.sockType = socket.AF_INET
         else:
             raise ValueError("invalid socket type "+str(socketType))
-        self.sock = socket.socket(sockType, socket.SOCK_STREAM)
+        self.sock = socket.socket(self.sockType, socket.SOCK_STREAM)
         self.socketType = socketType
         self.onConnection = onConnection
         self.onMessage = onMessage
@@ -54,7 +55,6 @@ class Server:
             listener.start()
     
     def _listenCon(self, connection):
-        #print(connection.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED))
         self.connections.add(connection)
         self.onConnection(connection)
         data = receive(connection)
@@ -69,6 +69,16 @@ class Server:
         self.connections.discard(connection)
         self.onConnectionClose(connection)
     
+    
+    def getUsername(self, connection):
+        
+        if self.sockType != socket.AF_UNIX:
+            return None
+        
+        peercred = connection.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED, struct.calcsize("3i"))
+        pid, uid, gid = struct.unpack("3i", peercred)
+        import pwd
+        return pwd.getpwuid(uid)[0]
     
     
     def send(self, connection, msg):

@@ -51,7 +51,7 @@ class Player:
         self.entity = entity.Entity(
             sprite = "player",
             height = 2,
-            name = '~' + self.name,
+            name = '&' + self.name,
             components={
                 "inventory": self.inventory,
                 "move": Move(slowness=2),
