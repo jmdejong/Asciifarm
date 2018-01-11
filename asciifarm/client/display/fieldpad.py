@@ -29,14 +29,14 @@ class FieldPad:
     def changeCell(self, x, y, sprites):
         """ sprites must always have at least one element """
         char, colour, bgcolour = sprites[0]
-        if bgcolour == None:
+        if bgcolour is None:
             for (ch, co, bg) in sprites:
-                if bg != None:
+                if bg is not None:
                     bgcolour = bg
                     break
             else:
                 bgcolour = 0
-        if colour != None and self.colours:
+        if colour is not None and self.colours:
             self.pad.addstr(y, x*self.charSize, char, self.colours.get(colour, bgcolour))
         else:
             self.pad.addstr(y, x*self.charSize, char)

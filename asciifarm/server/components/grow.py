@@ -13,7 +13,7 @@ class Growing(Component):
         if nextKwargs is None:
             nextKwargs = {}
         self.nextStage = nextStage
-        self.duration = duration if stepsPassed != None else int(random.triangular(duration/2, duration*2, duration))
+        self.duration = duration if stepsPassed is not None else int(random.triangular(duration/2, duration*2, duration))
         self.stepsPassed = stepsPassed or 0
         self.nextArgs = nextArgs
         self.nextKwargs = nextKwargs

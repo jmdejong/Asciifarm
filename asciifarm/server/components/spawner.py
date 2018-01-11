@@ -37,7 +37,7 @@ class Spawner(Component):
                 self.goSpawn()
     
     def goSpawn(self, duration=None):
-        if duration == None:
+        if duration is None:
             duration = self.respawnDelay
         to = timeout.Timeout(self.updateEvent, random.triangular(duration/2, duration*2, duration), callback=self.spawn)
         self.timeouts.add(to)

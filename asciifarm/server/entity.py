@@ -81,8 +81,8 @@ class Entity:
         return self.height
     
     def inRoom(self):
-        return self.ground != None
-    
+        return self.ground is not None
+
     def getGround(self):
         return self.ground
     
@@ -112,7 +112,7 @@ class Entity:
     
     @classmethod
     def fromJSON(cls, data):
-        if data == None:
+        if data is None:
             return None
         return cls(
             sprite = data["sprite"],

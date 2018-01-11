@@ -75,7 +75,7 @@ class Room:
         If the room has been unloaded for a while, it will make a large step next.
         This is useful for allowing plants to grow for example
         """
-        if self.lastStepStamp == None:
+        if self.lastStepStamp is None:
             timePassed = 1
         else:
             timePassed = stepStamp - self.lastStepStamp
