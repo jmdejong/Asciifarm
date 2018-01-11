@@ -88,6 +88,9 @@ If you don't know how to help, [I made a list of suggestions on how to help](doc
 
 ## TODO first
 
+- red background flash when attacked
+- show adjacent objects
+- have a difference between ground-like items and interesting items
 - custom getstr
 - tiled soil
 - chat colours

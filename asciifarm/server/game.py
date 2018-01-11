@@ -26,6 +26,7 @@ class Game:
         self.saveDir = saveDir
         self.playerSaveDir = os.path.join(self.saveDir, "players")
         self.roomSaveDir = os.path.join(self.saveDir, "rooms")
+        self.makeSaveDirs()
         self.saveInterval = saveInterval
         
         self.lastActivePlayers = set()
