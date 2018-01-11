@@ -10,7 +10,7 @@ class Grid:
         self.clear(default)
     
     def clear(self, value):
-        self.grid = [value for i in range(self.width*self.height)];
+        self.grid = [value for i in range(self.width*self.height)]
     
     def isValid(self, x, y):
         return x>=0 and y>=0 and x<self.width and y<self.height
