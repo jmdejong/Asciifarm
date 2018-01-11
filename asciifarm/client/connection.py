@@ -21,7 +21,8 @@ class Connection:
                 data = receive(self.sock)
             except Exception as err:
                 onError(err)
-            callback(data)
+            else:
+                callback(data)
     
     def send(self, message):
         send(self.sock, bytes(message, 'utf-8'))
