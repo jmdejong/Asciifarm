@@ -30,7 +30,7 @@ def main(argv=None):
     
     args = parser.parse_args(argv)
     address = args.address
-    if address == None:
+    if address is None:
         address = defaultAdresses[args.socket]
     if args.socket == "abstract":
         address = '\0' + address

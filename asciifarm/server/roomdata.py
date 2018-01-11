@@ -8,8 +8,10 @@ class RoomData:
     The Ground class does this as well, but Ground only gives local data, whereas this give data about the whole room.
     """
     
-    def __init__(self, events=[]):
-        
+    def __init__(self, events=None):
+        if events is None:
+            events = []
+
         self.events = events
         self.targets = set()
         

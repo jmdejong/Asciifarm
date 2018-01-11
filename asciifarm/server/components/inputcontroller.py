@@ -67,19 +67,19 @@ class InputController(Component):
     
     def do_take(self, rank):
         objects = self.owner.getNearObjects()
-        if rank != None:
+        if rank is not None:
             if rank not in range(len(objects)):
                 return
             objects = [objects[rank]]
         for obj in objects:
-            if obj.getComponent("item") != None and self.inventory.canAdd(obj):
+            if obj.getComponent("item") is not None and self.inventory.canAdd(obj):
                 self.owner.trigger("take", obj)
                 obj.remove()
                 break
     
     def do_drop(self, rank):
         items = self.inventory.getItems()
-        if rank == None:
+        if rank is None:
             rank = 0
         if rank not in range(len(items)):
             return
@@ -90,7 +90,7 @@ class InputController(Component):
         
     def do_use(self, rank):
         items = self.inventory.getItems()
-        if rank == None:
+        if rank is None:
             rank = 0
         if rank not in range(len(items)):
             return
@@ -99,37 +99,37 @@ class InputController(Component):
     
     def do_unequip(self, rank):
         slots = sorted(self.equipment.getSlots().items())
-        if rank != None:
+        if rank is not None:
             if rank not in range(len(slots)):
                 return
             slots = [slots[rank]]
         for (slot, item) in slots:
-            if item != None and self.inventory.canAdd(item):
+            if item is not None and self.inventory.canAdd(item):
                 self.equipment.unEquip(slot)
                 self.owner.trigger("take", item)
     
     def do_interact(self, rank):
         nearPlaces = self.owner.getGround().getNeighbours()
         objects = self.owner.getNearObjects()
-        if rank != None:
+        if rank is not None:
             if rank not in range(len(objects)):
                 return
             objects = [objects[rank]]
         for obj in objects:
-            if obj.getComponent("interact") != None:
+            if obj.getComponent("interact") is not None:
                 obj.getComponent("interact").interact(self.owner)
                 break
     
     def do_attack(self, direction):
         nearPlaces = self.owner.getGround().getNeighbours()
-        if direction == None:
+        if direction is None:
             objs = self.owner.getNearObjects()
         elif direction in nearPlaces:
             objs = nearPlaces[direction].getObjs()
         else:
             return
         for obj in objs:
-            if obj.getComponent("fighter") != None and self.alignment.isEnemy(obj):
+            if obj.getComponent("fighter") is not None and self.alignment.isEnemy(obj):
                 self.fighter.attack(obj)
                 break
     

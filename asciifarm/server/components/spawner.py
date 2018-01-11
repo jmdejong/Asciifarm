@@ -6,7 +6,11 @@ from .component import Component
 
 class Spawner(Component):
     
-    def __init__(self, objectType, amount=1, respawnDelay=1, setHome=False, initialSpawn=False, objectArgs=[], objectKwargs={}):
+    def __init__(self, objectType, amount=1, respawnDelay=1, setHome=False, initialSpawn=False, objectArgs=None, objectKwargs=None):
+        if objectArgs is None:
+            objectArgs = []
+        if objectKwargs is None:
+            objectKwargs = {}
         self.objectType = objectType
         self.amount = amount
         self.respawnDelay = respawnDelay
@@ -33,7 +37,7 @@ class Spawner(Component):
                 self.goSpawn()
     
     def goSpawn(self, duration=None):
-        if duration == None:
+        if duration is None:
             duration = self.respawnDelay
         to = timeout.Timeout(self.updateEvent, random.triangular(duration/2, duration*2, duration), callback=self.spawn)
         self.timeouts.add(to)

@@ -7,7 +7,7 @@ class Event:
         self.listeners = {}
     
     def addListener(self, listener, key=None):
-        if key == None:
+        if key is None:
             key = listener
         self.listeners[key] = listener
     

@@ -10,6 +10,8 @@ class Connection:
             sockType = socket.AF_UNIX
         elif socketType == "inet":
             sockType = socket.AF_INET
+        else:
+            raise ValueError("Invalid socket type: %r" % (socketType,))
         self.sock = socket.socket(sockType, socket.SOCK_STREAM)
     
     def connect(self, address):
@@ -21,7 +23,8 @@ class Connection:
                 data = receive(self.sock)
             except Exception as err:
                 onError(err)
-            callback(data)
+            else:
+                callback(data)
     
     def send(self, message):
         send(self.sock, bytes(message, 'utf-8'))
