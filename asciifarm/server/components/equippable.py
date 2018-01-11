@@ -5,7 +5,9 @@ from .component import Component
 class Equippable(Component):
     """ item type for item that can be placed on the map to become something more static (like buildable walls or crops)"""
     
-    def __init__(self, slot, stats={}):
+    def __init__(self, slot, stats=None):
+        if stats is None:
+            stats = {}
         self.slot = slot
         self.stats = stats
     

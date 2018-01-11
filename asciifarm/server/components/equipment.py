@@ -6,7 +6,9 @@ from ..entity import Entity
 class Equipment(Component):
     
     
-    def __init__(self, slots={}):
+    def __init__(self, slots=None):
+        if slots is None:
+            slots = {}
         self.slots = {key: None for key in slots}
         self.owner = None
         for slot, item in slots.items():

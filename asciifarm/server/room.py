@@ -11,7 +11,9 @@ from . import roomdata
 class Room:
     
     
-    def __init__(self, name, data, preserved=[]):
+    def __init__(self, name, data, preserved=None):
+        if preserved is None:
+            preserved = []
         self.name = name
         self.width = data["width"]
         self.height = data["height"]
@@ -73,7 +75,7 @@ class Room:
         If the room has been unloaded for a while, it will make a large step next.
         This is useful for allowing plants to grow for example
         """
-        if self.lastStepStamp == None:
+        if self.lastStepStamp is None:
             timePassed = 1
         else:
             timePassed = stepStamp - self.lastStepStamp

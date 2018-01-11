@@ -84,7 +84,7 @@ class Server:
     def send(self, connection, msg):
         try:
             send(connection, msg)
-        except:
+        except Exception:
             self.connections.discard(connection)
             self.onConnectionClose(connection)
             print("failed to send to client")
