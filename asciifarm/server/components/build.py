@@ -5,7 +5,13 @@ from .component import Component
 class Build(Component):
     """ item type for item that can be placed on the map to become something more static (like buildable walls or crops)"""
     
-    def __init__(self, objType, objArgs=[], objKwargs={}, flagsNeeded=set()):
+    def __init__(self, objType, objArgs=None, objKwargs=None, flagsNeeded=None):
+        if objArgs is None:
+            objArgs = []
+        if objKwargs is None:
+            objKwargs = {}
+        if flagsNeeded is None:
+            flagsNeeded = set()
         self.buildType = objType
         self.buildArgs = objArgs
         self.buildKwargs = objKwargs

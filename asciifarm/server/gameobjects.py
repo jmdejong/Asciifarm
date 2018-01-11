@@ -113,7 +113,11 @@ def makeTroll(home=None):
         })
 entities["troll"] = makeTroll
 
-def makeSpawner(objType, number, delay, sprite=None, name=None, height=0, setHome=False, initialSpawn=False, objArgs=[], objKwargs={}):
+def makeSpawner(objType, number, delay, sprite=None, name=None, height=0, setHome=False, initialSpawn=False, objArgs=None, objKwargs=None):
+    if objArgs is None:
+        objArgs = []
+    if objKwargs is None:
+        objKwargs = {}
     return Entity(sprite=sprite, height=height, name=name, components={"spawn": Spawner(objType, number, delay, setHome, initialSpawn, objArgs, objKwargs)})
 entities["spawner"] = makeSpawner
 

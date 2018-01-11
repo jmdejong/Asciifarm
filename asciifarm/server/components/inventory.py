@@ -4,7 +4,9 @@ from ..entity import Entity
 
 class Inventory(Component):
     
-    def __init__(self, capacity, initialItems=[]):
+    def __init__(self, capacity, initialItems=None):
+        if initialItems is None:
+            initialItems = []
         self.capacity = capacity
         self.items = []
         self.owner = None

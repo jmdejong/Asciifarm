@@ -6,7 +6,11 @@ from .component import Component
 
 class Spawner(Component):
     
-    def __init__(self, objectType, amount=1, respawnDelay=1, setHome=False, initialSpawn=False, objectArgs=[], objectKwargs={}):
+    def __init__(self, objectType, amount=1, respawnDelay=1, setHome=False, initialSpawn=False, objectArgs=None, objectKwargs=None):
+        if objectArgs is None:
+            objectArgs = []
+        if objectKwargs is None:
+            objectKwargs = {}
         self.objectType = objectType
         self.amount = amount
         self.respawnDelay = respawnDelay

@@ -14,7 +14,11 @@ class Entity:
     Remove methods are for cleanup, like unsubscribing from events.
     """
     
-    def __init__(self, sprite=' ', height=0, name=None, components={}, flags=set()):
+    def __init__(self, sprite=' ', height=0, name=None, components=None, flags=None):
+        if components is None:
+            components = {}
+        if flags is None:
+            flags = set()
         self.sprite = sprite # the name of the image to display for this entity
         self.height = height # if multiple objects are on a square, the tallest one is drawn
         self.name = name if name else sprite # human readable name/description

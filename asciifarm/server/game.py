@@ -13,8 +13,10 @@ saveExt = ".save.json"
 
 class Game:
     
-    def __init__(self, socketType, worldData={"begin": None, "rooms": {}}, loadDir=None, saveDir=None, saveInterval=1):
-        
+    def __init__(self, socketType, worldData=None, loadDir=None, saveDir=None, saveInterval=1):
+        if worldData is None:
+            worldData = {"begin": None, "rooms": {}}
+
         self.server = gameserver.GameServer(self, socketType)
         
         

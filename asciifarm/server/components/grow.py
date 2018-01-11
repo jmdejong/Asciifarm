@@ -7,8 +7,11 @@ from .component import Component
 class Growing(Component):
     
     
-    def __init__(self, nextStage, duration, stepsPassed=None, nextArgs=[], nextKwargs={}):
-        
+    def __init__(self, nextStage, duration, stepsPassed=None, nextArgs=None, nextKwargs=None):
+        if nextArgs is None:
+            nextArgs = []
+        if nextKwargs is None:
+            nextKwargs = {}
         self.nextStage = nextStage
         self.duration = duration if stepsPassed != None else int(random.triangular(duration/2, duration*2, duration))
         self.stepsPassed = stepsPassed or 0
