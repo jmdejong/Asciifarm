@@ -8,4 +8,8 @@ prenamed = {
 def nameFromKey(key):
     if key in prenamed:
         return prenamed[key]
-    return str(curses.keyname(key), "utf-8")
+    try:
+        keyname = curses.keyname(key)
+    except ValueError:
+        return None
+    return str(keyname, "utf-8")
