@@ -23,144 +23,102 @@ from .components.equippable import Equippable
 
 entities = {}
 
+entities["wall"] = lambda: Entity(sprite="wall", height=2, flags={"solid"})
 
-def makeWall():
-    return Entity(sprite="wall", height=2, flags={"solid"})
-entities["wall"] = makeWall
+entities["rock"] = lambda: Entity(sprite="rock", height=10, flags={"solid"})
 
-def makeRock():
-    return Entity(sprite="rock", height=10, flags={"solid"})
-entities["rock"] = makeRock
+entities["tree"] = lambda: Entity(sprite="tree", height=3, flags={"solid"})
 
-def makeTree():
-    return Entity(sprite="tree", height=3, flags={"solid"})
-entities["tree"] = makeTree
+entities["house"] = lambda: Entity(sprite="house", height=3, flags={"solid"})
 
-def makeHouse():
-    return Entity(sprite="house", height=3, flags={"solid"})
-entities["house"] = makeHouse
+entities["fence"] = lambda: Entity(sprite="fence", height=1, flags={"solid"})
 
-def makeFence():
-    return Entity(sprite="fence", height=1, flags={"solid"})
-entities["fence"] = makeFence
+entities["stone"] = lambda: Entity(sprite="stone", height=0.4, components={"item": Build("builtwall")})
 
-def makeStone():
-    return Entity(sprite="stone", height=0.4, components={"item": Build("builtwall")})
-entities["stone"] = makeStone
+entities["pebble"] = lambda: Entity(sprite="pebble", height=0.2, components={"item": Item()})
 
-def makePebble():
-    return Entity(sprite="pebble", height=0.2, components={"item": Item()})
-entities["pebble"] = makePebble
+entities["grass"] = lambda: Entity(
+    sprite=random.choice(["ground"] + 2*["grass1", "grass2", "grass3"]), name="grass", height=0.1, flags={"floor", "soil"})
 
-def makeGrass():
-    return Entity(sprite=random.choice(["ground"] + 2*["grass1", "grass2", "grass3"]), name="grass", height=0.1, flags={"floor", "soil"})
-entities["grass"] = makeGrass
+entities["greengrass"] = lambda: Entity(
+    sprite=random.choice(["grass1", "grass2", "grass3"]), height=0.1, flags={"floor", "soil"})
 
-def makeGreenGrass():
-    return Entity(sprite=random.choice(["grass1", "grass2", "grass3"]), height=0.1, flags={"floor", "soil"})
-entities["greengrass"] = makeGreenGrass
+entities["floor"] = lambda: Entity(sprite="floor", height=0.1, flags={"floor"})
 
-def makeFloor():
-    return Entity(sprite="floor", height=0.1, flags={"floor"})
-entities["floor"] = makeFloor
-    
-def makeGround():
-    return Entity(sprite="ground", height=0.1, flags={"floor", "soil"})
-entities["ground"] = makeGround
+entities["ground"] = lambda: Entity(sprite="ground", height=0.1, flags={"floor", "soil"})
 
-def makeBridge(small=False):
-    sprite = "smallbridge" if small else "bridge"
-    return Entity(sprite=sprite, height=0.1, flags={"floor"})
-entities["bridge"] = makeBridge
+entities["bridge"] = lambda small=False: Entity(sprite=("smallbridge" if small else "bridge"), height=0.1, flags={"floor"})
 
-def makeWater():
-    return Entity(sprite="water", height=0)
-entities["water"] = makeWater
+entities["water"] = lambda: Entity(sprite="water", height=0)
 
-def makeRoomExit(destRoom, destPos=None, mask=(False, False), sprite=" ", size=0):
-    return Entity(sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos, mask)})
-entities["roomexit"] = makeRoomExit
+entities["roomexit"] = lambda destRoom, destPos=None, mask=(False, False), sprite=" ", size=0: Entity(
+    sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos, mask)})
 
-def makeRabbit():
-    return Entity(sprite="rabbit", height=1, components={"move": Move(slowness=4), "controller": RandomWalkController(moveChance=0.05)})
-entities["rabbit"] = makeRabbit
+entities["rabbit"] = lambda: Entity(
+    sprite="rabbit", height=1, components={"move": Move(slowness=4), "controller": RandomWalkController(moveChance=0.05)})
 
-def makeDummy():
-    return Entity(sprite="dummy", height=1, components={"fighter": Fighter(maxHealth=20, strength=0), "alignment": Alignment(faction.NONE)})
-entities["dummy"] = makeDummy
+entities["dummy"] = lambda: Entity(
+    sprite="dummy", height=1, components={"fighter": Fighter(maxHealth=20, strength=0), "alignment": Alignment(faction.NONE)})
 
-def makeSpikeTrap():
-    return Entity(sprite="spikes", height=1, components={"fighter": Fighter(maxHealth=25, strength=25), "collision": Trap()})
-entities["spiketrap"] = makeSpikeTrap
+entities["spiketrap"] = lambda: Entity(
+    sprite="spikes", height=1, components={"fighter": Fighter(maxHealth=25, strength=25), "collision": Trap()})
 
-def makeGoblin(home=None):
-    return Entity(sprite="goblin", height=1.2, components={
+entities["goblin"] = lambda home=None: Entity(sprite="goblin", height=1.2, components={
         "move": Move(slowness=3),
         "fighter": Fighter(maxHealth=15, strength=5, slowness=8),
         "alignment": Alignment(faction.EVIL),
         "controller": MonsterAi(viewDist=8, moveChance=0.02, home=home),
         "loot": Loot([("sword", .05), ("club", .1), ("food", .25)])
         })
-entities["goblin"] = makeGoblin
 
-def makeTroll(home=None):
-    return Entity(sprite="troll", height=1.8, components={
+entities["troll"] = lambda home=None: Entity(sprite="troll", height=1.8, components={
         "move": Move(slowness=4),
         "fighter": Fighter(maxHealth=75, strength=15, slowness=10),
         "alignment": Alignment(faction.EVIL),
         "controller": MonsterAi(viewDist=8, moveChance=0.01, home=home),
         "loot": Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5)])
         })
-entities["troll"] = makeTroll
 
-def makeSpawner(objType, number, delay, sprite=None, name=None, height=0, setHome=False, initialSpawn=False, objArgs=None, objKwargs=None):
-    if objArgs is None:
-        objArgs = []
-    if objKwargs is None:
-        objKwargs = {}
-    return Entity(sprite=sprite, height=height, name=name, components={"spawn": Spawner(objType, number, delay, setHome, initialSpawn, objArgs, objKwargs)})
-entities["spawner"] = makeSpawner
+entities["spawner"] = lambda objType, number, delay, sprite=None, name=None, height=0, setHome=False, initialSpawn=False, objArgs=None, objKwargs=None: Entity(
+    sprite=sprite, height=height, name=name, components={
+        "spawn": Spawner(objType, number, delay, setHome, initialSpawn, objArgs, objKwargs)})
 
-def makeSownSeed():
-    return Entity(sprite="seed", height=0.05, name="plantedseed", components={"grow": Growing("youngplant", 100)})
-entities["sownseed"] = makeSownSeed
+entities["sownseed"] = lambda: Entity(sprite="seed", height=0.05, name="plantedseed", components={"grow": Growing("youngplant", 100)})
 
-def makeYoungPlant():
-    return Entity(sprite="youngplant", height=0.5, components={"grow": Growing("plant", 200)})
-entities["youngplant"] = makeYoungPlant
+entities["youngplant"] = lambda: Entity(sprite="youngplant", height=0.5, components={"grow": Growing("plant", 200)})
 
-def makePlant():
-    return Entity(sprite="plant", height=1.2, components={
+entities["plant"] = lambda: Entity(sprite="plant", height=1.2, components={
         "interact": Harvest(),
         "loot": Loot([("seed", .92), ("seed", .20), ("food", .8), ("food", .4)])
         })
-entities["plant"] = makePlant
 
-def makeFood():
-    return Entity(sprite="food", height=0.2, components={"item": Food(20)})
-entities["food"] = makeFood
+entities["food"] = lambda: Entity(sprite="food", height=0.2, components={"item": Food(20)})
 
 
-def makeSeed():
-    return Entity(sprite="seed", height=0.3, components={"item": Build("sownseed", flagsNeeded={"soil"})})
-entities["seed"] = makeSeed
+#def makeSeed():
+    #return Entity(sprite="seed", height=0.3, components={"item": Build("sownseed", flagsNeeded={"soil"})})
+entities["seed"] = lambda: Entity(sprite="seed", height=0.3, components={"item": Build("sownseed", flagsNeeded={"soil"})})
 
 
-def makeBuiltWall():
-    return Entity(sprite="wall", height=2, components={"fighter": Fighter(maxHealth=100, strength=0), "alignment": Alignment(faction.NONE), "loot": Loot([("stone", 1)])}, flags={"solid"})
-entities["builtwall"] = makeBuiltWall
+#def makeBuiltWall():
+    #return Entity(sprite="wall", height=2, components={"fighter": Fighter(maxHealth=100, strength=0), "alignment": Alignment(faction.NONE), "loot": Loot([("stone", 1)])}, flags={"solid"})
+entities["builtwall"] = lambda: Entity(
+    sprite="wall", height=2, flags={"solid"}, components={
+            "fighter": Fighter(maxHealth=100, strength=0),
+            "alignment": Alignment(faction.NONE),
+            "loot": Loot([("stone", 1)])})
 
-def makeSword():
-    return Entity(sprite="sword", height=0.5, components={"item": Equippable("hand", {"strength": 5})})
-entities["sword"] = makeSword
+#def makeSword():
+    #return Entity(sprite="sword", height=0.5, components={"item": Equippable("hand", {"strength": 5})})
+entities["sword"] = lambda: Entity(sprite="sword", height=0.5, components={"item": Equippable("hand", {"strength": 5})})
 
-def makeClub():
-    return Entity(sprite="club", height=0.5, components={"item": Equippable("hand", {"strength": 3})})
-entities["club"] = makeClub
+#def makeClub():
+    #return Entity(sprite="club", height=0.5, components={"item": Equippable("hand", {"strength": 3})})
+entities["club"] = lambda: Entity(sprite="club", height=0.5, components={"item": Equippable("hand", {"strength": 3})})
 
-def makeArmour():
-    return Entity(sprite="armour", height=0.5, components={"item": Equippable("body", {"defense": 100})})
-entities["armour"] = makeArmour
+#def makeArmour():
+    #return Entity(sprite="armour", height=0.5, components={"item": Equippable("body", {"defense": 100})})
+entities["armour"] = lambda: Entity(sprite="armour", height=0.5, components={"item": Equippable("body", {"defense": 100})})
 
 
 def makeEntity(entType, roomData, *args, preserve=False, **kwargs):

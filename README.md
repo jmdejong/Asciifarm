@@ -94,7 +94,7 @@ If you don't know how to help, [I made a list of suggestions on how to help](doc
 - show adjacent objects
 - have a difference between ground-like items and interesting items
 - custom getstr
-- tiled soil
+- tilled soil
 - chat colours
 - trading
 - currency?
