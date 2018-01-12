@@ -18,6 +18,7 @@ from .components.build import Build
 from .components.harvest import Harvest
 from .components.food import Food
 from .components.equippable import Equippable
+from .components.volatile import Volatile
 
 """ This module contains factory functions for many placable entities, and a make function to call a factory by a string name """
 
@@ -94,32 +95,21 @@ entities["plant"] = lambda: Entity(sprite="plant", height=1.2, components={
 
 entities["food"] = lambda: Entity(sprite="food", height=0.2, components={"item": Food(20)})
 
-
-#def makeSeed():
-    #return Entity(sprite="seed", height=0.3, components={"item": Build("sownseed", flagsNeeded={"soil"})})
 entities["seed"] = lambda: Entity(sprite="seed", height=0.3, components={"item": Build("sownseed", flagsNeeded={"soil"})})
 
-
-#def makeBuiltWall():
-    #return Entity(sprite="wall", height=2, components={"fighter": Fighter(maxHealth=100, strength=0), "alignment": Alignment(faction.NONE), "loot": Loot([("stone", 1)])}, flags={"solid"})
 entities["builtwall"] = lambda: Entity(
     sprite="wall", height=2, flags={"solid"}, components={
             "fighter": Fighter(maxHealth=100, strength=0),
             "alignment": Alignment(faction.NONE),
             "loot": Loot([("stone", 1)])})
 
-#def makeSword():
-    #return Entity(sprite="sword", height=0.5, components={"item": Equippable("hand", {"strength": 5})})
 entities["sword"] = lambda: Entity(sprite="sword", height=0.5, components={"item": Equippable("hand", {"strength": 5})})
 
-#def makeClub():
-    #return Entity(sprite="club", height=0.5, components={"item": Equippable("hand", {"strength": 3})})
 entities["club"] = lambda: Entity(sprite="club", height=0.5, components={"item": Equippable("hand", {"strength": 3})})
 
-#def makeArmour():
-    #return Entity(sprite="armour", height=0.5, components={"item": Equippable("body", {"defense": 100})})
 entities["armour"] = lambda: Entity(sprite="armour", height=0.5, components={"item": Equippable("body", {"defense": 100})})
 
+entities["wound"] = lambda duration=4, height=0.2: Entity(sprite="wound", height=height, components={"volatile": Volatile(duration)})
 
 def makeEntity(entType, roomData, *args, preserve=False, **kwargs):
     entity = entities[entType](*args, **kwargs)

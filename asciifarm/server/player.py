@@ -1,4 +1,9 @@
 
+# this package is not used, but it is important that it is imported before any component modules
+# importing components before gameobjects is loaded will result in a cyclic dependency problem
+from . import gameobjects
+
+
 from .components.inventory import Inventory
 from .components.inputcontroller import InputController
 from .components.move import Move

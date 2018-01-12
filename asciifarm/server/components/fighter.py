@@ -2,6 +2,7 @@ from .. import timeout
 from asciifarm.common import utils
 import random
 from .component import Component
+from .. import gameobjects
 
 class Fighter(Component):
     
@@ -19,6 +20,7 @@ class Fighter(Component):
         obj.addListener("roomjoin", self.roomJoin)
     
     def roomJoin(self, o, roomData):
+        self.roomData = roomData
         self.fightEvent = roomData.getEvent("fight")
         self.updateEvent = roomData.getEvent("update")
         self.timeout = timeout.Timeout(roomData.getEvent("update"), self.slowness)
@@ -28,6 +30,11 @@ class Fighter(Component):
         self.health = utils.clamp(self.health, 0, self.maxHealth)
         
         self.owner.trigger("damage" if damage >= 0 else "heal", attacker, abs(damage))
+        
+        # should this be it's own component? ('bleeding' for example)
+        if damage > 0:
+            obj = gameobjects.makeEntity("wound", self.roomData, 4, self.owner.getHeight() - 0.01)
+            obj.place(self.owner.getGround())
         
         if self.isDead():
             self.die(attacker)
