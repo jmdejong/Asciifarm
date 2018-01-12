@@ -88,7 +88,6 @@ If you don't know how to help, [I made a list of suggestions on how to help](doc
 
 ## TODO first
 
-- document map format
 - write howto for entity creation
 - red background flash when attacked
 - reconsider getters and setters
@@ -121,6 +120,7 @@ If you don't know how to help, [I made a list of suggestions on how to help](doc
 
 ## DONE
 
+- document map format
 - world chat
 - chat scrolling
 - refactor display
