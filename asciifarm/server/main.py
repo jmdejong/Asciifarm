@@ -39,4 +39,4 @@ def main(argv=None):
         address = (hostname, int(port))
     
     worldData = loader.loadWorld(args.world)
-    game.Game(args.socket, worldData, args.load, args.savedir, 1200).start(address)
+    game.Game(args.socket, worldData, args.load, args.savedir, 300).start(address)

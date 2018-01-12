@@ -125,3 +125,5 @@ class Entity:
             }
         )
     
+    def getRoomData(self):
+        return self.roomData

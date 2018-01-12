@@ -15,7 +15,7 @@ This guide mostly covers python, but when a rule makes sence in hy it should be 
 ### Code
 
 - no global variables
-- treat all class member variables as private (use getters and setters when needed)
+- treat all class member variables as private (use getters and setters when needed) (this rule is under reconsideration)
 - Keep it simple
 - don't overuse inheritance
 - avoid circular references when possible
