@@ -1,9 +1,12 @@
 
 import argparse
 import os.path
-
+import signal
 from . import game
 from . import loader
+
+
+signal.signal(signal.SIGINT, signal.default_int_handler)
 
 
 defaultAdresses = {

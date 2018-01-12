@@ -1,2 +1,2 @@
 #!/bin/sh
-pkill -f asciifarm.server -u troido
+pkill -SIGINT -f asciifarm.server -u troido
