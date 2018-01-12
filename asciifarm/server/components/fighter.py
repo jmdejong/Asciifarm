@@ -29,12 +29,12 @@ class Fighter(Component):
         self.health -= damage
         self.health = utils.clamp(self.health, 0, self.maxHealth)
         
-        self.owner.trigger("damage" if damage >= 0 else "heal", attacker, abs(damage))
-        
         # should this be it's own component? ('bleeding' for example)
-        if damage > 0:
+        if damage > 0 and self.owner.getGround() is not None:
             obj = gameobjects.makeEntity("wound", self.roomData, 4, self.owner.getHeight() - 0.01)
             obj.place(self.owner.getGround())
+        
+        self.owner.trigger("damage" if damage >= 0 else "heal", attacker, abs(damage))
         
         if self.isDead():
             self.die(attacker)
