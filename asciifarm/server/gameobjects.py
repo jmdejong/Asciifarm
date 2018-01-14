@@ -26,7 +26,7 @@ entities = {}
 
 entities["wall"] = lambda: Entity(sprite="wall", height=2, flags={"solid"})
 
-entities["freeland"] = lambda: Entity(name="F", flags={"freeland"})
+entities["freeland"] = lambda: Entity(name="buildable", flags={"freeland"})
 
 entities["rock"] = lambda: Entity(sprite="rock", height=10, flags={"solid"})
 
@@ -36,7 +36,7 @@ entities["house"] = lambda: Entity(sprite="house", height=3, flags={"solid"})
 
 entities["fence"] = lambda: Entity(sprite="fence", height=1, flags={"solid"})
 
-entities["stone"] = lambda: Entity(sprite="stone", height=0.4, components={"item": Build("builtwall", flagsNeeded={"freeland"}, blockingFlags={"solid"})})
+entities["stone"] = lambda: Entity(sprite="stone", height=0.4, components={"item": Build("builtwall", flagsNeeded={"freeland"}, blockingFlags={"solid", "occupied"})})
 
 entities["pebble"] = lambda: Entity(sprite="pebble", height=0.2, components={"item": Item()})
 
@@ -61,10 +61,10 @@ entities["rabbit"] = lambda: Entity(
     sprite="rabbit", height=1, components={"move": Move(slowness=4), "controller": RandomWalkController(moveChance=0.05)})
 
 entities["dummy"] = lambda: Entity(
-    sprite="dummy", height=1, components={"fighter": Fighter(maxHealth=20, strength=0), "alignment": Alignment(faction.NONE)})
+    sprite="dummy", height=1, flags={"occupied"}, components={"fighter": Fighter(maxHealth=20, strength=0), "alignment": Alignment(faction.NONE)})
 
 entities["spiketrap"] = lambda: Entity(
-    sprite="spikes", height=1, components={"fighter": Fighter(maxHealth=25, strength=25), "collision": Trap()})
+    sprite="spikes", height=1, flags={"occupied"}, components={"fighter": Fighter(maxHealth=25, strength=25), "collision": Trap()})
 
 entities["goblin"] = lambda home=None: Entity(sprite="goblin", height=1.2, components={
         "move": Move(slowness=3),
@@ -82,22 +82,30 @@ entities["troll"] = lambda home=None: Entity(sprite="troll", height=1.8, compone
         "loot": Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5)])
         })
 
+entities["rat"] = lambda home=None: Entity(sprite="rat", height=1, components={
+        "move": Move(slowness=3),
+        "fighter": Fighter(maxHealth=8, strength=2, slowness=5),
+        "alignment": Alignment(faction.EVIL),
+        "controller": MonsterAi(viewDist=3, moveChance=0.08, home=home, homesickness=0.1),
+        "loot": Loot([("seed", 0.9), ("seed", 0.3)])
+        })
+
 entities["spawner"] = lambda objType, number, delay, sprite=None, name=None, height=0, setHome=False, initialSpawn=False, objArgs=None, objKwargs=None: Entity(
     sprite=sprite, height=height, name=name, components={
         "spawn": Spawner(objType, number, delay, setHome, initialSpawn, objArgs, objKwargs)})
 
-entities["sownseed"] = lambda: Entity(sprite="seed", height=0.05, name="plantedseed", components={"grow": Growing("youngplant", 100)})
+entities["sownseed"] = lambda: Entity(sprite="seed", height=0.05, name="plantedseed", flags={"occupied"}, components={"grow": Growing("youngplant", 100)})
 
-entities["youngplant"] = lambda: Entity(sprite="youngplant", height=0.5, components={"grow": Growing("plant", 200)})
+entities["youngplant"] = lambda: Entity(sprite="youngplant", height=0.5, flags={"occupied"}, components={"grow": Growing("plant", 200)})
 
-entities["plant"] = lambda: Entity(sprite="plant", height=1.2, components={
+entities["plant"] = lambda: Entity(sprite="plant", height=1.2, flags={"occupied"}, components={
         "interact": Harvest(),
         "loot": Loot([("seed", .92), ("seed", .20), ("food", .8), ("food", .4)])
         })
 
 entities["food"] = lambda: Entity(sprite="food", height=0.2, components={"item": Food(20)})
 
-entities["seed"] = lambda: Entity(sprite="seed", height=0.3, components={"item": Build("sownseed", flagsNeeded={"soil"})})
+entities["seed"] = lambda: Entity(sprite="seed", height=0.3, components={"item": Build("sownseed", flagsNeeded={"soil"}, blockingFlags={"occupied", "solid"})})
 
 entities["builtwall"] = lambda: Entity(
     sprite="wall", height=2, flags={"solid"}, components={

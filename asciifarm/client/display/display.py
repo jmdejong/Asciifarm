@@ -26,15 +26,19 @@ class Display:
         else:
                 self.colours = None
         self.characters = {}
-        for name, sprite in charMap["mapping"].items():
+        
+        def parseSprite(sprite):
             if isinstance(sprite, str):
-                self.characters[name] = (sprite, None, None)
-                continue
+                return (sprite, None, None)
             char = get(sprite, 0, " ")
             fg = get(sprite, 1)
             bg = get(sprite, 2)
-            self.characters[name] = (char, fg, bg)
-        self.defaultChar = charMap.get("default", "?")
+            return (char, fg, bg)
+        for name, sprite in charMap["mapping"].items():
+            vals = parseSprite(sprite)
+            if vals:
+                self.characters[name] = vals
+        self.defaultChar = parseSprite(charMap.get("default", "?"))
         self.screen = Screen(self, stdscr, self.colours)
         
         self.widgets = {}
