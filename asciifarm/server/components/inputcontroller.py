@@ -16,6 +16,7 @@ class InputController(Component):
             "attack": self.do_attack,
             "say": self.do_say
         }
+        self.hasInteracted = False
             
     
     def attach(self, obj):
@@ -40,6 +41,7 @@ class InputController(Component):
     
     
     def control(self):
+        self.hasInteracted = False
         actions = self.actions
         self.actions = []
         for action in actions:
@@ -49,8 +51,8 @@ class InputController(Component):
             #self.executeAction(action)
     
     def executeAction(self, action):
-        kind = action[0]
         
+        kind = action[0]
         if kind in self.handlers:
             if len(action) > 1:
                 arg = action[1]
@@ -108,16 +110,26 @@ class InputController(Component):
                 self.equipment.unEquip(slot)
                 self.owner.trigger("take", item)
     
-    def do_interact(self, rank):
+    def do_interact(self, direction):
+        if self.hasInteracted:
+            return
         nearPlaces = self.owner.getGround().getNeighbours()
-        objects = self.owner.getNearObjects()
-        if rank is not None:
+        if direction is None:
+            objects = self.owner.getNearObjects()
+        elif direction in nearPlaces:
+            objects = nearPlaces[direction].getObjs()
+        elif isinstance(direction, int):
+            objects = nearPlaces[direction].getObjs()
+            rank = direciton
             if rank not in range(len(objects)):
                 return
             objects = [objects[rank]]
+        else:
+            return
         for obj in objects:
             if obj.getComponent("interact") is not None:
                 obj.getComponent("interact").interact(self.owner)
+                self.hasInteracted = True
                 break
     
     def do_attack(self, direction):

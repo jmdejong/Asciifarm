@@ -24,13 +24,13 @@ class GroundPatch:
     def addObj(self, obj):
         self.objects.append(obj)
         self.objects.sort(key=(lambda o: -o.getHeight()))
-        self.event.trigger("changesprite", self)
+        self.trigger("changesprite")
         self.onEnter(obj)
     
     def removeObj(self, obj):
         if obj in self.objects:
             self.objects.remove(obj)
-            self.event.trigger("changesprite", self)
+            self.trigger("changesprite")
             self.onLeave(obj)
     
     def getSprites(self):
@@ -66,6 +66,8 @@ class GroundPatch:
     def getPos(self):
         return self.pos
     
+    def trigger(self, event, *data):
+        self.event.trigger(event, self, *data)
     
     def addListener(self, event, callback, key=None):
         self.event.addListener(event, callback, key)

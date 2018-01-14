@@ -103,9 +103,9 @@ entities["plant"] = lambda: Entity(sprite="plant", height=1.2, flags={"occupied"
         "loot": Loot([("seed", .92), ("seed", .20), ("food", .8), ("food", .4)])
         })
 
-entities["food"] = lambda: Entity(sprite="food", height=0.2, components={"item": Food(20)})
+entities["food"] = lambda: Entity(sprite="food", height=0.3, components={"item": Food(20)})
 
-entities["seed"] = lambda: Entity(sprite="seed", height=0.3, components={"item": Build("sownseed", flagsNeeded={"soil"}, blockingFlags={"occupied", "solid"})})
+entities["seed"] = lambda: Entity(sprite="seed", height=0.2, components={"item": Build("sownseed", flagsNeeded={"soil"}, blockingFlags={"occupied", "solid"})})
 
 entities["builtwall"] = lambda: Entity(
     sprite="wall", height=2, flags={"solid"}, components={
