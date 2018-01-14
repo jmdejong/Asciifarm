@@ -92,6 +92,8 @@ If you don't know how to help, [I made a list of suggestions on how to help](doc
 - reconsider getters and setters
 - show adjacent objects
 - have a difference between ground-like items and interesting items
+- different messages for in-game log, let client construct them
+- log chat messages separately server-side
 - custom getstr
 - tilled soil
 - chat colours

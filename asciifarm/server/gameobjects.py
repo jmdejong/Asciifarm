@@ -26,6 +26,8 @@ entities = {}
 
 entities["wall"] = lambda: Entity(sprite="wall", height=2, flags={"solid"})
 
+entities["freeland"] = lambda: Entity(name="F", flags={"freeland"})
+
 entities["rock"] = lambda: Entity(sprite="rock", height=10, flags={"solid"})
 
 entities["tree"] = lambda: Entity(sprite="tree", height=3, flags={"solid"})
@@ -34,7 +36,7 @@ entities["house"] = lambda: Entity(sprite="house", height=3, flags={"solid"})
 
 entities["fence"] = lambda: Entity(sprite="fence", height=1, flags={"solid"})
 
-entities["stone"] = lambda: Entity(sprite="stone", height=0.4, components={"item": Build("builtwall")})
+entities["stone"] = lambda: Entity(sprite="stone", height=0.4, components={"item": Build("builtwall", flagsNeeded={"freeland"}, blockingFlags={"solid"})})
 
 entities["pebble"] = lambda: Entity(sprite="pebble", height=0.2, components={"item": Item()})
 

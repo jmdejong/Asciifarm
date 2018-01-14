@@ -5,17 +5,14 @@ from .component import Component
 class Build(Component):
     """ item type for item that can be placed on the map to become something more static (like buildable walls or crops)"""
     
-    def __init__(self, objType, objArgs=None, objKwargs=None, flagsNeeded=None):
-        if objArgs is None:
-            objArgs = []
+    def __init__(self, objType, objArgs=(), objKwargs=None, flagsNeeded=frozenset(), blockingFlags=frozenset()):
         if objKwargs is None:
             objKwargs = {}
-        if flagsNeeded is None:
-            flagsNeeded = set()
         self.buildType = objType
         self.buildArgs = objArgs
         self.buildKwargs = objKwargs
         self.flagsNeeded = set(flagsNeeded)
+        self.blockingFlags = set(blockingFlags)
     
     def attach(self, obj):
         self.owner = obj
@@ -27,7 +24,8 @@ class Build(Component):
     
     def use(self, user):
         groundFlags = user.getGround().getFlags()
-        if not self.flagsNeeded <= groundFlags: # <= means subset when applied on sets
+        if not self.flagsNeeded <= groundFlags or groundFlags & self.blockingFlags: # <= means subset when applied on sets
+            # groundFlags must contain all of self.flagsNeeded, and none of self.blockingFlags
             return
         roomData = user.getRoomData()
         obj = gameobjects.makeEntity(self.buildType, roomData, *self.buildArgs, preserve=True, **self.buildKwargs)
@@ -39,6 +37,7 @@ class Build(Component):
             "objType": self.buildType,
             "objArgs": self.buildArgs,
             "objKwargs": self.buildKwargs,
-            "flagsNeeded": list(self.flagsNeeded)
+            "flagsNeeded": list(self.flagsNeeded),
+            "blockingFlags": list(self.blockingFlags)
         }
     

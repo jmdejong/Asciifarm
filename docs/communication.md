@@ -1,6 +1,10 @@
 
 # Communication
 
+OUTDATED!
+This documentation is outdated.
+Some of the messages have changed, and more messages have been added.
+
 This document is to descrive how the communication between the server and the client currently works.
 
 There may be better ways and it may be subject to change, but this works now.
@@ -142,7 +146,9 @@ Example `["ground", ["stone", "seed", "ground"]]`
 
 # Suggested improvements
 
-## Human readable error messages
+## [DONE] Human readable error messages
+
+DONE
 
 Currently error messages only have a computer readable string.
 
