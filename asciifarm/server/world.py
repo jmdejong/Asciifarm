@@ -104,4 +104,5 @@ class World:
         return self.players[name].toJSON()
     
     def loadPlayer(self, name, data):
+        data["name"] = name
         self.players[name] = player.Player.fromJSON(data, self)
