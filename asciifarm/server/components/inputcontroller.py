@@ -17,6 +17,7 @@ class InputController(Component):
             "say": self.do_say
         }
         self.hasInteracted = False
+        self.hasAttacked = False
             
     
     def attach(self, obj):
@@ -42,6 +43,7 @@ class InputController(Component):
     
     def control(self):
         self.hasInteracted = False
+        self.hasAttacked = False
         actions = self.actions
         self.actions = []
         for action in actions:
@@ -133,6 +135,8 @@ class InputController(Component):
                 break
     
     def do_attack(self, direction):
+        if self.hasAttacked:
+            return
         nearPlaces = self.owner.getGround().getNeighbours()
         if direction is None:
             objs = self.owner.getNearObjects()
@@ -143,6 +147,7 @@ class InputController(Component):
         for obj in objs:
             if obj.getComponent("fighter") is not None and self.alignment.isEnemy(obj):
                 self.fighter.attack(obj)
+                self.hasAttacked = True
                 break
     
     def do_say(self, text):
