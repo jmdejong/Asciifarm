@@ -53,4 +53,5 @@ Controls:
  z: Unequip
  xcv: scroll
  ctrl-c: close client"
+;;  init ((. (self.display.getWidget "inventory") setTitle) "Inventory (c)")
 }

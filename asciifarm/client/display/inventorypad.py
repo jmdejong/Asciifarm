@@ -23,6 +23,9 @@ class InventoryPad:
         self.items = items
         self.widget.change()
     
+    def setTitle(self, title):
+        self.title = title
+    
     def getNumItems(self):
         return len(self.items)
     

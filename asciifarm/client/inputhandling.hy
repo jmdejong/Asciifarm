@@ -10,7 +10,7 @@
           (setv self.connection connection)
           (setv self.commands None))
     
-    (defn readCommands [self commandsstring]
+    (defn readCommands [self commandsstring] (do
         (setv self.commands
             (dict-comp 
                 (str key)
@@ -20,7 +20,8 @@
                         (fn [handler]
                             (fn [] ~value))))
                     self)
-                [[key value] (.items (read-str commandsstring))])))
+                [[key value] (.items (read-str commandsstring))]))
+        ((.get self.commands "init" (fn [])))))
     
     (defn runCommand [self commandstring]
           (try 
