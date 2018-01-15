@@ -11,7 +11,7 @@
         "grass2": ["'", 2],
         "grass3": ["`", 10],
         "water": ["~", 4, 4],
-        "rabbit": ["r", 15],
+        "rabbit": ["b", 15],
         "floor": [".", 8],
         "portal": ["$", 5],
         "stairdown": [">",7],

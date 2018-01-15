@@ -58,7 +58,7 @@ entities["roomexit"] = lambda destRoom, destPos=None, mask=(False, False), sprit
     sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos, mask)})
 
 entities["rabbit"] = lambda: Entity(
-    sprite="rabbit", height=1, components={"move": Move(slowness=4), "controller": RandomWalkController(moveChance=0.05)})
+    sprite="rabbit", name="bunny", height=1, components={"move": Move(slowness=4), "controller": RandomWalkController(moveChance=0.05)})
 
 entities["dummy"] = lambda: Entity(
     sprite="dummy", height=1, flags={"occupied"}, components={"fighter": Fighter(maxHealth=20, strength=0), "alignment": Alignment(faction.NONE)})
