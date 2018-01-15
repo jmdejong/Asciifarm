@@ -19,6 +19,7 @@ from .components.harvest import Harvest
 from .components.food import Food
 from .components.equippable import Equippable
 from .components.volatile import Volatile
+from .components.change import Change
 
 """ This module contains factory functions for many placable entities, and a make function to call a factory by a string name """
 
@@ -120,6 +121,10 @@ entities["club"] = lambda: Entity(sprite="club", height=0.5, components={"item":
 entities["armour"] = lambda: Entity(sprite="armour", height=0.5, components={"item": Equippable("body", {"defense": 100})})
 
 entities["wound"] = lambda duration=4, height=0.2: Entity(sprite="wound", height=height, components={"volatile": Volatile(duration)})
+
+entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={"interact": Change("opendoor")})
+
+entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={"interact": Change("closeddoor")})
 
 def makeEntity(entType, roomData, *args, preserve=False, **kwargs):
     entity = entities[entType](*args, **kwargs)

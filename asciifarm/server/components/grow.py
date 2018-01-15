@@ -8,15 +8,11 @@ class Growing(Component):
     
     
     def __init__(self, nextStage, duration, stepsPassed=None, nextArgs=None, nextKwargs=None):
-        if nextArgs is None:
-            nextArgs = []
-        if nextKwargs is None:
-            nextKwargs = {}
         self.nextStage = nextStage
         self.duration = duration if stepsPassed is not None else int(random.triangular(duration/2, duration*2, duration))
         self.stepsPassed = stepsPassed or 0
-        self.nextArgs = nextArgs
-        self.nextKwargs = nextKwargs
+        self.nextArgs = nextArgs or []
+        self.nextKwargs = nextKwargs or {}
     
     
     def attach(self, obj):
