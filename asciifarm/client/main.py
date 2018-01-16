@@ -32,7 +32,7 @@ def main(argv=None):
         Kill the goblins and plant the seeds.
 
     ~troido""", formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('-n', '--name', help='Your player name (must be unique!). Defaults to username', default="~"+getpass.getuser())
+    parser.add_argument('-n', '--name', help='Your player name (must be unique!). Defaults to username on inet sockets and tildename on (unix socket (including abstract)', default=None)
     parser.add_argument("-a", "--address", help="The address of the socket. When the socket type is 'abstract' this is just a name. When it is 'unix' this is a filename. When it is 'inet' is should be in the format 'address:port', eg 'localhost:8080'. Defaults depends on the socket type")
     parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
     parser.add_argument('-k', '--keybindings', help='The script with the keybindings. This file is a snippet of hy script.', default="keybindings")
@@ -42,7 +42,9 @@ def main(argv=None):
     colourGroup = parser.add_mutually_exclusive_group()
     colourGroup.add_argument('-l', '--colours', '--colors', help='enable colours! :)', action="store_true")
     colourGroup.add_argument('-b', '--nocolours', '--nocolors', help='disable colours! :)', action="store_true")
+    
     args = parser.parse_args(argv)
+    
     
     charFile = args.characters
     if charFile in standardCharFiles:
@@ -71,5 +73,13 @@ def main(argv=None):
     elif args.nocolours:
         colours = False
     
-    clientmain(args.name, args.socket, address, keybindings, charMap, colours, args.logfile)
+    name = args.name
+    if name is None:
+        username = getpass.getuser()
+        if args.socket == "unix" or args.socket == "abstract":
+            name = "~"+username
+        else:
+            name = username
+    
+    clientmain(name, args.socket, address, keybindings, charMap, colours, args.logfile)
 
