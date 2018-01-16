@@ -80,7 +80,7 @@ entities["troll"] = lambda home=None: Entity(sprite="troll", height=1.8, compone
         "fighter": Fighter(maxHealth=75, strength=15, slowness=10),
         "alignment": Alignment(faction.EVIL),
         "controller": MonsterAi(viewDist=8, moveChance=0.01, home=home),
-        "loot": Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5)])
+        "loot": Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5), ("hardwood", 0.1)])
         })
 
 entities["rat"] = lambda home=None: Entity(sprite="rat", height=1, components={
@@ -118,6 +118,8 @@ entities["sword"] = lambda: Entity(sprite="sword", height=0.5, components={"item
 
 entities["club"] = lambda: Entity(sprite="club", height=0.5, components={"item": Equippable("hand", {"strength": 3})})
 
+entities["weapon"] = lambda strength=0, name="weapon": Entity(sprite="sword", name=name, height=0.5, components={"item": Equippable("hand", {"strength": strength})})
+
 entities["armour"] = lambda: Entity(sprite="armour", height=0.5, components={"item": Equippable("body", {"defense": 100})})
 
 entities["wound"] = lambda duration=4, height=0.2: Entity(sprite="wound", height=height, components={"volatile": Volatile(duration)})
@@ -125,6 +127,20 @@ entities["wound"] = lambda duration=4, height=0.2: Entity(sprite="wound", height
 entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={"interact": Change("opendoor")})
 
 entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={"interact": Change("closeddoor")})
+
+entities["builtcloseddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={
+    "interact": Change("builtopendoor"),
+    "fighter": Fighter(maxHealth=100, strength=0),
+    "alignment": Alignment(faction.NONE),
+    "loot": Loot([("stone", 1)])})
+
+entities["builtopendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={
+    "interact": Change("builtcloseddoor"),
+    "fighter": Fighter(maxHealth=100, strength=0),
+    "alignment": Alignment(faction.NONE),
+    "loot": Loot([("stone", 1)])})
+
+entities["hardwood"] = lambda: Entity(sprite="hardwood", height=0.4, components={"item": Build("builtcloseddoor", flagsNeeded={"freeland"}, blockingFlags={"solid", "occupied"})})
 
 def makeEntity(entType, roomData, *args, preserve=False, **kwargs):
     entity = entities[entType](*args, **kwargs)
