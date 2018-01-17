@@ -1,5 +1,6 @@
 
 import curses
+from asciifarm.common import utils
 
 class Inventory:
     
@@ -12,7 +13,7 @@ class Inventory:
     def setWidget(self, widget):
         self.widget = widget
     
-    def getSelector(self):
+    def getSelected(self):
         return self.selector
     
     def select(self, value, relative=False, modular=False):
@@ -31,6 +32,7 @@ class Inventory:
     
     def setInventory(self, items):
         self.items = items
+        self.selector = utils.clamp(self.selector, 0, len(items)-1)
         self.widget.change()
     
     def setTitle(self, title):
