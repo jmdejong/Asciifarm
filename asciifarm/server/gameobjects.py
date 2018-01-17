@@ -80,7 +80,7 @@ entities["troll"] = lambda home=None: Entity(sprite="troll", height=1.8, compone
         "fighter": Fighter(maxHealth=75, strength=15, slowness=10),
         "alignment": Alignment(faction.EVIL),
         "controller": MonsterAi(viewDist=8, moveChance=0.01, home=home),
-        "loot": Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5), ("hardwood", 0.1)])
+        "loot": Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5)])
         })
 
 entities["rat"] = lambda home=None: Entity(sprite="rat", height=1, components={
@@ -132,13 +132,13 @@ entities["builtcloseddoor"] = lambda: Entity(sprite="closeddoor", name="door", h
     "interact": Change("builtopendoor"),
     "fighter": Fighter(maxHealth=100, strength=0),
     "alignment": Alignment(faction.NONE),
-    "loot": Loot([("stone", 1)])})
+    "loot": Loot([("hardwood", 1)])})
 
 entities["builtopendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={
     "interact": Change("builtcloseddoor"),
     "fighter": Fighter(maxHealth=100, strength=0),
     "alignment": Alignment(faction.NONE),
-    "loot": Loot([("stone", 1)])})
+    "loot": Loot([("hardwood", 1)])})
 
 entities["hardwood"] = lambda: Entity(sprite="hardwood", height=0.4, components={"item": Build("builtcloseddoor", flagsNeeded={"freeland"}, blockingFlags={"solid", "occupied"})})
 
@@ -146,4 +146,21 @@ def makeEntity(entType, roomData, *args, preserve=False, **kwargs):
     entity = entities[entType](*args, **kwargs)
     entity.construct(roomData, preserve)
     return entity
+
+def buildEntity(data, roomData, preserve=False):
+    obj = None
+    if isinstance(data, str):
+        obj = entities[data]()
+    elif isinstance(data, dict):
+        if "type" in data:
+            obj = entities[data["type"]](*(data.get("args", [])), **(data.get("kwargs", {})))
+        else:
+            obj = entity.Entity.fromJSON(data)
+    
+    if obj is not None:
+        obj.construct(roomData, preserve)
+    return obj
+            
+        
+    
     

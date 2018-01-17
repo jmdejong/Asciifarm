@@ -12,8 +12,6 @@ class Room:
     
     
     def __init__(self, name, data, preserved=None):
-        if preserved is None:
-            preserved = []
         self.name = name
         self.width = data["width"]
         self.height = data["height"]
@@ -49,18 +47,11 @@ class Room:
                 if not isinstance(val, list) :
                     val = [val]
                 for obj in val:
-                    if isinstance(obj, str):
-                        objtype = obj
-                        args = []
-                        kwargs = {}
-                    elif isinstance(obj, dict):
-                        objtype = obj["type"]
-                        args = obj.get("args", [])
-                        kwargs = obj.get("kwargs", {})
-                    else:
-                        continue
-                    ent = gameobjects.makeEntity(objtype, self.roomData, *args, **kwargs)
+                    ent = gameobjects.buildEntity(obj, self.roomData)
                     self.addObj((x, y), ent)
+        
+        if preserved is not None:
+            self.loadPreserved(preserved)
         
     
     def getEntrance(self):
@@ -139,8 +130,7 @@ class Room:
     
     def loadPreserved(self, objects):
         for (pos, objData) in objects:
-            obj = entity.Entity.fromJSON(objData)
-            obj.construct(self.roomData, preserve=True)
+            obj = gameobjects.buildEntity(objData, self.roomData, preserve=True)
             self.addObj(tuple(pos), obj)
         
 
