@@ -1,14 +1,13 @@
 
 import curses
-from .selector import Selector
 
-class InventoryPad:
+class Inventory:
     
     def __init__(self, title):
         self.title = title
-        self.selector = Selector(self)
         self.widget = None
         self.items = []
+        self.selector = 0
     
     def setWidget(self, widget):
         self.widget = widget
@@ -16,8 +15,19 @@ class InventoryPad:
     def getSelector(self):
         return self.selector
     
-    def change(self):
-        self.widget.change()
+    def select(self, value, relative=False, modular=False):
+        invLen = len(self.items)
+        if relative:
+            value += self.selector
+        if modular and invLen:
+            value %= invLen
+        if value < 0:
+            value = 0
+        if value >= invLen:
+            value = invLen-1
+        if value in range(invLen):
+            self.selector = value
+            self.widget.change()
     
     def setInventory(self, items):
         self.items = items
@@ -33,7 +43,7 @@ class InventoryPad:
         win = self.widget.getWin()
         width, height = win.getSize()
         height -= 1
-        selected = self.selector.getValue()
+        selected = self.selector
         start = min(selected - height//2, len(self.items)-height)
         start = max(start, 0)
         end = start + height

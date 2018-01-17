@@ -2,7 +2,7 @@
 import curses
 import textwrap
 
-class MessagePad():
+class Messages():
     
     def __init__(self):
         self.changed = False

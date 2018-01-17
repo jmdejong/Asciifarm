@@ -88,6 +88,9 @@ If you don't know how to help, [I made a list of suggestions on how to help](doc
 
 ## TODO first
 
+- player-owned doors (and items)
+- unify object creation
+- store non-unique and stateless objects as string
 - write howto for entity creation
 - reconsider getters and setters
 - different messages for in-game log, let client construct them

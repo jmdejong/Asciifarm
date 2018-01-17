@@ -1,13 +1,13 @@
 
 
 import curses
-from .fieldpad import FieldPad
-from .infopad import InfoPad
-from .healthpad import HealthPad
-from .inventorypad import InventoryPad
+from .field import Field
+from .info import Info
+from .health import Health
+from .inventory import Inventory
 from .screen import Screen
 from .colours import Colours
-from .messagepad import MessagePad
+from .messages import Messages
 from .textinput import TextInput
 from .widget import Widget
 
@@ -43,17 +43,17 @@ class Display:
         
         self.widgets = {}
         
-        self.addWidget(FieldPad((1, 1), charMap.get("charwidth", 1), self.colours), "field")
-        self.addWidget(InfoPad(), "info")
-        self.addWidget(HealthPad(
+        self.addWidget(Field((1, 1), charMap.get("charwidth", 1), self.colours), "field")
+        self.addWidget(Info(), "info")
+        self.addWidget(Health(
                     charMap.get("healthfull", ("@",7, 2)),
                     charMap.get("healthempty", ("-",7, 1)),
                     self.colours),
             "health")
-        self.addWidget(InventoryPad("Inventory"), "inventory")
-        self.addWidget(InventoryPad("Ground"), "ground")
-        self.addWidget(InventoryPad("Equipment"), "equipment")
-        self.addWidget(MessagePad(), "msg")
+        self.addWidget(Inventory("Inventory"), "inventory")
+        self.addWidget(Inventory("Ground"), "ground")
+        self.addWidget(Inventory("Equipment"), "equipment")
+        self.addWidget(Messages(), "msg")
         self.addWidget(TextInput(), "textinput")
         
         self.lastinfostring = None
@@ -61,10 +61,10 @@ class Display:
         self.forced = False
         self.update()
     
-    def addWidget(self, pad, name, winname=None):
+    def addWidget(self, w, name, winname=None):
             if not winname:
                 winname = name
-            widget = Widget(pad)
+            widget = Widget(w)
             self.widgets[name] = widget
             widget.setWin(winname, self.screen)
     
@@ -114,12 +114,6 @@ class Display:
     
     def setGround(self, items):
         self.getWidget("ground").setInventory(items)
-    
-    def getSelector(self, name):
-        widget = self.getWidget(name)
-        if not widget or not hasattr(widget, "getSelector"):
-            return None
-        return widget.getSelector()
         
     
     def addMessage(self, message):

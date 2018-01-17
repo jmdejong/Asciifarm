@@ -2,7 +2,7 @@
 import curses
 
 
-class FieldPad:
+class Field:
     
     
     def __init__(self, size=(1,1), charSize=1, colours=False):

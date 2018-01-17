@@ -1,11 +1,7 @@
 
 import curses
 
-
-
-class InfoPad:
-    
-    
+class Info:
     
     def __init__(self):
         self.changed = False

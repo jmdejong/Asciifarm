@@ -21,9 +21,9 @@ r (do [
     (inp ["interact" "south"])
     (inp ["interact" "east"])
     (inp ["interact" "west"])])
-c (.select (selector "inventory") 1 True True)
-x (.select (selector "ground") 1 True True)
-v (.select (selector "equipment") 1 True True)
+c (.select (self.display.getWidget "inventory") 1 True True)
+x (.select (self.display.getWidget "ground") 1 True True)
+v (.select (self.display.getWidget "equipment") 1 True True)
 z (inp ["unequip" (selectorvalue "equipment")])
 f (do [
     (inp ["attack"])
