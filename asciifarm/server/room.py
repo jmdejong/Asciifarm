@@ -6,6 +6,7 @@ from . import grid
 from . import event
 from . import entity
 from . import roomdata
+from . import serialize
 
 
 class Room:
@@ -111,7 +112,8 @@ class Room:
             x %= self.width
             y %= self.height
             pos = (x, y)
-        obj.place(self.get(pos))
+        if obj is not None:
+            obj.place(self.get(pos))
     
     def removeObj(self, pos, obj):
         self._getGround(pos).removeObj(obj)
@@ -126,7 +128,9 @@ class Room:
         self.changedCells = {}
     
     def getPreserved(self):
-        return [(obj.getGround().getPos(), obj.toJSON()) for obj in self.roomData.getPreserved()]
+        return [
+            (obj.getGround().getPos(), obj.serialize())
+            for obj in self.roomData.getPreserved()]
     
     def loadPreserved(self, objects):
         for (pos, objData) in objects:

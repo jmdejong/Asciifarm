@@ -110,6 +110,9 @@ class Entity:
             }
         }
     
+    def serialize(self):
+        return serialize.serializeEntity(self)
+    
     @classmethod
     def fromJSON(cls, data):
         if data is None:

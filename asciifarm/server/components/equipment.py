@@ -47,7 +47,7 @@ class Equipment(Component):
     
     def toJSON(self):
         return {
-            slotName: item.toJSON() if item else None
+            slotName: item.serialize() if item else None
             for slotName, item in self.slots.items()
         }
     

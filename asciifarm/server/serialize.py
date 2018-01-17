@@ -24,3 +24,6 @@ def unserialize(component):
     name, data = component
     return getClass(name).fromJSON(data)
 
+def serializeEntity(obj):
+    return obj.getComponent("serialize").serialize() if obj.hasComponent("serialize") else obj.toJSON()
+

@@ -48,7 +48,7 @@ class Inventory(Component):
     def toJSON(self):
         return {
             "capacity": self.capacity,
-            "items": [item.toJSON() for item in self.items]
+            "items": [item.serialize() for item in self.items]
         }
     
     @classmethod

@@ -1,12 +1,16 @@
 
-from .room import Room
+import string
 
+from . import loader
+from .room import Room
+import os.path
 
 class WorldTemplate:
     
     
-    def __init__(self):
+    def __init__(self, world=None, worldDir=None, loadDir=None):
         
+        self.world = world
         self.prefabs = {}
     
     
@@ -17,6 +21,11 @@ class WorldTemplate:
     def addPrefab(self, name, data):
         self.prefabs[name] = data
     
+    def loadRoom(self, name):
+        if not name:
+            return None
+        if name[0] in string.ascii_letters:
+            base = loader.loadRoom(os.path.join(worldDir, name + ".json"))
     
     def getTemplate(self, name):
         if name in self.prefabs:
