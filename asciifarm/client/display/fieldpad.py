@@ -37,6 +37,7 @@ class FieldPad:
             else:
                 bgcolour = 0
         if colour is not None and self.colours:
+            self.pad.addstr(y, x*self.charSize, " "*self.charSize, self.colours.get(7, 0))
             self.pad.addstr(y, x*self.charSize, char, self.colours.get(colour, bgcolour))
         else:
             self.pad.addstr(y, x*self.charSize, char)
