@@ -1,6 +1,6 @@
 
 from .component import Component
-from ..entity import Entity
+from .. import gameobjects
 
 class Inventory(Component):
     
@@ -53,5 +53,5 @@ class Inventory(Component):
     
     @classmethod
     def fromJSON(cls, data):
-        obj = cls(data["capacity"], [Entity.fromJSON(item) for item in data["items"]])
+        obj = cls(data["capacity"], [gameobjects.createEntity(item) for item in data["items"]])
         return obj

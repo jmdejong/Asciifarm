@@ -149,7 +149,7 @@ def makeEntity(entType, roomData, *args, preserve=False, **kwargs):
     entity.construct(roomData, preserve)
     return entity
 
-def buildEntity(data, roomData, preserve=False):
+def createEntity(data):
     obj = None
     if isinstance(data, str):
         obj = entities[data]()
@@ -158,7 +158,10 @@ def buildEntity(data, roomData, preserve=False):
             obj = entities[data["type"]](*(data.get("args", [])), **(data.get("kwargs", {})))
         else:
             obj = entity.Entity.fromJSON(data)
-    
+    return obj
+
+def buildEntity(data, roomData, preserve=False):
+    obj = createEntity(data)
     if obj is not None:
         obj.construct(roomData, preserve)
     return obj

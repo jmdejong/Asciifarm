@@ -1,6 +1,6 @@
 
 from .component import Component
-from ..entity import Entity
+from .. import gameobjects
 
 
 class Equipment(Component):
@@ -54,7 +54,7 @@ class Equipment(Component):
     @classmethod
     def fromJSON(cls, slots):
         return cls({
-            slotname: Entity.fromJSON(item) if item else None
+            slotname: gameobjects.createEntity(item) if item else None
             for slotname, item in slots.items()
         })
     
