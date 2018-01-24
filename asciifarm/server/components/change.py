@@ -11,8 +11,8 @@ class Change(Component):
     def __init__(self, into, permitted=None, nextArgs=None, nextKwargs=None):
         
         self.into = into
-        self.nextArgs = nextArgs
-        self.nextKwargs = nextKwargs
+        self.nextArgs = nextArgs or []
+        self.nextKwargs = nextKwargs or {}
         
         self.permitted = permitted
     
@@ -26,10 +26,10 @@ class Change(Component):
     def interact(self, other):
         if self.permitted is not None and other.getName() not in self.permitted:
             return
-        self.owner.remove()
         obj = gameobjects.makeEntity(self.into, self.roomData, *self.nextArgs, preserve=self.owner.isPreserved(), **self.nextKwargs)
         
         obj.place(self.owner.getGround())
+        self.owner.remove()
     
     def toJSON(self):
         return {
