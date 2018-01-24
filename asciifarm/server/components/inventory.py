@@ -1,6 +1,6 @@
 
 from .component import Component
-from ..entity import Entity
+from .. import gameobjects
 
 class Inventory(Component):
     
@@ -11,7 +11,8 @@ class Inventory(Component):
         self.items = []
         self.owner = None
         for item in initialItems[::-1]:
-            self.add(item)
+            if item:
+                self.add(item)
     
     def attach(self, obj):
         self.owner = obj
@@ -48,10 +49,10 @@ class Inventory(Component):
     def toJSON(self):
         return {
             "capacity": self.capacity,
-            "items": [item.toJSON() for item in self.items]
+            "items": [item.serialize() for item in self.items]
         }
     
     @classmethod
     def fromJSON(cls, data):
-        obj = cls(data["capacity"], [Entity.fromJSON(item) for item in data["items"]])
+        obj = cls(data["capacity"], [gameobjects.createEntity(item) for item in data["items"]])
         return obj

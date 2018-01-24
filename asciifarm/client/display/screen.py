@@ -1,6 +1,5 @@
 
 import curses
-from .fieldpad import FieldPad
 from asciifarm.common.utils import clamp
 from .window import Window
 

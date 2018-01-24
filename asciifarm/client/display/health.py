@@ -1,7 +1,7 @@
 
 import curses
 
-class HealthPad:
+class Health:
     
     def __init__(self, char=('@',7,0), emptyChar=('-',7,0), colours=False):
         self.char = char

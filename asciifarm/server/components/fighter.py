@@ -97,6 +97,7 @@ class Fighter(Component):
     def remove(self):
         self.fightEvent.removeListener(self.doAttack)
         self.timeout and self.timeout.remove()
+        self.owner.removeListener("roomjoin", self.roomJoin)
     
     
     def makeReady(self, to):

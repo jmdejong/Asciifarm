@@ -5,7 +5,8 @@
         "basement": "basement.json",
         "right": "right.json",
         "overview": "smallview.json",
-        "town": "town.json"
+        "town": "town.json",
+        "cave": "cave.json"
     }
 }
     

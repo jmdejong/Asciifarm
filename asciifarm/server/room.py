@@ -6,14 +6,13 @@ from . import grid
 from . import event
 from . import entity
 from . import roomdata
+from . import serialize
 
 
 class Room:
     
     
     def __init__(self, name, data, preserved=None):
-        if preserved is None:
-            preserved = []
         self.name = name
         self.width = data["width"]
         self.height = data["height"]
@@ -49,18 +48,11 @@ class Room:
                 if not isinstance(val, list) :
                     val = [val]
                 for obj in val:
-                    if isinstance(obj, str):
-                        objtype = obj
-                        args = []
-                        kwargs = {}
-                    elif isinstance(obj, dict):
-                        objtype = obj["type"]
-                        args = obj.get("args", [])
-                        kwargs = obj.get("kwargs", {})
-                    else:
-                        continue
-                    ent = gameobjects.makeEntity(objtype, self.roomData, *args, **kwargs)
+                    ent = gameobjects.buildEntity(obj, self.roomData)
                     self.addObj((x, y), ent)
+        
+        if preserved is not None:
+            self.loadPreserved(preserved)
         
     
     def getEntrance(self):
@@ -120,7 +112,8 @@ class Room:
             x %= self.width
             y %= self.height
             pos = (x, y)
-        obj.place(self.get(pos))
+        if obj is not None:
+            obj.place(self.get(pos))
     
     def removeObj(self, pos, obj):
         self._getGround(pos).removeObj(obj)
@@ -135,12 +128,13 @@ class Room:
         self.changedCells = {}
     
     def getPreserved(self):
-        return [(obj.getGround().getPos(), obj.toJSON()) for obj in self.roomData.getPreserved()]
+        return [
+            (obj.getGround().getPos(), obj.serialize())
+            for obj in self.roomData.getPreserved()]
     
     def loadPreserved(self, objects):
         for (pos, objData) in objects:
-            obj = entity.Entity.fromJSON(objData)
-            obj.construct(self.roomData, preserve=True)
+            obj = gameobjects.buildEntity(objData, self.roomData, preserve=True)
             self.addObj(tuple(pos), obj)
         
 

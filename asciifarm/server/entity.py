@@ -1,4 +1,4 @@
-#from . import event
+
 from . import serialize
 from .eventtarget import EventTarget
 
@@ -109,6 +109,11 @@ class Entity:
                 for name, comp in self.components.items()
             }
         }
+    
+    def serialize(self):
+        if "serialize" not in self.components:
+            return self.toJSON()
+        return self.components["serialize"].serialize()
     
     @classmethod
     def fromJSON(cls, data):
