@@ -11,7 +11,8 @@ class Inventory(Component):
         self.items = []
         self.owner = None
         for item in initialItems[::-1]:
-            self.add(item)
+            if item:
+                self.add(item)
     
     def attach(self, obj):
         self.owner = obj

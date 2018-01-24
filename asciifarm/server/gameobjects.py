@@ -21,6 +21,7 @@ from .components.equippable import Equippable
 from .components.volatile import Volatile
 from .components.change import Change
 from .components.staticserializer import StaticSerializer as Static
+from .components.customserializer import CustomSerializer as Custom
 
 """ This module contains factory functions for many placable entities, and a make function to call a factory by a string name """
 
@@ -57,7 +58,7 @@ entities["bridge"] = lambda small=False: Entity(sprite=("smallbridge" if small e
 entities["water"] = lambda: Entity(sprite="water", height=0, components={"serialize": Static("water")})
 
 entities["roomexit"] = lambda destRoom, destPos=None, mask=(False, False), sprite=" ", size=0: Entity(
-    sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos, mask)})
+    sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos, mask), "serialize": Static(destRoom, destPos, mask, sprite, size)})
 
 entities["rabbit"] = lambda: Entity(
     sprite="rabbit", name="bunny", height=1, components={"move": Move(slowness=4), "controller": RandomWalkController(moveChance=0.05), "serialize": Static("rabbit")})
@@ -121,29 +122,29 @@ entities["sword"] = lambda: Entity(sprite="sword", height=0.5, components={"item
 
 entities["club"] = lambda: Entity(sprite="club", height=0.5, components={"item": Equippable("hand", {"strength": 3}), "serialize": Static("club")})
 
-entities["weapon"] = lambda strength=0, name="weapon": Entity(sprite="sword", name=name, height=0.5, components={"item": Equippable("hand", {"strength": strength})})
+entities["weapon"] = lambda strength=0, name="weapon": Entity(sprite="sword", name=name, height=0.5, components={"item": Equippable("hand", {"strength": strength}), "serialize": Static("weapon", strength=strength)})
 
 entities["armour"] = lambda: Entity(sprite="armour", height=0.5, components={"item": Equippable("body", {"defense": 100}), "serialize": Static("armour")})
 
-entities["wound"] = lambda duration=4, height=0.2: Entity(sprite="wound", height=height, components={"volatile": Volatile(duration), "serialize": Static(None)})
+entities["wound"] = lambda duration=4, height=0.2: Entity(sprite="wound", name="", height=height, components={"volatile": Volatile(duration), "serialize": Static(None)})
 
 entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={"interact": Change("opendoor"), "serialize": Static("closeddoor")})
 
 entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={"interact": Change("closeddoor"), "serialize": Static("opendoor")})
 
-entities["builtcloseddoor"] = lambda health=None: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={
-    "interact": Change("builtopendoor"),
-    "fighter": Fighter(maxHealth=100, health=health, strength=0),
-    "alignment": Alignment(faction.NONE),
-    "loot": Loot([("hardwood", 1)])})
+#entities["builtcloseddoor"] = lambda health=None: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={
+    #"interact": Change(transferComponents={"fighter"}),
+    #"fighter": Fighter(maxHealth=100, health=health, strength=0),
+    #"alignment": Alignment(faction.NONE),
+    #"loot": Loot([("hardwood", 1)])})
 
-entities["builtopendoor"] = lambda health=None: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={
-    "interact": Change("builtcloseddoor"),
-    "fighter": Fighter(maxHealth=100, health=health, strength=0),
-    "alignment": Alignment(faction.NONE),
-    "loot": Loot([("hardwood", 1)])})
+#entities["builtopendoor"] = lambda health=None: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={
+    #"interact": Change(),
+    #"fighter": Fighter(maxHealth=100, health=health, strength=0),
+    #"alignment": Alignment(faction.NONE),
+    #"loot": Loot([("hardwood", 1)])})
 
-entities["hardwood"] = lambda: Entity(sprite="hardwood", height=0.4, components={"item": Build("builtcloseddoor", flagsNeeded={"freeland"}, blockingFlags={"solid", "occupied"}), "serialize": Static("hardwood")})
+entities["hardwood"] = lambda: Entity(sprite="hardwood", height=0.4, components={"item": Build("builtwall", flagsNeeded={"freeland"}, blockingFlags={"solid", "occupied"}), "serialize": Static(None)})
 
 def makeEntity(entType, roomData, *args, preserve=False, **kwargs):
     entity = entities[entType](*args, **kwargs)
