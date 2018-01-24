@@ -4,10 +4,9 @@
     "spawn": [10, 15],
     "places": {
         "stairdown": [38, 33],
-        "caveentrance": [31, 52],
+        "caveentrance": [31, 51],
         "right": [62, 10]
-    },
-    "grid": [
+    }, "grid": [
         ",,,,,,,,,,,,,,,,,,,,,,,,,,,~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
         ",,,,,,,,,,,,,,,,,~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
         ",,,,,,,,,,,,~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
@@ -59,19 +58,19 @@
         ",,~~~~~,,,,,,,,,,,,,,,,,,,,,,,,'T.',,,,,,,,T,,,,,,,r,,,,T,,,,,'1",
         ",,~~~~~,,,,,,,,,,,,,,,,,,,,,,,,'''',,,T,,,,,,,,,,,,,,,,,,,,,,,'1",
         ",~~~~~~,,,,,,,,,,,,,,XXXXXXXXXX'.'',,,,,,,,,,,,T,,,,,,,T,,,,,,'1",
-        ",~~~~~~,,,,,,,,XXXXXXXXXXXXXXXXCX'',,,,,T,,,,,,,,,,,,,,,,,,,,,XX",
-        ",~~~~~'''',,XXXXXXXXXXXXXXXXXXXXXXX,,,,,,,,,,,,T,,,,,,,,,,,,XXXX",
-        ",~~~~~''''XXXXXXXXXXXXXXXXXXXXXXXXXXXX,,,,,,,,,,,,,,,,,,,,,XXXXX",
-        ",~~~~~'''XXXXXXXXXXXXXX      XXXXXXXXXXX,,,,,,,XX,,,,,,,,,,XXXXX",
-        ",~~~~~''XXXXXXXX               XXXXXXXXXXX,,,XXXXXXX,,,,,,XXXXXX",
-        "X~~~~~''XXXXXXX                  XXXXXXXXX,,XXXXXXXXXXX,,XXXXXX ",
-        "X~~~~~''XXXXXX                     XXXXXXX,XXXXXXXXXXXXXXXXXXX  ",
-        "X~~~~~'XXXXXXX                       XXXXXXXXXXXXXXXXXXXXXXXX   ",
-        "X~~~~~'XXXXXX                         XXXXXXXXX    XXXXXXXX     ",
-        "X~~~~~''XXXXX                           XXXXXX      XXXXXX      ",
-        "X~~~~~XXXXXXX                            XXXX                   ",
-        "X~~~~~XXXXXX                                                    ",
-        "X~~~~~XXXXXX                                                    "
+        ",~~~~~~,,,,,,,,XXXXXXX        XCX'',,,,,T,,,,,,,,,,,,,,,,,,,,,XX",
+        ",~~~~~'''',,XXXX              XXXXX,,,,,,,,,,,,T,,,,,,,,,,,,XXX ",
+        ",~~~~~''''XXX                     XXXX,,,,,,,,,,,,,,,,,,,,,XX   ",
+        ",~~~~~'''XX                          XXX,,,,,,,XX,,,,,,,,,,X    ",
+        ",~~~~~''XX                             XXX,,,XXXXXXX,,,,,,XX    ",
+        "X~~~~~''X                                X,,XX     XXXX,,XX     ",
+        "X~~~~~''X                                X,XX         XXXX      ",
+        "X~~~~~'XX                                XXX                    ",
+        "X~~~~~'XX                                                       ",
+        "X~~~~~''X                                                       ",
+        "X~~~~~XXX                                                       ",
+        "X~~~~~X                                                         ",
+        "X~~~~~X                                                         "
     ],
     "mapping": {
         ",": ["grass", "freeland"],
