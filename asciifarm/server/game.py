@@ -7,6 +7,7 @@ from . import world
 from . import view
 from asciifarm.common import utils
 from . import roomloader
+from . import playerloader
 
 saveExt = ".save.json"
 
@@ -19,15 +20,10 @@ class Game:
         
         
         roomLoader = roomloader.RoomLoader(worldFile, os.path.join(saveDir, "rooms"))
-        self.world = world.World(roomLoader)
-        self.load(saveDir)
+        playerLoader = playerloader.PlayerLoader(os.path.join(saveDir, "players"))
+        self.world = world.World(roomLoader, playerLoader)
         
-        self.saveDir = saveDir
-        self.playerSaveDir = os.path.join(self.saveDir, "players")
-        self.makeSaveDirs()
         self.saveInterval = saveInterval
-        
-        self.lastActivePlayers = set()
         
         self.view = view.View(self.world)
         
@@ -42,7 +38,7 @@ class Game:
             self.game_loop()
         except KeyboardInterrupt:
             print("\n^C caught, saving")
-            self.save()
+            self.world.save()
     
     
     def game_loop(self):
@@ -65,7 +61,6 @@ class Game:
                 if not self.world.hasPlayer(name):
                     self.world.createPlayer(name)
                 self.world.playerJoin(name)
-                self.lastActivePlayers.add(name)
             elif t == "leave":
                 self.world.removePlayer(name)
             elif t == "input":
@@ -73,8 +68,8 @@ class Game:
             
         self.world.update()
         
-        if self.saveDir and not self.counter % self.saveInterval:
-            self.save()
+        if (self.counter % self.saveInterval) == 0:
+            self.world.save()
         
         self.counter += 1
     
@@ -83,47 +78,7 @@ class Game:
         self.server.sendState(self.view)
         self.world.resetChangedCells()
     
-    def makeSaveDirs(self):
-        try:
-            os.mkdir(self.saveDir, 0o755)
-        except FileExistsError:
-            # This is the expected scenario.
-            # The save function should just create the file if it doesn't exist
-            # The only problem is when there is a file (not directory) with the same name, or a directory with the wrong permissions
-            # These errors won't be caught now and happen later
-            pass
-        try:
-            os.mkdir(self.playerSaveDir, 0o700)
-        except FileExistsError:
-            # same here
-            pass
-    
-    def save(self):
-        
-        playerDir = self.playerSaveDir
-        activePlayers = set(self.world.getActivePlayers())
-        for player in activePlayers.union(self.lastActivePlayers):
-            utils.writeFileSafe(os.path.join(playerDir, player + saveExt), json.dumps(self.world.savePlayer(player)))
-        self.lastActivePlayers = activePlayers
-        
-        self.world.save()
         
     
-    def load(self, loadDir):
-        
-        
-        playerDir = os.path.join(loadDir, "players")
-        try:
-            fnames = os.listdir(playerDir)
-        except FileNotFoundError:
-            print("no player saves loaded")
-            return
-        for fname in fnames:
-            if fname.endswith(saveExt):
-                player = fname[:-len(saveExt)]
-                with open(os.path.join(playerDir, fname), 'r') as f:
-                    data = json.load(f)
-                    self.world.loadPlayer(player, data)
-                    print("loaded saved player:", player)
         
 

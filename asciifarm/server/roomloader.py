@@ -17,13 +17,21 @@ class RoomLoader:
         self.worldPath = os.path.dirname(worldFile)
         self.savePath = savePath
     
+    
+    def _loadRoom(self, roomPath):
+        with open(roomPath) as roomFile:
+            room = json.load(roomFile)
+        for name, pos in room["places"].items():
+            room["places"][name] = tuple(pos)
+        return roomPath
+    
     def load(self, name=None):
         if not name:
             name = self.world["begin"]
         base = None
         if name in self.world["rooms"]:
             try:
-                base = loader.loadRoom(os.path.join(self.worldPath, self.world["rooms"][name]))
+                base = self._loadRoom(os.path.join(self.worldPath, self.world["rooms"][name]))
             except OSError:
                 return None
         

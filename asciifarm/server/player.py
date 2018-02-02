@@ -34,6 +34,9 @@ class Player:
         self.canChangeRoom=False
         
     
+    def getName(self):
+        return self.name
+    
     def leaveRoom(self):
         if self.entity:
             self.health = self.getHealthPair()[0]

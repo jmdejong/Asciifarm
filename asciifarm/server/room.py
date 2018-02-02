@@ -54,6 +54,8 @@ class Room:
         if preserved is not None:
             self.loadPreserved(preserved)
         
+        self.resetChangedCells()
+        
     
     def getName(self):
         return self.name
