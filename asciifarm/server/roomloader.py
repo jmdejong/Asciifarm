@@ -23,7 +23,7 @@ class RoomLoader:
             room = json.load(roomFile)
         for name, pos in room["places"].items():
             room["places"][name] = tuple(pos)
-        return roomPath
+        return room
     
     def load(self, name=None):
         if not name:

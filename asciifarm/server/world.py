@@ -9,12 +9,10 @@ class World:
     def __init__(self, roomLoader, playerLoader):
         
         self.rooms = {}
-        self.beginRoom = None
         
         self.players = {}
         
         self.activeRooms = {}
-        self.activePlayers = {}
         
         self.roomLoader = roomLoader
         self.playerLoader = playerLoader
@@ -27,18 +25,16 @@ class World:
         if self.hasPlayer(name):
             raise Exception("Can not make new player with the name of an existing player")
         pl = player.Player(name, self)
-        self.players[name] = pl
         self.playerLoader.save(pl)
         return pl
     
     def playerJoin(self, name):
-        pl = self.getPlayer(name)
+        pl = self.activatePlayer(name)
         r = pl.getRoom()
         if not r:
             r = self.beginRoom
         pl.joinRoom(r)
         self.players[name] = pl
-        self.activePlayers[name] = pl
         return pl
     
     def update(self):
@@ -46,15 +42,11 @@ class World:
         for r in list(self.activeRooms.values()):
             r.update(self.stepStamp)
         
-        for player in self.players:
-            self.controlPlayer(player, None)
         
         self.stepStamp += 1
     
     def getPlayer(self, name):
-        if name in self.players:
-            return self.players[name]
-        return self.playerLoader.load(name, self)
+        return self.players.get(name)
     
     def hasPlayer(self, name):
         return name in self.players or self.playerLoader.exists(name)
@@ -73,22 +65,31 @@ class World:
     def deactivateRoom(self, name):
         
         # only deactivate a room when it's empty
-        for player in self.activePlayers.values():
+        for player in self.players.values():
             if player.getRoom() == name:
                 return
         
-        self.activeRooms.pop(name, None)
         self.saveRoom(name)
+        self.activeRooms.pop(name, None)
+    
+    def activatePlayer(self, name):
+        if name in self.players:
+            return self.players[name]
+        player = self.playerLoader.load(name, self)
+        self.players[name] = player
+        return player
     
     def deactivatePlayer(self, name):
-        self.activePlayers.pop(name, None)
         self.savePlayer(name)
+        pl = self.players.pop(name, None)
+        if pl:
+            pl.leaveRoom()
     
     def getActiveRooms(self):
         return list(self.activeRooms.keys())
     
     def getActivePlayers(self):
-        return list(self.activePlayers.keys())
+        return list(self.players.keys())
     
     def controlPlayer(self, playername, action):
         self.getPlayer(playername).control(action)
@@ -96,8 +97,6 @@ class World:
     def removePlayer(self, name):
         if name not in self.players:
             return
-        pl = self.players[name]
-        pl.leaveRoom()
         self.deactivatePlayer(name)
     
     def resetChangedCells(self):
@@ -108,7 +107,7 @@ class World:
         self.roomLoader.save(self.rooms[name])
         
     def savePlayer(self, name):
-        self.playerLoader.save(self.players[name])
+        self.playerLoader.save(self.getPlayer(name))
     
     def save(self):
         for room in self.getActiveRooms():
