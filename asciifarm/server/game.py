@@ -1,33 +1,29 @@
 import time
+import os
+import json
 
 from . import gameserver
 from . import world
 from . import view
-from .worldtemplate import WorldTemplate
 from asciifarm.common import utils
-import os
-import json
+from . import roomloader
 
 saveExt = ".save.json"
 
 
 class Game:
     
-    def __init__(self, socketType, worldData=None, loadDir=None, saveDir=None, saveInterval=1):
-        if worldData is None:
-            worldData = {"begin": None, "rooms": {}}
+    def __init__(self, socketType, worldFile=None, saveDir=None, saveInterval=1):
 
         self.server = gameserver.GameServer(self, socketType)
         
         
-        template = WorldTemplate()
-        template.addPrefabs(worldData["rooms"])
-        self.world = world.World(template, worldData["begin"])
-        self.load(loadDir)
+        roomLoader = roomloader.RoomLoader(worldFile, os.path.join(saveDir, "rooms"))
+        self.world = world.World(roomLoader)
+        self.load(saveDir)
         
         self.saveDir = saveDir
         self.playerSaveDir = os.path.join(self.saveDir, "players")
-        self.roomSaveDir = os.path.join(self.saveDir, "rooms")
         self.makeSaveDirs()
         self.saveInterval = saveInterval
         
@@ -101,11 +97,6 @@ class Game:
         except FileExistsError:
             # same here
             pass
-        try:
-            os.mkdir(self.roomSaveDir, 0o755)
-        except FileExistsError:
-            # same again
-            pass
     
     def save(self):
         
@@ -115,27 +106,11 @@ class Game:
             utils.writeFileSafe(os.path.join(playerDir, player + saveExt), json.dumps(self.world.savePlayer(player)))
         self.lastActivePlayers = activePlayers
         
-        roomDir = self.roomSaveDir
-        for room in self.world.getActiveRooms():
-            utils.writeFileSafe(os.path.join(roomDir, room + saveExt), json.dumps(self.world.getPreserved(room)))
-            self.world.deactivateRoom(room)
+        self.world.save()
         
     
     def load(self, loadDir):
         
-        roomDir = os.path.join(loadDir, "rooms")
-        try:
-            fnames = os.listdir(roomDir)
-        except FileNotFoundError:
-            print("no room saves loaded")
-            return
-        for fname in fnames:
-            if fname.endswith(saveExt):
-                room = fname[:-len(saveExt)]
-                with open(os.path.join(roomDir, fname), 'r') as f:
-                    data = json.load(f)
-                    self.world.loadPreserved(room, data)
-                    print("loaded saved room:", room)
         
         playerDir = os.path.join(loadDir, "players")
         try:

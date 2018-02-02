@@ -3,7 +3,6 @@ import argparse
 import os.path
 import signal
 from . import game
-from . import loader
 
 
 signal.signal(signal.SIGINT, signal.default_int_handler)
@@ -12,7 +11,7 @@ signal.signal(signal.SIGINT, signal.default_int_handler)
 defaultAdresses = {
     "abstract": "asciifarm",
     "unix": "asciifarm.socket",
-    "inet": "localhost:9021",
+    "inet": "localhost:9021"
 }
 
 
@@ -28,7 +27,6 @@ def main(argv=None):
     parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
     loadGroup = parser.add_mutually_exclusive_group()
     loadGroup.add_argument("-w", "--world", help="A json file to load the world from.", default=defaultWorld)
-    loadGroup.add_argument("-l", "--load", help="A save file to load the world from", default=defaultSaveDir)
     parser.add_argument("-e", "--savedir", help="Directory to save the world to periodically", default=defaultSaveDir)
     
     args = parser.parse_args(argv)
@@ -41,5 +39,4 @@ def main(argv=None):
         hostname, sep, port = address.partition(':')
         address = (hostname, int(port))
     
-    worldData = loader.loadWorld(args.world)
-    game.Game(args.socket, worldData, args.load, args.savedir, 300).start(address)
+    game.Game(args.socket, args.world, args.savedir, 300).start(address)

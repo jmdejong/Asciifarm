@@ -6,7 +6,7 @@ from . import player
 
 class World:
     
-    def __init__(self, template, begin=None):
+    def __init__(self, roomLoader, begin=None):
         
         self.rooms = {}
         self.beginRoom = begin
@@ -16,7 +16,7 @@ class World:
         self.activeRooms = {}
         self.activePlayers = {}
         
-        self.template = template
+        self.roomLoader = roomLoader
         
         self.stepStamp = 0 # like a timestamp but with the number of ticks instead of the time
     
@@ -56,7 +56,7 @@ class World:
     
     def getRoom(self, name):
         if name not in self.rooms:
-            room = self.template.getRoom(name)
+            room = self.roomLoader.load(name)
             if room:
                 self.rooms[name] = room
         return self.rooms.get(name, None)
@@ -73,18 +73,13 @@ class World:
                 return
         
         self.activeRooms.pop(name, None)
+        self.saveRoom(name)
     
     def getActiveRooms(self):
         return list(self.activeRooms.keys())
     
     def getActivePlayers(self):
         return list(self.activePlayers.keys())
-    
-    def getPreserved(self, roomName):
-        return self.getRoom(roomName).getPreserved()
-    
-    def loadPreserved(self, roomName, data):
-        self.getRoom(roomName).loadPreserved(data)
     
     def controlPlayer(self, playername, action):
         self.players[playername].control(action)
@@ -106,3 +101,10 @@ class World:
     def loadPlayer(self, name, data):
         data["name"] = name
         self.players[name] = player.Player.fromJSON(data, self)
+    
+    def saveRoom(self, name):
+        self.roomLoader.save(self.rooms[name])
+    
+    def save(self):
+        for room in self.getActiveRooms():
+            self.saveRoom(room)

@@ -55,6 +55,9 @@ class Room:
             self.loadPreserved(preserved)
         
     
+    def getName(self):
+        return self.name
+    
     def getEntrance(self):
         return self.entrance
     
