@@ -133,13 +133,20 @@ class Room:
         self.changedCells = {}
     
     def getPreserved(self):
-        return [
-            (obj.getGround().getPos(), obj.serialize())
-            for obj in self.roomData.getPreserved()]
+        return {
+            "changes": [
+                (obj.getGround().getPos(), obj.serialize())
+                for obj in self.roomData.getPreserved()],
+            "step": self.lastStepStamp}
     
     def loadPreserved(self, objects):
-        for (pos, objData) in objects:
+        if isinstance(objects, list):
+            # just for rooms that have been saved in the old format
+            # when there are no such rooms anymore, this can be removed
+            objects = {"changes": objects}
+        for (pos, objData) in objects["changes"]:
             obj = gameobjects.buildEntity(objData, self.roomData, preserve=True)
             self.addObj(tuple(pos), obj)
+        self.lastStepStamp = objects.get("step")
         
 

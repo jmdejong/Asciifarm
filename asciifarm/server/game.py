@@ -8,6 +8,7 @@ from . import view
 from asciifarm.common import utils
 from . import roomloader
 from . import playerloader
+from . import worldloader
 
 saveExt = ".save.json"
 
@@ -18,10 +19,10 @@ class Game:
 
         self.server = gameserver.GameServer(self, socketType)
         
-        
+        worldLoader = worldloader.WorldLoader(saveDir)
         roomLoader = roomloader.RoomLoader(worldFile, os.path.join(saveDir, "rooms"))
         playerLoader = playerloader.PlayerLoader(os.path.join(saveDir, "players"))
-        self.world = world.World(roomLoader, playerLoader)
+        self.world = world.World(worldLoader, roomLoader, playerLoader)
         
         self.saveInterval = saveInterval
         

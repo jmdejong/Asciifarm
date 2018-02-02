@@ -6,7 +6,7 @@ from . import player
 
 class World:
     
-    def __init__(self, roomLoader, playerLoader):
+    def __init__(self, worldLoader, roomLoader, playerLoader):
         
         self.rooms = {}
         
@@ -14,10 +14,15 @@ class World:
         
         self.activeRooms = {}
         
+        self.worldLoader = worldLoader
         self.roomLoader = roomLoader
         self.playerLoader = playerLoader
         
         self.stepStamp = 0 # like a timestamp but with the number of ticks instead of the time
+        
+        data = self.worldLoader.load()
+        if data:
+            self.stepStamp = self.worldLoader.load()["steps"]
     
     
     def createPlayer(self, name, data=None):
@@ -41,7 +46,6 @@ class World:
         
         for r in list(self.activeRooms.values()):
             r.update(self.stepStamp)
-        
         
         self.stepStamp += 1
     
@@ -103,16 +107,23 @@ class World:
         for room in self.rooms.values():
             room.resetChangedCells()
     
+    def getStepStamp(self):
+        return self.stepStamp
+    
     def saveRoom(self, name):
         self.roomLoader.save(self.rooms[name])
         
     def savePlayer(self, name):
         self.playerLoader.save(self.getPlayer(name))
     
+    def saveWorld(self):
+        self.worldLoader.save(self)
+    
     def save(self):
         for room in self.getActiveRooms():
             self.saveRoom(room)
         for player in self.getActivePlayers():
             self.savePlayer(player)
+        self.saveWorld()
         
 
