@@ -17,7 +17,7 @@ class Timeout:
     def timeLeft(self):
         return self.cooldown
     
-    def update(self, steps):
+    def update(self, steps, stamp):
         self.cooldown = max(self.cooldown-steps, 0)
         if self.isReady():
             self.remove()

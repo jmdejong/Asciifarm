@@ -23,7 +23,7 @@ class Healing(Component):
         obj.addListener("roomjoin", self.roomJoin)
     
     def roomJoin(self, o, roomData):
-        self.timeEvent = roomData.getEvent("update")
+        self.roomData = roomData
         self.startHealing()
     
     def onDamage(self, o, *data):
@@ -31,25 +31,17 @@ class Healing(Component):
     
     def startHealing(self):
         """ start healing if it is not happening already """
-        if not self.isHealing:
-            self.delay = self.interval
-            self.timeEvent.addListener(self.time)
+        if not self.isHealing and not self.fighter.healthFull():
+            self.roomData.setAlarm(self.roomData.getStamp() + self.interval, self.heal)
             self.isHealing = True
     
-    def time(self, steps):
-        """ decrement delay, each time that delay is 0, heal the entity """
-        while steps >= self.delay:
-            self.fighter.heal(self.amount, None)
-            steps -= self.delay
-            self.delay = self.interval
-            if self.fighter.healthFull():
-                self.timeEvent.removeListener(self.time)
-                self.isHealing = False
-                return
-        self.delay -= steps
+    def heal(self):
+        if self.fighter.healthFull():
+            return
+        self.fighter.heal(self.amount, None)
+        self.isHealing = False
+        self.startHealing()
     
-    def remove(self):
-        self.timeEvent.removeListener(self.time)
     
     def toJSON(self):
         return {

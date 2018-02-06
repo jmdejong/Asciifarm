@@ -77,10 +77,13 @@ class Room:
         else:
             timePassed = stepStamp - self.lastStepStamp
         
+        self.roomData.setStamp(stepStamp)
+        
+        self.roomData.triggerAlarms()
         self.roomData.getEvent("control").trigger()
         self.roomData.getEvent("move").trigger()
         self.roomData.getEvent("fight").trigger()
-        self.roomData.getEvent("update").trigger(timePassed)
+        self.roomData.getEvent("update").trigger(timePassed, stepStamp)
         self.lastStepStamp = stepStamp
     
     def getSprites(self, pos):
@@ -148,5 +151,6 @@ class Room:
             obj = gameobjects.buildEntity(objData, self.roomData, preserve=True)
             self.addObj(tuple(pos), obj)
         self.lastStepStamp = objects.get("step")
+        self.roomData.setStamp(self.lastStepStamp)
         
 

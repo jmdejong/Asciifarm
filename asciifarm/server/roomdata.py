@@ -1,5 +1,5 @@
 
-
+import heapq
 
 class RoomData:
     
@@ -16,6 +16,10 @@ class RoomData:
         self.targets = set()
         
         self.preservedObjects = set()
+        
+        self.stepStamp = 0
+        
+        self.alarms = [] # treat as priority queue
     
     
     def getEvent(self, name):
@@ -39,4 +43,18 @@ class RoomData:
     
     def getPreserved(self):
         return frozenset(self.preservedObjects)
+    
+    def setAlarm(self, stamp, callback):
+        heapq.heappush(self.alarms, (stamp, callback))
+    
+    def triggerAlarms(self):
+        while self.alarms and self.alarms[0][0] <= self.stepStamp:
+            plannedTime, callback = heapq.heappop(self.alarms)
+            callback()
+    
+    def setStamp(self, stamp):
+        self.stepStamp = stamp
+    
+    def getStamp(self):
+        return self.stepStamp
     
