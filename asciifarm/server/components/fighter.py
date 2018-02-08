@@ -101,7 +101,6 @@ class Fighter(Component):
     
     def makeReady(self):
         self.canAttack = True
-        self.timeout = None
     
     def toJSON(self):
         return {

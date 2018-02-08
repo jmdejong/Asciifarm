@@ -7,7 +7,6 @@ class Move(Component):
         self.direction = None
         self.slowness = slowness
         self.canMove = False
-        self.timeout = None
     
     def attach(self, obj):
         self.owner = obj
