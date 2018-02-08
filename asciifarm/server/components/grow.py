@@ -1,4 +1,4 @@
-#from .. import timeout
+
 from .. import gameobjects
 import random
 from .component import Component

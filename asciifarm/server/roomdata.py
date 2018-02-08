@@ -1,5 +1,8 @@
 
 import heapq
+import itertools
+counter = itertools.count()     # unique sequence count
+
 
 class RoomData:
     
@@ -45,11 +48,14 @@ class RoomData:
         return frozenset(self.preservedObjects)
     
     def setAlarm(self, stamp, callback):
-        heapq.heappush(self.alarms, (stamp, callback))
+        
+        count = next(counter) # tiebreaker for when stamps are equal
+        # see: https://docs.python.org/3/library/heapq.html#priority-queue-implementation-notes
+        heapq.heappush(self.alarms, (stamp, count, callback))
     
     def triggerAlarms(self):
         while self.alarms and self.alarms[0][0] <= self.stepStamp:
-            plannedTime, callback = heapq.heappop(self.alarms)
+            _plannedTime, _count, callback = heapq.heappop(self.alarms)
             callback()
     
     def setStamp(self, stamp):

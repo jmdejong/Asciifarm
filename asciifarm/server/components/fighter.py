@@ -1,4 +1,4 @@
-from .. import timeout
+
 from asciifarm.common import utils
 import random
 from .component import Component
@@ -23,7 +23,6 @@ class Fighter(Component):
         self.roomData = roomData
         self.fightEvent = roomData.getEvent("fight")
         self.updateEvent = roomData.getEvent("update")
-        self.timeout = timeout.Timeout(roomData.getEvent("update"), self.slowness)
     
     def damage(self, damage, attacker):
         self.health -= damage
@@ -54,7 +53,8 @@ class Fighter(Component):
                 otherFighter.damage(damage, self.owner)
                 
                 self.canAttack = False
-                self.timeout = timeout.Timeout(self.updateEvent, self.slowness, self.makeReady)
+                
+                self.roomData.setAlarm(self.roomData.getStamp() + self.slowness, self.makeReady)
                 
                 self.owner.trigger("attack", other, damage)
                 if otherFighter.isDead():
@@ -96,11 +96,10 @@ class Fighter(Component):
     
     def remove(self):
         self.fightEvent.removeListener(self.doAttack)
-        self.timeout and self.timeout.remove()
         self.owner.removeListener("roomjoin", self.roomJoin)
     
     
-    def makeReady(self, to):
+    def makeReady(self):
         self.canAttack = True
         self.timeout = None
     
