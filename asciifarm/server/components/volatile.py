@@ -1,4 +1,4 @@
-from .. import timeout
+
 from .component import Component
 
 
@@ -14,13 +14,10 @@ class Volatile(Component):
     
     def roomJoin(self, o, roomData):
         self.roomData = roomData
-        self.timeout = timeout.Timeout(roomData.getEvent("update"), self.duration, self.end)
+        roomData.setAlarm(roomData.getStamp() + self.duration, self.end)
     
-    def end(self, to):
+    def end(self):
         self.owner.remove()
-    
-    def remove(self):
-        self.timeout.remove()
     
     
     def toJSON(self):

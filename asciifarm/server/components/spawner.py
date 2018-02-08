@@ -1,5 +1,4 @@
 from .. import gameobjects
-from .. import timeout
 import random
 from .component import Component
 
@@ -17,7 +16,6 @@ class Spawner(Component):
         self.spawned = set()
         self.objectArgs = objectArgs
         self.objectKwargs = objectKwargs
-        self.timeouts = set()
         self.setHome = setHome
         self.initialSpawn = initialSpawn
     
@@ -39,18 +37,15 @@ class Spawner(Component):
     def goSpawn(self, duration=None):
         if duration is None:
             duration = self.respawnDelay
-        to = timeout.Timeout(self.updateEvent, random.triangular(duration/2, duration*2, duration), callback=self.spawn)
-        self.timeouts.add(to)
+        self.roomData.setAlarm(random.triangular(duration/2, duration*2, duration) + self.roomData.getStamp(), self.spawn)
     
-    def spawn(self, to=None):
+    def spawn(self):
         objectKwargs = self.objectKwargs.copy()
         if self.setHome:
             objectKwargs["home"] = self.owner
         obj = gameobjects.makeEntity(self.objectType, self.roomData, *self.objectArgs, **objectKwargs)
         obj.place(self.owner.getGround())
         self.spawned.add(obj)
-        if to:
-            self.timeouts.remove(to)
         obj.addListener("remove", self.onSpawnedRemove)
         print("{} spawned a {}".format(self.owner.getName(), self.objectType))
     
@@ -59,10 +54,6 @@ class Spawner(Component):
         self.spawned.remove(obj)
         obj.removeListener("remove", self.onSpawnedRemove)
         self.goSpawn()
-    
-    def remove(self):
-        for to in self.timeouts:
-            to.remove()
     
     
     def toJSON(self):
