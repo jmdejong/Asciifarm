@@ -1,4 +1,4 @@
-from .. import timeout
+#from .. import timeout
 from .component import Component
 
 class Move(Component):
@@ -14,8 +14,8 @@ class Move(Component):
         obj.addListener("roomjoin", self.roomJoin)
     
     def roomJoin(self, o, roomData):
+        self.roomData = roomData
         self.moveEvent = roomData.getEvent("move")
-        self.updateEvent = roomData.getEvent("update")
         self.canMove = True
         
     
@@ -35,20 +35,17 @@ class Move(Component):
             if newPlace.accessible():
                 self.owner.place(newPlace)
                 self.canMove = False
-                self.timeout = timeout.Timeout(self.updateEvent, self.slowness, self.makeReady)
-                #newPlace.onEnter(self.owner)
+                self.roomData.setAlarm(self.roomData.getStamp() + self.slowness, self.makeReady)
                 self.owner.trigger("move")
             
         self.direction = None
         self.moveEvent.removeListener(self.doMove)
     
-    def makeReady(self, to):
+    def makeReady(self):
         self.canMove = True
-        self.timeout = None
     
     def remove(self):
         self.moveEvent.removeListener(self.doMove)
-        self.timeout and self.timeout.remove()
     
     def toJSON(self):
         return {"slowness": self.slowness}
