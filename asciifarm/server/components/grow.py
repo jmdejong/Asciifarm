@@ -18,17 +18,18 @@ class Growing(Component):
         self.targetTime = targetTime
         self.nextArgs = nextArgs or []
         self.nextKwargs = nextKwargs or {}
+        
     
     
     def attach(self, obj):
         self.owner = obj
         obj.addListener("roomjoin", self.roomJoin)
     
-    def roomJoin(self, o, roomData):
+    def roomJoin(self, o, roomData, stamp):
         self.roomData = roomData
-        if not self.targetTime and self.duration:
+        if self.targetTime is None and self.duration:
             duration = int(random.triangular(self.duration/2, self.duration*2, self.duration))
-            self.targetTime = roomData.getStamp() + duration
+            self.targetTime = stamp + duration
         self.roomData.setAlarm(self.targetTime, self.grow)
     
     def grow(self):

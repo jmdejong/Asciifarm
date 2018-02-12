@@ -12,9 +12,9 @@ class Volatile(Component):
         self.owner = obj
         obj.addListener("roomjoin", self.roomJoin)
     
-    def roomJoin(self, o, roomData):
+    def roomJoin(self, o, roomData, stamp):
         self.roomData = roomData
-        roomData.setAlarm(roomData.getStamp() + self.duration, self.end)
+        roomData.setAlarm(stamp + self.duration, self.end)
     
     def end(self):
         self.owner.remove()

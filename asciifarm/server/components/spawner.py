@@ -24,7 +24,7 @@ class Spawner(Component):
         self.owner = obj
         obj.addListener("roomjoin", self.roomJoin)
     
-    def roomJoin(self, o, roomData):
+    def roomJoin(self, o, roomData, stamp):
         self.roomData = roomData
         self.updateEvent = roomData.getEvent("update")
         
@@ -34,6 +34,8 @@ class Spawner(Component):
             else:
                 self.goSpawn()
     
+    
+    # todo: accept endtime instead of duration
     def goSpawn(self, duration=None):
         if duration is None:
             duration = self.respawnDelay

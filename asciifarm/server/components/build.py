@@ -18,7 +18,7 @@ class Build(Component):
         self.owner = obj
         obj.addListener("roomjoin", self.roomJoin)
     
-    def roomJoin(self, obj, roomData):
+    def roomJoin(self, obj, roomData, stamp):
         self.roomData = roomData
     
     

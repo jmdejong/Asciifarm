@@ -9,7 +9,7 @@ class Listen(Component):
         self.owner = obj
         obj.addListener("roomjoin", self.roomJoin)
     
-    def roomJoin(self, o, roomData):
+    def roomJoin(self, o, roomData, stamp):
         
         self.soundEvent = roomData.getEvent("sound")
         self.soundEvent.addListener(self.notify)

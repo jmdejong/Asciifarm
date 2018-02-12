@@ -22,17 +22,19 @@ class Healing(Component):
         obj.addListener("damage", self.onDamage)
         obj.addListener("roomjoin", self.roomJoin)
     
-    def roomJoin(self, o, roomData):
+    def roomJoin(self, o, roomData, stamp):
         self.roomData = roomData
-        self.startHealing()
+        self.startHealing(stamp)
     
     def onDamage(self, o, *data):
         self.startHealing()
     
-    def startHealing(self):
+    def startHealing(self, start=None):
         """ start healing if it is not happening already """
         if not self.isHealing and not self.fighter.healthFull():
-            self.roomData.setAlarm(self.roomData.getStamp() + self.interval, self.heal)
+            if start is None:
+                start = self.roomData.getStamp()
+            self.roomData.setAlarm(start + self.interval, self.heal)
             self.isHealing = True
     
     def heal(self):

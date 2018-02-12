@@ -25,7 +25,7 @@ class MonsterAi(Component):
         
         obj.addListener("roomjoin", self.roomJoin)
     
-    def roomJoin(self, o, roomData):
+    def roomJoin(self, o, roomData, stamp):
         self.controlEvent = roomData.getEvent("control")
         self.controlEvent.addListener(self.control)
         self.roomData = roomData

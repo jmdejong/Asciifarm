@@ -31,12 +31,14 @@ class Entity:
             component.attach(self)
         
     
-    def construct(self, roomData, preserve=False):
+    def construct(self, roomData, preserve=False, stamp=None):
         self.roomData = roomData
         if preserve:
             roomData.preserveObject(self)
             self._preserve()
-        self.trigger("roomjoin", roomData)
+        if stamp is None:
+            stamp = roomData.getStamp()
+        self.trigger("roomjoin", roomData, stamp)
     
     def hasComponent(self, name):
         return name in self.components

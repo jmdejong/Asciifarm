@@ -17,7 +17,7 @@ class Loot(Component):
         obj.addListener("die", self.dropLoot)
         obj.addListener("roomjoin", self.roomJoin)
     
-    def roomJoin(self, o, roomData):
+    def roomJoin(self, o, roomData, stamp):
         self.roomData = roomData
     
     def dropLoot(self, obj, *data):
