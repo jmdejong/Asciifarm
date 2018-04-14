@@ -12,8 +12,8 @@ from .display.screen import Screen
 import string
 from .display.display import Display
 
-import hy
-from .inputhandling import InputHandler
+from .inputhandler import InputHandler
+from .keynames import nameFromKey
 
 class Client:
     
@@ -26,9 +26,9 @@ class Client:
         self.logFile = logFile
         
         self.inputHandler = InputHandler(self, self.display, self.connection)
-        self.inputHandler.readCommands(keybindings)
+        self.keybindings = keybindings["actions"]
         
-        self.controlsString = self.inputHandler.getDocs()
+        self.controlsString = keybindings.get("help", "")
         
         self.display.showInfo(self.controlsString)
         
@@ -106,18 +106,12 @@ class Client:
         self.display.update()
     
     def log(self, text):
+        if not isinstance(text, str):
+            text = str(text)
         self.display.addMessage(text)
         if self.logFile:
             with(open(self.logFile, 'a')) as f:
                 f.write(text+'\n')
-    
-    def nameFromKey(self, keynum): # this probably belongs in inputhandler...
-        prenamed = {
-            10: "KEY_ENTER"
-        }
-        if keynum in prenamed:
-            return prenamed[keynum]
-        return str(curses.keyname(keynum), "utf-8")
     
     def command_loop(self):
         while self.keepalive:
@@ -125,7 +119,9 @@ class Client:
             if key == 27:
                 self.keepalive = False
                 return
-            self.inputHandler.onKey(key)
+            keyName = nameFromKey(key)
+            if keyName in self.keybindings:
+                self.inputHandler.execute(self.keybindings[keyName])
     
 
 

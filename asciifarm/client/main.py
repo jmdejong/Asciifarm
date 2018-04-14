@@ -15,7 +15,7 @@ charMapPath = os.path.join(farmsPath, "charmaps")
 keybindingsPath = os.path.join(farmsPath, "keybindings")
 
 standardCharFiles = [name[:-5] for name in os.listdir(charMapPath) if name[-5:] == ".json"]
-standardKeyFiles = [name[:-3] for name in os.listdir(keybindingsPath) if name[-3:] == ".hy"]
+standardKeyFiles = [name[:-5] for name in os.listdir(keybindingsPath) if name[-5:] == ".json"]
 
 
 defaultAdresses = {
@@ -54,9 +54,10 @@ def main(argv=None):
     
     keyFile = args.keybindings
     if keyFile in standardKeyFiles:
-        keyFile = os.path.join(keybindingsPath, keyFile + ".hy")
+        keyFile = os.path.join(keybindingsPath, keyFile + ".json")
     with open(keyFile, 'r') as kf:
-        keybindings = kf.read()
+        # todo: support yaml
+        keybindings = json.load(kf)
     
     address = args.address
     if address is None:
