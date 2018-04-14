@@ -1,9 +1,7 @@
 
 # Style
 
-Development is done in python3 and hy.
-
-This guide mostly covers python, but when a rule makes sence in hy it should be used there as well
+Development is done in python3.
 
 ## Syntax
 
