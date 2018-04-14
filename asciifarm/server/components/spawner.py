@@ -30,16 +30,16 @@ class Spawner(Component):
         
         for i in range(self.amount):
             if self.initialSpawn:
-                self.goSpawn(1)
+                self.goSpawn(stamp)
             else:
                 self.goSpawn()
     
     
-    # todo: accept endtime instead of duration
-    def goSpawn(self, duration=None):
-        if duration is None:
+    def goSpawn(self, spawnStamp=None):
+        if spawnStamp is None:
             duration = self.respawnDelay
-        self.roomData.setAlarm(random.triangular(duration/2, duration*2, duration) + self.roomData.getStamp(), self.spawn)
+            spawnStamp = random.triangular(duration/2, duration*2, duration) + self.roomData.getStamp()
+        self.roomData.setAlarm(spawnStamp, self.spawn)
     
     def spawn(self):
         objectKwargs = self.objectKwargs.copy()
