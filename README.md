@@ -84,7 +84,7 @@ Any help is very welcome.
 
 If you don't know how to help, [I made a list of suggestions on how to help](docs/contributing.md)
 
-## TODO first
+## TODO
 
 - player-owned doors (and items)
 - unify object creation
