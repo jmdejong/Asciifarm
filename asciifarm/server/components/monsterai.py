@@ -40,7 +40,7 @@ class MonsterAi(Component):
                 closestDistance = distance
                 closest = obj
         if closest:
-            if pathfinding.distanceBetween(self.owner, closest) <= 1:
+            if self.fighter.inRange(closest):
                 self.fighter.attack(closest)
             else:
                 self.move.move(pathfinding.stepTo(self.owner, closest))

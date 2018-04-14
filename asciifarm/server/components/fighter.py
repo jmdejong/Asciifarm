@@ -3,10 +3,11 @@ from asciifarm.common import utils
 import random
 from .component import Component
 from .. import gameobjects
+from ..pathfinding import distanceBetween
 
 class Fighter(Component):
     
-    def __init__(self, maxHealth, strength=0, slowness=1, health=None, defense=0):
+    def __init__(self, maxHealth, strength=0, slowness=1, health=None, defense=0, range=1):
         self.maxHealth = maxHealth
         self.health = health or maxHealth
         self.strength = strength
@@ -14,6 +15,7 @@ class Fighter(Component):
         self.slowness = slowness
         self.canAttack = True
         self.defense = defense
+        self.range = range
     
     def attach(self, obj):
         self.owner = obj
@@ -38,8 +40,9 @@ class Fighter(Component):
             self.die(attacker)
     
     def attack(self, other):
-        self.target = other
-        self.fightEvent.addListener(self.doAttack)
+        if self.inRange(other):
+            self.target = other
+            self.fightEvent.addListener(self.doAttack)
     
     def doAttack(self):
         other = self.target
@@ -92,6 +95,9 @@ class Fighter(Component):
     
     def isDead(self):
         return self.health <= 0
+    
+    def inRange(self, other):
+        return distanceBetween(self.owner, other) <= self.range
     
     def remove(self):
         self.fightEvent.removeListener(self.doAttack)
