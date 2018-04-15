@@ -141,7 +141,7 @@ class Player:
         if self.entity:
             return self.entity.getComponent("fighter").getHealth()
         else:
-            return None
+            return (0, None)
     
     def getHealth(self):
         h = self.getHealthPair()

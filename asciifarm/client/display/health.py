@@ -16,8 +16,8 @@ class Health:
         self.widget = widget
     
     def setHealth(self, health, maxHealth):
-        self.health = health
-        self.maxHealth = maxHealth
+        self.health = health or 0
+        self.maxHealth = maxHealth or 0
         self.widget.change()
     
     def update(self):
