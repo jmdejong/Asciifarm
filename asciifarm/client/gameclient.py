@@ -88,10 +88,9 @@ class Client:
                 self.display.setFieldCenter(msg[1])
             
             if msgType == "health":
-                health = msg[1]
-                if health:
-                    self.display.setHealth(*health)
-                else:
+                health, maxHealth = msg[1]
+                self.display.setHealth(health, maxHealth)
+                if maxHealth is None:
                     self.log("You have died. Restart the client to respawn")
             if msgType == "inventory":
                 self.display.setInventory(msg[1])
