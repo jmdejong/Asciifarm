@@ -4,9 +4,9 @@ from .component import Component
 
 class Portal(Component):
     
-    def __init__(self, destRoom, destPos=(0,0), mask=(False, False)):
+    def __init__(self, destRoom, destPos=None, mask=(False, False)):
         self.destRoom = destRoom
-        self.origin = destPos or (0,0)
+        self.origin = destPos
         self.mask = mask
     
     def attach(self, obj):
@@ -16,7 +16,9 @@ class Portal(Component):
     
     def onEnter(self, owner, obj, *data):
         offset = self.owner.getGround().getPos()
-        if isinstance(self.origin, str):
+        if self.origin is None:
+            dest = None
+        elif isinstance(self.origin, str):
             dest = self.origin
         else:
             dest = tuple(
