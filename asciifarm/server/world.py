@@ -22,7 +22,7 @@ class World:
         
         data = self.worldLoader.load()
         if data:
-            self.stepStamp = self.worldLoader.load()["steps"]
+            self.stepStamp = data["steps"]
     
     
     def createPlayer(self, name, data=None):
@@ -36,8 +36,6 @@ class World:
     def playerJoin(self, name):
         pl = self.activatePlayer(name)
         r = pl.getRoom()
-        if not r:
-            r = self.beginRoom
         pl.joinRoom(r)
         self.players[name] = pl
         return pl
