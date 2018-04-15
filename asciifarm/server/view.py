@@ -40,7 +40,9 @@ class View:
             changes |= {"health", "inventory", "ground", "equipment", "pos"}
         for change in changes:
             if change in changeActions:
-                data.append(changeActions[change](player))
+                val = changeActions[change](player)
+                if val is not None and val[1] is not None:
+                    data.append(val)
         
         room = self.world.getRoom(player.getRoom())
         if room:
