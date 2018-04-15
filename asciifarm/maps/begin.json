@@ -109,6 +109,11 @@
             "args": ["cave","stairup"],
             "kwargs": {"sprite": "stairdown", "size": 1}
         }, "floor"],
+        "H": [{
+            "type": "roomexit",
+            "args": ["_home.{player}"],
+            "kwargs": {"sprite": "entry", "size": 1}
+        }, "floor"],
         "a": ["ground", {
             "type": "spawner",
             "args": ["rat", 1, 300],

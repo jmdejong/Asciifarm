@@ -6,7 +6,7 @@ class Portal(Component):
     
     def __init__(self, destRoom, destPos=(0,0), mask=(False, False)):
         self.destRoom = destRoom
-        self.origin = destPos
+        self.origin = destPos or (0,0)
         self.mask = mask
     
     def attach(self, obj):
@@ -14,7 +14,7 @@ class Portal(Component):
         self.owner = obj
         
     
-    def onEnter(self, owner, obj=None, *data):
+    def onEnter(self, owner, obj, *data):
         offset = self.owner.getGround().getPos()
         if isinstance(self.origin, str):
             dest = self.origin
@@ -23,7 +23,8 @@ class Portal(Component):
                 self.origin[i] + (offset[i] if self.mask[i] else 0)
                 for i in range(2)
             )
-        obj.trigger("changeroom", self.destRoom, dest)
+        destRoom = self.destRoom.format(player=obj.getName())
+        obj.trigger("changeroom", destRoom, dest)
     
     def toJSON(self):
         return {

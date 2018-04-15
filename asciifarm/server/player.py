@@ -47,7 +47,8 @@ class Player:
         self.canChangeRoom = False
         room = self.world.getRoom(roomname)
         if not room:
-            raise Exception("Invalid Room")
+            room = self.world.getDefaultRoom()
+        roomname = room.getName()
         
         if self.entity:
             self.leaveRoom()

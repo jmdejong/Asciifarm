@@ -122,7 +122,7 @@ If you don't know how to help, [I made a list of suggestions on how to help](doc
 
 ## DONE
 
-- autofight/autoretaliate?
+- autofight/autoretaliate
 - red background flash when attacked
 - document map format
 - world chat

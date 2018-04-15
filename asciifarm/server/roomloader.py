@@ -6,7 +6,7 @@ from asciifarm.common import utils
 from . import room
 from . import loader
 
-
+baseExt = ".json"
 saveExt = ".save.json"
 
 class RoomLoader:
@@ -27,13 +27,22 @@ class RoomLoader:
     
     def load(self, name=None):
         if not name:
-            name = self.world["begin"]
+            return None
         base = None
         if name in self.world["rooms"]:
             try:
                 base = self._loadRoom(os.path.join(self.worldPath, self.world["rooms"][name]))
             except OSError:
                 return None
+        elif name[0] == '_':
+            templateName = name.split('.')[0]
+            try:
+                base = self._loadRoom(os.path.join(self.worldPath, templateName + baseExt))
+            except OSError:
+                return None
+        
+        if base == None:
+            return None
         
         saved = None
         
@@ -51,11 +60,10 @@ class RoomLoader:
         # This method should ensure that the save directory exists
         pass
     
+    def defaultRoomName(self):
+        return self.world["begin"]
     
     def save(self, room):
         self.makeSaveDir()
         utils.writeFileSafe(os.path.join(self.savePath, room.getName() + saveExt), json.dumps(room.getPreserved()))
     
-
-
-

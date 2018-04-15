@@ -123,5 +123,8 @@ class World:
         for player in self.getActivePlayers():
             self.savePlayer(player)
         self.saveWorld()
+    
+    def getDefaultRoom(self):
+        return self.getRoom(self.roomLoader.defaultRoomName())
         
 
