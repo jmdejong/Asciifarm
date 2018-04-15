@@ -39,8 +39,8 @@
 "A": ["input", ["attack", "west"]],
 "t": ["runinput"],
 "NEWLINE": ["runinput"],
-"KEY_PPAGE": "(self.display.scrollBack 1]",
-"KEY_NPAGE": "(self.display.scrollBack -1]"
+"KEY_PPAGE": ["scrollchat", 1],
+"KEY_NPAGE": ["scrollchat", -1]
 },
 "help": "Controls:\n wasd or arrows:\n    Move around\n e: Grab\n q: Drop\n E: Use/Equip\n r: Interact\n f: Attack\n t: Chat\n z: Unequip\n xcv: scroll\n ctrl-c: close client"
 }

@@ -24,7 +24,8 @@ class InputHandler:
             "select": self.select,
             "inputwithselected": self.actWithSelected,
             "eval": self.eval,
-            "exec": self.exec
+            "exec": self.exec,
+            "scrollchat": self.scrollChat
             }
     
     def execute(self, action):
@@ -88,5 +89,8 @@ class InputHandler:
     def exec(self, *texts):
         text = " ".join(texts)
         exec(text, {"self": self, "client": self.client, "connection": self.connection, "display": self.display})
+    
+    def scrollChat(self, lines):
+        self.display.scrollBack(lines)
     
     
