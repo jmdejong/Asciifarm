@@ -67,7 +67,7 @@ entities["dummy"] = lambda: Entity(
     sprite="dummy", height=1, flags={"occupied"}, components={"fighter": Fighter(maxHealth=20, strength=0), "alignment": Alignment(faction.NONE)})
 
 entities["spiketrap"] = lambda: Entity(
-    sprite="spikes", height=1, flags={"occupied"}, components={"fighter": Fighter(maxHealth=25, strength=25), "collision": Trap(), "serialize": Static("spiketrap")})
+    sprite="spikes", height=1, flags={"occupied"}, components={"fighter": Fighter(maxHealth=25, strength=25, attackable=False), "collision": Trap(), "serialize": Static("spiketrap")})
 
 entities["goblin"] = lambda home=None: Entity(sprite="goblin", height=1.2, components={
         "move": Move(slowness=3),

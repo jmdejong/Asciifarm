@@ -105,7 +105,6 @@ If you don't know how to help, [I made a list of suggestions on how to help](doc
 - labels
 - make farming more work
 - more crops
-- autofight/autoretaliate?
 - better reaction on player death
 - runtime-created rooms
 - display target enemy health
@@ -123,6 +122,7 @@ If you don't know how to help, [I made a list of suggestions on how to help](doc
 
 ## DONE
 
+- autofight/autoretaliate?
 - red background flash when attacked
 - document map format
 - world chat

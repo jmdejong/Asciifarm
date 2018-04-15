@@ -2,6 +2,8 @@
 
 def groundDistanceBetween(g1, g2):
     """ manhattan distance between two GroundPatch objects """
+    if g1 is None or g2 is None:
+        return float("inf")
     x1, y1 = g1.getPos()
     x2, y2 = g2.getPos()
     dx = abs(x1 - x2)

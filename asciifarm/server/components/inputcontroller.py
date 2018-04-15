@@ -18,6 +18,7 @@ class InputController(Component):
         }
         self.hasInteracted = False
         self.hasAttacked = False
+        self.target = None
             
     
     def attach(self, obj):
@@ -31,6 +32,7 @@ class InputController(Component):
             setattr(self, dep, obj.getComponent(dep))
         
         obj.addListener("roomjoin", self.roomJoin)
+        obj.addListener("damage", self.retaliate)
     
     def roomJoin(self, o, roomData, stamp):
         self.roomData = roomData
@@ -45,12 +47,13 @@ class InputController(Component):
         self.hasInteracted = False
         self.hasAttacked = False
         actions = self.actions
+        if actions:
+            self.target = None
         self.actions = []
         for action in actions:
             self.executeAction(action)
-        #while not self.actions.empty():
-            #action = self.actions.get()
-            #self.executeAction(action)
+        if self.target:
+            self.fighter.attack(self.target)
     
     def executeAction(self, action):
         
@@ -145,8 +148,9 @@ class InputController(Component):
         else:
             return
         for obj in objs:
-            if obj.getComponent("fighter") is not None and self.alignment.isEnemy(obj):
+            if self.fighter.canAttack(obj):
                 self.fighter.attack(obj)
+                self.target = obj
                 self.hasAttacked = True
                 break
     
@@ -160,5 +164,8 @@ class InputController(Component):
     
     def remove(self):
         self.controlEvent.removeListener(self.control)
+    
+    def retaliate(self, _self, attacker, damage):
+        self.target = attacker
 
 
