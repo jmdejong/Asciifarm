@@ -73,7 +73,7 @@
         ",": ["grass", "freeland"],
         "%":  [{
             "type": "roomexit",
-            "args": ["overview"],
+            "args": ["overview", "home"],
             "kwargs": {"sprite": "entry", "size": 1}
         }, "ground"]
     }
