@@ -25,8 +25,7 @@ class Portal(Component):
                 self.origin[i] + (offset[i] if self.mask[i] else 0)
                 for i in range(2)
             )
-        destRoom = self.destRoom.format(player=obj.getName())
-        obj.trigger("changeroom", destRoom, dest)
+        obj.trigger("changeroom", self.destRoom, dest)
     
     def toJSON(self):
         return {

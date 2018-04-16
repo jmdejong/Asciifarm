@@ -87,6 +87,7 @@ class Player:
     
     
     def on_changeroom(self, o, room, pos):
+        room = room.format(player=self.name, name=o.getName())
         if self.canChangeRoom:
             self.joinRoom(room, pos)
     
