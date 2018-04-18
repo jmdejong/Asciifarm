@@ -1,96 +1,73 @@
 
-import shlex
-
-class InvalidCommandException(Exception):
-    pass
-
+from commandhandler import CommandHandler
+from .keynames import nameFromKey
+import curses
+import curses.ascii
 
 class InputHandler:
     
-    def __init__(self, client, display, connection):
+    def __init__(self, client, keybindings):
         self.client = client
-        self.display = display
-        self.connection = connection
+        self.keybindings = keybindings
+        self.commandHandler = CommandHandler(self.client)
         
-        self.commands = {
-            "send": self.send,
-            "input": self.input,
-            "move": self.move,
-            "say": self.say,
-            "chat": self.chat,
-            "log": self.log,
-            "do": self.do,
-            "runinput": self.runInput,
-            "select": self.select,
-            "inputwithselected": self.actWithSelected,
-            "eval": self.eval,
-            "exec": self.exec,
-            "scrollchat": self.scrollChat
-            }
+        self.typing = False
+        self.string = ""
+        self.cursor = 0
     
-    def execute(self, action):
-        if isinstance(action[0], str):
-            command = action[0]
-            if command in self.commands:
-                self.commands[command](*action[1:])
-            else:
-                raise InvalidCommandException("Invalid command '{}'".format(command))
+    
+    def onInput(self, key):
+        if not self.typing:
+            keyName = nameFromKey(key)
+            if keyName in self.keybindings:
+                self.commandHandler.execute(self.keybindings[keyName])
         else:
-            raise Exception("Command should be a string")
-            
-        
+            self.addKey(key)
     
-    def send(self, data):
-        self.client.send(data)
     
-    def input(self, action):
-        self.send(["input", action])
-    
-    def move(self, direction):
-        self.input(["move", direction])
-    
-    def say(self, text):
-        self.input(["say", text])
-    
-    def chat(self, text):
-        self.send(["chat", text])
-    
-    def log(self, text):
-        self.client.log(text)
-    
-    def do(self, actions):
-        for action in actions:
-            self.execute(action)
-    
-    def runInput(self):
-        message = self.display.getString()
+    def processString(self, message):
         if message:
             if message[0] == '/':
                 if message[1] == '/':
-                    self.chat(message[1:])
+                    self.commandHandler.chat(message[1:])
                 else:
                     try:
-                        self.execute(shlex.split(message[1:]))
+                        self.commandHandler.execute(shlex.split(message[1:]))
                     except InvalidCommandException as e:
-                        self.log(", ".join(e.args))
+                        self.client.log(", ".join(e.args))
             else:
-                self.chat(message)
+                self.commandHandler.chat(message)
     
-    def select(self, widget, value, relative=False, modular=False):
-        self.display.getWidget(widget).select(value, relative, modular)
     
-    def actWithSelected(self, action, widget):
-        self.input([action, self.display.getWidget(widget).getSelected()])
+    def addKey(self, key):
+        if curses.ascii.isprint(key):
+            self.string = self.string[:self.cursor] + chr(key) + self.string[self.cursor:]
+            self.cursor += 1
+        elif key == curses.KEY_BACKSPACE or key == curses.ascii.BS or key == curses.ascii.DEL:
+            self.string = self.string[:self.cursor-1] + self.string[self.cursor:]
+            self.cursor = max(self.cursor - 1, 0)
+        elif key == curses.KEY_RIGHT:
+            self.cursor = max(self.cursor + 1, len(self.string))
+        elif key == curses.KEY_LEFT:
+            self.cursor = max(self.cursor - 1, 0)
+        elif key == curses.KEY_DC:
+            self.string = self.string[:self.cursor] + self.string[self.cursor+1:]
+        elif key == curses.KEY_HOME:
+            self.cursor = 0
+        elif key == curses.KEY_END:
+            self.cursor = len(self.string)
+        
+        elif key == curses.ascii.ESC or key == curses.KEY_DL:
+            self.typing = False
+            self.string = ""
+            self.cursor = 0
+        elif key == curses.ascii.LF or key == curses.ascii.CR:
+            message = self.string
+            self.string = ""
+            self.cursor = 0
+            self.typing = False
+            self.processString(message)
+        
     
-    def eval(self, *texts):
-        text = " ".join(texts)
-        self.log(eval(text, {"self": self, "client": self.client, "connection": self.connection, "display": self.display}))
-    
-    def exec(self, *texts):
-        text = " ".join(texts)
-        exec(text, {"self": self, "client": self.client, "connection": self.connection, "display": self.display})
-    
-    def scrollChat(self, lines):
-        self.display.scrollBack(lines)
     
     

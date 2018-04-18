@@ -15,7 +15,6 @@ from .display.screen import Screen
 from .display.display import Display
 
 from .inputhandler import InputHandler
-from .keynames import nameFromKey
 
 class Client:
     
@@ -28,8 +27,7 @@ class Client:
         self.logFile = logFile
         self.closeMessage = None
         
-        self.inputHandler = InputHandler(self, self.display, self.connection)
-        self.keybindings = keybindings["actions"]
+        self.inputHandler = InputHandler(self, keybindings["actions"])
         
         self.controlsString = keybindings.get("help", "")
         
@@ -128,12 +126,6 @@ class Client:
             with(open(self.logFile, 'a')) as f:
                 f.write(text+'\n')
     
-    def onInput(self, key):
-        keyName = nameFromKey(key)
-        if keyName in self.keybindings:
-            self.inputHandler.execute(self.keybindings[keyName])
-        
-    
     
     def command_loop(self):
         while self.keepalive:
@@ -141,7 +133,7 @@ class Client:
             if action[0] == "message":
                 self.update(action[1])
             elif action[0] == "input":
-                self.onInput(action[1])
+                self.inputHandler.onInput(action[1])
             elif action[0] == "error":
                 raise action[1]
             else:
