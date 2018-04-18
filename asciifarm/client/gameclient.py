@@ -8,8 +8,10 @@ import threading
 import json
 import getpass
 import argparse
-from .display.screen import Screen
 import string
+from queue import Queue
+
+from .display.screen import Screen
 from .display.display import Display
 
 from .inputhandler import InputHandler
@@ -24,6 +26,7 @@ class Client:
         self.keepalive = True
         self.connection = connection
         self.logFile = logFile
+        self.closeMessage = None
         
         self.inputHandler = InputHandler(self, self.display, self.connection)
         self.keybindings = keybindings["actions"]
@@ -31,6 +34,7 @@ class Client:
         self.controlsString = keybindings.get("help", "")
         
         self.display.showInfo(self.controlsString)
+        self.queue = Queue()
         
     
     def send(self, data):
@@ -38,20 +42,34 @@ class Client:
     
     def start(self):
         threading.Thread(target=self.listen, daemon=True).start()
+        threading.Thread(target=self.getInput, daemon=True).start()
+        
         self.connection.send(json.dumps(["name", self.name]))
         self.command_loop()
     
     def listen(self):
-        self.connection.listen(self.update, self.close)
+        self.connection.listen(self.pushMessage, self.onConnectionError)
     
-    def close(self, err=None):
+    def pushMessage(self, databytes):
+        self.queue.put(("message", databytes))
+    
+    def onConnectionError(self, error):
+        self.queue.put(("error", error))
+    
+    def getInput(self):
+        while True:
+            key = self.stdscr.getch()
+            self.queue.put(("input", key))
+    
+    def close(self, msg=None):
         self.keepalive = False
-        sys.exit()
+        self.closeMessage = msg
     
     
     def update(self, databytes):
-        if not self.keepalive:
-            sys.exit()
+        if len(databytes) == 0:
+            self.close("Connection closed by server")
+            return
         datastr = databytes.decode('utf-8')
         data = json.loads(datastr)
         if len(data) and isinstance(data[0], str):
@@ -61,12 +79,10 @@ class Client:
             if msgType == 'error':
                 error = msg[1]
                 if error == "nametaken":
-                    print("error: name is already taken", file=sys.stderr)
-                    self.close()
+                    self.close("error: name is already taken")
                     return
                 if error == "invalidname":
-                    print("error: "+ msg[2], file=sys.stderr)
-                    self.close()
+                    self.close("error: "+ msg[2])
                     return
                 self.log(error)
             if msgType == 'field':
@@ -112,15 +128,24 @@ class Client:
             with(open(self.logFile, 'a')) as f:
                 f.write(text+'\n')
     
+    def onInput(self, key):
+        keyName = nameFromKey(key)
+        if keyName in self.keybindings:
+            self.inputHandler.execute(self.keybindings[keyName])
+        
+    
+    
     def command_loop(self):
         while self.keepalive:
-            key = self.stdscr.getch()
-            if key == 27:
-                self.keepalive = False
-                return
-            keyName = nameFromKey(key)
-            if keyName in self.keybindings:
-                self.inputHandler.execute(self.keybindings[keyName])
+            action = self.queue.get()
+            if action[0] == "message":
+                self.update(action[1])
+            elif action[0] == "input":
+                self.onInput(action[1])
+            elif action[0] == "error":
+                raise action[1]
+            else:
+                raise Exception("invalid action in queue")
     
 
 
