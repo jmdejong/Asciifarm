@@ -71,5 +71,9 @@ class Window:
         x, y = pos
         return self.win.getch(y, x)
     
+    def setAttr(self, pos, attr, num=1):
+        x, y = pos
+        self.win.chgat(y, x, num, attr)
+    
     
     

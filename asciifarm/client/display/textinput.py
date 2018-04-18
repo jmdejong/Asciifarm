@@ -4,28 +4,23 @@ import curses
 class TextInput:
     
     def __init__(self):
-        self.reading = False
         self.widget = None
+        self.text = ""
+        self.cursor = 0
     
     def setWidget(self, widget):
         self.widget = widget
     
-    def getString(self):
-        win = self.widget.getWin()
-        if not win:
-            return None
-        self.reading = True
-        curses.echo()
-        curses.nocbreak()
-        win.addLine((0, 0), ">")
-        string = win.getStr((2,0))
-        curses.noecho()
-        curses.cbreak()
-        self.reading = False
-        win.erase()
-        win.noutrefresh()
-        self.widget.doUpdate()
-        return string
+    def setText(self, text, cursor):
+        self.text = text
+        self.cursor = cursor
+        self.widget.change()
     
     def update(self):
-        pass
+        win = self.widget.getWin()
+        width, height = win.getSize()
+        win.erase()
+        win.addLine((0, 0), self.text)
+        if self.cursor >= 0 and self.cursor <= len(self.text):
+            win.setAttr((self.cursor, 0), curses.A_REVERSE)
+        win.noutrefresh()

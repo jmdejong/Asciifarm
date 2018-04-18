@@ -126,9 +126,8 @@ class Display:
         """This returns the character belonging to some spritename. This does not read a character"""
         return self.characters.get(sprite, self.defaultChar)
     
-    def getString(self):
-        """This does actually read input"""
-        return str(self.getWidget("textinput").getString(), "utf-8")
+    def setInputString(self, string, cursor):
+        self.getWidget("textinput").setText(string, cursor)
     
     def update(self):
         changed = False

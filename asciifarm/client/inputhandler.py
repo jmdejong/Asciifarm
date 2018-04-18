@@ -1,8 +1,11 @@
 
-from commandhandler import CommandHandler
-from .keynames import nameFromKey
 import curses
 import curses.ascii
+import shlex
+
+from commandhandler import CommandHandler, InvalidCommandException
+from .keynames import nameFromKey
+
 
 class InputHandler:
     
@@ -38,6 +41,12 @@ class InputHandler:
             else:
                 self.commandHandler.chat(message)
     
+    def startTyping(self):
+        self.typing = True
+        self.showString()
+    
+    def showString(self):
+        self.client.display.setInputString(self.string, self.cursor if self.typing else -1)
     
     def addKey(self, key):
         if curses.ascii.isprint(key):
@@ -47,7 +56,7 @@ class InputHandler:
             self.string = self.string[:self.cursor-1] + self.string[self.cursor:]
             self.cursor = max(self.cursor - 1, 0)
         elif key == curses.KEY_RIGHT:
-            self.cursor = max(self.cursor + 1, len(self.string))
+            self.cursor = min(self.cursor + 1, len(self.string))
         elif key == curses.KEY_LEFT:
             self.cursor = max(self.cursor - 1, 0)
         elif key == curses.KEY_DC:
@@ -68,6 +77,8 @@ class InputHandler:
             self.typing = False
             self.processString(message)
         
+        self.showString()
+    
     
     
     
