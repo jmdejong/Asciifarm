@@ -3,7 +3,7 @@ import curses
 import curses.ascii
 import shlex
 
-from commandhandler import CommandHandler, InvalidCommandException
+from .commandhandler import CommandHandler, InvalidCommandException
 from .keynames import nameFromKey
 
 
