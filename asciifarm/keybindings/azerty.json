@@ -40,7 +40,8 @@
 "t": ["runinput"],
 "NEWLINE": ["runinput"],
 "KEY_PPAGE": ["scrollchat", 1],
-"KEY_NPAGE": ["scrollchat", -1]
+"KEY_NPAGE": ["scrollchat", -1],
+"/": ["runinput", "/"]
 },
 "help": "Controls:\n zqsd or arrows:\n    Move around\n e: Grab\n q: Drop\n E: Use/Equip\n r: Interact\n f: Attack\n t: Chat\n w: Unequip\n xcv: scroll\n ctrl-c: close client"
 }

@@ -61,8 +61,8 @@ class CommandHandler:
         for action in actions:
             self.execute(action)
     
-    def runInput(self):
-        self.client.inputHandler.startTyping()
+    def runInput(self, startText=""):
+        self.client.inputHandler.startTyping(startText)
     
     def select(self, widget, value, relative=False, modular=False):
         self.client.display.getWidget(widget).select(value, relative, modular)

@@ -41,8 +41,12 @@ class InputHandler:
             else:
                 self.commandHandler.chat(message)
     
-    def startTyping(self):
+    def startTyping(self, startText=""):
         self.typing = True
+        if startText and not self.string:
+            self.string = startText
+            self.cursor = len(self.string)
+            
         self.showString()
     
     def showString(self):
@@ -67,15 +71,20 @@ class InputHandler:
             self.cursor = len(self.string)
         
         elif key == curses.ascii.ESC or key == curses.KEY_DL:
+            # throw away entered string and go back to game
             self.typing = False
             self.string = ""
             self.cursor = 0
         elif key == curses.ascii.LF or key == curses.ascii.CR:
+            # process entered string and reset it
             message = self.string
             self.string = ""
             self.cursor = 0
             self.typing = False
             self.processString(message)
+        elif key == curses.ascii.TAB:
+            # return to game but keep entered string
+            self.typing = False
         
         self.showString()
     
