@@ -3,7 +3,6 @@
 import os
 import sys
 
-import curses
 import threading
 import json
 import getpass

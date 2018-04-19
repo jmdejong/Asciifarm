@@ -20,7 +20,7 @@ class TextInput:
         win = self.widget.getWin()
         width, height = win.getSize()
         win.erase()
-        win.addLine((0, 0), self.text)
+        win.addLine((0, 0), self.text[:width])
         if self.cursor >= 0 and self.cursor <= len(self.text):
-            win.setAttr((self.cursor, 0), curses.A_REVERSE)
+            win.setAttr((min(self.cursor, width-1), 0), curses.A_REVERSE)
         win.noutrefresh()

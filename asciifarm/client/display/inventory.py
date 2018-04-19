@@ -1,5 +1,4 @@
 
-import curses
 from asciifarm.common import utils
 
 class Inventory:

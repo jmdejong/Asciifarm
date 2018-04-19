@@ -1,6 +1,5 @@
 
 
-import curses
 from .field import Field
 from .info import Info
 from .health import Health

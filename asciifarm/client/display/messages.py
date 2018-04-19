@@ -1,5 +1,4 @@
 
-import curses
 import textwrap
 
 class Messages():
