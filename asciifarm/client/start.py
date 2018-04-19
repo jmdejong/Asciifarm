@@ -25,6 +25,8 @@ def main(name, socketType, address, keybindings, characters, colours=False, logf
     
     closeMessage = None
     
+    os.environ.setdefault("ESCDELAY", "25")
+    
     def start(stdscr):
         display = Display(stdscr, characters, colours)
         client = Client(stdscr, display, name, connection, keybindings, logfile)
