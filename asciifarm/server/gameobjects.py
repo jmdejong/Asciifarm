@@ -74,7 +74,7 @@ entities["goblin"] = lambda home=None: Entity(sprite="goblin", height=1.2, compo
         "fighter": Fighter(maxHealth=15, strength=5, slowness=8),
         "alignment": Alignment(faction.EVIL),
         "controller": MonsterAi(viewDist=8, moveChance=0.02, home=home),
-        "loot": Loot([("sword", .05), ("club", .1), ("food", .25)])
+        "loot": Loot([("sword", .05), ("club", .1), ("radishes", .25)])
         })
 
 entities["troll"] = lambda home=None: Entity(sprite="troll", height=1.8, components={
@@ -90,7 +90,7 @@ entities["rat"] = lambda home=None: Entity(sprite="rat", height=1, components={
         "fighter": Fighter(maxHealth=8, strength=2, slowness=6),
         "alignment": Alignment(faction.EVIL),
         "controller": MonsterAi(viewDist=3, moveChance=0.08, home=home, homesickness=0.1),
-        "loot": Loot([("seed", 0.9), ("seed", 0.3)])
+        "loot": Loot([("radishseed", 0.9), ("radishseed", 0.3)])
         })
 
 entities["spawner"] = lambda objType, number, delay, sprite=None, name=None, height=0, setHome=False, initialSpawn=True, objArgs=None, objKwargs=None: Entity(
@@ -98,19 +98,24 @@ entities["spawner"] = lambda objType, number, delay, sprite=None, name=None, hei
         "spawn": Spawner(objType, number, delay, setHome, initialSpawn, objArgs, objKwargs),
         "serialize": Static("spawner", objType, number, delay, sprite, name, height, setHome, initialSpawn, objArgs, objKwargs)})
 
-entities["sownseed"] = lambda: Entity(sprite="seed", height=0.05, name="plantedseed", flags={"occupied"}, components={"grow": Growing("youngplant", 100)})
+entities["sownradishseed"] = lambda: Entity(sprite="seed", height=0.05, name="plantedseed", flags={"occupied"}, components={"grow": Growing("youngradish", 2000)})
+entities["sownseed"] = entities["sownradishseed"]
 
-entities["youngplant"] = lambda: Entity(sprite="youngplant", height=0.5, flags={"occupied"}, components={"grow": Growing("plant", 200)})
+entities["youngradishplant"] = lambda: Entity(sprite="youngplant", height=0.5, flags={"occupied"}, components={"grow": Growing("radishplant", 4000)})
+entities["youngplant"] = entities["youngradishplant"]
 
-entities["plant"] = lambda: Entity(sprite="plant", height=1.2, flags={"occupied"}, components={
+entities["radishplant"] = lambda: Entity(sprite="plant", name="radishplant", height=1.2, flags={"occupied"}, components={
         "interact": Harvest(),
-        "loot": Loot([("seed", .92), ("seed", .20), ("food", .8), ("food", .4)]),
-        "serialize": Static("plant")
+        "loot": Loot([("radishseed", .92), ("radishseed", .20), ("radishes", .8), ("radishes", .4)]),
+        "serialize": Static("radishplant")
         })
+entities["plant"] = entities["radishplant"]
 
-entities["food"] = lambda: Entity(sprite="food", height=0.3, components={"item": Food(20), "serialize": Static("food")})
+entities["radishes"] = lambda: Entity(sprite="food", name="radishes", height=0.3, components={"item": Food(2), "serialize": Static("radishes")})
+entities["food"] = entities["radishes"]
 
-entities["seed"] = lambda: Entity(sprite="seed", height=0.2, components={"item": Build("sownseed", flagsNeeded={"soil"}, blockingFlags={"occupied", "solid"}), "serialize": Static("seed")})
+entities["radishseed"] = lambda: Entity(sprite="seed", name="radishseed", height=0.2, components={"item": Build("sownseed", flagsNeeded={"soil"}, blockingFlags={"occupied", "solid"}), "serialize": Static("radishseed")})
+entities["seed"] = entities["radishseed"]
 
 entities["builtwall"] = lambda: Entity(
     sprite="wall", height=2, flags={"solid"}, components={
