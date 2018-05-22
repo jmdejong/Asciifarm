@@ -40,7 +40,7 @@
     },
     "writable": {
         "engravedwall": [15, 8],
-        "emptyletter": [15, 0]
+        "emptyletter": [7, 0]
     },
     "default": ["?", 7],
     "charwidth": 1,
