@@ -1,19 +1,11 @@
 
 ## TODO
 
-- player-owned doors (and items)
 - unify object creation
-- store non-unique and stateless objects as string
 - write howto for entity creation
 - reconsider getters and setters
-- different messages for in-game log, let client construct them
 - log chat messages separately server-side
 - show ground permissions
-- show adjacent objects
-- have a difference between ground-like items and interesting items
-- custom getstr
-- tilled soil
-- chat colours
 - trading
 - currency?
 - authentication
@@ -21,13 +13,10 @@
 - make farming more work
 - more crops
 - better reaction on player death
-- runtime-created rooms
 - display target enemy health
 - better code documentation
 - testing
-- tutorial room
 - support websockets
-- windows comptibility (libtcod/tdl instead of ncurses?)
 - write converter to convert tiled map files to readable files
 
 ## Other Ideas
@@ -35,8 +24,22 @@
 - multicharacter sprites
 - plants growing as cellular automata
 
+## See github issues
+
+- windows comptibility (libtcod/tdl instead of ncurses?)
+- player-owned doors (and items)
+- different messages for in-game log, let client construct them
+- chat colours
+- show adjacent objects
+- have a difference between ground-like items and interesting items
+- tilled soil
+- tutorial room
+
 ## DONE
 
+- store non-unique and stateless objects as string
+- custom getstr
+- runtime-created rooms
 - autofight/autoretaliate
 - red background flash when attacked
 - document map format
