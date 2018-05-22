@@ -121,6 +121,9 @@ class Room:
             y %= self.height
             pos = (x, y)
         if obj is not None:
+            place = self.get(pos)
+            if place is None:
+                raise Exception("Position {} does not exist in room {}".format(pos, self.name))
             obj.place(self.get(pos))
     
     def removeObj(self, pos, obj):
