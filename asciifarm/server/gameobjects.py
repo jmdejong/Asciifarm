@@ -146,6 +146,8 @@ entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, 
 
 entities["hardwood"] = lambda: Entity(sprite="hardwood", height=0.4, components={"item": Build("builtwall", flagsNeeded={"freeland"}, blockingFlags={"solid", "occupied"}), "serialize": Static(None)})
 
+entities["engraved"] = lambda c: Entity(sprite="engravedwall-"+c, height=2, flags={"solid"}, components={"serialize": Static("wall", c)})
+
 def makeEntity(entType, roomData, *args, preserve=False, **kwargs):
     entity = entities[entType](*args, **kwargs)
     entity.construct(roomData, preserve)

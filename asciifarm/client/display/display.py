@@ -15,6 +15,7 @@ from asciifarm.common.utils import get
 
 SIDEWIDTH = 20
 
+ALPHABET = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 
 class Display:
     
@@ -37,6 +38,13 @@ class Display:
             vals = parseSprite(sprite)
             if vals:
                 self.characters[name] = vals
+        
+        for name, colours in charMap.get("writable", {}).items():
+            fg = get(colours, 0)
+            bg = get(colours, 1)
+            for i in range(min(len(ALPHABET), len(charMap.get("alphabet", [])))):
+                self.characters[name + '-' + ALPHABET[i]] = (charMap["alphabet"][i], fg, bg)
+        
         self.defaultChar = parseSprite(charMap.get("default", "?"))
         self.screen = Screen(self, stdscr, self.colours)
         

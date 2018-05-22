@@ -38,6 +38,9 @@
         "opendoor": ["\"",3 ],
         " ": [" ", 7]
     },
+    "writable": {
+        "engravedwall": [15, 8]
+    },
     "default": ["?", 7],
     "charwidth": 1,
     "healthfull": ["#", 7, 2],
