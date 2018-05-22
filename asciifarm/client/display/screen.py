@@ -52,7 +52,8 @@ class Screen:
     def makeWin(self, x, y, width, height):
         if width < 1 or height < 1:
             win = None
-        win = curses.newwin(height, width, y, x)
+        else:
+            win = curses.newwin(height, width, y, x)
         return Window(win, self.colours)
     
     def getWin(self, name):

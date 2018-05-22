@@ -6,13 +6,8 @@ class Window:
     
     def __init__(self, win, colours=None):
         
-        self.setWin(win)
-        self.colours = colours
-            
-    
-    
-    def setWin(self, win):
         self.win = win
+        self.colours = colours
     
     def getSize(self):
         if not self.win:
@@ -30,6 +25,9 @@ class Window:
         """Draw a string that does not contain newlines or characters with larger width
         
         long lines are cropped to fit in the window"""
+        
+        if not self.win:
+            return
         x, y = pos
         width, height = self.getSize()
         string = string[:width-x]
@@ -41,6 +39,8 @@ class Window:
 
     
     def _addstr(self, y, x, string, *args):
+        if not self.win:
+            return
         width, height = self.getSize()
         if y == height-1 and x+len(string) == width:
             if len(string) > 1:
@@ -58,18 +58,17 @@ class Window:
             self.win.addstr(y, x, string, *args)
     
     def erase(self):
-        self.win.erase()
+        if self.win:
+            self.win.erase()
     
     def noutrefresh(self):
-        self.win.noutrefresh()
-    
-    def getCh(self, pos):
-        x, y = pos
-        return self.win.getch(y, x)
+        if self.win:
+            self.win.noutrefresh()
     
     def setAttr(self, pos, attr, num=1):
-        x, y = pos
-        self.win.chgat(y, x, num, attr)
+        if self.win:
+            x, y = pos
+            self.win.chgat(y, x, num, attr)
     
     
     
