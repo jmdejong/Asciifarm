@@ -1,12 +1,13 @@
 {
-    "begin": "begin",
+    "begin": "tutorial",
     "rooms": {
         "begin": "begin.json",
         "basement": "basement.json",
         "right": "right.json",
         "overview": "smallview.json",
         "town": "town.json",
-        "cave": "cave.json"
+        "cave": "cave.json",
+        "tutorial": "tutorial.json"
     }
 }
     
