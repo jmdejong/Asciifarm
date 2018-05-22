@@ -123,7 +123,10 @@ class Room:
         if obj is not None:
             place = self.get(pos)
             if place is None:
-                raise Exception("Position {} does not exist in room {}".format(pos, self.name))
+                if pos not in self.places:
+                    raise Exception("Position {} does not exist in room {}. Available places: {}".format(pos, self.name, self.places))
+                else:
+                    raise Exception("Position {} at {} is not a valid position.".format(pos, self.places[pos]))
             obj.place(self.get(pos))
     
     def removeObj(self, pos, obj):
