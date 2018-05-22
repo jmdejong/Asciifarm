@@ -66,8 +66,8 @@ entities["rabbit"] = lambda: Entity(
 entities["dummy"] = lambda: Entity(
     sprite="dummy", height=1, flags={"occupied"}, components={"fighter": Fighter(maxHealth=20, strength=0), "alignment": Alignment(faction.NONE)})
 
-entities["spiketrap"] = lambda: Entity(
-    sprite="spikes", height=1, flags={"occupied"}, components={"fighter": Fighter(maxHealth=25, strength=25, attackable=False), "collision": Trap(), "serialize": Static("spiketrap")})
+entities["spiketrap"] = lambda damage=25: Entity(
+    sprite="spikes", height=1, flags={"occupied"}, components={"fighter": Fighter(maxHealth=25, strength=damage, attackable=False), "collision": Trap(), "serialize": Static("spiketrap")})
 
 entities["goblin"] = lambda home=None: Entity(sprite="goblin", height=1.2, components={
         "move": Move(slowness=3),
@@ -147,6 +147,8 @@ entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, 
 entities["hardwood"] = lambda: Entity(sprite="hardwood", height=0.4, components={"item": Build("builtwall", flagsNeeded={"freeland"}, blockingFlags={"solid", "occupied"}), "serialize": Static(None)})
 
 entities["engraved"] = lambda c: Entity(sprite="engravedwall-"+c, height=2, flags={"solid"}, components={"serialize": Static("wall", c)})
+
+entities["letter"] = lambda c: Entity(sprite="emptyletter-"+c, components={"serialize": Static("letter", c)})
 
 def makeEntity(entType, roomData, *args, preserve=False, **kwargs):
     entity = entities[entType](*args, **kwargs)

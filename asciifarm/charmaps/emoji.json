@@ -1,6 +1,6 @@
 {
     "mapping":{
-        "tree": ["Ｔ",0,2],
+        "tree": ["🌳",0,2],
         "wall": ["＃",7,8],
         "rock": ["Ｘ",7,8],
         "stone": ["ｏ",7],
@@ -37,10 +37,6 @@
         "closeddoor": ["＋",1 ,3],
         "opendoor": ["＂",3],
         " ": ["  ", 7]
-    },
-    "writable": {
-        "engravedwall": [15, 8],
-        "emptyletter": [15, 0]
     },
     "default": ["？", 7],
     "charwidth": 2,
