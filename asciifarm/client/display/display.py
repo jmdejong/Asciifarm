@@ -1,4 +1,5 @@
 
+import curses
 
 from .field import Field
 from .info import Info
@@ -21,7 +22,7 @@ class Display:
     
     def __init__(self, stdscr, charMap, colours=False):
         
-        if colours:
+        if colours and curses.COLORS > 0:
             self.colours = Colours()
         else:
             self.colours = None
