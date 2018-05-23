@@ -22,7 +22,7 @@ class Display:
     
     def __init__(self, stdscr, charMap, colours=False):
         
-        if colours and curses.COLORS > 0:
+        if colours and curses.has_colors and curses.COLORS > 1:
             self.colours = Colours()
         else:
             self.colours = None
