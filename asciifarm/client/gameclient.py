@@ -114,7 +114,6 @@ class Client:
             if msgType == "message":
                 self.log(msg[1])
         
-        
         self.display.update()
     
     def log(self, text):

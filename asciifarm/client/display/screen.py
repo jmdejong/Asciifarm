@@ -9,7 +9,19 @@ class Screen:
     
     def __init__(self, display, stdscr, colours):
         self.display = display
-        curses.curs_set(0)
+        try:
+            curses.curs_set(0)
+            self.cursorSet = False
+        except curses.error:
+            # Not all terminals support this functionality.
+            # When the error is ignored the screen will look a little uglier,
+            # A cursor will move around, but that's not terrible
+            # So in order to keep the game as accesible as possible to everyone, it should be safe to ignore the error.
+            self.cursorSet = True
+            # It is probably possible to make sure the cursor is only in a corner of the screen
+            # but I can't figure out how.
+            # it seems to ignore all my move commands unless I press a key
+            # I give up
         self.stdscr = stdscr
         self.colours = colours
         self.setWins()
@@ -67,7 +79,6 @@ class Screen:
         self.display.forceUpdate()
     
     def update(self):
-        
         curses.doupdate()
     
     def getWidth(self):
@@ -75,4 +86,5 @@ class Screen:
     
     def getHeight(self):
         return self.height
+    
     

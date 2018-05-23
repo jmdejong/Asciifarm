@@ -24,7 +24,7 @@ class Display:
         if colours:
             self.colours = Colours()
         else:
-                self.colours = None
+            self.colours = None
         self.characters = {}
         
         def parseSprite(sprite):
@@ -142,7 +142,6 @@ class Display:
             if self.forced or widget.isChanged():
                 widget.update()
                 changed = True
-        
         if changed:
             self.screen.update()
         self.forced = False
