@@ -37,7 +37,7 @@
     ],
     "mapping": {
         ",": "grass",
-        "Y": ["grass", "plant"],
+        "Y": ["grass", "radishplant"],
         "~": "water",
         "#": "wall",
         "X": "rock",
@@ -57,7 +57,7 @@
         }],
         ":": ["floor", {
             "type": "spawner",
-            "args": ["seed", 1, 1200],
+            "args": ["carrotseed", 1, 1200],
             "kwargs": {"initialSpawn": false}
         }],
         " ": []

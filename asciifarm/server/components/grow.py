@@ -43,7 +43,8 @@ class Growing(Component):
         
         self.owner.remove()
     
-    
+    def getTargetTime(self):
+        return self.targetTime
     
     def toJSON(self):
         return {

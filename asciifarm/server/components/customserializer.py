@@ -11,4 +11,4 @@ class CustomSerializer(Component):
         self.owner = obj
     
     def serialize(self):
-        return fn(self.owner)
+        return self.fn(self.owner)

@@ -85,7 +85,7 @@
     "mapping": {
         ",": ["grass", "freeland"],
         "'": ["grass"],
-        "Y": ["grass", "plant"],
+        "Y": ["grass", "radishplant"],
         "T": ["grass", "tree"],
         "~": "water",
         "=": ["water", "bridge"],
@@ -101,10 +101,10 @@
         "#": "wall",
         ":": ["ground", {
             "type": "spawner",
-            "args": ["seed", 1, 600],
+            "args": ["radishseed", 1, 600],
             "kwargs": {"initialSpawn": false}
         }],
-        ";": ["floor", "seed"],
+        ";": ["floor", "radishseed"],
         ".": "ground",
         "+": "floor",
         "X": "rock",
