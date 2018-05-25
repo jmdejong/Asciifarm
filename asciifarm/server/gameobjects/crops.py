@@ -81,6 +81,7 @@ createCrop("carrot", [
     Stage.Seedling(40),
     Stage("carrotplant", sprite="smallplant", height=0.5, harvest=[("carrot", 1, "carrotseed", 1)])
     ], 600)
+
 entities["carrot"] = lambda: Entity(sprite="food", name="carrot", height=0.3, components={"item": Food(4), "serialize": Static("carrot")})
 
 
@@ -92,23 +93,11 @@ createCrop("radish", [
     ], 10)
 
 entities["radishes"] = lambda: Entity(sprite="food", name="radishes", height=0.3, components={"item": Food(2), "serialize": Static("radishes")})
+
 entities["food"] = entities["radishes"]
-
-#entities["sownradishseed"] = lambda: Entity(sprite="seed", height=0.05, name="plantedseed", flags={"occupied"}, components={"grow": Growing("youngradishplant", 2000)})
 entities["sownseed"] = entities["plantedradishseed"]
-
-#entities["youngradishplant"] = lambda: Entity(sprite="youngplant", name="youngradishplant", height=0.5, flags={"occupied"}, components={"grow": Growing("radishplant", 4000)})
 entities["youngplant"] = entities["youngradishplant"]
-
-#entities["radishplant"] = lambda: Entity(sprite="plant", name="radishplant", height=1.2, flags={"occupied"}, components={
-        #"interact": Harvest(),
-        #"loot": Loot([("radishseed", .92), ("radishseed", .20), ("radishes", .8), ("radishes", .4)]),
-        #"serialize": Static("radishplant")
-        #})
 entities["plant"] = entities["radishplant"]
-
-
-#entities["radishseed"] = lambda: Entity(sprite="seed", name="radishseed", height=0.2, components={"item": Build("sownseed", flagsNeeded={"soil"}, blockingFlags={"occupied", "solid"}), "serialize": Static("radishseed")})
 entities["seed"] = entities["radishseed"]
 
 
