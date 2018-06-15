@@ -51,11 +51,11 @@ class Stage:
     
     @classmethod
     def Seedling(cls, duration):
-        return cls("planted{}seedling", duration=duration, sprite="seedling", height=0.05, shownname="seedling")
+        return cls("planted{}seedling", duration=duration, sprite="seedling", height=0.09, shownname="seedling")
     
     @classmethod
-    def YoungPlant(cls, duration):
-        return cls("young{}plant", duration=duration, sprite="youngplant", height=0.05, shownname="seedling")
+    def YoungPlant(cls, duration, height=0.4):
+        return cls("young{}plant", duration=duration, sprite="youngplant", height=height)
 
 
 def createCrop(name, stages, timestep=1):

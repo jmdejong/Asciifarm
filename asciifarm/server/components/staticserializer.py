@@ -10,7 +10,7 @@ class StaticSerializer(Component):
     """
     
     def __init__(self, data, *args, **kwargs):
-        if isinstance(data, str):
+        if isinstance(data, str) and (args or kwargs):
             self.data = {"type": data, "args": args, "kwargs": kwargs}
         else:
             self.data = data
