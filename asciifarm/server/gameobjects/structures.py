@@ -6,6 +6,8 @@ from ..components import StaticSerializer as Static
 from ..components import Change
 from ..components import Fighter
 from ..components import Alignment
+from .. import faction
+from ..components import Loot
 
 entities = {}
 
