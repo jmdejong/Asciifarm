@@ -60,7 +60,7 @@ def replaceplayeritems(data):
 
 
 def replaceobject(obj):
-    if not isinstance(obj, dict) or "name" not in obj or sprite not in obj:
+    if not isinstance(obj, dict) or "name" not in obj or "sprite" not in obj:
         return obj
     name = obj["name"]
     sprite = obj["sprite"]
