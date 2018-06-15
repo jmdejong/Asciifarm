@@ -3,6 +3,7 @@
 
 from ..entity import Entity
 from ..components import StaticSerializer as Static
+from ..components import CustomSerializer as Custom
 from ..components import Change
 from ..components import Fighter
 from ..components import Alignment
@@ -23,11 +24,18 @@ entities["house"] = lambda: Entity(sprite="house", height=3, flags={"solid"}, co
 entities["fence"] = lambda: Entity(sprite="fence", height=1, flags={"solid"}, components={"serialize": Static("fence")})
 
 
-entities["builtwall"] = lambda: Entity(
+entities["builtwall"] = lambda health=None: Entity(
     sprite="wall", height=2, flags={"solid"}, components={
-            "fighter": Fighter(maxHealth=100, strength=0),
-            "alignment": Alignment(faction.NONE),
-            "loot": Loot([("stone", 1)])})
+        "fighter": Fighter(maxHealth=100, strength=0, health=None),
+        "alignment": Alignment(faction.NONE),
+        "loot": Loot([("stone", 1)]),
+        "serialize": Custom(
+            lambda obj: {
+                "type": "builtwall",
+                "kwargs": {"health": obj.getComponent("fighter").health}
+            }
+        )
+    })
 
 
 entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={"interact": Change("opendoor"), "serialize": Static("closeddoor")})
