@@ -79,7 +79,7 @@ def createCrop(name, stages, timestep=1):
 createCrop("carrot", [
     Stage.Seed(20),
     Stage.Seedling(40),
-    Stage("carrotplant", sprite="smallplant", height=0.5, harvest=[("carrot", 1, "carrotseed", 1)])
+    Stage("carrotplant", sprite="smallplant", height=0.5, harvest=[("carrot", 1), ("carrotseed", 1)])
     ], 600)
 
 entities["carrot"] = lambda: Entity(sprite="food", name="carrot", height=0.3, components={"item": Food(4), "serialize": Static("carrot")})
