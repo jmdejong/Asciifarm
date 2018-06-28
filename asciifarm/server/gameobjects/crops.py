@@ -26,10 +26,13 @@ class Stage:
     
     def create(self, cropname="", nextstage=None, timestep=1):
         name = self.name.format(cropname)
-        def makeEntity():
+        def makeEntity(targetTime=None):
             components = {}
             if self.duration is not None:
-                components["grow"] = Growing(nextstage, self.duration*timestep)
+                if targetTime is None:
+                    components["grow"] = Growing(nextstage, self.duration*timestep)
+                else:
+                    components["grow"] = Growing(nextstage, targetTime=targetTime)
                 components["serialize"] = Custom(cropSerializer(name))
             else:
                 components["serialize"] = Static(name)
