@@ -141,7 +141,7 @@
             "type": "roomexit",
             "args": ["tutorial","tunnelout"]
         }, "floor"],
-        "s": ["grass", "choicetest"],
+        "s": ["grass", "trader"],
         " ": []
     }
 }

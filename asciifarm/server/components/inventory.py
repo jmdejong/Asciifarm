@@ -21,6 +21,9 @@ class Inventory(Component):
     def canAdd(self, item):
         return len(self.items) < self.capacity
     
+    def canAddAll(self, items):
+        return len(self.items) + len(items) <= self.capacity
+    
     def add(self, item):
         self.items.insert(0, item)
         item.addListener("drop", self.onDrop)
@@ -28,13 +31,16 @@ class Inventory(Component):
             self.owner.trigger("inventorychange")
     
     def drop(self, item):
-        if item in self.items:
+        if self.has(item):
             self.items.remove(item)
             if self.owner:
                 self.owner.trigger("inventorychange")
     
     def getItems(self):
         return list(self.items)
+    
+    def has(self, item):
+        return item in self.items
     
     def onDrop(self, item, *data):
         self.drop(item)

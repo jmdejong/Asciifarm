@@ -16,6 +16,7 @@ class CommandHandler:
             "input": self.input,
             "move": self.move,
             "say": self.say,
+            "pick": self.pick,
             "chat": self.chat,
             "log": self.log,
             "do": self.do,
@@ -54,8 +55,12 @@ class CommandHandler:
     def say(self, text):
         self.input(["say", text])
     
+    def pick(self, option):
+        self.input(["pick", option])
+    
     def chat(self, text):
         self.send(["chat", text])
+    
     
     def log(self, text):
         self.client.log(text)
