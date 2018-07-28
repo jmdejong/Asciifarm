@@ -1,5 +1,6 @@
 
 import shlex
+import json
 
 class InvalidCommandException(Exception):
     pass
@@ -23,7 +24,9 @@ class CommandHandler:
             "inputwithselected": self.actWithSelected,
             "eval": self.eval,
             "exec": self.exec,
-            "scrollchat": self.scrollChat
+            "scrollchat": self.scrollChat,
+            "json": self.json,
+            "ijson": self.ijson
             }
     
     def execute(self, action):
@@ -80,5 +83,11 @@ class CommandHandler:
     
     def scrollChat(self, lines):
         self.client.display.scrollBack(lines)
+    
+    def json(self, text):
+        self.send(json.loads(text))
+    
+    def ijson(self, text):
+        self.input(json.loads(text))
     
     
