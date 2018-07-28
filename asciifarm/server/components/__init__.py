@@ -14,6 +14,8 @@ from .move import Move
 from .monsterai import MonsterAi
 from .portal import Portal
 from .randomwalkcontroller import RandomWalkController
+from .select import Select
+from .selectable import Selectable
 from .spawner import Spawner
 from .staticserializer import StaticSerializer
 from .trap import Trap

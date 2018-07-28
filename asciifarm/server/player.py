@@ -13,6 +13,7 @@ from .components.alignment import Alignment
 from .components.target import Target
 from .components.equipment import Equipment
 from .components.listen import Listen
+from .components import Select
 from . import faction
 from . import entity
 
@@ -70,7 +71,8 @@ class Player:
                 "heal": Healing(interval=50),
                 "target": Target(),
                 "equipment": self.equipment,
-                "listen": Listen()
+                "listen": Listen(),
+                "select": Select()
                 })
         self.entity.construct(room.getRoomData())
         for attr in dir(self):
@@ -129,8 +131,14 @@ class Player:
         self.changes.add("ground")
         self.changes.add("pos")
     
+    def on_selection(self, o, obj):
+        self.changes.add("selection")
+    
     def on_sound(self, o, source, text):
-        self.messages.append(source.getName() + ": " + text)
+        if source is not None:
+            self.messages.append(source.getName() + ": " + text)
+        else:
+            self.messages.append(text)
         
     
     def control(self, action):
@@ -184,6 +192,11 @@ class Player:
             return None
         return self.entity.getGround().getPos()
     
+    def getSelected(self):
+        if not self.entity:
+            return None
+        return self.entity.getComponent("select").getSelected()
+    
     def shouldResetView(self):
         return self.resetView
     
@@ -201,11 +214,10 @@ class Player:
             #m.append(self.messages.get())
         return m
     
-    def getChanges(self):
-        return self.changes
-    
-    def resetChanges(self):
+    def readChanges(self):
+        changes = self.changes
         self.changes = set()
+        return changes
     
     def isActive(self):
         return bool(self.roomname and self.entity)
