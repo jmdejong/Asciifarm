@@ -2,13 +2,17 @@
 
 
 from ..entity import Entity
+from .. import faction
+from ..option import Option
+
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
 from ..components import Change
 from ..components import Fighter
 from ..components import Alignment
-from .. import faction
 from ..components import Loot
+from ..components import OptionMenu
+from ..components import Selectable
 
 entities = {}
 
@@ -56,4 +60,20 @@ entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, 
 
 
 entities["engraved"] = lambda c: Entity(sprite="engravedwall-"+c, height=2, flags={"solid"}, components={"serialize": Static("wall", c)})
+
+
+def pickLeft(obj):
+    obj.trigger("sound", None, "YOU PICKED LEFT!")
+    print("you picked left")
+def pickRight(obj):
+    obj.trigger("sound", None, "YOU PICKED RIGHT!")
+    print("you picked right")
+
+entities["choicetest"] = lambda: Entity(sprite="sign", height=1, components={
+    "interact": Selectable(),
+    "options": OptionMenu("Pick One", [
+        Option(pickLeft, "left"),
+        Option(pickRight, "right")])
+    })
+    
 

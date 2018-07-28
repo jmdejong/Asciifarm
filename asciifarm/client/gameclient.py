@@ -113,6 +113,12 @@ class Client:
                 self.display.setGround(msg[1])
             if msgType == "message":
                 self.log(msg[1])
+            if msgType == "options":
+                if msg[1] != None:
+                    description, options = msg[1]
+                    self.log(description)
+                    for option in options:
+                        self.log(option)
         
         self.display.update()
     

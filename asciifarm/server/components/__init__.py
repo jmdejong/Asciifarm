@@ -12,6 +12,7 @@ from .item import Item
 from .loot import Loot
 from .move import Move
 from .monsterai import MonsterAi
+from .optionmenu import OptionMenu
 from .portal import Portal
 from .randomwalkcontroller import RandomWalkController
 from .select import Select

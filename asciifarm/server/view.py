@@ -2,12 +2,24 @@ from . import grid
 
 # this class extracts the data to send to the clients from the world
 
+
+def onSelectionChange(p):
+    selected = p.getSelected()
+    if selected is None:
+        return ["options", None]
+    optionmenu = selected.getComponent("options")
+    if optionmenu is None:
+        return ["options", None]
+    options = [[o.name, o.description] for o in optionmenu.getOptions()]
+    return ["options", [optionmenu.description, options]]
+
 changeActions = {
     "health": lambda p: ["health", p.getHealthPair()],
     "inventory": lambda p: ["inventory", [obj.getName() for obj in p.getInventory()]],
     "equipment": lambda p: ["equipment", {slot: (item.getName() if item else None) for slot, item in p.getEquipment().items()}],
     "ground": lambda p: ["ground", [obj.getName() for obj in p.getGroundObjs() if obj.getName()]],
-    "pos": lambda p: ["playerpos", p.getPos()]
+    "pos": lambda p: ["playerpos", p.getPos()],
+    "selection": onSelectionChange
     }
 
 class View:
@@ -34,8 +46,7 @@ class View:
         for message in player.readMessages():
             data.append(["message", message])
         
-        changes = player.getChanges()
-        player.resetChanges()
+        changes = player.readChanges()
         if player.shouldResetView():
             changes |= {"health", "inventory", "ground", "equipment", "pos"}
         for change in changes:

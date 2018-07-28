@@ -14,7 +14,8 @@ class InputController(Component):
             "unequip": self.do_unequip,
             "interact": self.do_interact,
             "attack": self.do_attack,
-            "say": self.do_say
+            "say": self.do_say,
+            "pick": self.do_pick
         }
         self.hasInteracted = False
         self.hasAttacked = False
@@ -24,7 +25,7 @@ class InputController(Component):
     def attach(self, obj):
         self.owner = obj
         
-        for dep in {"inventory", "move", "fighter", "alignment", "equipment"}:
+        for dep in {"inventory", "move", "fighter", "alignment", "equipment", "select"}:
             if not obj.getComponent(dep):
                 # todo: better exception
                 raise Exception("InputController needs object with " + dep + " component")
@@ -158,6 +159,15 @@ class InputController(Component):
         if type(text) != str:
             return
         self.roomData.getEvent("sound").trigger(self.owner, text)
+    
+    def do_pick(self, option):
+        selected = self.select.getSelected()
+        if selected is None:
+            return
+        optionmenu = selected.getComponent("options")
+        if optionmenu is None:
+            return
+        optionmenu.choose(option, self.owner)
     
     def getInteractions(self):
         return []
