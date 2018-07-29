@@ -64,8 +64,6 @@ class Display:
         self.addWidget(Messages(), "msg")
         self.addWidget(TextInput(), "textinput")
         
-        self.lastinfostring = None
-        
         self.forced = False
         self.update()
     
@@ -103,10 +101,8 @@ class Display:
         
     
     def showInfo(self, infostring):
-        if infostring != self.lastinfostring:
-            self.getWidget("info").showString(infostring)
+        self.getWidget("info").showString(infostring)
             
-            self.lastinfostring = infostring
     
     def setInventory(self, items):
         self.getWidget("inventory").setInventory(items)

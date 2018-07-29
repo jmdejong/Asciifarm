@@ -6,13 +6,17 @@ class Info:
         self.changed = False
         self.lines = []
         self.widget = None
+        self.lastString = None
     
     def setWidget(self, widget):
         self.widget = widget
     
     def showString(self, string):
+        if string == self.lastString:
+            return
         self.lines = string.split('\n')
         self.widget.change()
+        self.lastString = string
     
     def update(self):
         win = self.widget.getWin()
