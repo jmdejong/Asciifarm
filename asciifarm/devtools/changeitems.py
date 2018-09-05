@@ -70,6 +70,7 @@ def replaceobject(obj):
         return "food"
     if name == "pebble":
         return "pebble"
+    return obj
 
 
 if __name__ == "__main__":

@@ -35,10 +35,12 @@ class Screen:
         
         sideW = 20
         sideX = width-sideW
+        
         msgH = clamp(height // 5, 3, 5)
         msgY = height - msgH-1
         inputH = 1
         inputY = msgY + msgH
+        
         healthY = 0
         healthH = self._limitHeight(2, healthY)
         groundY = healthY + healthH
@@ -54,6 +56,7 @@ class Screen:
             "field": self.makeWin(0, 0, sideX - 1, msgY),
             "msg": self.makeWin(0, msgY, sideX - 1, msgH),
             "textinput": self.makeWin(0, inputY, sideX - 1, inputH),
+            
             "health": self.makeWin(sideX, healthY, sideW, healthH),
             "ground": self.makeWin(sideX, groundY, sideW, groundH),
             "inventory": self.makeWin(sideX, invY, sideW, invH),
