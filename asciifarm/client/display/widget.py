@@ -32,7 +32,7 @@ class Widget:
         return self.changed
     
     def update(self):
-        if not self.getWin():
+        if not self.getWin() or self.getWin().hidden:
             return
-        self.impl.update()
+        self.impl.update(self.getWin())
         self.changed = False

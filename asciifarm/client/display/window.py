@@ -8,6 +8,7 @@ class Window:
         
         self.win = win
         self.colours = colours
+        self.hidden = False
     
     def getSize(self):
         if not self.win:

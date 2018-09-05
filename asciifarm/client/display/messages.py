@@ -27,8 +27,7 @@ class Messages():
         self.widget.update()
         self.widget.doUpdate()
     
-    def update(self):
-        win = self.widget.getWin()
+    def update(self, win):
         width, height = win.getSize()
         if height < 1:
             return

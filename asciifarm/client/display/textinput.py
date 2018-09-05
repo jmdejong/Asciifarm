@@ -16,8 +16,7 @@ class TextInput:
         self.cursor = cursor
         self.widget.change()
     
-    def update(self):
-        win = self.widget.getWin()
+    def update(self, win):
         width, height = win.getSize()
         win.erase()
         win.addLine((0, 0), self.text[:width])

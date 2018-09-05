@@ -40,8 +40,7 @@ class Inventory:
     def getNumItems(self):
         return len(self.items)
     
-    def update(self):
-        win = self.widget.getWin()
+    def update(self, win):
         width, height = win.getSize()
         height -= 1
         selected = self.selector

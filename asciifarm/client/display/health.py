@@ -19,8 +19,7 @@ class Health:
         self.maxHealth = maxHealth or 0
         self.widget.change()
     
-    def update(self):
-        win = self.widget.getWin()
+    def update(self, win):
         width, height = win.getSize()
         width -= 1
         barEnd = round(self.health/self.maxHealth * width) if self.maxHealth > 0 else 0

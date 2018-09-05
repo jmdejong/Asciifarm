@@ -18,8 +18,7 @@ class Info:
         self.widget.change()
         self.lastString = string
     
-    def update(self):
-        win = self.widget.getWin()
+    def update(self, win):
         width, height = win.getSize()
         lines = [line[:width-1] for line in self.lines][:height]
         win.erase()

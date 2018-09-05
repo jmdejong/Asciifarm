@@ -21,10 +21,6 @@ class Field:
         self.size = (width, height)
         self.pad.resize(height+1, width*self.charSize)
         self.widget.change()
-        win = self.widget.getWin()
-        if win:
-            win.erase()
-            win.noutrefresh()
     
     def changeCell(self, x, y, sprites):
         """ sprites must always have at least one element """
@@ -56,8 +52,7 @@ class Field:
     def _roundWidth(self, x):
         return x // self.charSize * self.charSize
     
-    def update(self):
-        win = self.widget.getWin()
+    def update(self, win):
         width, height = win.getSize()
         x, y = win.getPos()
         xmax = x + width
