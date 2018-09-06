@@ -1,20 +1,17 @@
 
 import curses
+from .widimp import WidImp
 
-class TextInput:
+class TextInput(WidImp):
     
     def __init__(self):
-        self.widget = None
         self.text = ""
         self.cursor = 0
-    
-    def setWidget(self, widget):
-        self.widget = widget
-    
+
     def setText(self, text, cursor):
         self.text = text
         self.cursor = cursor
-        self.widget.change()
+        self.change()
     
     def update(self, win):
         width, height = win.getSize()

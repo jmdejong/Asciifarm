@@ -68,11 +68,11 @@ class Display:
         self.update()
     
     def addWidget(self, w, name, winname=None):
-            if not winname:
-                winname = name
-            widget = Widget(w)
-            self.widgets[name] = widget
-            widget.setWin(winname, self.screen)
+        if not winname:
+            winname = name
+        widget = Widget(w)
+        self.widgets[name] = widget
+        widget.setWin(winname, self.screen)
     
     def getWidget(self, name):
         if name in self.widgets:

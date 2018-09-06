@@ -1,8 +1,8 @@
 
 import curses
+from .widimp import WidImp
 
-
-class Field:
+class Field(WidImp):
     
     
     def __init__(self, size=(1,1), charSize=1, colours=False):
@@ -12,15 +12,11 @@ class Field:
         self.center = (0, 0)
         self.colours = colours
         self.changed = False
-        self.widget = None
-    
-    def setWidget(self, widget):
-        self.widget = widget
     
     def resize(self, width, height):
         self.size = (width, height)
         self.pad.resize(height+1, width*self.charSize)
-        self.widget.change()
+        self.change()
     
     def changeCell(self, x, y, sprites):
         """ sprites must always have at least one element """
@@ -37,11 +33,11 @@ class Field:
             self.pad.addstr(y, x*self.charSize, char, self.colours.get(colour, bgcolour))
         else:
             self.pad.addstr(y, x*self.charSize, char)
-        self.widget.change()
+        self.change()
     
     def setCenter(self, pos):
         self.center = pos
-        self.widget.change()
+        self.change()
     
     def getWidth(self):
         return self.size[0]*self.charSize

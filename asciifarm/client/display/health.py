@@ -1,6 +1,8 @@
 
 
-class Health:
+from .widimp import WidImp
+
+class Health(WidImp):
     
     def __init__(self, char=('@',7,0), emptyChar=('-',7,0), colours=False):
         self.char = char
@@ -9,15 +11,11 @@ class Health:
         self.colours = colours
         self.health = 0
         self.maxHealth = 0
-        self.widget = None
-    
-    def setWidget(self, widget):
-        self.widget = widget
     
     def setHealth(self, health, maxHealth):
         self.health = health or 0
         self.maxHealth = maxHealth or 0
-        self.widget.change()
+        self.change()
     
     def update(self, win):
         width, height = win.getSize()

@@ -1,16 +1,14 @@
 
 from asciifarm.common import utils
 
-class Inventory:
+from .widimp import WidImp
+
+class Inventory(WidImp):
     
     def __init__(self, title):
         self.title = title
-        self.widget = None
         self.items = []
         self.selector = 0
-    
-    def setWidget(self, widget):
-        self.widget = widget
     
     def getSelected(self):
         return self.selector
@@ -27,12 +25,12 @@ class Inventory:
             value = invLen-1
         if value in range(invLen):
             self.selector = value
-            self.widget.change()
+            self.change()
     
     def setInventory(self, items):
         self.items = items
         self.selector = utils.clamp(self.selector, 0, len(items)-1)
-        self.widget.change()
+        self.change()
     
     def setTitle(self, title):
         self.title = title

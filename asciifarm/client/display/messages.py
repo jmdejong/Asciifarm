@@ -1,22 +1,20 @@
 
 import textwrap
 
-class Messages():
+from .widimp import WidImp
+
+class Messages(WidImp):
     
     def __init__(self):
         self.changed = False
         self.messages = []
-        self.widget = None
         self.scrolledBack = 0
-    
-    def setWidget(self, widget):
-        self.widget = widget
     
     def addMessage(self, message):
         self.messages.append(message)
         if self.scrolledBack:
             self.scrolledBack += 1
-        self.widget.change()
+        self.change()
     
     def scroll(self, amount, relative=True):
         if relative:
@@ -24,8 +22,7 @@ class Messages():
         else:
             self.scrolledBack = amount
         self.scrolledBack = max(self.scrolledBack, 0)
-        self.widget.update()
-        self.widget.doUpdate()
+        self.change()
     
     def update(self, win):
         width, height = win.getSize()
