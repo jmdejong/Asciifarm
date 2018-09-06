@@ -58,11 +58,12 @@ class Screen:
             "textinput": self.makeWin(0, inputY, sideX - 1, inputH),
             
             "health": self.makeWin(sideX, healthY, sideW, healthH),
-            "ground": self.makeWin(sideX, groundY, sideW, groundH),
-            "inventory": self.makeWin(sideX, invY, sideW, invH),
+            "ground": self.makeWin(sideX, groundY, sideW, invH),
+            "inventory": self.makeWin(sideX, groundY, sideW, invH),
             "equipment": self.makeWin(sideX, eqY, sideW, eqH),
             "info": self.makeWin(sideX, infoY, sideW, infoH)
         }
+
     
     def makeWin(self, x, y, width, height):
         if width < 1 or height < 1:

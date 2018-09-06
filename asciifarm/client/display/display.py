@@ -8,6 +8,7 @@ from .inventory import Inventory
 from .screen import Screen
 from .colours import Colours
 from .messages import Messages
+from .switcher import Switcher
 from .textinput import TextInput
 from .widget import Widget
 
@@ -47,7 +48,8 @@ class Display:
                 self.characters[name + '-' + ALPHABET[i]] = (charMap["alphabet"][i], fg, bg)
         
         self.defaultChar = parseSprite(charMap.get("default", "?"))
-        self.screen = Screen(self, stdscr, self.colours)
+        screen = Screen(self, stdscr, self.colours)
+        self.screen = screen
         
         self.widgets = {}
         
@@ -63,6 +65,10 @@ class Display:
         self.addWidget(Inventory("Equipment"), "equipment")
         self.addWidget(Messages(), "msg")
         self.addWidget(TextInput(), "textinput")
+        
+        
+        switcher = Switcher([self.widgets["ground"], self.widgets["inventory"]], 1)
+        self.addWidget(switcher, "switch")
         
         self.forced = False
         self.update()

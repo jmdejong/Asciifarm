@@ -11,6 +11,7 @@ class Widget:
         self.win = None
         self.screen = None
         self.changed = False
+        self.hidden = False
     
     def setWin(self, win, screen):
         self.win = win
@@ -25,14 +26,11 @@ class Widget:
     def change(self):
         self.changed = True
     
-    def doUpdate(self):
-        self.screen.update()
-    
     def isChanged(self):
         return self.changed
     
     def update(self):
-        if not self.getWin() or self.getWin().hidden:
+        if not self.getWin() or self.hidden:
             return
         self.impl.update(self.getWin())
         self.changed = False

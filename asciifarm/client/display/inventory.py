@@ -24,13 +24,22 @@ class Inventory(WidImp):
         if value >= invLen:
             value = invLen-1
         if value in range(invLen):
-            self.selector = value
-            self.change()
+            self.doSelect(value)
+    
+    def doSelect(self, value):
+        self.selector = value
+        self.change()
     
     def setInventory(self, items):
         self.items = items
         self.selector = utils.clamp(self.selector, 0, len(items)-1)
         self.change()
+    
+    def getItem(self, num):
+        return self.items[num]
+    
+    def getSelectedItem(self):
+        return self.getItem(self.getSelected())
     
     def setTitle(self, title):
         self.title = title

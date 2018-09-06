@@ -21,7 +21,8 @@ class CommandHandler:
             "log": self.log,
             "do": self.do,
             "runinput": self.runInput,
-            "select": self.select,
+            "selectwidget": self.selectWidget,
+            "selectitem": self.selectItem,
             "inputwithselected": self.actWithSelected,
             "eval": self.eval,
             "exec": self.exec,
@@ -72,8 +73,11 @@ class CommandHandler:
     def runInput(self, startText=""):
         self.client.inputHandler.startTyping(startText)
     
-    def select(self, widget, value, relative=False, modular=False):
-        self.client.display.getWidget(widget).select(value, relative, modular)
+    def selectWidget(self, value, relative=False, modular=False):
+        self.client.display.getWidget("switch").select(value, relative, modular)
+    
+    def selectItem(self, value, relative=False, modular=False):
+        self.client.display.getWidget("switch").getSelectedItem().getImpl().select(value, relative, modular)
     
     def actWithSelected(self, action, widget):
         self.input([action, self.client.display.getWidget(widget).getSelected()])

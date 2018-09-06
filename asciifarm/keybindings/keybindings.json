@@ -23,9 +23,10 @@
     ["input", ["interact", "south"]],
     ["input", ["interact", "east"]],
     ["input", ["interact", "west"]]]],
-"c": ["select", "inventory", 1, true, true],
-"x": ["select", "ground", 1, true, true],
-"v": ["select", "equipment", 1, true, true],
+"x": ["selectitem", -1, true, true],
+"c": ["selectitem", 1, true, true],
+"v": ["selectwidget", -1, true, true],
+"b": ["selectwidget", 1, true, true],
 "f": ["do", [
     ["input", ["attack"]],
     ["input", ["attack", "north"]],
