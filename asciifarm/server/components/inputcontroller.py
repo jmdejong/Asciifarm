@@ -59,14 +59,18 @@ class InputController(Component):
     def executeAction(self, action):
         
         kind = action[0]
-        if kind in self.handlers:
-            if len(action) > 1:
-                arg = action[1]
-            else:
-                arg = None
-            self.handlers[kind](arg)
+        if len(action) > 1:
+            arg = action[1]
         else:
+            arg = None
+        try:
+            handler = self.handlers.get(kind)
+        except TypeError:
+            handler = None
+        if handler is None:
             print("invalid action", action)
+            return
+        handler(arg)
     
     def do_move(self, direction):
         if direction not in {"north", "south", "east", "west"}:
@@ -90,11 +94,12 @@ class InputController(Component):
         if rank is None:
             rank = 0
         if rank not in range(len(items)):
-            return
+            return False
         obj = items[rank]
         self.inventory.drop(obj)
         obj.construct(self.roomData, preserve=True)
         obj.place(self.owner.getGround())
+        return True
         
     def do_use(self, rank):
         items = self.inventory.getItems()
