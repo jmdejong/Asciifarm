@@ -63,20 +63,19 @@ class Display:
         self.addWidget(Inventory("Inventory"), "inventory")
         self.addWidget(Inventory("Ground"), "ground")
         self.addWidget(Inventory("Equipment"), "equipment")
+        
+        
+        switcher = Switcher([self.widgets["ground"], self.widgets["inventory"], self.widgets["equipment"]], 1)
+        self.addWidget(switcher, "switch")
         self.addWidget(Messages(), "msg")
         self.addWidget(TextInput(), "textinput")
         
-        
-        switcher = Switcher([self.widgets["ground"], self.widgets["inventory"]], 1)
-        self.addWidget(switcher, "switch")
-        
         self.forced = False
-        self.update()
     
     def addWidget(self, w, name, winname=None):
         if not winname:
             winname = name
-        widget = Widget(w)
+        widget = Widget(w, name)
         self.widgets[name] = widget
         widget.setWin(winname, self.screen)
     

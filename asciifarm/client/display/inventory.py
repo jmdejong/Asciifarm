@@ -5,8 +5,9 @@ from .widimp import WidImp
 
 class Inventory(WidImp):
     
-    def __init__(self, title):
+    def __init__(self, title, titlebar="{}:"):
         self.title = title
+        self.titlebar = titlebar
         self.items = []
         self.selector = 0
     
@@ -47,7 +48,11 @@ class Inventory(WidImp):
     def getNumItems(self):
         return len(self.items)
     
+    def itemName(self, item):
+        return item
+    
     def update(self, win):
+        
         width, height = win.getSize()
         height -= 1
         selected = self.selector
@@ -55,11 +60,11 @@ class Inventory(WidImp):
         start = max(start, 0)
         end = start + height
         win.erase()
-        win.addLine((0,0), (self.title + ":")[:width])
+        win.addLine((0,0), (self.titlebar.format(self.title))[:width])
         for i, item in enumerate(self.items[start:end]):
             if i + start == selected:
                 win.addLine((0, i+1), '*')
-            win.addLine((1, i+1), item)
+            win.addLine((1, i+1), self.itemName(item))
         if end < len(self.items):
             win.addLine((width-1, height), "+")
         if start > 0:

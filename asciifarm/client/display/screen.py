@@ -43,13 +43,11 @@ class Screen:
         
         healthY = 0
         healthH = self._limitHeight(2, healthY)
-        groundY = healthY + healthH
-        groundH = self._limitHeight(6, groundY)
-        invY = groundY + groundH
-        invH = self._limitHeight(9, invY)
-        eqY = invY + invH
-        eqH = self._limitHeight(5, eqY)
-        infoY = eqY + eqH
+        indexY = healthY + healthH
+        indexH = self._limitHeight(4, indexY)
+        listY = indexY + indexH + 1
+        listH = self._limitHeight(12, listY)
+        infoY = listY + listH
         infoH = self._limitHeight(20, infoY)
         
         self.windows = {
@@ -58,9 +56,10 @@ class Screen:
             "textinput": self.makeWin(0, inputY, sideX - 1, inputH),
             
             "health": self.makeWin(sideX, healthY, sideW, healthH),
-            "ground": self.makeWin(sideX, groundY, sideW, invH),
-            "inventory": self.makeWin(sideX, groundY, sideW, invH),
-            "equipment": self.makeWin(sideX, eqY, sideW, eqH),
+            "switch": self.makeWin(sideX, indexY, sideW, indexH),
+            "ground": self.makeWin(sideX, listY, sideW, listH),
+            "inventory": self.makeWin(sideX, listY, sideW, listH),
+            "equipment": self.makeWin(sideX, listY, sideW, listH),
             "info": self.makeWin(sideX, infoY, sideW, infoH)
         }
 

@@ -1,17 +1,16 @@
 
-
-
 class Widget:
     
     
-    def __init__(self, impl):
+    def __init__(self, impl, name=None):
         self.impl = impl
-        self.impl.setWidget(self)
         
         self.win = None
         self.screen = None
         self.changed = False
         self.hidden = False
+        self.name = name
+        self.impl.setWidget(self)
     
     def setWin(self, win, screen):
         self.win = win

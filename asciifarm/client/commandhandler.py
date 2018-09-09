@@ -24,6 +24,9 @@ class CommandHandler:
             "selectwidget": self.selectWidget,
             "selectitem": self.selectItem,
             "inputwithselected": self.actWithSelected,
+            "use": self.useSelected,
+            "unuse": self.unUseSelected,
+            "take": self.takeSelected,
             "eval": self.eval,
             "exec": self.exec,
             "scrollchat": self.scrollChat,
@@ -81,6 +84,37 @@ class CommandHandler:
     
     def actWithSelected(self, action, widget):
         self.input([action, self.client.display.getWidget(widget).getSelected()])
+    
+    def useSelected(self):
+        widget = self.client.display.getWidget("switch").getSelectedItem()
+        selected = widget.getImpl().getSelected()
+        if widget.name in ("inventory", "equipment"):
+            action = "use"
+        elif widget.name == "ground":
+            action = "interact",
+        else:
+            return
+        self.input([action, selected])
+    
+    def unUseSelected(self):
+        widget = self.client.display.getWidget("switch").getSelectedItem()
+        selected = widget.getImpl().getSelected()
+        if widget.name == "inventory":
+            action = "drop"
+        elif widget.name == "equipment":
+            action = "unequip"
+        else:
+            return
+        self.input([action, selected])
+    
+    def takeSelected(self):
+        widget = self.client.display.getWidget("switch").getSelectedItem()
+        selected = widget.getImpl().getSelected()
+        if widget.name == "ground":
+            action = "take"
+        else:
+            return
+        self.input([action, selected])
     
     def eval(self, *texts):
         text = " ".join(texts)

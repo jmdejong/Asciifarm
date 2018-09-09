@@ -1,5 +1,5 @@
 
-from .widimp import WidImp
+
 from .inventory import Inventory
 
 class Switcher(Inventory):
@@ -8,7 +8,7 @@ class Switcher(Inventory):
     """
     
     def __init__(self, widgets, initial=0):
-        Inventory.__init__(self, " ")
+        Inventory.__init__(self, "", "")
         self.setInventory(widgets)
         
         for wid in widgets:
@@ -19,7 +19,11 @@ class Switcher(Inventory):
     def doSelect(self, value):
         self.getSelectedItem().hidden = True
         self.selector = value
+        self.change()
         newWid = self.getSelectedItem()
         newWid.hidden = False
         newWid.change()
     
+    def itemName(self, item):
+        return item.getImpl().title
+

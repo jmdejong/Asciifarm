@@ -10,8 +10,6 @@ import argparse
 import string
 from queue import Queue
 
-from .display.screen import Screen
-from .display.display import Display
 
 from .inputhandler import InputHandler
 
@@ -35,7 +33,8 @@ class Client:
         
     
     def send(self, data):
-        self.connection.send(json.dumps(data))
+        text = json.dumps(data)
+        self.connection.send(text)
     
     def start(self):
         threading.Thread(target=self.listen, daemon=True).start()

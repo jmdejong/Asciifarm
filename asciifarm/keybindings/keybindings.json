@@ -12,10 +12,10 @@
 "j": ["move", "south"],
 "l": ["move", "east"],
 "h": ["move", "west"],
-"e": ["inputwithselected", "take", "ground"],
-"q": ["inputwithselected", "drop", "inventory"],
-"E": ["inputwithselected", "use", "inventory"],
-"z": ["inputwithselected", "unequip", "equipment"],
+"e": ["input", ["take"]],
+"q": ["unuse"],
+"Q": ["take"],
+"E": ["use"],
 "R": ["input", ["interact"]],
 "r": ["do", [
     ["input", ["interact"]],
@@ -27,6 +27,10 @@
 "c": ["selectitem", 1, true, true],
 "v": ["selectwidget", -1, true, true],
 "b": ["selectwidget", 1, true, true],
+"-": ["selectitem", -1, true, true],
+"+": ["selectitem", 1, true, true],
+"/": ["selectwidget", -1, true, true],
+"*": ["selectwidget", 1, true, true],
 "f": ["do", [
     ["input", ["attack"]],
     ["input", ["attack", "north"]],
@@ -44,5 +48,5 @@
 "KEY_NPAGE": ["scrollchat", -1],
 "/": ["runinput", "/"]
 },
-"help": "Controls:\n wasd or arrows:\n    Move around\n e: Grab\n q: Drop\n E: Use/Equip\n r: Interact\n f: Attack\n t: Chat\n z: Unequip\n xcv: scroll\n ctrl-c: close client"
+"help": "Controls:\n wasd or arrows:\n    Move around\n e: Grab\n q: Drop/unequip\n   selected\n r: Interact\n f: Attack\n t: Chat\n E: Use selected\n Q: Take selected\n xc: select item\n vb: select menu\n ctrl-c: close client"
 }
