@@ -50,6 +50,8 @@ class Screen:
         infoY = listY + listH
         infoH = self._limitHeight(20, infoY)
         
+        lists = self.makeWin(sideX, listY, sideW, listH)
+        
         self.windows = {
             "field": self.makeWin(0, 0, sideX - 1, msgY),
             "msg": self.makeWin(0, msgY, sideX - 1, msgH),
@@ -57,9 +59,9 @@ class Screen:
             
             "health": self.makeWin(sideX, healthY, sideW, healthH),
             "switch": self.makeWin(sideX, indexY, sideW, indexH),
-            "ground": self.makeWin(sideX, listY, sideW, listH),
-            "inventory": self.makeWin(sideX, listY, sideW, listH),
-            "equipment": self.makeWin(sideX, listY, sideW, listH),
+            "ground": lists,
+            "inventory": lists,
+            "equipment": lists,
             "info": self.makeWin(sideX, infoY, sideW, infoH)
         }
 

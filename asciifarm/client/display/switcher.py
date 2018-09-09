@@ -8,7 +8,7 @@ class Switcher(Inventory):
     """
     
     def __init__(self, widgets, initial=0):
-        Inventory.__init__(self, "", "")
+        Inventory.__init__(self, "", "", "=")
         self.setInventory(widgets)
         
         for wid in widgets:
