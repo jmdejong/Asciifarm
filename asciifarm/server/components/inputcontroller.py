@@ -154,7 +154,7 @@ class InputController(Component):
         else:
             return
         for obj in objs:
-            if self.fighter.canAttack(obj):
+            if self.fighter.canAttack(obj) and self.alignment.isEnemy(obj):
                 self.fighter.attack(obj)
                 self.target = obj
                 self.hasAttacked = True
