@@ -35,7 +35,10 @@ class InputHandler:
                 else:
                     try:
                         command, _sep, arg = message[1:].partition(' ')
-                        self.commandHandler.execute([command, arg])
+                        try:
+                            self.commandHandler.execute([command, arg])
+                        except Exception as e:
+                            self.log(e)
                     except InvalidCommandException as e:
                         self.client.log(", ".join(e.args))
             else:

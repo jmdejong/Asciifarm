@@ -23,7 +23,7 @@ def loadKeybindings(name):
     for ftemplate in data.get("templates", []):
         if ftemplate.partition(os.sep)[0] in {".", ".."}:
             ftemplate = os.path.relpath(ftemplate, fname)
-        template = loadKeyBindings(ftemplate)
+        template = loadKeybindings(ftemplate)
         bindings.update(template.get("actions", {}))
         help = template.get("help", help)
     bindings.update(data.get("actions", {}))
@@ -31,7 +31,7 @@ def loadKeybindings(name):
     return {"actions": bindings, "help": help}
 
 
-standardCharFiles = {name, os.path.join(charmapPath, file) for name, file in {
+standardCharFiles = {name: os.path.join(charmapPath, file) for name, file in {
     "default": "default.json",
     "fullwith": "fullwidth.json",
     "fw": "fullwidth.json",

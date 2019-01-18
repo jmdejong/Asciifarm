@@ -51,17 +51,16 @@ class CommandHandler:
         }
     
     def execute(self, action):
-        try:
-            if isinstance(action[0], str):
-                command = action[0]
-                if command in self.commands:
-                    self.commands[command](*action[1:])
-                else:
-                    raise InvalidCommandException("Invalid command '{}'".format(command))
+        if action is None:
+            return
+        if isinstance(action[0], str):
+            command = action[0]
+            if command in self.commands:
+                self.commands[command](*action[1:])
             else:
-                raise Exception("Command should be a string")
-        except Exception as e:
-            self.log(e)
+                raise InvalidCommandException("Invalid command '{}'".format(command))
+        else:
+            raise Exception("Command should be a string")
     
     
     # Commands
