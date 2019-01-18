@@ -6,7 +6,7 @@ class TextInput(WidImp):
     
     def __init__(self):
         self.text = ""
-        self.cursor = 0
+        self.cursor = -1
 
     def setText(self, text, cursor):
         self.text = text
