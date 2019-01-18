@@ -1,7 +1,7 @@
 
 import os
 
-from .paths import keybindingsPath
+from .paths import keybindingsPath, charmapPath
 import json
 
 
@@ -13,32 +13,70 @@ standardKeyFiles = {
 def loadKeybindings(name):
     fname = None
     if name in standardKeyFiles:
-        fname = standardKeyFiles[name])
+        fname = standardKeyFiles[name]
     else:
         fname = name
     with open(fname) as f:
         data = json.load(f)
     bindings = {}
-    for template in data.get(templates, []):
-        if template.partition(os.sep)[0] in {".", ".."}:
-            template = os.path.relpath(template, fname)
-        bindings.update(loadKeybindings(template))
-    bindings.update(data["actions"])
-    return (bindings, data["help"])
+    help = ""
+    for ftemplate in data.get("templates", []):
+        if ftemplate.partition(os.sep)[0] in {".", ".."}:
+            ftemplate = os.path.relpath(ftemplate, fname)
+        template = loadKeyBindings(ftemplate)
+        bindings.update(template.get("actions", {}))
+        help = template.get("help", help)
+    bindings.update(data.get("actions", {}))
+    help = data.get("help", help)
+    return {"actions": bindings, "help": help}
 
+
+standardCharFiles = {name, os.path.join(charmapPath, file) for name, file in {
+    "default": "default.json",
+    "fullwith": "fullwidth.json",
+    "fw": "fullwidth.json",
+    "emoji": "emoji.json"
+}.items()}
 
 def loadCharmap(name):
     fname = None
-    if name in standardKeyFiles:
-        fname = standardKeyFiles[name])
+    if name in standardCharFiles:
+        fname = standardCharFiles[name]
     else:
         fname = name
     with open(fname) as f:
         data = json.load(f)
-    bindings = {}
-    for template in data.get(templates, []):
-        if template.partition(os.sep)[0] in {".", ".."}:
-            template = os.path.relpath(template, fname)
-        bindings.update(loadKeybindings(template))
-    bindings.update(data["actions"])
-    return (bindings, data["help"])
+    
+    templates = []
+    for ftemplate in data.get("templates", []):
+        if ftemplate.partition(os.sep)[0] in {".", ".."}:
+            ftemplate = os.path.relpath(ftemplate, fname)
+        templates.append(loadCharmap(ftemplate))
+    
+    templates.append(data)
+    
+    mapping = {}
+    writable = {}
+    default = None
+    charwidth = 1
+    healthfull = None
+    healthempty = None
+    alphabet = ""
+    
+    for template in templates:
+        mapping.update(template.get("mapping", {}))
+        writable.update(template.get("writable", {}))
+        default = template.get("default", default)
+        charwidth = template.get("charwidth", charwidth)
+        healthfull = template.get("healthfull", healthfull)
+        healthempty = template.get("healthempty", healthempty)
+        alphabet = template.get("alphabet", alphabet)
+    return {
+        "mapping": mapping,
+        "writable": writable,
+        "default": default,
+        "charwidth": charwidth,
+        "healthfull": healthfull,
+        "healthempty": healthempty,
+        "alphabet": alphabet
+    }

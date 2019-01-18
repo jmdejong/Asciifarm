@@ -8,11 +8,12 @@ import os
 import os.path
 
 from .start import main as clientmain
-from .paths import keybindingsPath, charmapPath
+#from .paths import keybindingsPath, charmapPath
+from . import loaders
 
 
-standardCharFiles = [name[:-5] for name in os.listdir(charMapPath) if name[-5:] == ".json"]
-standardKeyFiles = [name[:-5] for name in os.listdir(keybindingsPath) if name[-5:] == ".json"]
+#standardCharFiles = [name[:-5] for name in os.listdir(charMapPath) if name[-5:] == ".json"]
+#standardKeyFiles = [name[:-5] for name in os.listdir(keybindingsPath) if name[-5:] == ".json"]
 
 
 defaultAdresses = {
@@ -33,8 +34,8 @@ def main(argv=None):
     parser.add_argument("-a", "--address", help="The address of the socket. When the socket type is 'abstract' this is just a name. When it is 'unix' this is a filename. When it is 'inet' is should be in the format 'address:port', eg 'localhost:8080'. Defaults depends on the socket type")
     parser.add_argument("-s", "--socket", help="the socket type. 'unix' is unix domain sockets, 'abstract' is abstract unix domain sockets and 'inet' is inet sockets. ", choices=["abstract", "unix", "inet"], default="abstract")
     parser.add_argument('-k', '--keybindings', help='The file with the keybinding configuration. This file is a JSON file.', default="default")
-    parser.add_argument('-c', '--characters', help='The file with the character mappings for the graphics. If it is either of these names: {} it will be loaded from the charmaps directory.'.format(standardCharFiles), default="default")
-    parser.add_argument('-o', '--logfile', help='All game messages will be written to this file.'.format(standardCharFiles), default=None)
+    parser.add_argument('-c', '--characters', help='The file with the character mappings for the graphics. If it is either of these names: {} it will be loaded from the charmaps directory.'.format(list(loaders.standardCharFiles.items())), default="default")
+    parser.add_argument('-o', '--logfile', help='All game messages will be written to this file.', default=None)
     
     colourGroup = parser.add_mutually_exclusive_group()
     colourGroup.add_argument('-l', '--colours', '--colors', help='enable colours! :)', action="store_true")
@@ -42,19 +43,9 @@ def main(argv=None):
     
     args = parser.parse_args(argv)
     
+    charmap = loaders.loadCharmap(args.characters)
     
-    charFile = args.characters
-    if charFile in standardCharFiles:
-        charFile = os.path.join(charMapPath, charFile + ".json")
-    with open(charFile, 'r') as cf:
-        charMap = json.load(cf)
-    
-    keyFile = args.keybindings
-    if keyFile in standardKeyFiles:
-        keyFile = os.path.join(keybindingsPath, keyFile + ".json")
-    with open(keyFile, 'r') as kf:
-        # todo: support yaml
-        keybindings = json.load(kf)
+    keybindings = loaders.loadKeybindings(args.keybindings)
     
     address = args.address
     if address is None:
@@ -79,5 +70,5 @@ def main(argv=None):
         else:
             name = username
     
-    clientmain(name, args.socket, address, keybindings, charMap, colours, args.logfile)
+    clientmain(name, args.socket, address, keybindings, charmap, colours, args.logfile)
 
