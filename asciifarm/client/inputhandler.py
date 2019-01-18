@@ -1,7 +1,6 @@
 
 import curses
 import curses.ascii
-import shlex
 
 from .commandhandler import CommandHandler, InvalidCommandException
 from .keynames import nameFromKey
@@ -35,7 +34,8 @@ class InputHandler:
                     self.commandHandler.chat(message[1:])
                 else:
                     try:
-                        self.commandHandler.execute(shlex.split(message[1:]))
+                        command, _sep, arg = message[1:].partition(' ')
+                        self.commandHandler.execute([command, arg])
                     except InvalidCommandException as e:
                         self.client.log(", ".join(e.args))
             else:

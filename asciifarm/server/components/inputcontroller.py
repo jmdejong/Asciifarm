@@ -156,7 +156,7 @@ class InputController(Component):
         for direction in directions:
             if direction is None:
                 objects += self.owner.getNearObjects()
-            elif direction in nearPlaces:
+            elif isinstance(direction, str) and direction in nearPlaces:
                 objects += nearPlaces[direction].getObjs()
         return objects
         

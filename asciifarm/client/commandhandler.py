@@ -1,6 +1,11 @@
 
-import shlex
 import json
+
+try:
+    import hy
+except ImportError as e:
+    hy is None
+    hyErr = e
 
 class InvalidCommandException(Exception):
     pass
@@ -31,18 +36,32 @@ class CommandHandler:
             "exec": self.exec,
             "scrollchat": self.scrollChat,
             "json": self.json,
-            "ijson": self.ijson
-            }
+            "j": self.json,
+            "ijson": self.ijson,
+            "ij": self.ijson,
+            "hy": self.hy
+        }
+        
+        self.evalArgs = {
+            "self": self,
+            "client": self.client,
+            "connection": self.client.connection,
+            "display": self.client.display,
+            "print": self.log
+        }
     
     def execute(self, action):
-        if isinstance(action[0], str):
-            command = action[0]
-            if command in self.commands:
-                self.commands[command](*action[1:])
+        try:
+            if isinstance(action[0], str):
+                command = action[0]
+                if command in self.commands:
+                    self.commands[command](*action[1:])
+                else:
+                    raise InvalidCommandException("Invalid command '{}'".format(command))
             else:
-                raise InvalidCommandException("Invalid command '{}'".format(command))
-        else:
-            raise Exception("Command should be a string")
+                raise Exception("Command should be a string")
+        except Exception as e:
+            self.log(e)
     
     
     # Commands
@@ -116,19 +135,24 @@ class CommandHandler:
             return
         self.input([action, selected])
     
-    def eval(self, *texts):
-        text = " ".join(texts)
-        self.log(eval(text, {"self": self, "client": self.client, "connection": self.client.connection, "display": self.client.display}))
+    def eval(self, text):
+        self.log(eval(text, self.evalArgs))
     
-    def exec(self, *texts):
-        text = " ".join(texts)
-        exec(text, {"self": self, "client": self.client, "connection": self.client.connection, "display": self.client.display})
+    def exec(self, text):
+        exec(text, self.evalArgs)
+    
+    def hy(self, code):
+        if hy is None:
+            self.log(hyErr)
+            return
+        expr = hy.read_str(code)
+        self.log(hy.eval(expr, self.evalArgs))
     
     def scrollChat(self, lines):
         self.client.display.scrollBack(lines)
     
     def json(self, text):
-        self.send(json.loads(text))
+        self.execute(json.loads(text))
     
     def ijson(self, text):
         self.input(json.loads(text))
