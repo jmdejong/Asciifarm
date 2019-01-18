@@ -4,7 +4,7 @@ import json
 try:
     import hy
 except ImportError as e:
-    hy is None
+    hy = None
     hyErr = e
 
 class InvalidCommandException(Exception):
