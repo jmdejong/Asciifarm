@@ -32,9 +32,7 @@ class WorldLoader:
     
     
     def makeSaveDir(self):
-        # todo
-        # This method should ensure that the save directory exists
-        pass
+        os.makedirs(self.savePath, exist_ok=True)
     
     
     def save(self, world):
