@@ -145,7 +145,7 @@ class Player:
         if not self.entity or not (isinstance(action, list) or isinstance(action, tuple)) or len(action) < 1:
             return
         controller = self.entity.getComponent("controller")
-        controller.addAction(action)
+        controller.setAction(action)
     
     def getHealthPair(self):
         if self.entity:

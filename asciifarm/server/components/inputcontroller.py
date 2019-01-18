@@ -4,7 +4,7 @@ from .component import Component
 class InputController(Component):
     
     def __init__(self):
-        self.actions = [] #queue.Queue()
+        self.action = None
         
         self.handlers = {
             "move": self.do_move,
@@ -17,8 +17,6 @@ class InputController(Component):
             "say": self.do_say,
             "pick": self.do_pick
         }
-        self.hasInteracted = False
-        self.hasAttacked = False
         self.target = None
             
     
@@ -40,18 +38,16 @@ class InputController(Component):
         self.controlEvent = roomData.getEvent("control")
         self.controlEvent.addListener(self.control)
     
-    def addAction(self, action):
-        self.actions.append(action)
+    def setAction(self, action):
+        self.action = action
     
     
     def control(self):
-        self.hasInteracted = False
-        self.hasAttacked = False
-        actions = self.actions
-        if actions:
+        action = self.action
+        if action:
             self.target = None
-        self.actions = []
-        for action in actions:
+        self.action = None
+        if action is not None:
             self.executeAction(action)
         if self.target:
             self.fighter.attack(self.target)
@@ -121,43 +117,21 @@ class InputController(Component):
                 self.equipment.unEquip(slot)
                 self.owner.trigger("take", item)
     
-    def do_interact(self, direction):
-        if self.hasInteracted:
-            return
-        nearPlaces = self.owner.getGround().getNeighbours()
-        if direction is None:
-            objects = self.owner.getNearObjects()
-        elif direction in nearPlaces:
-            objects = nearPlaces[direction].getObjs()
-        elif isinstance(direction, int):
-            objects = nearPlaces[direction].getObjs()
-            rank = direciton
-            if rank not in range(len(objects)):
-                return
-            objects = [objects[rank]]
-        else:
-            return
+    def do_interact(self, directions):
+        objects = self._getNearbyObjects(directions)
         for obj in objects:
             if obj.getComponent("interact") is not None:
                 obj.getComponent("interact").interact(self.owner)
-                self.hasInteracted = True
                 break
     
-    def do_attack(self, direction):
-        if self.hasAttacked:
-            return
-        nearPlaces = self.owner.getGround().getNeighbours()
-        if direction is None:
-            objs = self.owner.getNearObjects()
-        elif direction in nearPlaces:
-            objs = nearPlaces[direction].getObjs()
-        else:
-            return
-        for obj in objs:
+    def do_attack(self, directions):
+        objects = self._getNearbyObjects(directions)
+        if self.target in objects:
+            objects = {self.target}
+        for obj in objects:
             if self.fighter.canAttack(obj) and self.alignment.isEnemy(obj):
                 self.fighter.attack(obj)
                 self.target = obj
-                self.hasAttacked = True
                 break
     
     def do_say(self, text):
@@ -173,6 +147,19 @@ class InputController(Component):
         if optionmenu is None:
             return
         optionmenu.choose(option, self.owner)
+    
+    def _getNearbyObjects(self, directions):
+        nearPlaces = self.owner.getGround().getNeighbours()
+        if not isinstance(directions, list):
+            directions = [directions]
+        objects = []
+        for direction in directions:
+            if direction is None:
+                objects += self.owner.getNearObjects()
+            elif direction in nearPlaces:
+                objects += nearPlaces[direction].getObjs()
+        return objects
+        
     
     def getInteractions(self):
         return []
