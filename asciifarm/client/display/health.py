@@ -4,9 +4,9 @@ from .widimp import WidImp
 
 class Health(WidImp):
     
-    def __init__(self, char=('@',7,0), emptyChar=('-',7,0), colours=False):
-        self.char = char
-        self.emptyChar = emptyChar
+    def __init__(self, char=None, emptyChar=None, colours=False):
+        self.char = char or ('@',7,0)
+        self.emptyChar = emptyChar or ('-',7,0)
         self.changed = False
         self.colours = colours
         self.health = 0

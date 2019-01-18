@@ -6,7 +6,7 @@ import json
 
 
 standardKeyFiles = {
-    "default": os.path.join(keybindingsPath, "keybindings.json"),
+    "default": os.path.join(keybindingsPath, "default.json"),
     "azerty": os.path.join(keybindingsPath, "azerty.json")
 }
 
@@ -32,8 +32,10 @@ def loadKeybindings(name):
 
 
 standardCharFiles = {name: os.path.join(charmapPath, file) for name, file in {
-    "default": "default.json",
-    "fullwith": "fullwidth.json",
+    "default": "halfwidth.json",
+    "halfwidth": "halfwidth.json",
+    "hw": "halfwidth.json",
+    "fullwidth": "fullwidth.json",
     "fw": "fullwidth.json",
     "emoji": "emoji.json"
 }.items()}
