@@ -1,6 +1,10 @@
 {
     "templates": ["fullwidth"],
     "mapping":{
-        "tree": ["🌳",0,2]
+        "tree": ["🌳",0,2],
+        "stairdown": ["↘",7],
+        "stairup": ["↖",7],
+        "player": ["🙂",15],
+        "sword": ["🗡️", 7]
     }
 }
