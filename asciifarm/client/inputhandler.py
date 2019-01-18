@@ -30,6 +30,8 @@ class InputHandler:
     def processString(self, message):
         if message:
             if message[0] == '/':
+                if len(message) == 1:
+                    return
                 if message[1] == '/':
                     self.commandHandler.chat(message[1:])
                 else:
