@@ -2,7 +2,8 @@
     "mapping":{
         "tree": ["T", 0, 2],
         "wall": ["#", 7, 8],
-        "rock": ["X", 7, 8],
+        "builtwall": ["+", 7, 8],
+        "rock": [" ", 7, 8],
         "stone": ["o", 7],
         "pebble": ["*", 7],
         "player": ["@", 15],

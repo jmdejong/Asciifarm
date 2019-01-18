@@ -26,7 +26,7 @@ entities["fence"] = lambda: Entity(sprite="fence", height=1, flags={"solid"}, co
 
 
 entities["builtwall"] = lambda health=None: Entity(
-    sprite="wall", height=2, flags={"solid"}, components={
+    sprite="builtwall", height=2, flags={"solid"}, components={
         "fighter": Fighter(maxHealth=100, strength=0, health=None),
         "alignment": Alignment(faction.NONE),
         "loot": Loot([("stone", 1)]),
