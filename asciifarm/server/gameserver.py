@@ -80,7 +80,7 @@ class GameServer:
                         name = self.connections[n]
                         message = name + ": " + msg[1]
                         print(message)
-                        databytes = bytes(json.dumps(["message", message]), "utf-8")
+                        databytes = bytes(json.dumps(["message", message, "chat"]), "utf-8")
                         for connection in self.connections:
                             self.serv.send(connection, databytes)
         

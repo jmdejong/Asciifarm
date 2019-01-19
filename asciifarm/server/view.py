@@ -44,7 +44,7 @@ class View:
         
         data = []
         for message in player.readMessages():
-            data.append(["message", message])
+            data.append(["message"] + message)
         
         changes = player.readChanges()
         if player.shouldResetView():

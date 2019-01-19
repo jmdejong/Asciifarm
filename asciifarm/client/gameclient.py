@@ -111,7 +111,7 @@ class Client:
             if msgType == "ground":
                 self.display.setGround(msg[1])
             if msgType == "message":
-                self.log(msg[1])
+                self.log(*msg[1:])
             if msgType == "options":
                 if msg[1] != None:
                     description, options = msg[1]
@@ -121,7 +121,7 @@ class Client:
         
         self.display.update()
     
-    def log(self, text):
+    def log(self, text, typ=None):
         if not isinstance(text, str):
             text = str(text)
         self.display.addMessage(text)

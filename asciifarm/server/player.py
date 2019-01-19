@@ -94,18 +94,18 @@ class Player:
             self.joinRoom(room, pos)
     
     def on_attack(self, o, obj, damage):
-        self.log("{} attacks {} for {} damage".format(self.name, obj.getName(), damage))
+        self.log("{} attacks {} for {} damage".format(self.name, obj.getName(), damage), "attack")
     
     def on_kill(self, o, obj):
-        self.log("{} kills {}".format(self.name, obj.getName()))
+        self.log("{} kills {}".format(self.name, obj.getName()), "kill")
     
     def on_damage(self, o, obj, damage):
-        self.log("{} got {} damage from {}".format(self.name, damage, obj.getName()))
+        self.log("{} got {} damage from {}".format(self.name, damage, obj.getName()), "damage")
         self.changes.add("health")
     
     def on_heal(self, o, obj, health):
         if obj:
-            self.log("{} got {} health from {}".format(self.name, health, obj.getName()))
+            self.log("{} got {} health from {}".format(self.name, health, obj.getName()), "heal")
         self.changes.add("health")
     
     def on_die(self, o, obj):
@@ -203,8 +203,8 @@ class Player:
     def viewResetDone(self):
         self.resetView = False
     
-    def log(self, msg):
-        self.messages.append(msg)
+    def log(self, msg, typ="world"):
+        self.messages.append([msg, typ])
         print(msg)
     
     def readMessages(self):
