@@ -29,7 +29,6 @@
 - windows comptibility (libtcod/tdl instead of ncurses?)
 - player-owned doors (and items)
 - different messages for in-game log, let client construct them
-- chat colours
 - show adjacent objects
 - have a difference between ground-like items and interesting items
 - tilled soil
@@ -37,6 +36,7 @@
 
 ## DONE
 
+- chat colours
 - store non-unique and stateless objects as string
 - custom getstr
 - runtime-created rooms

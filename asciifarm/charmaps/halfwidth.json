@@ -38,8 +38,9 @@
         "armour": ["[", 7],
         "wound": [" ", 7, 1],
         "rat": ["r", 7],
-        "closeddoor": ["+",1 ,3],
-        "opendoor": ["\"",3 ],
+        "closeddoor": ["+",1, 3],
+        "opendoor": ["\"", 3],
+        "raindrop": [":", 12],
         " ": [" ", 7]
     },
     "writable": {

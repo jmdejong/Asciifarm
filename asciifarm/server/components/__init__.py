@@ -21,3 +21,4 @@ from .spawner import Spawner
 from .staticserializer import StaticSerializer
 from .trap import Trap
 from .volatile import Volatile
+from .weather import Weather
