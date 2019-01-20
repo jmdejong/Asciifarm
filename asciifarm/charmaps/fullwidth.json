@@ -42,6 +42,7 @@
         "closeddoor": ["＋",1 ,3],
         "opendoor": ["＂",3],
         "raindrop": ["：",12],
+        "snowflake": ["＊",15],
         " ": ["  ", 7]
     },
     "default": ["？", 7],
