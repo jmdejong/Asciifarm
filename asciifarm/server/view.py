@@ -41,6 +41,8 @@ class View:
     
     def playerView(self, playerName):
         player = self.world.getPlayer(playerName)
+        if player is None:
+            return None
         
         data = []
         for message in player.readMessages():
@@ -67,7 +69,4 @@ class View:
                 data.append(["changecells", list(changedCells.items())])
         
         return data
-    
-    def hasPlayer(self, name):
-        return self.world.hasPlayer(name)
 
