@@ -12,10 +12,12 @@ class Field(WidImp):
         self.center = (0, 0)
         self.colours = colours
         self.changed = False
+        self.redraw = False
     
     def resize(self, width, height):
         self.size = (width, height)
         self.pad.resize(height+1, width*self.charSize)
+        self.redraw = True
         self.change()
     
     def changeCell(self, x, y, sprites):
@@ -49,6 +51,10 @@ class Field(WidImp):
         return x // self.charSize * self.charSize
     
     def update(self, win):
+        if self.redraw:
+            win.erase()
+            win.noutrefresh()
+            self.redraw = False
         width, height = win.getSize()
         x, y = win.getPos()
         xmax = x + width
