@@ -56,7 +56,9 @@
         "chat": [15,0],
         "attack": [12,0],
         "damage": [9,0],
-        "heal": [10,0]
+        "heal": [10,0],
+        "connect": [3,0],
+        "server": [11,0]
     },
     "alphabet": "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 }
