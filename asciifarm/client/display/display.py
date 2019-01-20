@@ -57,8 +57,8 @@ class Display:
         self.addWidget(Info(), "info")
         self.addWidget(Health(
                     charMap.get("healthfull", ("@",7, 2)),
-                    charMap.get("healthempty", ("-",7, 1)),
-                    self.colours),
+                    charMap.get("healthempty", ("-",7, 1))
+                ),
             "health")
         self.addWidget(Inventory("Inventory"), "inventory")
         self.addWidget(Inventory("Ground"), "ground")
@@ -67,7 +67,7 @@ class Display:
         
         switcher = Switcher([self.widgets["ground"], self.widgets["inventory"], self.widgets["equipment"]], 1)
         self.addWidget(switcher, "switch")
-        self.addWidget(Messages(), "msg")
+        self.addWidget(Messages(charMap.get("msgcolours", {})), "msg")
         self.addWidget(TextInput(), "textinput")
         
         self.forced = False
@@ -125,8 +125,8 @@ class Display:
         self.getWidget("ground").setInventory(items)
         
     
-    def addMessage(self, message):
-        self.getWidget("msg").addMessage(message)
+    def addMessage(self, message, type):
+        self.getWidget("msg").addMessage(message, type)
     
     def scrollBack(self, amount, relative=True):
         self.getWidget("msg").scroll(amount, relative)

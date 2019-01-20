@@ -121,13 +121,13 @@ class Client:
         
         self.display.update()
     
-    def log(self, text, typ=None):
+    def log(self, text, type=None):
         if not isinstance(text, str):
             text = str(text)
-        self.display.addMessage(text)
+        self.display.addMessage(text, type)
         if self.logFile:
             with(open(self.logFile, 'a')) as f:
-                f.write(text+'\n')
+                f.write("[{}] {}\n".format(type or "", text))
     
     
     def command_loop(self):

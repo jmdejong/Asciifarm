@@ -50,5 +50,11 @@
     "charwidth": 1,
     "healthfull": ["#", 7, 2],
     "healthempty": ["_", 7, 1],
+    "msgcolours": {
+        "chat": [15,0],
+        "attack": [12,0],
+        "damage": [9,0],
+        "heal": [10,0]
+    },
     "alphabet": "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 }

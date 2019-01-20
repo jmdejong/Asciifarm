@@ -4,11 +4,10 @@ from .widimp import WidImp
 
 class Health(WidImp):
     
-    def __init__(self, char=None, emptyChar=None, colours=False):
+    def __init__(self, char=None, emptyChar=None):
         self.char = char or ('@',7,0)
         self.emptyChar = emptyChar or ('-',7,0)
         self.changed = False
-        self.colours = colours
         self.health = 0
         self.maxHealth = 0
     
@@ -23,10 +22,6 @@ class Health(WidImp):
         barEnd = round(self.health/self.maxHealth * width) if self.maxHealth > 0 else 0
         win.erase()
         win.addLine((0,0),"Health: {}/{}".format(self.health, self.maxHealth)[:width])
-        if self.colours:
-            win.addLine((0, 1), self.char[0]*barEnd, self.char[1:])
-            win.addLine((barEnd, 1), self.emptyChar[0]*(width-barEnd), self.emptyChar[1:])
-        else:
-            win.addLine((0, 1), self.char[0]*barEnd)
-            win.addLine((barEnd, 1), self.emptyChar[0]*(width-barEnd))
+        win.addLine((0, 1), self.char[0]*barEnd, self.char[1:])
+        win.addLine((barEnd, 1), self.emptyChar[0]*(width-barEnd), self.emptyChar[1:])
         win.noutrefresh()

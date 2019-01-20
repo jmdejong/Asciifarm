@@ -5,13 +5,14 @@ from .widimp import WidImp
 
 class Messages(WidImp):
     
-    def __init__(self):
+    def __init__(self, colours):
         self.changed = False
         self.messages = []
         self.scrolledBack = 0
+        self.colours = colours
     
-    def addMessage(self, message):
-        self.messages.append(message)
+    def addMessage(self, message, type=None):
+        self.messages.append([message, type])
         if self.scrolledBack:
             self.scrolledBack += 1
         self.change()
@@ -30,8 +31,10 @@ class Messages(WidImp):
             return
         lines = []
         messages = self.messages
-        for message in messages:
-            lines += textwrap.wrap(message, width)
+        for message, type in messages:
+            colour = self.colours.get(type, (7,0))
+            for line in textwrap.wrap(message, width):
+                lines.append((line, colour))
         self.scrolledBack = max(min(self.scrolledBack, len(lines)-height), 0)
         moreDown = False
         if self.scrolledBack > 0:
@@ -42,10 +45,10 @@ class Messages(WidImp):
             moreUp = True
             lines = lines[len(lines)-height:]
         elif len(lines) < height:
-            lines = (height-len(lines)) * [""] + lines
+            lines = (height-len(lines)) * [("",)] + lines
         win.erase()
         for i, line in enumerate(lines):
-            win.addLine((0,i),line)
+            win.addLine((0,i), *line)
         if moreUp:
             win.addLine((width-1, 0), '-')
         if moreDown:

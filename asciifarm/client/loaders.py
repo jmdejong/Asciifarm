@@ -64,6 +64,7 @@ def loadCharmap(name):
     healthfull = None
     healthempty = None
     alphabet = ""
+    msgcolours = {}
     
     for template in templates:
         mapping.update(template.get("mapping", {}))
@@ -73,6 +74,7 @@ def loadCharmap(name):
         healthfull = template.get("healthfull", healthfull)
         healthempty = template.get("healthempty", healthempty)
         alphabet = template.get("alphabet", alphabet)
+        msgcolours.update(template.get("msgcolours", {}))
     return {
         "mapping": mapping,
         "writable": writable,
@@ -80,5 +82,6 @@ def loadCharmap(name):
         "charwidth": charwidth,
         "healthfull": healthfull,
         "healthempty": healthempty,
-        "alphabet": alphabet
+        "alphabet": alphabet,
+        "msgcolours": msgcolours
     }

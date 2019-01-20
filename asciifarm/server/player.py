@@ -136,9 +136,8 @@ class Player:
     
     def on_sound(self, o, source, text):
         if source is not None:
-            self.messages.append(source.getName() + ": " + text)
-        else:
-            self.messages.append(text)
+            text = source.getName() + ": " + text
+        self.messages.append([text, "world"])
         
     
     def control(self, action):
@@ -208,10 +207,8 @@ class Player:
         print(msg)
     
     def readMessages(self):
-        m = self.messages #[]
+        m = self.messages
         self.messages = []
-        #while not self.messages.empty():
-            #m.append(self.messages.get())
         return m
     
     def readChanges(self):
