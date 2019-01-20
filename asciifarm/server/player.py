@@ -53,9 +53,6 @@ class Player:
         
         if self.entity:
             self.leaveRoom()
-            
-            
-        self.world.activateRoom(roomname)
         
         pos = place or room.getEntrance()
         self.entity = entity.Entity(

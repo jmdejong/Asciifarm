@@ -12,8 +12,6 @@ class World:
         
         self.players = {}
         
-        self.activeRooms = {}
-        
         self.worldLoader = worldLoader
         self.roomLoader = roomLoader
         self.playerLoader = playerLoader
@@ -23,6 +21,8 @@ class World:
         data = self.worldLoader.load()
         if data:
             self.stepStamp = data["steps"]
+        
+        self.lastRoomActivity = {}
     
     
     def createPlayer(self, name, data=None):
@@ -42,10 +42,10 @@ class World:
     
     def update(self):
         
-        for r in list(self.activeRooms.values()):
-            r.update(self.stepStamp)
-        
         self.stepStamp += 1
+        
+        for r in list(self.rooms.values()):
+            r.update(self.stepStamp)
     
     def getPlayer(self, name):
         return self.players.get(name)
@@ -58,11 +58,8 @@ class World:
             room = self.roomLoader.load(name)
             if room:
                 self.rooms[name] = room
+        self.lastRoomActivity[name] = self.stepStamp
         return self.rooms.get(name, None)
-    
-    def activateRoom(self, name):
-        self.activeRooms[name] = self.getRoom(name)
-        self.activeRooms[name].update(self.stepStamp)
     
     def deactivateRoom(self, name):
         
@@ -72,7 +69,8 @@ class World:
                 return
         
         self.saveRoom(name)
-        self.activeRooms.pop(name, None)
+        #self.rooms.pop(name, None)
+        #print("deactivating room {}".format(name))
     
     def activatePlayer(self, name):
         if name in self.players:
@@ -86,9 +84,6 @@ class World:
         pl = self.players.pop(name, None)
         if pl:
             pl.leaveRoom()
-    
-    def getActiveRooms(self):
-        return list(self.activeRooms.keys())
     
     def getActivePlayers(self):
         return list(self.players.keys())
@@ -118,13 +113,20 @@ class World:
         self.worldLoader.save(self)
     
     def save(self):
-        for room in self.getActiveRooms():
+        for room in self.rooms:
             self.saveRoom(room)
-        for player in self.getActivePlayers():
+        for player in list(self.players.keys()):
             self.savePlayer(player)
         self.saveWorld()
     
     def getDefaultRoom(self):
         return self.getRoom(self.roomLoader.defaultRoomName())
-        
+    
+    def checkRoomActivity(self, prunetime=1000):
+        for player in self.players.values():
+            self.lastRoomActivity[player.getRoom()] = self.stepStamp
+        for room in list(self.rooms.keys()):
+            if self.stepStamp - self.lastRoomActivity[room]> prunetime:
+                self.deactivateRoom(room)
+                
 

@@ -71,6 +71,7 @@ class Game:
         
         if (self.counter % self.saveInterval) == 0:
             self.world.save()
+            self.world.checkRoomActivity(599)
         
         self.counter += 1
     
