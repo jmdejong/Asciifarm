@@ -27,4 +27,4 @@ entities["roomexit"] = lambda destRoom, destPos=None, mask=(False, False), sprit
 
 entities["wound"] = lambda duration=4, height=0.2: Entity(sprite="wound", name="", height=height, components={"volatile": Volatile(duration), "serialize": Static(None)})
 
-entities["raindrop"] = lambda: Entity(sprite="raindrop", name="", height=10, components={"weather": Weather(maxspeed=4, minspeed=3), "serialize": Static(None)})
+entities["raindrop"] = lambda: Entity(sprite="raindrop", name="", height=10, components={"weather": Weather(speed=2.5, spread=0.2), "serialize": Static(None)})

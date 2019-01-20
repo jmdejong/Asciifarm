@@ -6,9 +6,8 @@ from .component import Component
 
 class Weather(Component):
     
-    def __init__(self, maxspeed=1, minspeed=1, spread=0, direction="south"):
-        self.maxspeed = maxspeed
-        self.minspeed = minspeed
+    def __init__(self, speed=1, spread=0, direction="south"):
+        self.speed = speed
         self.spread = spread
         self.direction = direction
     
@@ -21,15 +20,22 @@ class Weather(Component):
         self.moveEvent.addListener(self.move)
     
     def move(self):
-        for i in range(random.randint(self.minspeed, self.maxspeed)):
+        speed = self.speed
+        for i in range(int(speed)):
             self.moveStep()
+        if (speed - int(speed)) > random.random():
+            self.moveStep()
+        if self.spread > random.random():
+            self.moveStep(random.choice(["east", "west"]))
     
-    def moveStep(self):
+    def moveStep(self, direction=None):
+        if direction is None:
+            direction = self.direction
         if self.owner.getGround() is None:
             return
         neighbours = self.owner.getGround().getNeighbours()
-        if self.direction in neighbours:
-            newPlace = neighbours[self.direction]
+        if direction in neighbours:
+            newPlace = neighbours[direction]
             self.owner.place(newPlace)
             self.owner.trigger("move")
         else:
