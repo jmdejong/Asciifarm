@@ -119,7 +119,6 @@ class Client:
                     for option in options:
                         self.log(option)
         
-        self.display.update()
     
     def log(self, text, type=None):
         if not isinstance(text, str):
@@ -132,6 +131,7 @@ class Client:
     
     def command_loop(self):
         while self.keepalive:
+            self.display.update()
             action = self.queue.get()
             if action[0] == "message":
                 self.update(action[1])
