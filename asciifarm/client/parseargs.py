@@ -6,7 +6,6 @@ import json
 import os
 import os.path
 
-from .start import main as clientmain
 from . import loaders
 
 
