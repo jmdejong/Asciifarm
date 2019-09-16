@@ -89,8 +89,10 @@ class Client:
                 fieldCells = field['field']
                 mapping = field['mapping']
                 self.display.drawFieldCells(
-                    (tuple(reversed(divmod(i, fieldWidth))),
-                     mapping[spr])
+                    (
+                        tuple(reversed(divmod(i, fieldWidth))),
+                        mapping[spr]
+                    )
                     for i, spr in enumerate(fieldCells))
             
             if msgType == 'changecells' and len(msg[1]):
