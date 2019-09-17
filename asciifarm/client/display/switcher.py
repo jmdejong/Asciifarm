@@ -7,22 +7,22 @@ class Switcher(Inventory):
     There is a function to switch between the displayed widgets.
     """
     
-    def __init__(self, widgets, initial=0):
-        Inventory.__init__(self, "", "", "=")
-        self.setInventory(widgets)
+    #def __init__(self, widgets, initial=0):
+        #Inventory.__init__(self, "", "", "=")
+        #self.setInventory(widgets)
         
-        for wid in widgets:
-            wid.hidden = True
+        #for wid in widgets:
+            #wid.hidden = True
         
-        self.select(initial)
+        #self.select(initial)
     
-    def doSelect(self, value):
-        self.getSelectedItem().hidden = True
-        self.selector = value
-        self.change()
-        newWid = self.getSelectedItem()
-        newWid.hidden = False
-        newWid.change()
+    #def doSelect(self, value):
+        #self.getSelectedItem().hidden = True
+        #self.selector = value
+        #self.change()
+        #newWid = self.getSelectedItem()
+        #newWid.hidden = False
+        #newWid.change()
     
     def itemName(self, item):
         return item.getImpl().title

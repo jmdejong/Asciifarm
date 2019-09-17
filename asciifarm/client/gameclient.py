@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+
 
 import os
 import sys
@@ -10,19 +10,33 @@ import argparse
 import string
 from queue import Queue
 
+import ratuil.inputs
 
 from .inputhandler import InputHandler
+from .listselector import ListSelector
+from .switchselector import SwitchSelector
 
 class Client:
     
-    def __init__(self, stdscr, display, name, connection, keybindings, logFile=None):
-        self.stdscr = stdscr
+    def __init__(self, display, name, connection, keybindings, logFile=None):
+        #self.stdscr = stdscr
         self.display = display
         self.name = name
         self.keepalive = True
         self.connection = connection
         self.logFile = logFile
         self.closeMessage = None
+        
+        # temporary, until these have a better place
+        self.inventory = ListSelector(self.display.getWidget("inventory"))
+        self.equipment = ListSelector(self.display.getWidget("equipment"))
+        self.ground = ListSelector(self.display.getWidget("ground"))
+        self.switch = SwitchSelector(self.display.getWidget("switch"))
+        #self.switch.setItems([
+            #(self.inventory, None, "Inventory"),
+            #(self.equipment, None, "Equipment"),
+            #(self.ground, None, "Ground")
+        #])
         
         self.inputHandler = InputHandler(self, keybindings["actions"])
         
@@ -53,9 +67,13 @@ class Client:
         self.queue.put(("error", error))
     
     def getInput(self):
+        #try:
         while True:
-            key = self.stdscr.getch()
+            key = ratuil.inputs.get_key()
+            #key = self.stdscr.getch()
             self.queue.put(("input", key))
+        #except Exception as e:
+            #self.queue.put(("error", e))
     
     def close(self, msg=None):
         self.keepalive = False
@@ -107,11 +125,23 @@ class Client:
                 if maxHealth is None:
                     self.log("You have died. Restart the client to respawn")
             if msgType == "inventory":
-                self.display.setInventory(msg[1])
+                self.inventory.setItems(msg[1])
+                #invbox = self.display.getWidget("inventory")
+                #invbox.setInventory(self.inventory.items)
+                #invbox.select(self.inventory.selector)
+                #self.display.setInventory(msg[1])
             if msgType == "equipment":
-                self.display.setEquipment(msg[1])
+                #self.display.setEquipment(msg[1])
+                self.equipment.setItems(msg[1])
+                #eqbox = self.display.getWidget("equipment")
+                #eqbox.setInventory(self.inventory.items)
+                #eqbox.select(self.equipment.selector)
             if msgType == "ground":
-                self.display.setGround(msg[1])
+                #self.display.setGround(msg[1])
+                self.ground.setItems(msg[1])
+                #grbox = self.display.getWidget("ground")
+                #grbox.setInventory(self.ground.items)
+                #grbox.select(self.ground.selector)
             if msgType == "message":
                 self.log(*msg[1:])
             if msgType == "options":
@@ -138,11 +168,18 @@ class Client:
             if action[0] == "message":
                 self.update(action[1])
             elif action[0] == "input":
+                if action[1] == "^C":
+                    raise KeyboardInterrupt
                 self.inputHandler.onInput(action[1])
             elif action[0] == "error":
                 raise action[1]
+            elif action[0] == "sigwinch":
+                self.display.update_size()
             else:
                 raise Exception("invalid action in queue")
+    
+    def onSigwinch(self, signum, frame):
+        self.queue.put(("sigwinch", (signum, frame)))
     
 
 

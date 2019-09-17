@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<hbox>
+    <vbox width="20" align="right">
+        <bar id="health" height="2" full-char="+" empty-char="-" full-style="fg:1; bg:2" empty-style="fg:2; bg: 1;"></bar>
+        <switchbox id="switch">
+            <listing id="inventory">
+                milk
+                eggs
+                bread
+            </listing>
+            <listing id="equipment">
+                cotton underwear
+                cotton shirt
+                jeans
+                friendship bracelet
+            </listing>
+            <listing id="ground">
+                concrete
+            </listing>
+        </switchbox>
+        <textbox id="info"></textbox>
+    </vbox>
+    <vbox>
+        <textinput id="textinput" align="bottom" height="1">hello</textinput>
+        <log id="msg" align="bottom" height="20%%">
+            Welcome to asciifarm
+        </log>
+        <field id="field" char-size="1"></field>
+    </vbox>
+</hbox>

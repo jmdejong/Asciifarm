@@ -65,8 +65,8 @@ class Display:
         self.addWidget(Inventory("Equipment"), "equipment")
         
         
-        switcher = Switcher([self.widgets["ground"], self.widgets["inventory"], self.widgets["equipment"]], 1)
-        self.addWidget(switcher, "switch")
+        #switcher = Switcher([self.widgets["ground"], self.widgets["inventory"], self.widgets["equipment"]], 1)
+        self.addWidget(Inventory(""), "switch")
         self.addWidget(Messages(charMap.get("msgcolours", {})), "msg")
         self.addWidget(TextInput(), "textinput")
         
@@ -110,20 +110,20 @@ class Display:
         self.getWidget("info").showString(infostring)
             
     
-    def setInventory(self, items):
-        self.getWidget("inventory").setInventory(items)
+    #def setInventory(self, items):
+        #self.getWidget("inventory").setInventory(items)
         
     
-    def setEquipment(self, slots):
-        self.getWidget("equipment").setInventory(
-            sorted([
-                slot + ": " + (item if item else "")
-                for slot, item in slots.items()
-            ])
-        )
+    #def setEquipment(self, slots):
+        #self.getWidget("equipment").setInventory(
+            #sorted([
+                #slot + ": " + (item if item else "")
+                #for slot, item in slots.items()
+            #])
+        #)
     
-    def setGround(self, items):
-        self.getWidget("ground").setInventory(items)
+    #def setGround(self, items):
+        #self.getWidget("ground").setInventory(items)
         
     
     def addMessage(self, message, type):

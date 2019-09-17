@@ -28,7 +28,7 @@ class CommandHandler:
             "runinput": self.runInput,
             "selectwidget": self.selectWidget,
             "selectitem": self.selectItem,
-            "inputwithselected": self.actWithSelected,
+            #"inputwithselected": self.actWithSelected,
             "use": self.useSelected,
             "unuse": self.unUseSelected,
             "take": self.takeSelected,
@@ -95,16 +95,16 @@ class CommandHandler:
         self.client.inputHandler.startTyping(startText)
     
     def selectWidget(self, value, relative=False, modular=False):
-        self.client.display.getWidget("switch").select(value, relative, modular)
+        self.client.switch.select(value, relative, modular)
     
     def selectItem(self, value, relative=False, modular=False):
-        self.client.display.getWidget("switch").getSelectedItem().getImpl().select(value, relative, modular)
+        self.client.switch.getSelectedItem()[0].select(value, relative, modular)
     
-    def actWithSelected(self, action, widget):
-        self.input([action, self.client.display.getWidget(widget).getSelected()])
+    #def actWithSelected(self, action, widget):
+        #self.input([action, self.client.display.getWidget(widget).getSelected()])
     
     def useSelected(self):
-        widget = self.client.display.getWidget("switch").getSelectedItem()
+        widget = self.client.switch.getSelectedItem()
         selected = widget.getImpl().getSelected()
         if widget.name in ("inventory", "equipment"):
             action = "use"
@@ -115,7 +115,7 @@ class CommandHandler:
         self.input([action, selected])
     
     def unUseSelected(self):
-        widget = self.client.display.getWidget("switch").getSelectedItem()
+        menu = self.client.switch.getSelectedItem()[0]
         selected = widget.getImpl().getSelected()
         if widget.name == "inventory":
             action = "drop"
@@ -126,7 +126,7 @@ class CommandHandler:
         self.input([action, selected])
     
     def takeSelected(self):
-        widget = self.client.display.getWidget("switch").getSelectedItem()
+        widget = self.client.switch.getSelectedItem()[0]
         selected = widget.getImpl().getSelected()
         if widget.name == "ground":
             action = "take"

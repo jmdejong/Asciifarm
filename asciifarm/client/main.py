@@ -1,13 +1,17 @@
 #! /usr/bin/python3
-import curses
+
 import json
-import os
-import getpass
+
 import sys
+import termios
+import tty
+import signal
+
 from .connection import Connection
 from .gameclient import Client
-from .display.display import Display
+from .newdisplay.display import Display
 from .parseargs import parse_args
+from ratuil.screen import Screen
 
 def main(argv=None):
     
@@ -24,33 +28,40 @@ def main(argv=None):
     error = None
     closeMessage = None
     
-    os.environ.setdefault("ESCDELAY", "25")
+    #os.environ.setdefault("ESCDELAY", "25")
+    
+    fd = sys.stdin.fileno()
+    oldterm = termios.tcgetattr(fd)
     
     try:
         # Initialize curses
-        stdscr = curses.initscr()
+        #stdscr = curses.initscr()
 
         # Turn off echoing of keys, and enter cbreak mode,
         # where no buffering is performed on keyboard input
-        curses.noecho()
-        curses.cbreak()
+        #curses.noecho()
+        #curses.cbreak()
 
-        # In keypad mode, escape sequences for special keys
-        # (like the cursor keys) will be interpreted and
-        # a special value like curses.KEY_LEFT will be returned
-        stdscr.keypad(1)
+        ## In keypad mode, escape sequences for special keys
+        ## (like the cursor keys) will be interpreted and
+        ## a special value like curses.KEY_LEFT will be returned
+        #stdscr.keypad(1)
 
         # Start color, too.  Harmless if the terminal doesn't have
         # color; user can test with has_color() later on.  The try/catch
         # works around a minor bit of over-conscientiousness in the curses
         # module -- the error return from C start_color() is ignorable.
-        try:
-            curses.start_color()
-        except:
-            pass
+        #try:
+            #curses.start_color()
+        #except:
+            #pass
+        
+        tty.setraw(sys.stdin)
+        Screen.default.hide_cursor()
 
-        display = Display(stdscr, characters, colours)
-        client = Client(stdscr, display, name, connection, keybindings, logfile)
+        display = Display(characters)
+        client = Client(display, name, connection, keybindings, logfile)
+        signal.signal(signal.SIGWINCH, client.onSigwinch)
         try:
             client.start()
         except KeyboardInterrupt:
@@ -61,12 +72,14 @@ def main(argv=None):
             error = e
         closeMessage = client.closeMessage
     finally:
-        # Set everything back to normal
-        if 'stdscr' in locals():
-            stdscr.keypad(0)
-            curses.echo()
-            curses.nocbreak()
-            curses.endwin()
+        ## Set everything back to normal
+        #if 'stdscr' in locals():
+            #stdscr.keypad(0)
+            #curses.echo()
+            #curses.nocbreak()
+            #curses.endwin()
+        termios.tcsetattr(fd, termios.TCSADRAIN, oldterm)
+        Screen.default.finalize()
         
     
     if error is not None:
