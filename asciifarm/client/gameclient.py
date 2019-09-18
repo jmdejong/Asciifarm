@@ -17,7 +17,7 @@ from .inputhandler import InputHandler
 class Client:
     
     def __init__(self, display, name, connection, keybindings, logFile=None):
-        #self.stdscr = stdscr
+        
         self.display = display
         self.name = name
         self.keepalive = True
@@ -54,13 +54,9 @@ class Client:
         self.queue.put(("error", error))
     
     def getInput(self):
-        #try:
         while True:
             key = ratuil.inputs.get_key()
-            #key = self.stdscr.getch()
             self.queue.put(("input", key))
-        #except Exception as e:
-            #self.queue.put(("error", e))
     
     def close(self, msg=None):
         self.keepalive = False
@@ -112,23 +108,14 @@ class Client:
                 if maxHealth is None:
                     self.log("You have died. Restart the client to respawn")
             if msgType == "inventory":
-                self.display.inventory.setItems(msg[1])
-                #invbox = self.display.getWidget("inventory")
-                #invbox.setInventory(self.inventory.items)
-                #invbox.select(self.inventory.selector)
                 #self.display.setInventory(msg[1])
+                self.display.inventory.setItems(msg[1])
             if msgType == "equipment":
                 #self.display.setEquipment(msg[1])
                 self.display.equipment.setItems(msg[1])
-                #eqbox = self.display.getWidget("equipment")
-                #eqbox.setInventory(self.inventory.items)
-                #eqbox.select(self.equipment.selector)
             if msgType == "ground":
                 #self.display.setGround(msg[1])
                 self.display.ground.setItems(msg[1])
-                #grbox = self.display.getWidget("ground")
-                #grbox.setInventory(self.ground.items)
-                #grbox.select(self.ground.selector)
             if msgType == "message":
                 self.log(*msg[1:])
             if msgType == "options":

@@ -1,0 +1,6 @@
+[*.{py,json,hy,yaml}]
+charset = utf-8
+indent_style = spaces
+insert_final_newline = true
+indent_size = 4
+

@@ -63,7 +63,6 @@ class Display:
         self.ground = ListSelector(self.getWidget("ground"))
         self.switch = ListSelector(self.getWidget("switchtitles"))
         
-        # it is important that these lists have the same order!
         self.switch.setItems(["inventory", "equipment", "ground"])
         self.menus = {
             "inventory": self.inventory,
@@ -76,14 +75,9 @@ class Display:
     
     def getWidget(self, name):
         return self.layout.get(name)
-        #if name in self.widgets:
-            #return self.widgets[name].getImpl()
-        #else:
-            #return None
     
     def resizeField(self, size):
         self.getWidget("field").set_size(*size)
-        #self.forced = True
     
     def drawFieldCells(self, cells):
         field = self.getWidget("field")
