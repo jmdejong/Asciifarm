@@ -7,7 +7,7 @@ from ratuil.bufferedscreen import BufferedScreen as Screen
 #from ratuil.screen import Screen
 from ratuil.textstyle import TextStyle
 from asciifarm.common.utils import get
-from ..listselector import ListSelector
+from .listselector import ListSelector
 
 
 SIDEWIDTH = 20

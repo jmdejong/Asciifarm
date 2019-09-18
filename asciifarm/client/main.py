@@ -10,7 +10,7 @@ import signal
 
 from .connection import Connection
 from .gameclient import Client
-from .newdisplay.display import Display
+from .display import Display
 from .parseargs import parse_args
 from ratuil.screen import Screen
 
