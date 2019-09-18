@@ -32,7 +32,7 @@ def loadKeybindings(name):
 
 
 standardCharFiles = {name: os.path.join(charmapPath, file) for name, file in {
-    "default": "halfwidth.json",
+    "default": "fullwidth.json",
     "halfwidth": "halfwidth.json",
     "hw": "halfwidth.json",
     "fullwidth": "fullwidth.json",
