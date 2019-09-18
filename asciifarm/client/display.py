@@ -56,9 +56,13 @@ class Display:
         
         # temporary, until these have a better place
         self.inventory = ListSelector(self.getWidget("inventory"))
+        self.inventory._debug_name = "inventory"
         self.equipment = ListSelector(self.getWidget("equipment"))
+        self.equipment._debug_name = "equipment"
         self.ground = ListSelector(self.getWidget("ground"))
+        self.ground._debug_name = "ground"
         self.switch = ListSelector(self.getWidget("switchtitles"))
+        self.switch._debug_name = "switch"
         
         self.switch.setItems(["inventory", "equipment", "ground"])
         self.menus = {
@@ -126,11 +130,11 @@ class Display:
         return self.menus[name]
     
     def setInventory(self, items):
-        self.getWidget("inventory").set_items(items)
+        self.inventory.setItems(items)
         
     
     def setEquipment(self, slots):
-        self.getWidget("equipment").set_items(
+        self.equipment.setItems(
             sorted([
                 slot + ": " + (item if item else "")
                 for slot, item in slots.items()
@@ -138,11 +142,18 @@ class Display:
         )
     
     def setGround(self, items):
-        self.getWidget("ground").set_items(items)
+        self.ground.setItems(items)
         
     
-    def addMessage(self, message, type):
-        self.getWidget("msg").add_message(message, TextStyle(*self.messageColours.get(type, (7,0))))
+    def addMessage(self, message, msgtype=None):
+        if msgtype is not None:
+            style = TextStyle(*self.messageColours.get(msgtype, (7,0)))
+        else:
+            style = None
+        self.getWidget("msg").add_message(message, style)
+    
+    def log(self, message):
+        self.addMessage(str(message))
     
     def scrollBack(self, amount, relative=True):
         self.getWidget("msg").scroll(amount, relative)
