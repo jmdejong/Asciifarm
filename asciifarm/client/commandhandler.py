@@ -95,40 +95,40 @@ class CommandHandler:
         self.client.inputHandler.startTyping(startText)
     
     def selectWidget(self, value, relative=False, modular=False):
-        self.client.switch.select(value, relative, modular)
+        self.client.display.selectMenu(value, relative, modular)
     
     def selectItem(self, value, relative=False, modular=False):
-        self.client.switch.getSelectedItem()[0].select(value, relative, modular)
+        self.client.display.selectItem(None, value, relative, modular)
     
     #def actWithSelected(self, action, widget):
         #self.input([action, self.client.display.getWidget(widget).getSelected()])
     
     def useSelected(self):
-        widget = self.client.switch.getSelectedItem()
-        selected = widget.getImpl().getSelected()
-        if widget.name in ("inventory", "equipment"):
+        menu = self.client.display.getSelectedMenu()
+        selected = self.client.display.getSelectedItem(menu)
+        if menu in ("inventory", "equipment"):
             action = "use"
-        elif widget.name == "ground":
+        elif menu == "ground":
             action = "interact",
         else:
             return
         self.input([action, selected])
     
     def unUseSelected(self):
-        menu = self.client.switch.getSelectedItem()[0]
-        selected = widget.getImpl().getSelected()
-        if widget.name == "inventory":
+        menu = self.client.display.getSelectedMenu()
+        selected = self.client.display.getSelectedItem(menu)
+        if menu == "inventory":
             action = "drop"
-        elif widget.name == "equipment":
+        elif menu == "equipment":
             action = "unequip"
         else:
             return
         self.input([action, selected])
     
     def takeSelected(self):
-        widget = self.client.switch.getSelectedItem()[0]
-        selected = widget.getImpl().getSelected()
-        if widget.name == "ground":
+        menu = self.client.display.getSelectedMenu()
+        selected = self.client.display.getSelectedItem(menu)
+        if menu == "ground":
             action = "take"
         else:
             return

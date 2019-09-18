@@ -13,8 +13,6 @@ from queue import Queue
 import ratuil.inputs
 
 from .inputhandler import InputHandler
-from .listselector import ListSelector
-from .switchselector import SwitchSelector
 
 class Client:
     
@@ -26,17 +24,6 @@ class Client:
         self.connection = connection
         self.logFile = logFile
         self.closeMessage = None
-        
-        # temporary, until these have a better place
-        self.inventory = ListSelector(self.display.getWidget("inventory"))
-        self.equipment = ListSelector(self.display.getWidget("equipment"))
-        self.ground = ListSelector(self.display.getWidget("ground"))
-        self.switch = SwitchSelector(self.display.getWidget("switch"))
-        #self.switch.setItems([
-            #(self.inventory, None, "Inventory"),
-            #(self.equipment, None, "Equipment"),
-            #(self.ground, None, "Ground")
-        #])
         
         self.inputHandler = InputHandler(self, keybindings["actions"])
         
@@ -125,20 +112,20 @@ class Client:
                 if maxHealth is None:
                     self.log("You have died. Restart the client to respawn")
             if msgType == "inventory":
-                self.inventory.setItems(msg[1])
+                self.display.inventory.setItems(msg[1])
                 #invbox = self.display.getWidget("inventory")
                 #invbox.setInventory(self.inventory.items)
                 #invbox.select(self.inventory.selector)
                 #self.display.setInventory(msg[1])
             if msgType == "equipment":
                 #self.display.setEquipment(msg[1])
-                self.equipment.setItems(msg[1])
+                self.display.equipment.setItems(msg[1])
                 #eqbox = self.display.getWidget("equipment")
                 #eqbox.setInventory(self.inventory.items)
                 #eqbox.select(self.equipment.selector)
             if msgType == "ground":
                 #self.display.setGround(msg[1])
-                self.ground.setItems(msg[1])
+                self.display.ground.setItems(msg[1])
                 #grbox = self.display.getWidget("ground")
                 #grbox.setInventory(self.ground.items)
                 #grbox.select(self.ground.selector)

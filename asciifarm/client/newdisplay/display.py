@@ -7,6 +7,7 @@ from ratuil.bufferedscreen import BufferedScreen as Screen
 #from ratuil.screen import Screen
 from ratuil.textstyle import TextStyle
 from asciifarm.common.utils import get
+from ..listselector import ListSelector
 
 
 SIDEWIDTH = 20
@@ -55,36 +56,23 @@ class Display:
         self.layout.update()
         
         
-        #screen = Screen(self, stdscr, self.colours)
-        #self.screen = screen
         
-        #self.widgets = {}
+        # temporary, until these have a better place
+        self.inventory = ListSelector(self.getWidget("inventory"))
+        self.equipment = ListSelector(self.getWidget("equipment"))
+        self.ground = ListSelector(self.getWidget("ground"))
+        self.switch = ListSelector(self.getWidget("switchtitles"))
         
-        #self.addWidget(Field((1, 1), charMap.get("charwidth", 1), self.colours), "field")
-        #self.addWidget(Info(), "info")
-        #self.addWidget(Health(
-                    #charMap.get("healthfull", ("@",7, 2)),
-                    #charMap.get("healthempty", ("-",7, 1))
-                #),
-            #"health")
-        #self.addWidget(Inventory("Inventory"), "inventory")
-        #self.addWidget(Inventory("Ground"), "ground")
-        #self.addWidget(Inventory("Equipment"), "equipment")
+        # it is important that these lists have the same order!
+        self.switch.setItems(["inventory", "equipment", "ground"])
+        self.menus = {
+            "inventory": self.inventory,
+            "equipment": self.equipment,
+            "ground": self.ground
+        }
         
+        self.layout.get("switch").select(0)
         
-        ##switcher = Switcher([self.widgets["ground"], self.widgets["inventory"], self.widgets["equipment"]], 1)
-        #self.addWidget(Inventory(""), "switch")
-        #self.addWidget(Messages(charMap.get("msgcolours", {})), "msg")
-        #self.addWidget(TextInput(), "textinput")
-        
-        #self.forced = False
-    
-    #def addWidget(self, w, name, winname=None):
-        #if not winname:
-            #winname = name
-        #widget = Widget(w, name)
-        #self.widgets[name] = widget
-        #widget.setWin(winname, self.screen)
     
     def getWidget(self, name):
         return self.layout.get(name)
@@ -102,7 +90,7 @@ class Display:
         for cell in cells:
             (x, y), spriteNames = cell
             if not len(spriteNames):
-                char, fg, bg = self.getChar(0)
+                char, fg, bg = self.getChar(' ')
             else:
                 char, fg, bg = self.getChar(spriteNames[0])
                 for spriteName in spriteNames[1:]:
@@ -116,14 +104,35 @@ class Display:
         self.getWidget("field").set_center(*pos)
     
     def setHealth(self, health, maxHealth):
+        if health is None:
+            health = 0
+        if maxHealth is None:
+            maxHealth = 0
         self.getWidget("health").set_total(maxHealth)
         self.getWidget("health").set_filled(health)
         
     
     def showInfo(self, infostring):
-        pass
-        #self.getWidget("info").showString(infostring)
+        self.getWidget("info").set_text(infostring)
             
+    def selectMenu(self, *args, **kwargs):
+        self.switch.select(*args, **kwargs)
+        self.layout.get("switch").select(self.getSelectedMenu())
+    
+    def getSelectedMenu(self):
+        return self.switch.getSelectedItem()
+    
+    def getSelectedItem(self, menu=None):
+        return self._getMenu(menu).getSelected()
+    
+    def selectItem(self, menu=None, *args, **kwargs):
+        self._getMenu(menu).select(*args, **kwargs)
+    
+    def _getMenu(self, name=None):
+        if name is None:
+            name = self.getSelectedMenu()
+        name = name.casefold()
+        return self.menus[name]
     
     #def setInventory(self, items):
         #self.getWidget("inventory").setInventory(items)
@@ -153,17 +162,6 @@ class Display:
     def update(self):
         self.layout.update()
         self.screen.update()
-        #changed = False
-        #for widget in self.widgets.values():
-            #if self.forced or widget.isChanged():
-                #widget.update()
-                #changed = True
-        #if changed:
-            #self.screen.update()
-        #self.forced = False
-    
-    #def forceUpdate(self):
-        #self.forced = True
     
     def getChar(self, sprite):
         """This returns the character belonging to some spritename. This does not read a character"""
