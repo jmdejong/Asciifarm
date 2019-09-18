@@ -43,10 +43,7 @@ class Display:
         self.messageColours = charMap.get("msgcolours", {})
         
         fname = os.path.join(os.path.dirname(__file__), "layout.xml")
-        with open(fname) as f:
-            layouttext = f.read()
-        
-        self.layout = Layout(layouttext)
+        self.layout = Layout.from_xml_file(fname)
         self.layout.get("field").set_char_size(charMap.get("charwidth", 1))
         
         self.screen = Screen()
