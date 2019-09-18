@@ -28,7 +28,7 @@ class CommandHandler:
             "runinput": self.runInput,
             "selectwidget": self.selectWidget,
             "selectitem": self.selectItem,
-            #"inputwithselected": self.actWithSelected,
+            "inputwithselected": self.actWithSelected,
             "use": self.useSelected,
             "unuse": self.unUseSelected,
             "take": self.takeSelected,
@@ -100,8 +100,8 @@ class CommandHandler:
     def selectItem(self, value, relative=False, modular=False):
         self.client.display.selectItem(None, value, relative, modular)
     
-    #def actWithSelected(self, action, widget):
-        #self.input([action, self.client.display.getWidget(widget).getSelected()])
+    def actWithSelected(self, action, menu):
+        self.input([action, self.client.display.getSelectedItem(menu).getSelected()])
     
     def useSelected(self):
         menu = self.client.display.getSelectedMenu()

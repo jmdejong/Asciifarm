@@ -128,20 +128,20 @@ class Display:
         name = name.casefold()
         return self.menus[name]
     
-    #def setInventory(self, items):
-        #self.getWidget("inventory").setInventory(items)
+    def setInventory(self, items):
+        self.getWidget("inventory").set_items(items)
         
     
-    #def setEquipment(self, slots):
-        #self.getWidget("equipment").setInventory(
-            #sorted([
-                #slot + ": " + (item if item else "")
-                #for slot, item in slots.items()
-            #])
-        #)
+    def setEquipment(self, slots):
+        self.getWidget("equipment").set_items(
+            sorted([
+                slot + ": " + (item if item else "")
+                for slot, item in slots.items()
+            ])
+        )
     
-    #def setGround(self, items):
-        #self.getWidget("ground").setInventory(items)
+    def setGround(self, items):
+        self.getWidget("ground").set_items(items)
         
     
     def addMessage(self, message, type):

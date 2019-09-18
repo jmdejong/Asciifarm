@@ -1,4 +1,4 @@
-=
+
 import string
 
 from .commandhandler import CommandHandler, InvalidCommandException
