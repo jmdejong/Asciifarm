@@ -1,7 +1,5 @@
 # AsciiFarm
 
-Formerly: **Rooms** 
-
 This is a multiplayer ascii farming/fighting game.
 
 ![screenshot](screenshot.png)
