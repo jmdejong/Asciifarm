@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+
 
 import os
 import sys
@@ -10,13 +10,14 @@ import argparse
 import string
 from queue import Queue
 
+import ratuil.inputs
 
 from .inputhandler import InputHandler
 
 class Client:
     
-    def __init__(self, stdscr, display, name, connection, keybindings, logFile=None):
-        self.stdscr = stdscr
+    def __init__(self, display, name, connection, keybindings, logFile=None):
+        
         self.display = display
         self.name = name
         self.keepalive = True
@@ -54,7 +55,7 @@ class Client:
     
     def getInput(self):
         while True:
-            key = self.stdscr.getch()
+            key = ratuil.inputs.get_key()
             self.queue.put(("input", key))
     
     def close(self, msg=None):
@@ -138,11 +139,18 @@ class Client:
             if action[0] == "message":
                 self.update(action[1])
             elif action[0] == "input":
+                if action[1] == "^C":
+                    raise KeyboardInterrupt
                 self.inputHandler.onInput(action[1])
             elif action[0] == "error":
                 raise action[1]
+            elif action[0] == "sigwinch":
+                self.display.update_size()
             else:
                 raise Exception("invalid action in queue")
+    
+    def onSigwinch(self, signum, frame):
+        self.queue.put(("sigwinch", (signum, frame)))
     
 
 

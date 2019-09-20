@@ -1,9 +1,9 @@
 
-import curses
-import curses.ascii
+import string
 
 from .commandhandler import CommandHandler, InvalidCommandException
-from .keynames import nameFromKey
+
+import ratuil.inputs as inp
 
 
 class InputHandler:
@@ -20,7 +20,7 @@ class InputHandler:
     
     def onInput(self, key):
         if not self.typing:
-            keyName = nameFromKey(key)
+            keyName = key
             if keyName in self.keybindings:
                 self.commandHandler.execute(self.keybindings[keyName])
         else:
@@ -58,36 +58,36 @@ class InputHandler:
         self.client.display.setInputString(self.string, self.cursor if self.typing else -1)
     
     def addKey(self, key):
-        if curses.ascii.isprint(key):
-            self.string = self.string[:self.cursor] + chr(key) + self.string[self.cursor:]
+        if key in string.printable:
+            self.string = self.string[:self.cursor] + key + self.string[self.cursor:]
             self.cursor += 1
-        elif key == curses.KEY_BACKSPACE or key == curses.ascii.BS or key == curses.ascii.DEL:
+        elif key == inp.BACKSPACE:
             self.string = self.string[:self.cursor-1] + self.string[self.cursor:]
             self.cursor = max(self.cursor - 1, 0)
-        elif key == curses.KEY_RIGHT:
+        elif key == inp.RIGHT:
             self.cursor = min(self.cursor + 1, len(self.string))
-        elif key == curses.KEY_LEFT:
+        elif key == inp.LEFT:
             self.cursor = max(self.cursor - 1, 0)
-        elif key == curses.KEY_DC:
+        elif key == inp.DELETE:
             self.string = self.string[:self.cursor] + self.string[self.cursor+1:]
-        elif key == curses.KEY_HOME:
+        elif key == inp.HOME:
             self.cursor = 0
-        elif key == curses.KEY_END:
+        elif key == inp.END:
             self.cursor = len(self.string)
         
-        elif key == curses.ascii.ESC or key == curses.KEY_DL:
+        elif key == inp.ESCAPE:
             # throw away entered string and go back to game
             self.typing = False
             self.string = ""
             self.cursor = 0
-        elif key == curses.ascii.LF or key == curses.ascii.CR:
+        elif key == inp.ENTER:
             # process entered string and reset it
             message = self.string
             self.string = ""
             self.cursor = 0
             self.typing = False
             self.processString(message)
-        elif key == curses.ascii.TAB:
+        elif key == "^I": # tab
             # return to game but keep entered string
             self.typing = False
         

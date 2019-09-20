@@ -61,8 +61,6 @@ def loadCharmap(name):
     writable = {}
     default = None
     charwidth = 1
-    healthfull = None
-    healthempty = None
     alphabet = ""
     msgcolours = {}
     
@@ -71,8 +69,6 @@ def loadCharmap(name):
         writable.update(template.get("writable", {}))
         default = template.get("default", default)
         charwidth = template.get("charwidth", charwidth)
-        healthfull = template.get("healthfull", healthfull)
-        healthempty = template.get("healthempty", healthempty)
         alphabet = template.get("alphabet", alphabet)
         msgcolours.update(template.get("msgcolours", {}))
     return {
@@ -80,8 +76,6 @@ def loadCharmap(name):
         "writable": writable,
         "default": default,
         "charwidth": charwidth,
-        "healthfull": healthfull,
-        "healthempty": healthempty,
         "alphabet": alphabet,
         "msgcolours": msgcolours
     }

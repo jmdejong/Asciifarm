@@ -95,40 +95,40 @@ class CommandHandler:
         self.client.inputHandler.startTyping(startText)
     
     def selectWidget(self, value, relative=False, modular=False):
-        self.client.display.getWidget("switch").select(value, relative, modular)
+        self.client.display.selectMenu(value, relative, modular)
     
     def selectItem(self, value, relative=False, modular=False):
-        self.client.display.getWidget("switch").getSelectedItem().getImpl().select(value, relative, modular)
+        self.client.display.selectItem(None, value, relative, modular)
     
-    def actWithSelected(self, action, widget):
-        self.input([action, self.client.display.getWidget(widget).getSelected()])
+    def actWithSelected(self, action, menu):
+        self.input([action, self.client.display.getSelectedItem(menu).getSelected()])
     
     def useSelected(self):
-        widget = self.client.display.getWidget("switch").getSelectedItem()
-        selected = widget.getImpl().getSelected()
-        if widget.name in ("inventory", "equipment"):
+        menu = self.client.display.getSelectedMenu()
+        selected = self.client.display.getSelectedItem(menu)
+        if menu in ("inventory", "equipment"):
             action = "use"
-        elif widget.name == "ground":
+        elif menu == "ground":
             action = "interact",
         else:
             return
         self.input([action, selected])
     
     def unUseSelected(self):
-        widget = self.client.display.getWidget("switch").getSelectedItem()
-        selected = widget.getImpl().getSelected()
-        if widget.name == "inventory":
+        menu = self.client.display.getSelectedMenu()
+        selected = self.client.display.getSelectedItem(menu)
+        if menu == "inventory":
             action = "drop"
-        elif widget.name == "equipment":
+        elif menu == "equipment":
             action = "unequip"
         else:
             return
         self.input([action, selected])
     
     def takeSelected(self):
-        widget = self.client.display.getWidget("switch").getSelectedItem()
-        selected = widget.getImpl().getSelected()
-        if widget.name == "ground":
+        menu = self.client.display.getSelectedMenu()
+        selected = self.client.display.getSelectedItem(menu)
+        if menu == "ground":
             action = "take"
         else:
             return
