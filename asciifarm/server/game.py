@@ -17,7 +17,7 @@ class Game:
     
     def __init__(self, socketType, worldFile=None, saveDir=None, saveInterval=1):
 
-        self.server = gameserver.GameServer(self, socketType)
+        self.server = gameserver.GameServer(socketType)
         
         worldLoader = worldloader.WorldLoader(saveDir)
         roomLoader = roomloader.RoomLoader(worldFile, os.path.join(saveDir, "rooms"))

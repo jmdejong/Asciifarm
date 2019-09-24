@@ -37,7 +37,7 @@ For example, the whole message could look like this:
 
 ## Client to server messages
 
-Currently there are two types of messages that the client can send to the server: 'name' and 'input'
+Currently there are three types of messages that the client can send to the server: 'name', 'input' and 'chat'
 
 ### 'name' messages
 
@@ -47,7 +47,7 @@ This message must be sent before any other communication.
 
 Example message: `["name", "troido"]`
 
-If a player with that name did not exist yet, it will be created and the connection will be connecte that player.
+If a player with that name did not exist yet, it will be created and the connection will be connected that player.
 
 If a player with that name does exist, but it no other connection is currenty connected to that player, the connection will be connected to that player too.
 
@@ -64,10 +64,18 @@ The first item in the list is the type of command, later items are arguments
 
 Example message: `["input", ["move", "east"]]`
 
+### 'chat' messages
+
+'chat' messages are used to send messages to all connections, without going through the world first.
+
+The value of this message is the string to send.
+This string may only contain printable characters.
+
+Example message: `["chat", "hello, other asciifarm players"]`
 
 ## Server to client messages
 
-There are 5 types of messages that the server can send to the client: 'field', 'inventory', 'health', 'ground' and 'error'
+There are several types of messages that the server can send to the client: 'field', 'inventory', 'health', 'ground' and 'error'
 
 Currently, 'chanchedcells' and 'info' messages are always sent in the same dictionary.
 If there is a 'field' message, it will also be sent in that dictionary.
@@ -75,7 +83,9 @@ If there is a 'field' message, it will also be sent in that dictionary.
 ### 'error' messages
 
 'error' messages are sent when a player tries to connect with a name that is already connected or when the input is wrong.
-Wrong input is not always guaranteed to give an error message. The first value is a string to give the type of error.
+Wrong input is not always guaranteed to give an error message.
+The first value is a string to give the type of error.
+The message may have more data to explain the error.
 
 Example message: `["error", "nametaken"]`
 
@@ -90,7 +100,7 @@ It has the following properties:
 - field: a 1 dimensional array (length: width*height) of integers representing the sprites in all cells of the room.
 - mapping: an array or dictionary of spritenames. The values in field are the indices for the mapping.
 
-Only one sprite per cell is sent: the one with the larges height.
+Only one sprite per cell is sent: the one with the largest height.
 
 Example message:
 

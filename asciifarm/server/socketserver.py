@@ -1,11 +1,37 @@
 import os
 import socket
 import sys
-import threading
 import struct
+import selectors
 
 from asciifarm.common.tcommunicate import send, receive
 
+
+class _BytesBuffer:
+    
+    def __init__(self):
+        self.buff = bytearray()
+        self.msglen = None
+    
+    def addBytes(self, data):
+        self.buff.extend(data)
+    
+    def readMessages(self):
+        messages = []
+        while True:
+            if self.msglen is None:
+                if len(self.buff) < 4:
+                    break
+                header = self.buff[:4]
+                self.msglen = int.from_bytes(header, byteorder="big")
+                self.buff = self.buff[4:]
+            elif len(self.buff) >= self.msglen:
+                messages.append(self.buff[:self.msglen])
+                self.buff = self.buff[self.msglen:]
+                self.msglen = None
+            else:
+                break
+        return messages
 
 # Class to open a TCP Socket
 # will execute callback functions on new connections, closing connections and received messages
@@ -27,9 +53,10 @@ class Server:
         self.onConnection = onConnection
         self.onMessage = onMessage
         self.onConnectionClose = onConnectionClose
+        self.sel = selectors.DefaultSelector()
     
     
-    def start(self, address):
+    def listen(self, address):
         print("starting {} socket server on address {}".format(self.socketType, address))
         try:
             self.sock.bind(address)
@@ -42,32 +69,52 @@ class Server:
         
         self.sock.listen()
         
-        self.listener = threading.Thread(target=self._listen, daemon=True)
-        self.listener.start()
-    
-    
-    def _listen(self):
-        self.connections = set()
+        self.sock.setblocking(False)
+        
+        self.sel.register(self.sock, selectors.EVENT_READ, "ACCEPT")
+        
+        self.connections = {}
         print("listening")
         while True:
-            connection, client_address = self.sock.accept()
-            listener = threading.Thread(target=self._listenCon, args=(connection,), daemon=True)
-            listener.start()
+            events = self.sel.select()
+            for key, mask in events:
+                if key.data == "ACCEPT":
+                    sock = key.fileobj
+                    connection, client_address = sock.accept()
+                    connection.setblocking(False)
+                    self.sel.register(connection, selectors.EVENT_READ, "RECEIVE")
+                    self.connections[connection] = _BytesBuffer()
+                    self.onConnection(connection)
+                elif key.data == "RECEIVE":
+                    connection = key.fileobj
+                    data = connection.recv(4096)
+                    if data:
+                        buff = self.connections[connection]
+                        buff.addBytes(data)
+                        for message in buff.readMessages():
+                            self.onMessage(connection, message)
+                    else:
+                        del self.connections[connection]
+                        self.onConnectionClose(connection)
+                    
+            #listener = threading.Thread(target=self._listenCon, args=(connection,), daemon=True)
+            #listener.start()
+        
     
-    def _listenCon(self, connection):
-        self.connections.add(connection)
-        self.onConnection(connection)
-        data = receive(connection)
-        while data:
-            self.onMessage(connection, data)
-            try:
-                data = receive(connection)
-            except socket.error:
-                break
-            if not len(data):
-                break
-        self.connections.discard(connection)
-        self.onConnectionClose(connection)
+    #def _listenCon(self, connection):
+        #self.connections.add(connection)
+        #self.onConnection(connection)
+        #data = receive(connection)
+        #while data:
+            #self.onMessage(connection, data)
+            #try:
+                #data = receive(connection)
+            #except socket.error:
+                #break
+            #if not len(data):
+                #break
+        #self.connections.discard(connection)
+        #self.onConnectionClose(connection)
     
     
     def getUsername(self, connection):
@@ -83,9 +130,11 @@ class Server:
     
     def send(self, connection, msg):
         try:
-            send(connection, msg)
+            length = len(msg)
+            header = length.to_bytes(4, byteorder="big")
+            connection.sendall(header + msg)
         except Exception:
-            self.connections.discard(connection)
+            del self.connections[connection]
             self.onConnectionClose(connection)
             print("failed to send to client")
     

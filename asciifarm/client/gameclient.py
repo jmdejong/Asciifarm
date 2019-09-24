@@ -79,9 +79,9 @@ class Client:
                     self.close("error: name is already taken")
                     return
                 if error == "invalidname":
-                    self.close("error: "+ msg[2])
+                    self.close("Invalid name error: "+ msg[2:])
                     return
-                self.log(error)
+                self.log(" ".join(msg[1:]))
             if msgType == 'field':
                 field = msg[1]
                 fieldWidth = field['width']
