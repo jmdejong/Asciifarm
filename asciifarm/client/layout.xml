@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <hbox>
     <vbox width="20" align="right">
-        <bar id="health" height="2" full-char="#" empty-char="_" full-style="fg:2; bg:2" empty-style="fg:1; bg: 1;"></bar>
+        <textbox id="healthtitle" height="1" format="true">Health ({filled}/{total})</textbox>
+        <bar id="health" height="1" full-char="#" empty-char="_" full-style="fg:2; bg:2" empty-style="fg:1; bg: 1;"></bar>
         <listing id="switchtitles" height="0"></listing>
         <switchbox id="switch" height="50%">
             <vbox key="inventory">

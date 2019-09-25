@@ -105,6 +105,7 @@ class Display:
             maxHealth = 0
         self.getWidget("health").set_total(maxHealth)
         self.getWidget("health").set_filled(health)
+        self.getWidget("healthtitle").format({"filled": health, "total":maxHealth})
         
     
     def showInfo(self, infostring):
