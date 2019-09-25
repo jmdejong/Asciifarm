@@ -28,7 +28,7 @@
                 </listing>
             </vbox>
         </switchbox>
-        <textbox id="info"></textbox>
+        <textbox id="info" wrap="words"></textbox>
     </vbox>
     <vbox>
         <textinput id="textinput" align="bottom" height="1">hello</textinput>
