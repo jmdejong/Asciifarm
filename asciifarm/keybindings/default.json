@@ -38,5 +38,5 @@
 "pagedown": ["scrollchat", -1],
 "/": ["runinput", "/"]
 },
-"help": "Controls:\n wasd or arrows:\n    Move around\n e: Grab\n q: Drop/unequip\n   selected\n r: Interact\n f: Attack\n t: Chat\n E: Use selected\n Q: Take selected\n xc: select item\n vb: select menu\n ctrl-c: close client"
+"help": " Controls:\nwasd or arrows: Move around\ne: Grab\nq: Drop/unequip selected\nr: Interact\nf: Attack\nt: Chat\nE: Use selected\nxc: select item\nvb: select menu\nctrl-c: close client\nPgUp/PgDn: scroll chat"
 }
