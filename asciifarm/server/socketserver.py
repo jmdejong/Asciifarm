@@ -40,7 +40,7 @@ class _BytesBuffer:
 class Server:
     
     
-    def __init__(self, socketType, onConnection=(lambda *_:None), onMessage=(lambda *_:None), onConnectionClose=(lambda *_:None)):
+    def __init__(self, socketType, address, onConnection=(lambda *_:None), onMessage=(lambda *_:None), onConnectionClose=(lambda *_:None)):
         
         if socketType == "abstract" or socketType == "unix":
             self.sockType = socket.AF_UNIX
@@ -53,13 +53,14 @@ class Server:
         self.onConnection = onConnection
         self.onMessage = onMessage
         self.onConnectionClose = onConnectionClose
-        self.sel = selectors.DefaultSelector()
+        self.address = address
+        self.selector = None
     
     
-    def listen(self, address):
-        print("starting {} socket server on address {}".format(self.socketType, address))
+    def listen(self, selector=None):
+        print("starting {} socket server on address {}".format(self.socketType, self.address))
         try:
-            self.sock.bind(address)
+            self.sock.bind(self.address)
         except PermissionError:
             print("You don't have permission to use this socket file.\nRun the server with the '-s' option to specify another socket file path.\nWARNING: if an existing file is given, it will be overwritten.")
             sys.exit(-1)
@@ -71,51 +72,49 @@ class Server:
         
         self.sock.setblocking(False)
         
-        self.sel.register(self.sock, selectors.EVENT_READ, "ACCEPT")
+        if selector is None:
+            selector = selectors.DefaultSelector()
+        self.selector = selector
+        
+        selector.register(self.sock, selectors.EVENT_READ, self._accept)
         
         self.connections = {}
         print("listening")
         while True:
-            events = self.sel.select()
+            events = selector.select()
             for key, mask in events:
-                if key.data == "ACCEPT":
-                    sock = key.fileobj
-                    connection, client_address = sock.accept()
-                    connection.setblocking(False)
-                    self.sel.register(connection, selectors.EVENT_READ, "RECEIVE")
-                    self.connections[connection] = _BytesBuffer()
-                    self.onConnection(connection)
-                elif key.data == "RECEIVE":
-                    connection = key.fileobj
-                    data = connection.recv(4096)
-                    if data:
-                        buff = self.connections[connection]
-                        buff.addBytes(data)
-                        for message in buff.readMessages():
-                            self.onMessage(connection, message)
-                    else:
-                        del self.connections[connection]
-                        self.onConnectionClose(connection)
-                    
-            #listener = threading.Thread(target=self._listenCon, args=(connection,), daemon=True)
-            #listener.start()
-        
+                sock = key.fileobj
+                callback = key.data
+                callback(sock)
     
-    #def _listenCon(self, connection):
-        #self.connections.add(connection)
-        #self.onConnection(connection)
-        #data = receive(connection)
-        #while data:
-            #self.onMessage(connection, data)
-            #try:
-                #data = receive(connection)
-            #except socket.error:
-                #break
-            #if not len(data):
-                #break
-        #self.connections.discard(connection)
-        #self.onConnectionClose(connection)
+    def _accept(self, sock):
+            connection, client_address = sock.accept()
+            connection.setblocking(False)
+            self.selector.register(connection, selectors.EVENT_READ, self._receive)
+            self.connections[connection] = _BytesBuffer()
+            self.onConnection(connection)
     
+    def _receive(self, connection):
+            try:
+                data = connection.recv(4096)
+            except ConnectionResetError:
+                data = None
+            if data:
+                buff = self.connections[connection]
+                buff.addBytes(data)
+                for message in buff.readMessages():
+                    self.onMessage(connection, message)
+            else:
+                self.closeConnection(connection)
+    
+    def closeConnection(self, connection):
+        try:
+            del self.connections[connection]
+        except KeyError:
+            return
+        connection.close()
+        self.selector.unregister(connection)
+        self.onConnectionClose(connection)
     
     def getUsername(self, connection):
         
@@ -129,14 +128,13 @@ class Server:
     
     
     def send(self, connection, msg):
-        try:
+        if connection in self.connections:
             length = len(msg)
             header = length.to_bytes(4, byteorder="big")
-            connection.sendall(header + msg)
-        except Exception:
-            del self.connections[connection]
-            self.onConnectionClose(connection)
-            print("failed to send to client")
+            try:
+                connection.sendall(header + msg)
+            except BrokenPipeError:
+                self.closeConnection(connection)
     
     def broadcast(self, msg):
         for connection in frozenset(self.connections):

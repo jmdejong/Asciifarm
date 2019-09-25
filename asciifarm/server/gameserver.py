@@ -18,20 +18,17 @@ nameRegex = re.compile("(~|\w)\w*")
 class GameServer:
     
     
-    def __init__(self, socketType):
+    def __init__(self, socketType, address):
         
-        self.serv = server.Server(socketType, self.newConnection, self.receive, self.close)
+        self.serv = server.Server(socketType, address, self.newConnection, self.receive, self.close)
         
         self.connections = {}
-        
         self.players = {}
-        
-        
         self.messages = queue.Queue()
     
-    def start(self, address):
+    def start(self):
         
-        self.listener = threading.Thread(target=self.serv.listen, daemon=True, args=(address,))
+        self.listener = threading.Thread(target=self.serv.listen, daemon=True)
         self.listener.start()
     
     def sendState(self, view):
@@ -69,7 +66,7 @@ class GameServer:
                     self.error(n, "invalidname", "name may not be longer than 256 utf8 bytes")
                     return
                 if nameRegex.match(name) is None:
-                    self.error(n, "invalidname", "Name must match the regex: {}".format(nameRegex.pattern))
+                    self.error(n, "invalidname", "Name must match the following regex: {}".format(nameRegex.pattern))
                     return
                 if name[0] == "~" and name[1:] != self.serv.getUsername(n):
                     self.error(n, "invalidname", "tildenames are only available on unix sockets and when the rest of the name equals the username")

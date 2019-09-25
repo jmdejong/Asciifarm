@@ -15,9 +15,9 @@ saveExt = ".save.json"
 
 class Game:
     
-    def __init__(self, socketType, worldFile=None, saveDir=None, saveInterval=1):
+    def __init__(self, socketType, address, worldFile=None, saveDir=None, saveInterval=1):
 
-        self.server = gameserver.GameServer(socketType)
+        self.server = gameserver.GameServer(socketType, address)
         
         worldLoader = worldloader.WorldLoader(saveDir)
         roomLoader = roomloader.RoomLoader(worldFile, os.path.join(saveDir, "rooms"))
@@ -31,9 +31,9 @@ class Game:
         self.counter = 0
     
         
-    def start(self, address):
+    def start(self):
         
-        self.server.start(address)
+        self.server.start()
         
         try:
             self.game_loop()

@@ -134,12 +134,10 @@ class Display:
         
     
     def setEquipment(self, slots):
-        self.equipment.setItems(
-            sorted([
-                slot + ": " + (item if item else "")
-                for slot, item in slots.items()
-            ])
-        )
+        self.equipment.setItems([
+            slot + ": " + (item if item else "")
+            for slot, item in slots
+        ])
     
     def setGround(self, items):
         self.ground.setItems(items)

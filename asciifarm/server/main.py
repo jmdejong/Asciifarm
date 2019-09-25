@@ -39,4 +39,4 @@ def main(argv=None):
         hostname, sep, port = address.partition(':')
         address = (hostname, int(port))
     
-    game.Game(args.socket, args.world, args.savedir, 300).start(address)
+    game.Game(args.socket, address, args.world, args.savedir, 300).start()
