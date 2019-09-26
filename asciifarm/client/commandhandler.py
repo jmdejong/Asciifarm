@@ -17,7 +17,6 @@ class CommandHandler:
         self.client = client
         
         self.commands = {
-            "send": self.send,
             "input": self.input,
             "move": self.move,
             "say": self.say,
@@ -65,11 +64,8 @@ class CommandHandler:
     
     # Commands
     
-    def send(self, data):
-        self.client.send(data)
-    
     def input(self, action):
-        self.send(["input", action])
+        self.client.sendInput(action)
     
     def move(self, direction):
         self.input(["move", direction])
@@ -81,7 +77,7 @@ class CommandHandler:
         self.input(["pick", option])
     
     def chat(self, text):
-        self.send(["chat", text])
+        self.client.sendChat( text)
     
     
     def log(self, text):

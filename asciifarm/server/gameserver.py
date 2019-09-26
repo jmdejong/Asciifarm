@@ -11,6 +11,8 @@ from . import view
 from . import socketserver as server
 from . import player
 
+from asciifarm.common import messages
+
 import re
 
 nameRegex = re.compile("(~|\w)\w*")
@@ -37,7 +39,7 @@ class GameServer:
             data = view.playerView(name)
             if data is None:
                 continue
-            databytes = bytes(json.dumps(data), 'utf-8')
+            databytes = bytes(json.dumps(["world", data]), 'utf-8')
             
             self.serv.send(connection, databytes)
     
@@ -56,48 +58,65 @@ class GameServer:
                 return
             msg = data
             msgType = msg[0]
-            if msgType == "name":
-                name = msg[1]
-                
-                if len(name) < 1:
-                    self.error(n, "invalidname", "name needs at least one character")
-                    return
-                if len(bytes(name, "utf-8")) > 256:
-                    self.error(n, "invalidname", "name may not be longer than 256 utf8 bytes")
-                    return
-                if nameRegex.match(name) is None:
-                    self.error(n, "invalidname", "Name must match the following regex: {}".format(nameRegex.pattern))
-                    return
-                if name[0] == "~" and name[1:] != self.serv.getUsername(n):
-                    self.error(n, "invalidname", "tildenames are only available on unix sockets and when the rest of the name equals the username")
-                    return
-                if name in self.players:
-                    self.error(n, "nametaken", "another connection to this player already exists")
-                    return
-                self.connections[n] = name
-                self.players[name] = n
-                self.messages.put(("join", name))
-                print("new player: "+name)
-                self.broadcast("{} has connected".format(name), "connect")
-            elif msgType == "input":
-                if n in self.connections:
-                    self.messages.put(("input", self.connections[n], msg[1]))
-            elif msgType == "chat":
-                if n in self.connections:
-                    name = self.connections[n]
-                    if not msg[1].isprintable():
-                        self.error("invalidmessage", "Chat message may only contain printable unicode characters")
-                    message = name + ": " + msg[1]
-                    print(message)
-                    self.broadcast(message, "chat")
+            if not isinstance(msgType, str):
+                self.error(n, "invalidmessage", "Message type must be a string")
+                return
+            msgClass = messages.messages.get(msgType)
+            if msgClass is None:
+                self.error(n, "invalidmessage", "Unknown message type '{}'".format(msgType))
+                return
+            try:
+                message = msgClass.from_json(msg)
+            except messages.InvalidMessageError as e:
+                self.error(n, e.errType, e.description)
+                return
+            
+            self.handleMessage(n, message)
+            
         
         except Exception as e:
             print(e)
             self.error(n, "invalidmessage", "An unknown error occured in handling the message")
     
+    def handleMessage(self, n, message):
+        # I wish I had type overloading
+        if isinstance(message, messages.NameMessage):
+            self.handleNameMessage(n, message)
+        elif isinstance(message, messages.InputMessage):
+            self.handleInputMessage(n, message)
+        elif isinstance(message, messages.ChatMessage):
+            self.handleChatMessage(n, message)
+        else:
+            self.error(n, "invalidmessage", "unknown message '{}'".format(message.__class__))
     
-    def error(self, n, errtype, *data):
-        self.serv.send(n, bytes(json.dumps(["error", errtype]+list(data)), "utf-8"))
+    
+    def handleNameMessage(self, n, message):
+        name = message.name
+        if name[0] == "~" and name[1:] != self.serv.getUsername(n):
+            self.error(n, "invalidname", "tildenames are only available on unix sockets and when the rest of the name equals the username")
+            return
+        if name in self.players:
+            self.error(n, "nametaken", "another connection to this player already exists")
+            return
+        self.connections[n] = name
+        self.players[name] = n
+        self.messages.put(("join", name))
+        print("new player: "+name)
+        self.broadcast("{} has connected".format(name), "connect")
+    
+    def handleInputMessage(self, n, message):
+        if n in self.connections:
+            self.messages.put(("input", self.connections[n], message.inp))
+    
+    def handleChatMessage(self, n, msg):#if n in self.connections:
+            name = self.connections[n]
+            message = name + ": " + msg.text
+            print(message)
+            self.broadcast(message, "chat")
+        
+    
+    def error(self, n, errtype, description=""):
+        self.serv.send(n, bytes(json.dumps(["error", errtype, description]), "utf-8"))
     
     def close(self, connection):
         if connection in self.connections:

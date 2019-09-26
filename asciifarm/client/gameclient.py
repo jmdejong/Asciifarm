@@ -13,6 +13,7 @@ from queue import Queue
 import ratuil.inputs
 
 from .inputhandler import InputHandler
+from asciifarm.common import messages
 
 class Client:
     
@@ -33,15 +34,24 @@ class Client:
         self.queue = Queue()
         
     
-    def send(self, data):
-        text = json.dumps(data)
-        self.connection.send(text)
+    def sendMessage(self, message):
+        self.connection.send(json.dumps(message.to_json()))
+    
+    def sendInput(self, inp):
+        message = messages.InputMessage(inp)
+        self.sendMessage(message)
+    
+    def sendChat(self, text):
+        try:
+            self.sendMessage(messages.ChatMessage(text))
+        except messages.InvalidMessageError as e:
+            self.log(e.description)
     
     def start(self):
+        self.sendMessage(messages.NameMessage(self.name))
         threading.Thread(target=self.listen, daemon=True).start()
         threading.Thread(target=self.getInput, daemon=True).start()
         
-        self.connection.send(json.dumps(["name", self.name]))
         self.command_loop()
     
     def listen(self):
@@ -79,48 +89,53 @@ class Client:
                     self.close("error: name is already taken")
                     return
                 if error == "invalidname":
-                    self.close("Invalid name error: "+ msg[2:])
+                    self.close("Invalid name error: "+ str(msg[2:]))
                     return
                 self.log(" ".join(msg[1:]))
-            if msgType == 'field':
-                field = msg[1]
-                fieldWidth = field['width']
-                fieldHeight = field['height']
-                self.display.resizeField((fieldWidth, fieldHeight))
-                fieldCells = field['field']
-                mapping = field['mapping']
-                self.display.drawFieldCells(
-                    (
-                        tuple(reversed(divmod(i, fieldWidth))),
-                        mapping[spr]
-                    )
-                    for i, spr in enumerate(fieldCells))
-            
-            if msgType == 'changecells' and len(msg[1]):
-                self.display.drawFieldCells(msg[1])
-            
-            if msgType == "playerpos":
-                self.display.setFieldCenter(msg[1])
-            
-            if msgType == "health":
-                health, maxHealth = msg[1]
-                self.display.setHealth(health, maxHealth)
-                if maxHealth is None:
-                    self.log("You have died. Restart the client to respawn")
-            if msgType == "inventory":
-                self.display.setInventory(msg[1])
-            if msgType == "equipment":
-                self.display.setEquipment(msg[1])
-            if msgType == "ground":
-                self.display.setGround(msg[1])
             if msgType == "message":
                 self.log(*msg[1:])
-            if msgType == "options":
-                if msg[1] != None:
-                    description, options = msg[1]
-                    self.log(description)
-                    for option in options:
-                        self.log(option)
+            if msgType == "world":
+                for msg in msg[1]:
+                    msgType = msg[0]
+                    if msgType == 'field':
+                        field = msg[1]
+                        fieldWidth = field['width']
+                        fieldHeight = field['height']
+                        self.display.resizeField((fieldWidth, fieldHeight))
+                        fieldCells = field['field']
+                        mapping = field['mapping']
+                        self.display.drawFieldCells(
+                            (
+                                tuple(reversed(divmod(i, fieldWidth))),
+                                mapping[spr]
+                            )
+                            for i, spr in enumerate(fieldCells))
+                    
+                    if msgType == 'changecells' and len(msg[1]):
+                        self.display.drawFieldCells(msg[1])
+                    
+                    if msgType == "playerpos":
+                        self.display.setFieldCenter(msg[1])
+                    
+                    if msgType == "health":
+                        health, maxHealth = msg[1]
+                        self.display.setHealth(health, maxHealth)
+                        if maxHealth is None:
+                            self.log("You have died. Restart the client to respawn")
+                    if msgType == "inventory":
+                        self.display.setInventory(msg[1])
+                    if msgType == "equipment":
+                        self.display.setEquipment(msg[1])
+                    if msgType == "ground":
+                        self.display.setGround(msg[1])
+                    if msgType == "message":
+                        self.log(*msg[1:])
+                    if msgType == "options":
+                        if msg[1] != None:
+                            description, options = msg[1]
+                            self.log(description)
+                            for option in options:
+                                self.log(option)
         
     
     def log(self, text, type=None):

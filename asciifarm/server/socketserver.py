@@ -133,7 +133,7 @@ class Server:
             header = length.to_bytes(4, byteorder="big")
             try:
                 connection.sendall(header + msg)
-            except BrokenPipeError:
+            except (BrokenPipeError, OSError):
                 self.closeConnection(connection)
     
     def broadcast(self, msg):
