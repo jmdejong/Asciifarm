@@ -27,4 +27,4 @@ class Connection:
                 callback(data)
     
     def send(self, message):
-        send(self.sock, bytes(message, 'utf-8'))
+        send(self.sock, message)

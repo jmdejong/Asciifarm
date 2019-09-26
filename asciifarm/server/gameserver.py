@@ -15,7 +15,6 @@ from asciifarm.common import messages
 
 import re
 
-nameRegex = re.compile("(~|\w)\w*")
 
 class GameServer:
     
@@ -39,41 +38,31 @@ class GameServer:
             data = view.playerView(name)
             if data is None:
                 continue
-            databytes = bytes(json.dumps(["world", data]), 'utf-8')
-            
-            self.serv.send(connection, databytes)
+            self.sendMessage(connection, messages.WorldMessage(data))
     
     def newConnection(self, n):
         pass
     
     def receive(self, n, data):
         try:
-            try:
-                data = json.loads(data.decode('utf-8'))
-            except json.JSONDecodeError:
-                self.error(n, "invalidmessage", "Invalid JSON")
-                return
+            data = json.loads(data.decode('utf-8'))
             if not isinstance(data, list) or len(data) != 2:
-                self.error(n, "invalidmessage", "Message must be a json list of length 2")
-                return
+                raise messages.InvalidMessageError("Message must be a json list of length 2")
             msg = data
             msgType = msg[0]
             if not isinstance(msgType, str):
-                self.error(n, "invalidmessage", "Message type must be a string")
-                return
+                raise messages.InvalidMessageError("Message type must be a string")
             msgClass = messages.messages.get(msgType)
             if msgClass is None:
-                self.error(n, "invalidmessage", "Unknown message type '{}'".format(msgType))
-                return
-            try:
-                message = msgClass.from_json(msg)
-            except messages.InvalidMessageError as e:
-                self.error(n, e.errType, e.description)
-                return
+                raise messages.InvalidMessageError("Unknown message type '{}'".format(msgType))
+            message = msgClass.from_json(msg)
             
             self.handleMessage(n, message)
             
-        
+        except messages.InvalidMessageError as e:
+            self.sendMessage(n, e.toMessage)
+        except json.JSONDecodeError:
+            self.error(n, "invalidmessage", "Invalid JSON")
         except Exception as e:
             print(e)
             self.error(n, "invalidmessage", "An unknown error occured in handling the message")
@@ -93,10 +82,9 @@ class GameServer:
     def handleNameMessage(self, n, message):
         name = message.name
         if name[0] == "~" and name[1:] != self.serv.getUsername(n):
-            self.error(n, "invalidname", "tildenames are only available on unix sockets and when the rest of the name equals the username")
-            return
+            raise messages.InvalidNameError("tildenames are only available on unix sockets and when the rest of the name equals the username")
         if name in self.players:
-            self.error(n, "nametaken", "another connection to this player already exists")
+            raise messages.InvalidNameError("another connection to this player already exists", "nametaken")
             return
         self.connections[n] = name
         self.players[name] = n
@@ -108,15 +96,17 @@ class GameServer:
         if n in self.connections:
             self.messages.put(("input", self.connections[n], message.inp))
     
-    def handleChatMessage(self, n, msg):#if n in self.connections:
+    def handleChatMessage(self, n, msg):
             name = self.connections[n]
             message = name + ": " + msg.text
             print(message)
             self.broadcast(message, "chat")
-        
+    
+    def sendMessage(self, n, message):
+        self.serv.send(n, message.to_json_bytes())
     
     def error(self, n, errtype, description=""):
-        self.serv.send(n, bytes(json.dumps(["error", errtype, description]), "utf-8"))
+        self.sendMessage(n, messages.ErrorMessage(errtype, description))
     
     def close(self, connection):
         if connection in self.connections:
@@ -127,10 +117,10 @@ class GameServer:
             print("player "+name+" left")
             self.broadcast("{} has disconnected".format(name), "connect")
     
-    def broadcast(self, message, type="server"):
-        databytes = bytes(json.dumps(["message", message, type]), "utf-8")
+    def broadcast(self, text, type="server"):
+        message = messages.MessageMessage(text, type)
         for connection in self.connections:
-            self.serv.send(connection, databytes)
+            self.sendMessage(connection, message)
         
     
     def readMessages(self):

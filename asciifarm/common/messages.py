@@ -1,6 +1,7 @@
 
 import re
 import unicodedata
+import json
 
 class InvalidMessageError(Exception):
     errType = "invalidmessage"
@@ -10,6 +11,9 @@ class InvalidMessageError(Exception):
         self.description = description
         if errType is not None:
             self.errType = errType
+    
+    def toMessage(self):
+        return ErrorMessage(self.errType, self.desctiption)
 
 class InvalidNameError(InvalidMessageError):
     errType = "invalidname"
@@ -22,6 +26,9 @@ class Message:
     
     def to_json(self):
         raise NotImplementedError
+    
+    def to_json_bytes(self):
+        return bytes(json.dumps(self.to_json()), "utf-8")
     
     @classmethod
     def from_json(cls, jsonobj):
@@ -46,7 +53,6 @@ class ClientToServerMessage(Message):
 class NameMessage(ClientToServerMessage):
     
     typename = "name"
-    nameRegex = re.compile("(~|\w)\w*")
     categories = {"Lu", "Ll", "Lt", "Lm", "Lo", "Nd", "Nl", "No", "Pc"}
     
     
@@ -57,9 +63,6 @@ class NameMessage(ClientToServerMessage):
         for char in name if name[0] != "~" else name[1:]:
             category = unicodedata.category(char)
             assert category in self.categories, InvalidNameError("all name caracters must be in these unicode categories: " + "|".join(self.categories) + " (except the tilde in a tildename)")
-            
-        #assert (name.rfind("~") < 1), InvalidNameError("tilde character may only occur at start of name")
-        #assert (self.nameRegex.match(name) is not None), InvalidNameError("name must match the following regex: {}".format(self.nameRegex.pattern))
         self.name = name
     
     def body(self):
@@ -90,9 +93,64 @@ class ChatMessage(ClientToServerMessage):
 
 
 
+class ServerToClientMessage(Message):
+    msglen = 0
+    
+    
+    @classmethod
+    def from_json(cls, jsonlist):
+        assert len(jsonlist) == cls.msglen, InvalidMessageError
+        assert jsonlist[0] == cls.msgType(), InvalidMessageError
+        return cls(*jsonlist[1:])
+
+
+class MessageMessage(ServerToClientMessage): # this name feels stupid
+    """ A message to inform the client. This is meant to be read by the user"""
+    
+    typename = "message"
+    msglen = 3
+    
+    def __init__(self, text, type=""):
+        self.text = text
+        self.type = type
+    
+    def to_json(self):
+        return [self.typename, self.text, self.type]
+    
+
+class WorldMessage(ServerToClientMessage):
+    """ A message about the world state """
+    
+    typename = "world"
+    msglen = 2
+    
+    def __init__(self, updates):
+        assert isinstance(updates, list), InvalidMessageError
+        self.updates = updates
+    
+    def to_json(self):
+        return [self.typename, self.updates]
+
+class ErrorMessage(ServerToClientMessage):
+    
+    typename = "error"
+    msglen = 3
+    
+    def __init__(self, errType, description=""):
+        self.errType = errType
+        self.description = description
+    
+    def to_json(self):
+        return [self.typename, self.errType, self.description]
+
+
+
 messages = {message.msgType(): message for message in [
     NameMessage,
     InputMessage,
-    ChatMessage
+    ChatMessage,
+    WorldMessage,
+    ErrorMessage,
+    MessageMessage
 ]}
 

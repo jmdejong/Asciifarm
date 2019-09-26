@@ -79,6 +79,7 @@ class Display:
     
     def resizeField(self, size):
         self.getWidget("field").set_size(*size)
+        self.getWidget("fieldbackground").change()
     
     def drawFieldCells(self, cells):
         field = self.getWidget("field")

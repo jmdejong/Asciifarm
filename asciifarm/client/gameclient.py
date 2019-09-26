@@ -35,7 +35,7 @@ class Client:
         
     
     def sendMessage(self, message):
-        self.connection.send(json.dumps(message.to_json()))
+        self.connection.send(message.to_json_bytes())
     
     def sendInput(self, inp):
         message = messages.InputMessage(inp)
@@ -78,64 +78,64 @@ class Client:
             self.close("Connection closed by server")
             return
         datastr = databytes.decode('utf-8')
-        data = json.loads(datastr)
-        if len(data) and isinstance(data[0], str):
-            data = [data]
-        for msg in data:
-            msgType = msg[0]
-            if msgType == 'error':
-                error = msg[1]
-                if error == "nametaken":
-                    self.close("error: name is already taken")
-                    return
-                if error == "invalidname":
-                    self.close("Invalid name error: "+ str(msg[2:]))
-                    return
-                self.log(" ".join(msg[1:]))
-            if msgType == "message":
-                self.log(*msg[1:])
-            if msgType == "world":
-                for msg in msg[1]:
-                    msgType = msg[0]
-                    if msgType == 'field':
-                        field = msg[1]
-                        fieldWidth = field['width']
-                        fieldHeight = field['height']
-                        self.display.resizeField((fieldWidth, fieldHeight))
-                        fieldCells = field['field']
-                        mapping = field['mapping']
-                        self.display.drawFieldCells(
-                            (
-                                tuple(reversed(divmod(i, fieldWidth))),
-                                mapping[spr]
-                            )
-                            for i, spr in enumerate(fieldCells))
-                    
-                    if msgType == 'changecells' and len(msg[1]):
-                        self.display.drawFieldCells(msg[1])
-                    
-                    if msgType == "playerpos":
-                        self.display.setFieldCenter(msg[1])
-                    
-                    if msgType == "health":
-                        health, maxHealth = msg[1]
-                        self.display.setHealth(health, maxHealth)
-                        if maxHealth is None:
-                            self.log("You have died. Restart the client to respawn")
-                    if msgType == "inventory":
-                        self.display.setInventory(msg[1])
-                    if msgType == "equipment":
-                        self.display.setEquipment(msg[1])
-                    if msgType == "ground":
-                        self.display.setGround(msg[1])
-                    if msgType == "message":
-                        self.log(*msg[1:])
-                    if msgType == "options":
-                        if msg[1] != None:
-                            description, options = msg[1]
-                            self.log(description)
-                            for option in options:
-                                self.log(option)
+        msg = json.loads(datastr)
+        message = messages.messages[msg[0]].from_json(msg)
+        if isinstance(message, messages.ErrorMessage):
+            error = message.errType
+            if error == "nametaken":
+                self.close("error: name is already taken")
+                return
+            if error == "invalidname":
+                self.close("Invalid name error: "+ str(message.description))
+                return
+            self.log(message.errtype + ": " + message.description)
+        elif isinstance(message, messages.MessageMessage):
+            self.log(message.text, message.type)
+        elif isinstance(message, messages.WorldMessage):
+            for msg in message.updates:
+                self.handleWorldUpdate(msg)
+    
+    def handleWorldUpdate(self, msg):
+        msgType = msg[0]
+        if msgType == 'field':
+            field = msg[1]
+            fieldWidth = field['width']
+            fieldHeight = field['height']
+            self.display.resizeField((fieldWidth, fieldHeight))
+            fieldCells = field['field']
+            mapping = field['mapping']
+            self.display.drawFieldCells(
+                (
+                    tuple(reversed(divmod(i, fieldWidth))),
+                    mapping[spr]
+                )
+                for i, spr in enumerate(fieldCells))
+        
+        if msgType == 'changecells' and len(msg[1]):
+            self.display.drawFieldCells(msg[1])
+        
+        if msgType == "playerpos":
+            self.display.setFieldCenter(msg[1])
+        
+        if msgType == "health":
+            health, maxHealth = msg[1]
+            self.display.setHealth(health, maxHealth)
+            if maxHealth is None:
+                self.log("You have died. Restart the client to respawn")
+        if msgType == "inventory":
+            self.display.setInventory(msg[1])
+        if msgType == "equipment":
+            self.display.setEquipment(msg[1])
+        if msgType == "ground":
+            self.display.setGround(msg[1])
+        if msgType == "message":
+            self.log(*msg[1:])
+        if msgType == "options":
+            if msg[1] != None:
+                description, options = msg[1]
+                self.log(description)
+                for option in options:
+                    self.log(option)
         
     
     def log(self, text, type=None):
