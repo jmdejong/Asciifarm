@@ -13,7 +13,7 @@ class InvalidMessageError(Exception):
             self.errType = errType
     
     def toMessage(self):
-        return ErrorMessage(self.errType, self.desctiption)
+        return ErrorMessage(self.errType, self.description)
 
 class InvalidNameError(InvalidMessageError):
     errType = "invalidname"

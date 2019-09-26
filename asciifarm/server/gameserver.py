@@ -20,9 +20,9 @@ import selectors
 class GameServer:
     
     
-    def __init__(self, socketType, address):
+    def __init__(self, sockets):
         
-        self.serv = server.Server(socketType, address, self.newConnection, self.receive, self.close)
+        self.servers = [server.Server(socket, self.newConnection, self.receive, self.close) for socket in sockets]
         
         self.connections = {}
         self.players = {}
@@ -30,7 +30,8 @@ class GameServer:
     
     def start(self):
         selector = selectors.DefaultSelector()
-        self.serv.listen(selector)
+        for serv in self.servers:
+            serv.listen(selector)
         self.listener = threading.Thread(target=self.listen, daemon=True, args=(selector,))
         self.listener.start()
     
@@ -51,10 +52,10 @@ class GameServer:
                 continue
             self.sendMessage(connection, messages.WorldMessage(data))
     
-    def newConnection(self, n):
+    def newConnection(self, connection):
         pass
     
-    def receive(self, n, data):
+    def receive(self, connection, data):
         try:
             data = json.loads(data.decode('utf-8'))
             if not isinstance(data, list) or len(data) != 2:
@@ -68,56 +69,58 @@ class GameServer:
                 raise messages.InvalidMessageError("Unknown message type '{}'".format(msgType))
             message = msgClass.from_json(msg)
             
-            self.handleMessage(n, message)
+            self.handleMessage(connection, message)
             
         except messages.InvalidMessageError as e:
-            self.sendMessage(n, e.toMessage)
+            self.sendMessage(connection, e.toMessage())
         except json.JSONDecodeError:
-            self.error(n, "invalidmessage", "Invalid JSON")
+            self.error(connection, "invalidmessage", "Invalid JSON")
         except Exception as e:
             print(e)
-            self.error(n, "invalidmessage", "An unknown error occured in handling the message")
+            self.error(connection, "invalidmessage", "An unknown error occured in handling the message")
     
-    def handleMessage(self, n, message):
+    def handleMessage(self, connection, message):
         # I wish I had type overloading
         if isinstance(message, messages.NameMessage):
-            self.handleNameMessage(n, message)
+            self.handleNameMessage(connection, message)
         elif isinstance(message, messages.InputMessage):
-            self.handleInputMessage(n, message)
+            self.handleInputMessage(connection, message)
         elif isinstance(message, messages.ChatMessage):
-            self.handleChatMessage(n, message)
+            self.handleChatMessage(connection, message)
         else:
-            self.error(n, "invalidmessage", "unknown message '{}'".format(message.__class__))
+            self.error(connection, "invalidmessage", "unknown message '{}'".format(message.__class__))
     
     
-    def handleNameMessage(self, n, message):
+    def handleNameMessage(self, connection, message):
         name = message.name
-        if name[0] == "~" and name[1:] != self.serv.getUsername(n):
+        serv, client = connection
+        if name[0] == "~" and name[1:] != serv.getUsername(client):
             raise messages.InvalidNameError("tildenames are only available on unix sockets and when the rest of the name equals the username")
         if name in self.players:
             raise messages.InvalidNameError("another connection to this player already exists", "nametaken")
             return
-        self.connections[n] = name
-        self.players[name] = n
+        self.connections[connection] = name
+        self.players[name] = connection
         self.messages.put(("join", name))
         print("new player: "+name)
         self.broadcast("{} has connected".format(name), "connect")
     
-    def handleInputMessage(self, n, message):
-        if n in self.connections:
-            self.messages.put(("input", self.connections[n], message.inp))
+    def handleInputMessage(self, connection, message):
+        if connection in self.connections:
+            self.messages.put(("input", self.connections[connection], message.inp))
     
-    def handleChatMessage(self, n, msg):
-            name = self.connections[n]
+    def handleChatMessage(self, connection, msg):
+            name = self.connections[connection]
             message = name + ": " + msg.text
             print(message)
             self.broadcast(message, "chat")
     
-    def sendMessage(self, n, message):
-        self.serv.send(n, message.to_json_bytes())
+    def sendMessage(self, connection, message):
+        serv, client = connection
+        serv.send(client, message.to_json_bytes())
     
-    def error(self, n, errtype, description=""):
-        self.sendMessage(n, messages.ErrorMessage(errtype, description))
+    def error(self, connection, errtype, description=""):
+        self.sendMessage(connection, messages.ErrorMessage(errtype, description))
     
     def close(self, connection):
         if connection in self.connections:

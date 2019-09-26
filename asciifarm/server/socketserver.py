@@ -40,7 +40,9 @@ class _BytesBuffer:
 class Server:
     
     
-    def __init__(self, socketType, address, onConnection=(lambda *_:None), onMessage=(lambda *_:None), onConnectionClose=(lambda *_:None)):
+    def __init__(self, socketInfo, onConnection=(lambda *_:None), onMessage=(lambda *_:None), onConnectionClose=(lambda *_:None)):
+        
+        socketType, address = socketInfo
         
         if socketType == "abstract" or socketType == "unix":
             self.sockType = socket.AF_UNIX
@@ -58,14 +60,13 @@ class Server:
     
     
     def listen(self, selector):
-        print("starting {} socket server on address {}".format(self.socketType, self.address))
         try:
             self.sock.bind(self.address)
         except PermissionError:
             print("You don't have permission to use this socket file.\nRun the server with the '-s' option to specify another socket file path.\nWARNING: if an existing file is given, it will be overwritten.")
             sys.exit(-1)
         except OSError:
-            print("Unable to bind to the socket address.\nMost likely this means that a server is already running and using the same address.\n Try another socket address (and tell all players to connect to that)")
+            print("Unable to bind to the {} socket address '{}'.\nMost likely this means that a server is already running and using the same address.\n Try another socket address (and tell all players to connect to that)".format(self.socketType, self.address))
             sys.exit(-1)
         
         self.sock.listen()
@@ -77,14 +78,14 @@ class Server:
         selector.register(self.sock, selectors.EVENT_READ, self._accept)
         
         self.connections = {}
-        print("listening")
+        print("started {} socket server on address {}".format(self.socketType, self.address))
     
     def _accept(self, sock, selector):
             connection, client_address = sock.accept()
             connection.setblocking(False)
             selector.register(connection, selectors.EVENT_READ, self._receive)
             self.connections[connection] = _BytesBuffer()
-            self.onConnection(connection)
+            self.onConnection((self, connection))
     
     def _receive(self, connection, selector):
             try:
@@ -95,7 +96,7 @@ class Server:
                 buff = self.connections[connection]
                 buff.addBytes(data)
                 for message in buff.readMessages():
-                    self.onMessage(connection, message)
+                    self.onMessage((self, connection), message)
             else:
                 self.closeConnection(connection)
     
@@ -106,7 +107,7 @@ class Server:
             return
         connection.close()
         self.selector.unregister(connection)
-        self.onConnectionClose(connection)
+        self.onConnectionClose((self, connection))
     
     def getUsername(self, connection):
         

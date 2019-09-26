@@ -15,9 +15,9 @@ saveExt = ".save.json"
 
 class Game:
     
-    def __init__(self, socketType, address, worldFile=None, saveDir=None, saveInterval=1):
+    def __init__(self, sockets, worldFile=None, saveDir=None, saveInterval=1):
 
-        self.server = gameserver.GameServer(socketType, address)
+        self.server = gameserver.GameServer(sockets)
         
         worldLoader = worldloader.WorldLoader(saveDir)
         roomLoader = roomloader.RoomLoader(worldFile, os.path.join(saveDir, "rooms"))
