@@ -57,7 +57,7 @@ class Server:
         self.selector = None
     
     
-    def listen(self, selector=None):
+    def listen(self, selector):
         print("starting {} socket server on address {}".format(self.socketType, self.address))
         try:
             self.sock.bind(self.address)
@@ -72,29 +72,21 @@ class Server:
         
         self.sock.setblocking(False)
         
-        if selector is None:
-            selector = selectors.DefaultSelector()
         self.selector = selector
         
         selector.register(self.sock, selectors.EVENT_READ, self._accept)
         
         self.connections = {}
         print("listening")
-        while True:
-            events = selector.select()
-            for key, mask in events:
-                sock = key.fileobj
-                callback = key.data
-                callback(sock)
     
-    def _accept(self, sock):
+    def _accept(self, sock, selector):
             connection, client_address = sock.accept()
             connection.setblocking(False)
-            self.selector.register(connection, selectors.EVENT_READ, self._receive)
+            selector.register(connection, selectors.EVENT_READ, self._receive)
             self.connections[connection] = _BytesBuffer()
             self.onConnection(connection)
     
-    def _receive(self, connection):
+    def _receive(self, connection, selector):
             try:
                 data = connection.recv(4096)
             except ConnectionResetError:

@@ -14,6 +14,7 @@ from . import player
 from asciifarm.common import messages
 
 import re
+import selectors
 
 
 class GameServer:
@@ -28,9 +29,19 @@ class GameServer:
         self.messages = queue.Queue()
     
     def start(self):
-        
-        self.listener = threading.Thread(target=self.serv.listen, daemon=True)
+        selector = selectors.DefaultSelector()
+        self.serv.listen(selector)
+        self.listener = threading.Thread(target=self.listen, daemon=True, args=(selector,))
         self.listener.start()
+    
+    def listen(self, selector):
+        
+        while True:
+            events = selector.select()
+            for key, mask in events:
+                sock = key.fileobj
+                callback = key.data
+                callback(sock, selector)
     
     def sendState(self, view):
         
