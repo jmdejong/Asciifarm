@@ -55,13 +55,10 @@ class InputHandler:
         self.showString()
     
     def showString(self):
-        self.client.display.setInputString(self.string, self.cursor if self.typing else -1)
+        self.client.display.setInputString(self.string, self.cursor if self.typing else None)
     
     def addKey(self, key):
-        if key in string.printable:
-            self.string = self.string[:self.cursor] + key + self.string[self.cursor:]
-            self.cursor += 1
-        elif key == inp.BACKSPACE:
+        if key == inp.BACKSPACE:
             self.string = self.string[:self.cursor-1] + self.string[self.cursor:]
             self.cursor = max(self.cursor - 1, 0)
         elif key == inp.RIGHT:
@@ -90,6 +87,9 @@ class InputHandler:
         elif key == "^I": # tab
             # return to game but keep entered string
             self.typing = False
+        elif key.isprintable():
+            self.string = self.string[:self.cursor] + key + self.string[self.cursor:]
+            self.cursor += len(key)
         
         self.showString()
     

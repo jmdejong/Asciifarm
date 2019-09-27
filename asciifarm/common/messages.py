@@ -60,9 +60,10 @@ class NameMessage(ClientToServerMessage):
         assert isinstance(name, str), InvalidNameError("name must be a string")
         assert (len(name) > 0), InvalidNameError("name needs at least one character")
         assert (len(bytes(name, "utf-8")) <= 256), InvalidNameError("name may not be longer than 256 utf8 bytes")
-        for char in name if name[0] != "~" else name[1:]:
-            category = unicodedata.category(char)
-            assert category in self.categories, InvalidNameError("all name caracters must be in these unicode categories: " + "|".join(self.categories) + " (except the tilde in a tildename)")
+        if name[0] != "~":
+            for char in name:
+                category = unicodedata.category(char)
+                assert category in self.categories, InvalidNameError("all name caracters must be in these unicode categories: " + "|".join(self.categories) + " (except for tildenames)")
         self.name = name
     
     def body(self):

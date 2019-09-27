@@ -30,6 +30,8 @@ def main(argv=None):
     
     args = parser.parse_args(argv)
     socketargs = args.socket
+    if socketargs is None:
+        socketargs = []
     if len(socketargs) == 0:
         socketargs.append(["abstract", "asciifarm"])
     
