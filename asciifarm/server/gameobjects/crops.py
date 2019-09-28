@@ -39,11 +39,12 @@ class Stage:
             if self.harvest is not None:
                 components["interact"] = Harvest()
                 components["loot"] = Loot(self.harvest)
+            flags = {"occupied"}
             return Entity(
                 sprite=self.sprite.format(cropname),
                 height=self.height,
                 name=self.shownname.format(cropname),
-                flags={"occupied"},
+                flags=flags,
                 components=components)
         entities[name] = makeEntity
 
@@ -83,7 +84,7 @@ createCrop("carrot", [
     Stage.Seed(20),
     Stage.Seedling(40),
     Stage("carrotplant", sprite="smallplant", height=0.5, harvest=[("carrot", 1), ("carrotseed", 1)])
-    ], 600)
+], 600)
 
 entities["carrot"] = lambda: Entity(sprite="food", name="carrot", height=0.3, components={"item": Food(4), "serialize": Static("carrot")})
 
@@ -92,8 +93,13 @@ createCrop("radish", [
     Stage.Seed(3),
     Stage.Seedling(3),
     Stage.YoungPlant(6),
-    Stage("{}plant", sprite="smallplant", height=0.5, harvest=[("radishseed", .92), ("radishseed", .20), ("radishes", .8), ("radishes", .4)])
-    ], 10)
+    Stage(
+        "{}plant",
+        sprite="smallplant",
+        height=0.5,
+        harvest=[("radishseed", .92), ("radishseed", .20), ("radishes", .8), ("radishes", .4)]
+    )
+], 10)
 
 entities["radishes"] = lambda: Entity(sprite="food", name="radishes", height=0.3, components={"item": Food(2), "serialize": Static("radishes")})
 

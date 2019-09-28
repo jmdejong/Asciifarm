@@ -24,6 +24,8 @@ def createEntity(data):
     obj = None
     if isinstance(data, str):
         obj = entities[data]()
+    elif isinstance(data, list) and len(data) == 3:
+        obj = entities[data[0]](*data[1], data[2])
     elif isinstance(data, dict):
         if "type" in data:
             obj = entities[data["type"]](*(data.get("args", [])), **(data.get("kwargs", {})))

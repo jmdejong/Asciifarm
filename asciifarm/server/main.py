@@ -19,7 +19,7 @@ thisPath = os.path.dirname(__file__)
 farmsPath = os.path.join(thisPath, "..")
 
 defaultWorld = os.path.join(farmsPath, "maps", "world.json")
-defaultSaveDir = os.path.join(farmsPath, "saves")
+defaultSaveDir = os.path.join(farmsPath, "..", "saves")
 
 def main(argv=None):
     parser = argparse.ArgumentParser()
