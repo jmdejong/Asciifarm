@@ -6,7 +6,7 @@ setup(
     description="Troido's tilde.town ASCII Farm",
     long_description="TODO",
     author="Troido",
-    author_email='troido@tilde.town',
+    author_email='troido@tilde.club',
     url='https://github.com/jmdejong/Asciifarm',
     packages=find_packages(),
     include_package_data=True,
@@ -24,7 +24,7 @@ setup(
     },
     install_requires=[
         # TODO: Put other requirements here -wangofett, 2017-10-26
-        "hy" # is this the correct syntax? ~troido, 2017-12-30
+        "ratuil"
     ],
     tests_require=[
         # TODO: put tests requirements here -wangofett, 2017-10-26
