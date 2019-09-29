@@ -24,7 +24,7 @@ class InputController(Component):
         self.owner = obj
         
         for dep in {"inventory", "move", "fighter", "alignment", "equipment", "select"}:
-            if not obj.getComponent(dep):
+            if not (obj.getComponent(dep) or dep in obj.dataComponents):
                 # todo: better exception
                 raise Exception("InputController needs object with " + dep + " component")
             
@@ -50,7 +50,8 @@ class InputController(Component):
         if action is not None:
             self.executeAction(action)
         if self.target:
-            self.fighter.attack(self.target)
+            fighter = self.owner.dataComponents["fighter"]
+            fighter.target = self.target
     
     def executeAction(self, action):
         
@@ -128,9 +129,10 @@ class InputController(Component):
         objects = self._getNearbyObjects(directions)
         if self.target in objects:
             objects = {self.target}
+        fighter = self.owner.dataComponents["fighter"]
         for obj in objects:
-            if self.fighter.canAttack(obj) and self.alignment.isEnemy(obj):
-                self.fighter.attack(obj)
+            if fighter.canAttack(self.owner, obj):
+                fighter.target = obj
                 self.target = obj
                 break
     

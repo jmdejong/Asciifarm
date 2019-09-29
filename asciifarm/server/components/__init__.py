@@ -1,10 +1,11 @@
 
 from .alignment import Alignment
+from .attackable import AttackableData
 from .build import Build
 from .change import Change
 from .customserializer import CustomSerializer
 from .equippable import Equippable
-from .fighter import Fighter
+from .fighter import FighterData
 from .food import Food
 from .grow import Growing
 from .harvest import Harvest

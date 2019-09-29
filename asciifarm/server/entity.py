@@ -14,7 +14,7 @@ class Entity:
     Remove methods are for cleanup, like unsubscribing from events.
     """
     
-    def __init__(self, sprite=' ', height=0, name=None, components=None, flags=None):
+    def __init__(self, sprite=' ', height=0, name=None, components=None, flags=None, dataComponents=None):
         if components is None:
             components = {}
         if flags is None:
@@ -27,6 +27,9 @@ class Entity:
         self.flags = set(flags)
         self.ground = None
         self.roomData = None
+        if dataComponents is None:
+            dataComponents = {}
+        self.dataComponents = dataComponents
         for component in self.components.values():
             component.attach(self)
         
@@ -36,6 +39,7 @@ class Entity:
         if preserve:
             roomData.preserveObject(self)
             self._preserve()
+        self.roomData.addObj(self)
         if stamp is None:
             stamp = roomData.getStamp()
         self.trigger("roomjoin", roomData, stamp)
@@ -46,6 +50,9 @@ class Entity:
     def getComponent(self, name):
         return self.components.get(name, None)
     
+    def listComponents(self):
+        return list(self.components.keys())
+    
     
     def place(self, ground):
         if self.ground:
@@ -54,14 +61,15 @@ class Entity:
         ground.addObj(self)
     
     def remove(self):
-        if self.ground:
-            self.ground.removeObj(self)
-            self.ground = None
+        self.roomData.removeObj(self)
         if self.isPreserved():
             self.roomData.removePreserved(self)
         for component in self.components.values():
             component.remove()
         self.trigger("remove")
+        if self.ground:
+            self.ground.removeObj(self)
+            self.ground = None
         self.roomData = None
     
     def addListener(self, event, callback, key=None):

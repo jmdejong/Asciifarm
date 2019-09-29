@@ -14,13 +14,11 @@ class Move(Component):
     
     def roomJoin(self, o, roomData, stamp):
         self.roomData = roomData
-        self.moveEvent = roomData.getEvent("move")
         self.canMove = True
         
     
     def move(self, direction):
         self.direction = direction
-        self.moveEvent.addListener(self.doMove)
         
     def canMove(self, direction):
         neighbours = self.owner.getGround().getNeighbours()
@@ -38,13 +36,9 @@ class Move(Component):
                 self.owner.trigger("move")
             
         self.direction = None
-        self.moveEvent.removeListener(self.doMove)
     
     def makeReady(self):
         self.canMove = True
-    
-    def remove(self):
-        self.moveEvent.removeListener(self.doMove)
     
     def toJSON(self):
         return {"slowness": self.slowness}

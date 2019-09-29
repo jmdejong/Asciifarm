@@ -26,7 +26,6 @@ class Spawner(Component):
     
     def roomJoin(self, o, roomData, stamp):
         self.roomData = roomData
-        self.updateEvent = roomData.getEvent("update")
         
         for i in range(self.amount):
             if self.initialSpawn:

@@ -41,8 +41,6 @@ class Room:
         
         self.field = {}
         
-        self.objects = set()
-        
         g = grid.fromDict(data)
         for x in range(g.width):
             for y in range(g.height):
@@ -82,11 +80,7 @@ class Room:
         
         self.roomData.setStamp(stepStamp)
         
-        self.roomData.triggerAlarms()
-        self.roomData.getEvent("control").trigger()
-        self.roomData.getEvent("move").trigger()
-        self.roomData.getEvent("fight").trigger()
-        self.roomData.getEvent("update").trigger(timePassed, stepStamp)
+        self.roomData.update()
         self.lastStepStamp = stepStamp
     
     def getSprites(self, pos):
@@ -131,12 +125,9 @@ class Room:
                 else:
                     raise Exception("Position {} at {} is not a valid position.".format(pos, self.places[pos]))
             obj.place(self.get(pos))
-        
-        self.objects.add(obj)
     
     def removeObj(self, pos, obj):
         self._getGround(pos).removeObj(obj)
-        self.objects.remove(obj)
     
     def onGroundChange(self, obj):
         self.changedCells[obj.getPos()] = self.getSprites(obj.getPos())

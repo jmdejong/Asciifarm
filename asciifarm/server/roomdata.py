@@ -1,8 +1,11 @@
 
 import heapq
 import itertools
+import collections
 counter = itertools.count()     # unique sequence count
 
+from .systems.fight import fight
+from .systems.attacked import attacked
 
 class RoomData:
     
@@ -23,8 +26,40 @@ class RoomData:
         self.stepStamp = 0
         
         self.alarms = [] # treat as priority queue
+        
+        self.objects = set()
+        
+        self.components = collections.defaultdict(set) # type: {str: set(Entity)}
+        self.dataComponents = collections.defaultdict(set) # type: {str: set(Entity)}
     
+    def update(self):
+        self.triggerAlarms()
+        
+        for entity in list(self.components["controller"]):
+            entity.getComponent("controller").control()
+        for entity in list(self.components["move"]):
+            entity.getComponent("move").doMove()
+        for entity in list(self.dataComponents["fighter"]):
+            fight(entity, self)
+        for entity in list(self.dataComponents["attackable"]):
+            attacked(entity, self)
     
+    def addObj(self, obj):
+        
+        self.objects.add(obj)
+        for component in obj.listComponents():
+            self.components[component].add(obj)
+        for component in obj.dataComponents:
+            self.dataComponents[component].add(obj)
+    
+    def removeObj(self, obj):
+        self.objects.remove(obj)
+        for component in obj.listComponents():
+            self.components[component].remove(obj)
+        for component in obj.dataComponents:
+            self.dataComponents[component].remove(obj)
+        
+        
     def getEvent(self, name):
         return self.events[name]
     

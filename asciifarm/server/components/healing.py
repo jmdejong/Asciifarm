@@ -14,11 +14,11 @@ class Healing(Component):
     
     def attach(self, obj):
         
-        if not obj.getComponent("fighter"):
+        if not obj.dataComponents.get("attackable"):
             # todo: better exception
-            raise Exception("Healing Component needs object with fighter component")
+            raise Exception("Healing Component needs object with attackable component")
             
-        self.fighter = obj.getComponent("fighter")
+        self.fighter = obj.dataComponents.get("attackable")
         obj.addListener("damage", self.onDamage)
         obj.addListener("roomjoin", self.roomJoin)
     

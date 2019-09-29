@@ -18,7 +18,7 @@ class MonsterAi(Component):
         self.owner = obj
         
         for dep in {"move", "fighter", "alignment"}:
-            if not obj.getComponent(dep):
+            if not (obj.getComponent(dep) or dep in obj.dataComponents):
                 # todo: better exception
                 raise Exception("Controller needs object with " + dep + " component")
             setattr(self, dep, obj.getComponent(dep))
@@ -40,8 +40,9 @@ class MonsterAi(Component):
                 closestDistance = distance
                 closest = obj
         if closest:
-            if self.fighter.inRange(closest):
-                self.fighter.attack(closest)
+            fighter = self.owner.dataComponents["fighter"]
+            if fighter.inRange(self.owner, closest):
+                fighter.target = closest
             else:
                 self.move.move(pathfinding.stepTo(self.owner, closest))
         else:
