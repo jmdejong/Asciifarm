@@ -1,10 +1,9 @@
 
 
-from ..system import system
+from ..system import System
 
-@system(["fighter"])
-def fight(obj, roomData):
-    fighter = obj.dataComponents["fighter"]
+@System("fighter")
+def fight(obj, roomData, fighter):
     
     other = fighter.target
     if other is None:

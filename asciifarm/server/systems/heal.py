@@ -1,12 +1,9 @@
 
 
-from ..system import system
+from ..system import System
 
-@system(["heal", "attackable"])
-def heal(obj, roomData):
-    
-    healing = obj.dataComponents["heal"]
-    attackable = obj.dataComponents["attackable"]
+@System("heal", "attackable")
+def heal(obj, roomData, healing, attackable):
     
     if not attackable.healthFull():
         if healing.nextHeal is not None and roomData.stepStamp > healing.nextHeal:

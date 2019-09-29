@@ -3,12 +3,10 @@ import random
 
 from .. import pathfinding
 from .. import faction
-from ..system import system
+from ..system import System
 
-@system(["ai", "move"])
-def controlai(obj, roomData):
-    movable = obj.dataComponents["move"]
-    ai = obj.dataComponents["ai"]
+@System("ai", "move")
+def controlai(obj, roomData, ai, movable):
     alignment = obj.getComponent("alignment")
     
     fighter = obj.dataComponents.get("fighter")

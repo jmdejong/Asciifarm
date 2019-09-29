@@ -1,11 +1,10 @@
 
 from .. import faction
 
-from ..system import system
+from ..system import System
 
-@system(["input", "fighter", "move", "faction"])
-def control(obj, roomData):
-    input = obj.dataComponents["input"]
+@System("input", "fighter", "move", "faction")
+def control(obj, roomData, input, fighter, *_args):
     action = input.action
     if action:
         input.target = None
@@ -13,7 +12,6 @@ def control(obj, roomData):
     if action is not None:
         executeAction(obj, roomData, action)
     if input.target:
-        fighter = obj.dataComponents["fighter"]
         fighter.target = input.target
 
 def executeAction(obj, roomData, action):

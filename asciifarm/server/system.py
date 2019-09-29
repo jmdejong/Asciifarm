@@ -1,6 +1,6 @@
 
 
-class System:
+class _System:
     
     def __init__(self, components, code):
         self.components = components
@@ -12,9 +12,10 @@ class System:
         for component in self.components[1:]:
             entities &= roomData.dataComponents[component]
         for entity in entities:
-            self.code(entity, roomData)
+            components = [entity.dataComponents[comp] for comp in self.components]
+            self.code(entity, roomData, *components)
 
-def system(components):
+def System(*components):
     def system_wrapper(func):
-        return System(components, func)
+        return _System(list(components), func)
     return system_wrapper
