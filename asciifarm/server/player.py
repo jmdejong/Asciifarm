@@ -5,8 +5,6 @@ from . import gameobjects
 
 
 from .components import Inventory
-from .components import InputController
-from .components import Alignment
 from .components import Target
 from .components import Equipment
 from .components import Listen
@@ -63,13 +61,12 @@ class Player:
             name = '&' + self.name,
             components={
                 "inventory": self.inventory,
-                #"controller": InputController(),
-                "alignment": Alignment(faction.GOOD),
                 "target": Target(),
                 "equipment": self.equipment,
                 "listen": Listen(),
                 "select": Select()
             }, dataComponents={
+                "faction": faction.GOOD,
                 "input": Input(),
                 "move": Move(slowness=2),
                 "heal": Heal(interval=50),

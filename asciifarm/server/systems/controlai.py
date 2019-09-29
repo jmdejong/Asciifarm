@@ -2,6 +2,7 @@
 import random
 
 from .. import pathfinding
+from .. import faction
 
 def controlai(obj, roomData):
     movable = obj.dataComponents["move"]
@@ -12,9 +13,10 @@ def controlai(obj, roomData):
     if fighter is not None:
         closestDistance = ai.viewDist + 1
         closest = None
+        alignment = obj.dataComponents.get("faction", faction.NONE)
         for target in roomData.getTargets():
             distance = pathfinding.distanceBetween(obj, target)
-            if alignment.isEnemy(target) and distance < closestDistance:
+            if (faction is None or alignment.isEnemy(target.dataComponents.get("faction", faction.NONE))) and distance < closestDistance:
                 closestDistance = distance
                 closest = target
         if closest:

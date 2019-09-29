@@ -29,6 +29,7 @@ NONE = Faction("none") # things that can always be attacked
 
 GOOD.hates(NONE)
 EVIL.hates(NONE)
+NONE.hates(NONE)
 
 
 factions = {}

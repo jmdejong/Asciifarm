@@ -1,4 +1,5 @@
 
+from .. import faction
 
 def control(obj, roomData):
     input = obj.dataComponents["input"]
@@ -89,8 +90,9 @@ def do_attack(obj, roomData, directions):
     if obj.dataComponents["input"].target in objects:
         objects = {obj.dataComponents["input"].target}
     fighter = obj.dataComponents["fighter"]
+    alignment = obj.dataComponents.get("faction", faction.NONE)
     for other in objects:
-        if fighter.canAttack(obj, other):
+        if fighter.canAttack(obj, other) and alignment.isEnemy(other.dataComponents.get("faction", faction.NONE)):
             fighter.target = other
             obj.dataComponents["input"].target = other
             break
