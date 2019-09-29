@@ -4,15 +4,15 @@
 from . import gameobjects
 
 
-from .components.inventory import Inventory
-from .components.inputcontroller import InputController
-from .components.move import Move
-from .components.fighter import FighterData
-from .components.healing import Healing
-from .components.alignment import Alignment
-from .components.target import Target
-from .components.equipment import Equipment
-from .components.listen import Listen
+from .components import Inventory
+from .components import InputController
+from .components import MoveData
+from .components import FighterData
+from .components import HealingData
+from .components import Alignment
+from .components import Target
+from .components import Equipment
+from .components import Listen
 from .components import Select
 from .components import AttackableData
 from . import faction
@@ -62,15 +62,15 @@ class Player:
             name = '&' + self.name,
             components={
                 "inventory": self.inventory,
-                "move": Move(slowness=2),
                 "controller": InputController(),
                 "alignment": Alignment(faction.GOOD),
-                "heal": Healing(interval=50),
                 "target": Target(),
                 "equipment": self.equipment,
                 "listen": Listen(),
                 "select": Select()
             }, dataComponents={
+                "move": MoveData(slowness=2),
+                "heal": HealingData(interval=50),
                 "fighter": FighterData(strength=5, slowness=8),
                 "attackable": AttackableData(maxHealth=self.maxHealth, health=self.health or self.maxHealth)
             }

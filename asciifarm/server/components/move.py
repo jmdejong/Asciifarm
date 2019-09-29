@@ -1,12 +1,24 @@
 
 from .component import Component
 
+
+class MoveData(Component):
+    
+    def __init__(self, slowness=1):
+        self.direction = None
+        self.slowness = slowness
+        self.moveReady = 0
+    
+    def canMove(self, obj, direction):
+        neighbours = obj.getGround().getNeighbours()
+        return direction in neighbours and neighbours[direction].accessible()
+
 class Move(Component):
     
     def __init__(self, slowness=1):
         self.direction = None
         self.slowness = slowness
-        self.canMove = False
+        self.moveReady = 0
     
     def attach(self, obj):
         self.owner = obj
@@ -14,7 +26,6 @@ class Move(Component):
     
     def roomJoin(self, o, roomData, stamp):
         self.roomData = roomData
-        self.canMove = True
         
     
     def move(self, direction):
@@ -26,19 +37,15 @@ class Move(Component):
     
     def doMove(self):
         neighbours = self.owner.getGround().getNeighbours()
-        if self.direction in neighbours and self.canMove:
+        if self.canMove(self.direction) and self.roomData.getStamp() > self.moveReady:
             newPlace = neighbours[self.direction]
             
             if newPlace.accessible():
                 self.owner.place(newPlace)
-                self.canMove = False
-                self.roomData.setAlarm(self.roomData.getStamp() + self.slowness, self.makeReady)
+                self.moveReady = self.roomData.getStamp() + self.slowness
                 self.owner.trigger("move")
             
         self.direction = None
-    
-    def makeReady(self):
-        self.canMove = True
     
     def toJSON(self):
         return {"slowness": self.slowness}

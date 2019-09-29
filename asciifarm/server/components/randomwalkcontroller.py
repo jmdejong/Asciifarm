@@ -11,26 +11,18 @@ class RandomWalkController(Component):
     def attach(self, obj):
         self.owner = obj
         
-        if not obj.getComponent("move"):
+        if not obj.dataComponents.get("move"):
             # todo: better exception
             raise Exception("Controller needs object with move component")
         
-        obj.addListener("roomjoin", self.roomJoin)
-    
-    def roomJoin(self, o, roomData, stamp):
-        self.controlEvent = roomData.getEvent("control")
-        self.controlEvent.addListener(self.control)
     
     
     def control(self):
         
         if random.random() < self.moveChance:
             direction = random.choice(["north", "south", "east", "west"])
-            self.owner.getComponent("move").move(direction)
+            self.owner.dataComponents["move"].direction = direction
         
-    
-    def remove(self):
-        self.controlEvent.removeListener(self.control)
         
     def toJSON(self):
         return {

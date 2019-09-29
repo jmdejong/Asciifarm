@@ -26,10 +26,15 @@ def attacked(obj, roomData):
             wound = gameobjects.makeEntity("wound", roomData, 4, obj.getHeight() - 0.01)
             wound.place(obj.getGround())
         
-        obj.trigger("damage" if damage >= 0 else "heal", attacker, abs(damage))
+        if type == "attack":
+            obj.trigger("damage", attacker, damage)
+            attacker.trigger("attack", obj, damage)
+        elif type == "heal":
+            obj.trigger("heal", attacker, -damage)
         
         if attackable.isDead():
             obj.trigger("die", attacker)
+            attacker.trigger("kill", obj)
             obj.remove()
     attackable.attacks = []
     

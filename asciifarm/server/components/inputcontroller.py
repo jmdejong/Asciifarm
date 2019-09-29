@@ -72,7 +72,7 @@ class InputController(Component):
     def do_move(self, direction):
         if direction not in {"north", "south", "east", "west"}:
             return
-        self.move.move(direction)
+        self.owner.dataComponents["move"].direction = direction
     
     def do_take(self, rank):
         objects = self.owner.getNearObjects()

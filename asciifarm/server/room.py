@@ -29,7 +29,7 @@ class Room:
             "fight": event.Event(),
             "update": event.Event(),
             "sound": event.Event()
-            })
+        })
         def logSound(source, text):
             print("{}: {}: {}".format(self.name, source.getName(), text))
         self.roomData.getEvent("sound").addListener(logSound)

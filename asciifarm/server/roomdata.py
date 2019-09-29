@@ -6,6 +6,8 @@ counter = itertools.count()     # unique sequence count
 
 from .systems.fight import fight
 from .systems.attacked import attacked
+from .systems.heal import heal
+from .systems.move import move
 
 class RoomData:
     
@@ -37,12 +39,14 @@ class RoomData:
         
         for entity in list(self.components["controller"]):
             entity.getComponent("controller").control()
-        for entity in list(self.components["move"]):
-            entity.getComponent("move").doMove()
+        for entity in list(self.dataComponents["move"]):
+            move(entity, self)
         for entity in list(self.dataComponents["fighter"]):
             fight(entity, self)
         for entity in list(self.dataComponents["attackable"]):
             attacked(entity, self)
+        for entity in list(self.dataComponents["heal"] & self.dataComponents["attackable"]):
+            heal(entity, self)
     
     def addObj(self, obj):
         

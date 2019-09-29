@@ -26,8 +26,6 @@ class MonsterAi(Component):
         obj.addListener("roomjoin", self.roomJoin)
     
     def roomJoin(self, o, roomData, stamp):
-        self.controlEvent = roomData.getEvent("control")
-        self.controlEvent.addListener(self.control)
         self.roomData = roomData
     
     
@@ -39,22 +37,21 @@ class MonsterAi(Component):
             if self.alignment.isEnemy(obj) and distance < closestDistance:
                 closestDistance = distance
                 closest = obj
+        movable = self.owner.dataComponents["move"]
         if closest:
             fighter = self.owner.dataComponents["fighter"]
             if fighter.inRange(self.owner, closest):
                 fighter.target = closest
             else:
-                self.move.move(pathfinding.stepTo(self.owner, closest))
+                movable.direction = pathfinding.stepTo(self.owner, closest)
         else:
             if random.random() < self.moveChance:
                 if self.home and self.home.inRoom() and random.random() < (self.homesickness * pathfinding.distanceBetween(self.owner, self.home)):
                     direction = pathfinding.stepTo(self.owner, self.home)
                 else: 
                     direction = random.choice(["north", "south", "east", "west"])
-                self.move.move(direction)
+                movable.direction = direction
     
-    def remove(self):
-        self.controlEvent.removeListener(self.control)
     
     def toJSON(self):
         return {
