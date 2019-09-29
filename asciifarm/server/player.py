@@ -6,15 +6,16 @@ from . import gameobjects
 
 from .components import Inventory
 from .components import InputController
-from .components import MoveData
-from .components import FighterData
-from .components import HealingData
 from .components import Alignment
 from .components import Target
 from .components import Equipment
 from .components import Listen
 from .components import Select
-from .components import AttackableData
+from .datacomponents import Attackable
+from .datacomponents import Move
+from .datacomponents import Fighter
+from .datacomponents import Heal
+from .datacomponents import Input
 from . import faction
 from . import entity
 
@@ -62,17 +63,18 @@ class Player:
             name = '&' + self.name,
             components={
                 "inventory": self.inventory,
-                "controller": InputController(),
+                #"controller": InputController(),
                 "alignment": Alignment(faction.GOOD),
                 "target": Target(),
                 "equipment": self.equipment,
                 "listen": Listen(),
                 "select": Select()
             }, dataComponents={
-                "move": MoveData(slowness=2),
-                "heal": HealingData(interval=50),
-                "fighter": FighterData(strength=5, slowness=8),
-                "attackable": AttackableData(maxHealth=self.maxHealth, health=self.health or self.maxHealth)
+                "input": Input(),
+                "move": Move(slowness=2),
+                "heal": Heal(interval=50),
+                "fighter": Fighter(strength=5, slowness=8),
+                "attackable": Attackable(maxHealth=self.maxHealth, health=self.health or self.maxHealth)
             }
         )
         self.entity.construct(room.getRoomData())
@@ -144,8 +146,9 @@ class Player:
     def control(self, action):
         if not self.entity or not (isinstance(action, list) or isinstance(action, tuple)) or len(action) < 1:
             return
-        controller = self.entity.getComponent("controller")
-        controller.setAction(action)
+        self.entity.dataComponents["input"].action = action
+        #controller = self.entity.getComponent("controller")
+        #controller.setAction(action)
     
     def getHealthPair(self):
         if self.entity:

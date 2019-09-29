@@ -30,27 +30,30 @@ class MonsterAi(Component):
     
     
     def control(self):
-        closestDistance = self.viewDist + 1
-        closest = None
-        for obj in self.roomData.getTargets():
-            distance = pathfinding.distanceBetween(self.owner, obj)
-            if self.alignment.isEnemy(obj) and distance < closestDistance:
-                closestDistance = distance
-                closest = obj
         movable = self.owner.dataComponents["move"]
-        if closest:
-            fighter = self.owner.dataComponents["fighter"]
-            if fighter.inRange(self.owner, closest):
-                fighter.target = closest
-            else:
-                movable.direction = pathfinding.stepTo(self.owner, closest)
-        else:
-            if random.random() < self.moveChance:
-                if self.home and self.home.inRoom() and random.random() < (self.homesickness * pathfinding.distanceBetween(self.owner, self.home)):
-                    direction = pathfinding.stepTo(self.owner, self.home)
-                else: 
-                    direction = random.choice(["north", "south", "east", "west"])
-                movable.direction = direction
+        fighter = self.owner.dataComponents["fighter"]
+        
+        if fighter:
+            closestDistance = self.viewDist + 1
+            closest = None
+            for obj in self.roomData.getTargets():
+                distance = pathfinding.distanceBetween(self.owner, obj)
+                if self.alignment.isEnemy(obj) and distance < closestDistance:
+                    closestDistance = distance
+                    closest = obj
+            if closest:
+                if fighter.inRange(self.owner, closest):
+                    fighter.target = closest
+                else:
+                    movable.direction = pathfinding.stepTo(self.owner, closest)
+                return
+        
+        if random.random() < self.moveChance:
+            if self.home and self.home.inRoom() and random.random() < (self.homesickness * pathfinding.distanceBetween(self.owner, self.home)):
+                direction = pathfinding.stepTo(self.owner, self.home)
+            else: 
+                direction = random.choice(["north", "south", "east", "west"])
+            movable.direction = direction
     
     
     def toJSON(self):

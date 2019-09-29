@@ -8,6 +8,8 @@ from .systems.fight import fight
 from .systems.attacked import attacked
 from .systems.heal import heal
 from .systems.move import move
+from .systems.controlai import controlai
+from .systems.controlinput import control
 
 class RoomData:
     
@@ -37,8 +39,11 @@ class RoomData:
     def update(self):
         self.triggerAlarms()
         
-        for entity in list(self.components["controller"]):
-            entity.getComponent("controller").control()
+        for entity in list(self.dataComponents["input"]):
+            control(entity, self)
+            #entity.getComponent("controller").control()
+        for entity in list(self.dataComponents["ai"] & self.dataComponents["move"]):
+            controlai(entity, self)
         for entity in list(self.dataComponents["move"]):
             move(entity, self)
         for entity in list(self.dataComponents["fighter"]):

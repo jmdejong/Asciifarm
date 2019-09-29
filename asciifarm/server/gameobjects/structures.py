@@ -7,10 +7,9 @@ from .. import faction
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
 from ..components import Change
-from ..components import FighterData
 from ..components import Alignment
 from ..components import Loot
-from ..components import AttackableData
+from ..datacomponents import Attackable
 
 entities = {}
 
@@ -37,7 +36,7 @@ entities["builtwall"] = lambda health=None: Entity(
             }
         )
     }, dataComponents={
-        "attackable": Attackable.Data(health=health or maxHealth, maxHealth=100)
+        "attackable": Attackable(health=health or maxHealth, maxHealth=100)
     }
 )
 
