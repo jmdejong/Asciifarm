@@ -3,7 +3,9 @@ import random
 
 from .. import pathfinding
 from .. import faction
+from ..system import system
 
+@system(["ai", "move"])
 def controlai(obj, roomData):
     movable = obj.dataComponents["move"]
     ai = obj.dataComponents["ai"]
@@ -32,3 +34,4 @@ def controlai(obj, roomData):
         else: 
             direction = random.choice(["north", "south", "east", "west"])
         movable.direction = direction
+        

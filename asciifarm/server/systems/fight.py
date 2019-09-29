@@ -1,5 +1,8 @@
 
 
+from ..system import system
+
+@system(["fighter"])
 def fight(obj, roomData):
     fighter = obj.dataComponents["fighter"]
     
@@ -16,6 +19,7 @@ def fight(obj, roomData):
         fighter.attackReady = roomData.getStamp() + fighter.slowness
     
     fighter.target = None
+
     
     
 

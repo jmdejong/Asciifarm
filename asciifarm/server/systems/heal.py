@@ -1,5 +1,8 @@
 
 
+from ..system import system
+
+@system(["heal", "attackable"])
 def heal(obj, roomData):
     
     healing = obj.dataComponents["heal"]

@@ -1,5 +1,8 @@
 
 
+from ..system import system
+
+@system(["move"])
 def move(obj, roomData):
     movable = obj.dataComponents["move"]
     
@@ -13,3 +16,4 @@ def move(obj, roomData):
             obj.trigger("move")
         
     movable.direction = None
+

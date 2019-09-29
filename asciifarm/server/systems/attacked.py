@@ -4,8 +4,9 @@ import random
 
 from asciifarm.common import utils
 from .. import gameobjects
+from ..system import system
 
-    
+@system(["attackable"])
 def attacked(obj, roomData):
     attackable = obj.dataComponents["attackable"]
     for type, strength, attacker in attackable.attacks:
@@ -40,6 +41,7 @@ def attacked(obj, roomData):
             attacker.trigger("kill", obj)
             obj.remove()
     attackable.attacks = []
+
     
 
 

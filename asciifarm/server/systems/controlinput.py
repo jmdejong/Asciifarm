@@ -1,6 +1,9 @@
 
 from .. import faction
 
+from ..system import system
+
+@system(["input", "fighter", "move", "faction"])
 def control(obj, roomData):
     input = obj.dataComponents["input"]
     action = input.action

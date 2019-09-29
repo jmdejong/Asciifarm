@@ -39,19 +39,16 @@ class RoomData:
     def update(self):
         self.triggerAlarms()
         
-        for entity in list(self.dataComponents["input"]):
-            control(entity, self)
-            #entity.getComponent("controller").control()
-        for entity in list(self.dataComponents["ai"] & self.dataComponents["move"]):
-            controlai(entity, self)
-        for entity in list(self.dataComponents["move"]):
-            move(entity, self)
-        for entity in list(self.dataComponents["fighter"]):
-            fight(entity, self)
-        for entity in list(self.dataComponents["attackable"]):
-            attacked(entity, self)
-        for entity in list(self.dataComponents["heal"] & self.dataComponents["attackable"]):
-            heal(entity, self)
+        systems = [
+            control,
+            controlai,
+            move,
+            fight,
+            attacked,
+            heal
+        ]
+        for system in systems:
+            system.run(self)
     
     def addObj(self, obj):
         
