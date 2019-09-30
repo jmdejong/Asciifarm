@@ -5,7 +5,7 @@ from .. import pathfinding
 from ..datacomponents import AI, Move, Fighter, Faction
 from ..system import System
 
-@System(AI, Move)
+@System([AI, Move])
 def controlai(obj, roomData, ai, movable):
     
     fighter = obj.getDataComponent(Fighter)

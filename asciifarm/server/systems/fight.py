@@ -3,7 +3,7 @@
 from ..system import System
 from ..datacomponents import Fighter, Attackable
 
-@System(Fighter)
+@System([Fighter])
 def fight(obj, roomData, fighter):
     
     other = fighter.target

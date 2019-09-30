@@ -6,8 +6,7 @@ from ..entity import Entity
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
 from ..components import Change
-from ..components import Loot
-from ..datacomponents import Attackable, Faction
+from ..datacomponents import Attackable, Faction, Loot
 
 entities = {}
 
@@ -25,14 +24,17 @@ entities["fence"] = lambda: Entity(sprite="fence", height=1, flags={"solid"}, co
 
 entities["builtwall"] = lambda health=None: Entity(
     sprite="builtwall", height=2, flags={"solid"}, components={
-        "loot": Loot([("stone", 1)]),
         "serialize": Custom(
             lambda obj: {
                 "type": "builtwall",
                 "kwargs": {"health": obj.getDataComponent(Attackable).health}
             }
         )
-    }, dataComponents=[Faction.NONE, Attackable(health=health or maxHealth, maxHealth=100)]
+    }, dataComponents=[
+        Faction.NONE,
+        Attackable(health=health or maxHealth, maxHealth=100),
+        Loot([("stone", 1)])
+    ]
 )
 
 

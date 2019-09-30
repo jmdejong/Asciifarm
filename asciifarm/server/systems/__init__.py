@@ -6,3 +6,4 @@ from .handlemail import handlemail
 from .heal import heal
 from .move import move
 from .remove import remove
+from .droploot import droploot

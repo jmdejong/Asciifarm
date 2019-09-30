@@ -3,7 +3,7 @@
 from ..system import System
 from ..datacomponents import Move
 
-@System(Move)
+@System([Move])
 def move(obj, roomData, movable):
     
     neighbours = obj.getGround().getNeighbours()

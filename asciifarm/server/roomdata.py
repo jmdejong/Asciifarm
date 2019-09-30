@@ -54,6 +54,8 @@ class RoomData:
             self.dataComponents[compt].remove(obj)
     
     def addComponent(self, obj, component):
+        if isinstance(component, type):
+            component = component()
         compt = type(component)
         self.dataComponents[compt].add(obj)
         obj.dataComponents[compt] = component

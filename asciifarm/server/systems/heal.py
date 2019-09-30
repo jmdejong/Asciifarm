@@ -3,7 +3,7 @@
 from ..system import System
 from ..datacomponents import Heal, Attackable
 
-@System(Heal, Attackable)
+@System([Heal, Attackable])
 def heal(obj, roomData, healing, attackable):
     
     if not attackable.healthFull():

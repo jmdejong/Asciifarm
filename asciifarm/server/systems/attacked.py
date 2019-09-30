@@ -5,9 +5,9 @@ import random
 from asciifarm.common import utils
 from .. import gameobjects
 from ..system import System
-from ..datacomponents import Attackable, Input
+from ..datacomponents import Attackable, Input, Dead
 
-@System(Attackable)
+@System([Attackable])
 def attacked(obj, roomData, attackable):
     for type, strength, attacker in attackable.attacks:
         if type == "attack":
@@ -37,6 +37,7 @@ def attacked(obj, roomData, attackable):
             obj.trigger("heal", attacker, -damage)
         
         if attackable.isDead():
+            roomData.addComponent(obj, Dead)
             obj.trigger("die", attacker)
             attacker.trigger("kill", obj)
             obj.remove()

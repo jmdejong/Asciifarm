@@ -1,9 +1,10 @@
 
 
 from ..entity import Entity
-from ..components import Build, Food, Growing, Harvest, Loot
+from ..components import Build, Food, Growing, Harvest
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
+from ..datacomponents import Loot
 
 entities = {}
 
@@ -28,6 +29,7 @@ class Stage:
         name = self.name.format(cropname)
         def makeEntity(targetTime=None):
             components = {}
+            dataComponents = []
             if self.duration is not None:
                 if targetTime is None:
                     components["grow"] = Growing(nextstage, self.duration*timestep)
@@ -38,14 +40,16 @@ class Stage:
                 components["serialize"] = Static(name)
             if self.harvest is not None:
                 components["interact"] = Harvest()
-                components["loot"] = Loot(self.harvest)
+                dataComponents.append(Loot(self.harvest))
             flags = {"occupied"}
             return Entity(
                 sprite=self.sprite.format(cropname),
                 height=self.height,
                 name=self.shownname.format(cropname),
                 flags=flags,
-                components=components)
+                components=components,
+                dataComponents=dataComponents
+            )
         entities[name] = makeEntity
 
     

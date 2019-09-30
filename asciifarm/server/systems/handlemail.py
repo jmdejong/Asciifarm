@@ -2,7 +2,7 @@
 from ..system import System
 from ..datacomponents import Messages
 
-@System(Messages)
+@System([Messages])
 def handlemail(obj, roomData, messages):
     while True:
         try:

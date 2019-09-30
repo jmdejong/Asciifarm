@@ -2,7 +2,7 @@
 from ..datacomponents import Input, Fighter, Move, Faction
 from ..system import System
 
-@System(Input, Fighter, Move)
+@System([Input, Fighter, Move])
 def control(obj, roomData, input, fighter, *_args):
     action = input.action
     if action:
