@@ -14,7 +14,7 @@ from .datacomponents import Move
 from .datacomponents import Fighter
 from .datacomponents import Heal
 from .datacomponents import Input
-from . import faction
+from .datacomponents import faction
 from . import entity
 
 class Player:
@@ -65,14 +65,14 @@ class Player:
                 "equipment": self.equipment,
                 "listen": Listen(),
                 "select": Select()
-            }, dataComponents={
-                "faction": faction.GOOD,
-                "input": Input(),
-                "move": Move(slowness=2),
-                "heal": Heal(interval=50),
-                "fighter": Fighter(strength=5, slowness=8),
-                "attackable": Attackable(maxHealth=self.maxHealth, health=self.health or self.maxHealth)
-            }
+            }, dataComponents=[
+                faction.GOOD,
+                Input(),
+                Move(slowness=2),
+                Heal(interval=50),
+                Fighter(strength=5, slowness=8),
+                Attackable(maxHealth=self.maxHealth, health=self.health or self.maxHealth)
+            ]
         )
         self.entity.construct(room.getRoomData())
         for attr in dir(self):

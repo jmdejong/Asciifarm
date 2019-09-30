@@ -2,7 +2,7 @@
 
 
 from ..entity import Entity
-from .. import faction
+from ..datacomponents import faction
 
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
@@ -33,10 +33,7 @@ entities["builtwall"] = lambda health=None: Entity(
                 "kwargs": {"health": obj.dataComponents["attackable"].health}
             }
         )
-    }, dataComponents={
-        "faction": faction.NONE,
-        "attackable": Attackable(health=health or maxHealth, maxHealth=100)
-    }
+    }, dataComponents=[faction.NONE, Attackable(health=health or maxHealth, maxHealth=100)]
 )
 
 

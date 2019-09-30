@@ -1,5 +1,5 @@
 
-from .. import faction
+from ..datacomponents import faction
 
 from ..system import System
 

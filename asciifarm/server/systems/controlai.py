@@ -2,7 +2,7 @@
 import random
 
 from .. import pathfinding
-from .. import faction
+from ..datacomponents import faction
 from ..system import System
 
 @System("ai", "move")

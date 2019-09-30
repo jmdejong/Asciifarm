@@ -1,6 +1,8 @@
 
 class Faction:
     
+    component = "faction"
+    
     def __init__(self, name):
         self.name = name
         self.enemies = set()

@@ -28,8 +28,8 @@ class Entity:
         self.ground = None
         self.roomData = None
         if dataComponents is None:
-            dataComponents = {}
-        self.dataComponents = dataComponents
+            dataComponents = []
+        self.dataComponents = {comp.component: comp for comp in dataComponents}
         for component in self.components.values():
             component.attach(self)
         

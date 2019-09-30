@@ -4,6 +4,8 @@ from ..pathfinding import distanceBetween
 
 class Fighter:
     
+    component = "fighter"
+    
     def __init__(self, strength=0, slowness=1, range=1):
         self.strength = strength
         self.target = None

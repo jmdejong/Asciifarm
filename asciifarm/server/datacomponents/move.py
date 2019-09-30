@@ -1,6 +1,8 @@
 
 class Move:
     
+    component = "move"
+    
     def __init__(self, slowness=1):
         self.direction = None
         self.slowness = slowness

@@ -2,6 +2,8 @@
 
 class Attackable:
     
+    component = "attackable"
+    
     def __init__(self, maxHealth, health=None, defence=0, defense=None):
         self.maxHealth = maxHealth
         self.health = health or maxHealth
