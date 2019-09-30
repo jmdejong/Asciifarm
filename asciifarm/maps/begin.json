@@ -1,7 +1,7 @@
 {
     "width": 64,
     "height": 64,
-    "spawn": [10, 15],
+    "spawn": [15, 30],
     "places": {
         "stairdown": [37, 33],
         "caveentrance": [31, 50],

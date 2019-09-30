@@ -6,8 +6,9 @@ from .move import Move
 from .ai import AI
 from .input import Input
 from .faction import Faction
-from .messages import Messages
+from .events import Events
 from .loot import Loot
+from .inbox import Inbox
 
 
 class Remove:
@@ -21,3 +22,6 @@ class Interact:
     
     def __init__(self, *components):
         self.components = list(components)
+
+class Trap:
+    pass

@@ -1,8 +1,7 @@
 
 from . import serialize
-from .eventtarget import EventTarget
 import collections
-from .datacomponents import Messages, Remove
+from .datacomponents import Events, Remove, Inbox
 
 class Entity:
     """ Attempt to implement an entity component system
@@ -91,11 +90,19 @@ class Entity:
         self.listeners[event].pop(key)
     
     def trigger(self, event, *args, **kwargs):
-        messages = self.getDataComponent(Messages)
+        messages = self.getDataComponent(Events)
         if messages is None:
-            messages = Messages()
+            messages = Events()
             self.roomData.addComponent(self, messages)
         messages.add((event, list(args), dict(kwargs)))
+    
+    def message(self, msg):
+        inbox = self.getDataComponent(Inbox)
+        if inbox is None:
+            inbox = Inbox()
+            self.roomData.addComponent(self, inbox)
+        inbox.add(msg)
+        print(inbox.messages)
     
     def getSprite(self):
         return self.sprite

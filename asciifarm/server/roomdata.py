@@ -61,6 +61,8 @@ class RoomData:
         obj.dataComponents[compt] = component
     
     def removeComponent(self, obj, compt):
+        if obj not in self.dataComponents[compt]:
+            print(compt, obj.toJSON())
         self.dataComponents[compt].remove(obj)
         obj.dataComponents.pop(compt)
         

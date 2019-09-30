@@ -2,6 +2,7 @@
 
 from ..system import System
 from ..datacomponents import Move
+from ..messages import EnterMessage
 
 @System([Move])
 def move(obj, roomData, movable):
@@ -11,6 +12,8 @@ def move(obj, roomData, movable):
         newPlace = neighbours[movable.direction]
         
         if newPlace.accessible():
+            for resident in newPlace.getObjs():
+                resident.message(EnterMessage(obj))
             obj.place(newPlace)
             movable.moveReady = roomData.getStamp() + movable.slowness
             obj.trigger("move")

@@ -1,7 +1,8 @@
 
+
 import collections
 
-class Messages:
+class Inbox:
     
     def __init__(self):
         self.messages = collections.deque()
