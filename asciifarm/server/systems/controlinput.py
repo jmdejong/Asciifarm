@@ -1,5 +1,5 @@
 
-from ..datacomponents import Input, Fighter, Move, Faction
+from ..datacomponents import Input, Fighter, Move, Faction, Interact
 from ..system import System
 
 @System([Input, Fighter, Move])
@@ -81,6 +81,10 @@ def do_unequip(obj, roomData, rank):
 def do_interact(obj, roomData, directions):
     objects = _getNearbyObjects(obj, directions)
     for other in objects:
+        if other.getDataComponent(Interact) is not None:
+            for component in other.getDataComponent(Interact).components:
+                roomData.addComponent(other, component)
+            break
         if other.getComponent("interact") is not None:
             other.getComponent("interact").interact(obj)
             break

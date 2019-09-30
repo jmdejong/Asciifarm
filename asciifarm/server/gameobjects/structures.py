@@ -6,7 +6,7 @@ from ..entity import Entity
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
 from ..components import Change
-from ..datacomponents import Attackable, Faction, Loot
+from ..datacomponents import Attackable, Faction, Loot, Interact, Remove
 
 entities = {}
 
@@ -32,15 +32,14 @@ entities["builtwall"] = lambda health=None: Entity(
         )
     }, dataComponents=[
         Faction.NONE,
-        Attackable(health=health or maxHealth, maxHealth=100),
-        Loot([("stone", 1)])
+        Attackable(health=health or maxHealth, maxHealth=100, onDie=[Loot([("stone", 1)])])
     ]
 )
 
 
-entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={"interact": Change("opendoor"), "serialize": Static("closeddoor")})
+entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={"serialize": Static("closeddoor")}, dataComponents=[Interact(Remove, Loot([("opendoor",)]))])
 
-entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={"interact": Change("closeddoor"), "serialize": Static("opendoor")})
+entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={"serialize": Static("opendoor")}, dataComponents=[Interact(Remove, Loot([("closeddoor",)]))])
 
 
 entities["engraved"] = lambda c: Entity(sprite="engravedwall-"+c, height=2, flags={"solid"}, components={"serialize": Static("wall", c)})

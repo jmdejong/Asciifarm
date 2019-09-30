@@ -2,7 +2,7 @@
 from . import serialize
 from .eventtarget import EventTarget
 import collections
-from .datacomponents import Messages, ToRemove
+from .datacomponents import Messages, Remove
 
 class Entity:
     """ Attempt to implement an entity component system
@@ -68,7 +68,7 @@ class Entity:
     
     def remove(self):
         self.trigger("remove")
-        self.roomData.addComponent(self, ToRemove())
+        self.roomData.addComponent(self, Remove)
         
     
     def doRemove(self):

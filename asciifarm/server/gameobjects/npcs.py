@@ -17,9 +17,9 @@ entities["goblin"] = lambda home=None: Entity(sprite="goblin", height=1.2, dataC
         Faction.EVIL,
         AI(viewDist=8, moveChance=0.02, home=home),
         Move(slowness=3),
-        Attackable(maxHealth=15),
-        Fighter(strength=5, slowness=8),
-        Loot([("sword", .05), ("club", .1), ("radishes", .25)])
+        Attackable(maxHealth=15, onDie=[Loot([("sword", .05), ("club", .1), ("radishes", .25)])]),
+        Fighter(strength=5, slowness=8)
+        
     ]
 )
 
@@ -27,9 +27,9 @@ entities["troll"] = lambda home=None: Entity(sprite="troll", height=1.8, dataCom
         Faction.EVIL,
         AI(viewDist=8, moveChance=0.01, home=home),
         Move(slowness=4),
-        Attackable(maxHealth=75),
-        Fighter(strength=15, slowness=10),
-        Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5)])
+        Attackable(maxHealth=75, onDie=[Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5)])]),
+        Fighter(strength=15, slowness=10)
+        
     ]
 )
 
@@ -37,9 +37,8 @@ entities["rat"] = lambda home=None: Entity(sprite="rat", height=1, dataComponent
         Faction.EVIL,
         AI(viewDist=3, moveChance=0.08, home=home, homesickness=0.1),
         Move(slowness=3),
-        Attackable(maxHealth=8),
-        Fighter(strength=2, slowness=6),
-        Loot([("radishseed", 0.9), ("radishseed", 0.3)])
+        Attackable(maxHealth=8, onDie=[Loot([("radishseed", 0.9), ("radishseed", 0.3)])]),
+        Fighter(strength=2, slowness=6)
     ]
 )
 

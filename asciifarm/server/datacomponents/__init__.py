@@ -10,8 +10,14 @@ from .messages import Messages
 from .loot import Loot
 
 
-class ToRemove:
+class Remove:
     pass
 
 class Dead:
     pass
+
+
+class Interact:
+    
+    def __init__(self, *components):
+        self.components = list(components)

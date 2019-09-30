@@ -10,7 +10,6 @@ from .harvest import Harvest
 from .inventory import Inventory
 from .item import Item
 from .listen import Listen
-from .loot import Loot
 from .optionmenu import OptionMenu
 from .portal import Portal
 from .select import Select

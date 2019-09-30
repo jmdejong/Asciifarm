@@ -4,7 +4,7 @@ from ..entity import Entity
 from ..components import Build, Food, Growing, Harvest
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
-from ..datacomponents import Loot
+from ..datacomponents import Interact, Loot, Remove
 
 entities = {}
 
@@ -39,8 +39,7 @@ class Stage:
             else:
                 components["serialize"] = Static(name)
             if self.harvest is not None:
-                components["interact"] = Harvest()
-                dataComponents.append(Loot(self.harvest))
+                dataComponents.append(Interact(Loot(self.harvest), Remove))
             flags = {"occupied"}
             return Entity(
                 sprite=self.sprite.format(cropname),
