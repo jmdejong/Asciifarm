@@ -5,7 +5,6 @@ from ..entity import Entity
 
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
-from ..components import Change
 from ..datacomponents import Attackable, Faction, Loot, Interact, Remove
 
 entities = {}

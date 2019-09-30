@@ -1,7 +1,7 @@
 
 
 from ..entity import Entity
-from ..components import Build, Food, Growing, Harvest
+from ..components import Build, Food, Growing
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
 from ..datacomponents import Interact, Loot, Remove
