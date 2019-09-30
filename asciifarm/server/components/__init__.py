@@ -9,7 +9,6 @@ from .inventory import Inventory
 from .item import Item
 from .listen import Listen
 from .optionmenu import OptionMenu
-from .portal import Portal
 from .select import Select
 from .selectable import Selectable
 from .spawner import Spawner

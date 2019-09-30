@@ -3,7 +3,8 @@
 
 from ..entity import Entity
 from ..components import StaticSerializer as Static
-from ..components import Portal, Spawner, Volatile, Weather
+from ..components import Spawner, Volatile, Weather
+from ..datacomponents import Portal
 
 
 entities = {}
@@ -22,7 +23,7 @@ entities["letter"] = lambda c: Entity(sprite="emptyletter-"+c, components={"seri
 
 
 entities["roomexit"] = lambda destRoom, destPos=None, mask=(False, False), sprite=" ", size=0: Entity(
-    sprite=sprite, height=size, components={"collision": Portal(destRoom, destPos, mask), "serialize": Static(destRoom, destPos, mask, sprite, size)})
+    sprite=sprite, height=size, components={"serialize": Static(destRoom, destPos, mask, sprite, size)}, dataComponents=[Portal(destRoom, destPos, mask)])
 
 
 entities["wound"] = lambda duration=4, height=0.2: Entity(sprite="wound", name="", height=height, components={"volatile": Volatile(duration), "serialize": Static(None)})

@@ -9,3 +9,4 @@ from .remove import remove
 from .droploot import droploot
 from .clearinbox import clearinbox
 from .trap import trap
+from .teleport import teleport

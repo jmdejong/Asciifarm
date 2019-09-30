@@ -9,7 +9,7 @@ from . import roomdata
 from . import serialize
 
 
-from .systems import fight, attacked, heal, move, controlai, control, handleevents, remove, droploot, clearinbox, trap
+from .systems import fight, attacked, heal, move, controlai, control, handleevents, remove, droploot, clearinbox, trap, teleport
 
 class Room:
     
@@ -89,6 +89,7 @@ class Room:
             controlai,
             move,
             trap,
+            teleport,
             fight,
             heal,
             attacked,

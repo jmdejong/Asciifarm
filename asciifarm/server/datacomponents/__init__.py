@@ -9,6 +9,7 @@ from .faction import Faction
 from .events import Events
 from .loot import Loot
 from .inbox import Inbox
+from .portal import Portal
 
 
 class Remove:
