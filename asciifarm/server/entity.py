@@ -102,7 +102,6 @@ class Entity:
             inbox = Inbox()
             self.roomData.addComponent(self, inbox)
         inbox.add(msg)
-        print(inbox.messages)
     
     def getSprite(self):
         return self.sprite

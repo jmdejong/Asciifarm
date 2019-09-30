@@ -15,6 +15,5 @@ from .selectable import Selectable
 from .spawner import Spawner
 from .staticserializer import StaticSerializer
 from .target import Target
-from .trap import Trap
 from .volatile import Volatile
 from .weather import Weather
