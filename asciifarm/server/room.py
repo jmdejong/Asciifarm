@@ -9,12 +9,7 @@ from . import roomdata
 from . import serialize
 
 
-from .systems.fight import fight
-from .systems.attacked import attacked
-from .systems.heal import heal
-from .systems.move import move
-from .systems.controlai import controlai
-from .systems.controlinput import control
+from .systems import fight, attacked, heal, move, controlai, control, handlemail, remove
 
 class Room:
     
@@ -94,8 +89,10 @@ class Room:
             controlai,
             move,
             fight,
+            heal,
             attacked,
-            heal
+            handlemail,
+            remove
         ]
         for system in systems:
             system.run(self.roomData)

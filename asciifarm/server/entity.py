@@ -1,7 +1,8 @@
 
 from . import serialize
 from .eventtarget import EventTarget
-
+import collections
+from .datacomponents import Messages, ToRemove
 
 class Entity:
     """ Attempt to implement an entity component system
@@ -23,15 +24,18 @@ class Entity:
         self.height = height # if multiple objects are on a square, the tallest one is drawn
         self.name = name if name else sprite # human readable name/description
         self.components = components
-        self.observable = EventTarget()
         self.flags = set(flags)
         self.ground = None
         self.roomData = None
         if dataComponents is None:
             dataComponents = []
         self.dataComponents = {type(comp): comp for comp in dataComponents}
+        
+        self.listeners = collections.defaultdict(dict)
+        
         for component in self.components.values():
             component.attach(self)
+        
         
     
     def construct(self, roomData, preserve=False, stamp=None):
@@ -56,14 +60,6 @@ class Entity:
     def getDataComponent(self, component):
         return self.dataComponents.get(component)
     
-    def addDataComponent(self, component):
-        self.dataComponents[type(component)] = component
-        self.roomData.dataComponents[type(component)].add(self)
-    
-    def removeDataComponent(self, component):
-        self.dataComponents.remove(name)
-        self.roomData.dataComponents[component.name].remove(self)
-    
     def place(self, ground):
         if self.ground:
             self.ground.removeObj(self)
@@ -71,25 +67,35 @@ class Entity:
         ground.addObj(self)
     
     def remove(self):
+        self.trigger("remove")
+        self.roomData.addComponent(self, ToRemove())
+        
+    
+    def doRemove(self):
         self.roomData.removeObj(self)
         if self.isPreserved():
             self.roomData.removePreserved(self)
         for component in self.components.values():
             component.remove()
-        self.trigger("remove")
         if self.ground:
             self.ground.removeObj(self)
             self.ground = None
         self.roomData = None
     
     def addListener(self, event, callback, key=None):
-        self.observable.addListener(event, callback, key)
+        if key is None:
+            key = callback
+        self.listeners[event][key] = callback
     
     def removeListener(self, event, key):
-        self.observable.removeListener(event, key)
+        self.listeners[event].pop(key)
     
     def trigger(self, event, *args, **kwargs):
-        self.observable.trigger(event, self, *args, **kwargs)
+        messages = self.getDataComponent(Messages)
+        if messages is None:
+            messages = Messages()
+            self.roomData.addComponent(self, messages)
+        messages.add((event, list(args), dict(kwargs)))
     
     def getSprite(self):
         return self.sprite

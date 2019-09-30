@@ -3,8 +3,8 @@
     "height": 64,
     "spawn": [10, 15],
     "places": {
-        "stairdown": [38, 33],
-        "caveentrance": [31, 51],
+        "stairdown": [37, 33],
+        "caveentrance": [31, 50],
         "right": [62, 10],
         "cavebridge": [1, 60]
     },

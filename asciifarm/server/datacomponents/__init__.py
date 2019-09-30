@@ -6,3 +6,8 @@ from .move import Move
 from .ai import AI
 from .input import Input
 from .faction import Faction
+from .messages import Messages
+
+
+class ToRemove:
+    pass

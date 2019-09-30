@@ -3,7 +3,7 @@
     "height": 44,
     "spawn": [32, 4],
     "places": {
-        "stairup": [32, 3]
+        "stairup": [32, 4]
     },
     "grid": [
         "                                                                ",

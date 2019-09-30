@@ -41,15 +41,26 @@ class RoomData:
         self.objects.add(obj)
         for component in obj.listComponents():
             self.components[component].add(obj)
-        for component in obj.dataComponents:
-            self.dataComponents[component].add(obj)
+        for compt in obj.dataComponents:
+            self.dataComponents[compt].add(obj)
     
     def removeObj(self, obj):
         self.objects.remove(obj)
         for component in obj.listComponents():
             self.components[component].remove(obj)
-        for component in obj.dataComponents:
-            self.dataComponents[component].remove(obj)
+        for compt in obj.dataComponents:
+            if obj not in self.dataComponents[compt]:
+                print(compt, obj.toJSON())
+            self.dataComponents[compt].remove(obj)
+    
+    def addComponent(self, obj, component):
+        compt = type(component)
+        self.dataComponents[compt].add(obj)
+        obj.dataComponents[compt] = component
+    
+    def removeComponent(self, obj, compt):
+        self.dataComponents[compt].remove(obj)
+        obj.dataComponents.pop(compt)
         
         
     def getEvent(self, name):
