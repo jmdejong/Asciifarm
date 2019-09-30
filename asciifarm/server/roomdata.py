@@ -36,20 +36,6 @@ class RoomData:
         self.components = collections.defaultdict(set) # type: {str: set(Entity)}
         self.dataComponents = collections.defaultdict(set) # type: {str: set(Entity)}
     
-    def update(self):
-        self.triggerAlarms()
-        
-        systems = [
-            control,
-            controlai,
-            move,
-            fight,
-            attacked,
-            heal
-        ]
-        for system in systems:
-            system.run(self)
-    
     def addObj(self, obj):
         
         self.objects.add(obj)

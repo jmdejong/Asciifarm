@@ -9,6 +9,13 @@ from . import roomdata
 from . import serialize
 
 
+from .systems.fight import fight
+from .systems.attacked import attacked
+from .systems.heal import heal
+from .systems.move import move
+from .systems.controlai import controlai
+from .systems.controlinput import control
+
 class Room:
     
     
@@ -80,7 +87,19 @@ class Room:
         
         self.roomData.setStamp(stepStamp)
         
-        self.roomData.update()
+        self.roomData.triggerAlarms()
+        
+        systems = [
+            control,
+            controlai,
+            move,
+            fight,
+            attacked,
+            heal
+        ]
+        for system in systems:
+            system.run(self.roomData)
+        
         self.lastStepStamp = stepStamp
     
     def getSprites(self, pos):
