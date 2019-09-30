@@ -30,7 +30,7 @@ entities["builtwall"] = lambda health=None: Entity(
         "serialize": Custom(
             lambda obj: {
                 "type": "builtwall",
-                "kwargs": {"health": obj.dataComponents["attackable"].health}
+                "kwargs": {"health": obj.getDataComponent("attackable").health}
             }
         )
     }, dataComponents=[faction.NONE, Attackable(health=health or maxHealth, maxHealth=100)]

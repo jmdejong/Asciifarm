@@ -12,7 +12,7 @@ class _System:
         for component in self.components[1:]:
             entities &= roomData.dataComponents[component]
         for entity in entities:
-            components = [entity.dataComponents[comp] for comp in self.components]
+            components = [entity.getDataComponent(comp) for comp in self.components]
             self.code(entity, roomData, *components)
 
 def System(*components):

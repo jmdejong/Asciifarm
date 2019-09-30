@@ -143,13 +143,11 @@ class Player:
     def control(self, action):
         if not self.entity or not (isinstance(action, list) or isinstance(action, tuple)) or len(action) < 1:
             return
-        self.entity.dataComponents["input"].action = action
-        #controller = self.entity.getComponent("controller")
-        #controller.setAction(action)
+        self.entity.getDataComponent("input").action = action
     
     def getHealthPair(self):
         if self.entity:
-            return self.entity.dataComponents["attackable"].getHealth()
+            return self.entity.getDataComponent("attackable").getHealth()
         else:
             return (0, None)
     

@@ -53,6 +53,8 @@ class Entity:
     def listComponents(self):
         return list(self.components.keys())
     
+    def getDataComponent(self, name):
+        return self.dataComponents.get(name)
     
     def place(self, ground):
         if self.ground:

@@ -6,7 +6,7 @@ class Trap(Component):
     
     def attach(self, obj):
         
-        if not obj.dataComponents.get("fighter"):
+        if not obj.getDataComponent("fighter"):
             # todo: better exception
             raise Exception("Trap needs object with fighter component")
         
@@ -17,6 +17,6 @@ class Trap(Component):
         
     
     def onEnter(self, owner, obj=None, *data):
-        self.owner.dataComponents["fighter"].target = obj
+        self.owner.getDataComponent("fighter").target = obj
     
 

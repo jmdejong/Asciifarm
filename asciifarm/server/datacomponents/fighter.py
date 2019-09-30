@@ -18,4 +18,4 @@ class Fighter:
         return distanceBetween(owner, other) <= self.range
     
     def canAttack(self, owner, other):
-        return self.inRange(owner, other) and other.dataComponents.get("attackable")
+        return self.inRange(owner, other) and other.getDataComponent("attackable") and True or False

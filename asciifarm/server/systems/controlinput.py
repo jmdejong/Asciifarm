@@ -33,7 +33,7 @@ def executeAction(obj, roomData, action):
 def do_move(obj, roomData, direction):
     if direction not in {"north", "south", "east", "west"}:
         return
-    obj.dataComponents["move"].direction = direction
+    obj.getDataComponent("move").direction = direction
 
 def do_take(obj, roomData, rank):
     objects = obj.getNearObjects()
@@ -88,14 +88,14 @@ def do_interact(obj, roomData, directions):
 
 def do_attack(obj, roomData, directions):
     objects = _getNearbyObjects(obj, directions)
-    if obj.dataComponents["input"].target in objects:
-        objects = {obj.dataComponents["input"].target}
-    fighter = obj.dataComponents["fighter"]
-    alignment = obj.dataComponents.get("faction", faction.NONE)
+    if obj.getDataComponent("input").target in objects:
+        objects = {obj.getDataComponent("input").target}
+    fighter = obj.getDataComponent("fighter")
+    alignment = obj.getDataComponent("faction") or faction.NONE
     for other in objects:
-        if fighter.canAttack(obj, other) and alignment.isEnemy(other.dataComponents.get("faction", faction.NONE)):
+        if fighter.canAttack(obj, other) and alignment.isEnemy(other.getDataComponent("faction") or faction.NONE):
             fighter.target = other
-            obj.dataComponents["input"].target = other
+            obj.getDataComponent("input").target = other
             break
 
 def do_say(obj, roomData, text):

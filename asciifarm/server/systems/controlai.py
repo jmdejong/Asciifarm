@@ -7,16 +7,15 @@ from ..system import System
 
 @System("ai", "move")
 def controlai(obj, roomData, ai, movable):
-    alignment = obj.getComponent("alignment")
     
-    fighter = obj.dataComponents.get("fighter")
+    fighter = obj.getDataComponent("fighter")
     if fighter is not None:
         closestDistance = ai.viewDist + 1
         closest = None
-        alignment = obj.dataComponents.get("faction", faction.NONE)
+        alignment = obj.getDataComponent("faction") or faction.NONE
         for target in roomData.getTargets():
             distance = pathfinding.distanceBetween(obj, target)
-            if (faction is None or alignment.isEnemy(target.dataComponents.get("faction", faction.NONE))) and distance < closestDistance:
+            if (faction is None or alignment.isEnemy(target.getDataComponent("faction") or faction.NONE)) and distance < closestDistance:
                 closestDistance = distance
                 closest = target
         if closest:
