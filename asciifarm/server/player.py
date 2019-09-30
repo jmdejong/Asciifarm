@@ -4,7 +4,7 @@
 from . import gameobjects
 
 
-from .components import Inventory, Target, Equipment, Listen, Select
+from .components import Inventory, Equipment, Listen, Select
 from .datacomponents import Attackable, Move, Fighter, Heal, Input, Faction
 from . import entity
 
@@ -52,7 +52,6 @@ class Player:
             name = '&' + self.name,
             components={
                 "inventory": self.inventory,
-                "target": Target(),
                 "equipment": self.equipment,
                 "listen": Listen(),
                 "select": Select()

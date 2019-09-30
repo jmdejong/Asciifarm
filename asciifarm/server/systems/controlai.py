@@ -2,7 +2,7 @@
 import random
 
 from .. import pathfinding
-from ..datacomponents import AI, Move, Fighter, Faction
+from ..datacomponents import AI, Move, Fighter, Faction, Attackable
 from ..system import System
 
 @System([AI, Move])
@@ -13,7 +13,7 @@ def controlai(obj, roomData, ai, movable):
         closestDistance = ai.viewDist + 1
         closest = None
         alignment = obj.getDataComponent(Faction) or Faction.NONE
-        for target in roomData.getTargets():
+        for target in roomData.dataComponents[Attackable]:
             distance = pathfinding.distanceBetween(obj, target)
             if (alignment.isEnemy(target.getDataComponent(Faction) or Faction.NONE)) and distance < closestDistance:
                 closestDistance = distance

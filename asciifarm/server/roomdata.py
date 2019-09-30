@@ -71,15 +71,6 @@ class RoomData:
         return self.events[name]
     
     
-    def addTarget(self, obj):
-        self.targets.add(obj)
-    
-    def removeTarget(self, obj):
-        self.targets.discard(obj)
-    
-    def getTargets(self):
-        return frozenset(self.targets)
-    
     def preserveObject(self, obj):
         self.preservedObjects.add(obj)
     
