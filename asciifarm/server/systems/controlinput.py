@@ -1,9 +1,8 @@
 
-from ..datacomponents import faction
-
+from ..datacomponents import Input, Fighter, Move, Faction
 from ..system import System
 
-@System("input", "fighter", "move", "faction")
+@System(Input, Fighter, Move)
 def control(obj, roomData, input, fighter, *_args):
     action = input.action
     if action:
@@ -33,7 +32,7 @@ def executeAction(obj, roomData, action):
 def do_move(obj, roomData, direction):
     if direction not in {"north", "south", "east", "west"}:
         return
-    obj.getDataComponent("move").direction = direction
+    obj.getDataComponent(Move).direction = direction
 
 def do_take(obj, roomData, rank):
     objects = obj.getNearObjects()
@@ -88,14 +87,14 @@ def do_interact(obj, roomData, directions):
 
 def do_attack(obj, roomData, directions):
     objects = _getNearbyObjects(obj, directions)
-    if obj.getDataComponent("input").target in objects:
-        objects = {obj.getDataComponent("input").target}
-    fighter = obj.getDataComponent("fighter")
-    alignment = obj.getDataComponent("faction") or faction.NONE
+    if obj.getDataComponent(Input).target in objects:
+        objects = {obj.getDataComponent(Input).target}
+    fighter = obj.getDataComponent(Fighter)
+    alignment = obj.getDataComponent(Faction) or Faction.NONE
     for other in objects:
-        if fighter.canAttack(obj, other) and alignment.isEnemy(other.getDataComponent("faction") or faction.NONE):
+        if fighter.inRange(obj, other) and alignment.isEnemy(other.getDataComponent(Faction) or Faction.NONE):
             fighter.target = other
-            obj.getDataComponent("input").target = other
+            obj.getDataComponent(Input).target = other
             break
 
 def do_say(obj, roomData, text):

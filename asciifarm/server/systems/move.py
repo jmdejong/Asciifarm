@@ -1,8 +1,9 @@
 
 
 from ..system import System
+from ..datacomponents import Move
 
-@System("move")
+@System(Move)
 def move(obj, roomData, movable):
     
     neighbours = obj.getGround().getNeighbours()

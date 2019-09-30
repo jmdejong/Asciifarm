@@ -1,10 +1,7 @@
 
 from ..pathfinding import distanceBetween
 
-
 class Fighter:
-    
-    component = "fighter"
     
     def __init__(self, strength=0, slowness=1, range=1):
         self.strength = strength
@@ -16,6 +13,3 @@ class Fighter:
     
     def inRange(self, owner, other):
         return distanceBetween(owner, other) <= self.range
-    
-    def canAttack(self, owner, other):
-        return self.inRange(owner, other) and other.getDataComponent("attackable") and True or False

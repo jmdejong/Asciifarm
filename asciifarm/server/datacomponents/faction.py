@@ -1,8 +1,6 @@
 
 class Faction:
     
-    component = "faction"
-    
     def __init__(self, name):
         self.name = name
         self.enemies = set()
@@ -32,6 +30,11 @@ NONE = Faction("none") # things that can always be attacked
 GOOD.hates(NONE)
 EVIL.hates(NONE)
 NONE.hates(NONE)
+
+Faction.NEUTRAL = NEUTRAL
+Faction.NONE = NONE
+Faction.GOOD = GOOD
+Faction.EVIL = EVIL
 
 
 factions = {}

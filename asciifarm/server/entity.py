@@ -29,7 +29,7 @@ class Entity:
         self.roomData = None
         if dataComponents is None:
             dataComponents = []
-        self.dataComponents = {comp.component: comp for comp in dataComponents}
+        self.dataComponents = {type(comp): comp for comp in dataComponents}
         for component in self.components.values():
             component.attach(self)
         
@@ -53,8 +53,16 @@ class Entity:
     def listComponents(self):
         return list(self.components.keys())
     
-    def getDataComponent(self, name):
-        return self.dataComponents.get(name)
+    def getDataComponent(self, component):
+        return self.dataComponents.get(component)
+    
+    def addDataComponent(self, component):
+        self.dataComponents[type(component)] = component
+        self.roomData.dataComponents[type(component)].add(self)
+    
+    def removeDataComponent(self, component):
+        self.dataComponents.remove(name)
+        self.roomData.dataComponents[component.name].remove(self)
     
     def place(self, ground):
         if self.ground:

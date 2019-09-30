@@ -4,7 +4,7 @@ from ..entity import Entity
 
 from ..components import StaticSerializer as Static
 from ..components import Loot, Trap
-from ..datacomponents import Fighter, Move, Attackable, AI, faction
+from ..datacomponents import Fighter, Move, Attackable, AI, Faction
 
 entities = {}
 
@@ -16,7 +16,7 @@ entities["rabbit"] = lambda: Entity(
 entities["goblin"] = lambda home=None: Entity(sprite="goblin", height=1.2, components={
         "loot": Loot([("sword", .05), ("club", .1), ("radishes", .25)])
     }, dataComponents=[
-        faction.EVIL,
+        Faction.EVIL,
         AI(viewDist=8, moveChance=0.02, home=home),
         Move(slowness=3),
         Attackable(maxHealth=15),
@@ -27,7 +27,7 @@ entities["goblin"] = lambda home=None: Entity(sprite="goblin", height=1.2, compo
 entities["troll"] = lambda home=None: Entity(sprite="troll", height=1.8, components={
         "loot": Loot([("stone", 1), ("stone", .3), ("pebble", .5), ("pebble", .5), ("pebble", .5)])
     }, dataComponents=[
-        faction.EVIL,
+        Faction.EVIL,
         AI(viewDist=8, moveChance=0.01, home=home),
         Move(slowness=4),
         Attackable(maxHealth=75),
@@ -38,7 +38,7 @@ entities["troll"] = lambda home=None: Entity(sprite="troll", height=1.8, compone
 entities["rat"] = lambda home=None: Entity(sprite="rat", height=1, components={
         "loot": Loot([("radishseed", 0.9), ("radishseed", 0.3)])
     }, dataComponents=[
-        faction.EVIL,
+        Faction.EVIL,
         AI(viewDist=3, moveChance=0.08, home=home, homesickness=0.1),
         Move(slowness=3),
         Attackable(maxHealth=8),
@@ -52,7 +52,7 @@ entities["rat"] = lambda home=None: Entity(sprite="rat", height=1, components={
 entities["dummy"] = lambda: Entity(
     sprite="dummy", height=1, flags={"occupied"}, dataComponents=[
         Attackable(maxHealth=20),
-        faction.NONE
+        Faction.NONE
     ])
 
 entities["spiketrap"] = lambda damage=15: Entity(sprite="spikes", height=1, flags={"occupied"}, components={

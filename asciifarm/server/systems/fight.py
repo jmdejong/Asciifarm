@@ -1,15 +1,16 @@
 
 
 from ..system import System
+from ..datacomponents import Fighter, Attackable
 
-@System("fighter")
+@System(Fighter)
 def fight(obj, roomData, fighter):
     
     other = fighter.target
     if other is None:
         return
-    otherFighter = other.getDataComponent("attackable")
-    if otherFighter is not None and fighter.canAttack(obj, other) and fighter.attackReady < roomData.getStamp():
+    otherFighter = other.getDataComponent(Attackable)
+    if otherFighter is not None and fighter.inRange(obj, other) and fighter.attackReady < roomData.getStamp():
         strength = fighter.strength
         if obj.hasComponent("equipment"):
             strength += obj.getComponent("equipment").getBonus("strength")

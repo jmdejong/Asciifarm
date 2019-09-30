@@ -2,20 +2,20 @@
 import random
 
 from .. import pathfinding
-from ..datacomponents import faction
+from ..datacomponents import AI, Move, Fighter, Faction
 from ..system import System
 
-@System("ai", "move")
+@System(AI, Move)
 def controlai(obj, roomData, ai, movable):
     
-    fighter = obj.getDataComponent("fighter")
+    fighter = obj.getDataComponent(Fighter)
     if fighter is not None:
         closestDistance = ai.viewDist + 1
         closest = None
-        alignment = obj.getDataComponent("faction") or faction.NONE
+        alignment = obj.getDataComponent(Faction) or Faction.NONE
         for target in roomData.getTargets():
             distance = pathfinding.distanceBetween(obj, target)
-            if (faction is None or alignment.isEnemy(target.getDataComponent("faction") or faction.NONE)) and distance < closestDistance:
+            if (alignment.isEnemy(target.getDataComponent(Faction) or Faction.NONE)) and distance < closestDistance:
                 closestDistance = distance
                 closest = target
         if closest:

@@ -4,17 +4,8 @@
 from . import gameobjects
 
 
-from .components import Inventory
-from .components import Target
-from .components import Equipment
-from .components import Listen
-from .components import Select
-from .datacomponents import Attackable
-from .datacomponents import Move
-from .datacomponents import Fighter
-from .datacomponents import Heal
-from .datacomponents import Input
-from .datacomponents import faction
+from .components import Inventory, Target, Equipment, Listen, Select
+from .datacomponents import Attackable, Move, Fighter, Heal, Input, Faction
 from . import entity
 
 class Player:
@@ -66,7 +57,7 @@ class Player:
                 "listen": Listen(),
                 "select": Select()
             }, dataComponents=[
-                faction.GOOD,
+                Faction.GOOD,
                 Input(),
                 Move(slowness=2),
                 Heal(interval=50),
@@ -143,11 +134,11 @@ class Player:
     def control(self, action):
         if not self.entity or not (isinstance(action, list) or isinstance(action, tuple)) or len(action) < 1:
             return
-        self.entity.getDataComponent("input").action = action
+        self.entity.getDataComponent(Input).action = action
     
     def getHealthPair(self):
         if self.entity:
-            return self.entity.getDataComponent("attackable").getHealth()
+            return self.entity.getDataComponent(Attackable).getHealth()
         else:
             return (0, None)
     

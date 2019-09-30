@@ -2,13 +2,12 @@
 
 
 from ..entity import Entity
-from ..datacomponents import faction
 
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
 from ..components import Change
 from ..components import Loot
-from ..datacomponents import Attackable
+from ..datacomponents import Attackable, Faction
 
 entities = {}
 
@@ -30,28 +29,16 @@ entities["builtwall"] = lambda health=None: Entity(
         "serialize": Custom(
             lambda obj: {
                 "type": "builtwall",
-                "kwargs": {"health": obj.getDataComponent("attackable").health}
+                "kwargs": {"health": obj.getDataComponent(Attackable).health}
             }
         )
-    }, dataComponents=[faction.NONE, Attackable(health=health or maxHealth, maxHealth=100)]
+    }, dataComponents=[Faction.NONE, Attackable(health=health or maxHealth, maxHealth=100)]
 )
 
 
 entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={"interact": Change("opendoor"), "serialize": Static("closeddoor")})
 
 entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={"interact": Change("closeddoor"), "serialize": Static("opendoor")})
-
-#entities["builtcloseddoor"] = lambda health=None: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={
-    #"interact": Change(transferComponents={"fighter"}),
-    #"fighter": Fighter(maxHealth=100, health=health, strength=0),
-    #"alignment": Alignment(faction.NONE),
-    #"loot": Loot([("hardwood", 1)])})
-
-#entities["builtopendoor"] = lambda health=None: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={
-    #"interact": Change(),
-    #"fighter": Fighter(maxHealth=100, health=health, strength=0),
-    #"alignment": Alignment(faction.NONE),
-    #"loot": Loot([("hardwood", 1)])})
 
 
 entities["engraved"] = lambda c: Entity(sprite="engravedwall-"+c, height=2, flags={"solid"}, components={"serialize": Static("wall", c)})
