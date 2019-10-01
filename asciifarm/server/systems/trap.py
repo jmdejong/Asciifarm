@@ -1,11 +1,9 @@
 
 from ..system import system
-from ..datacomponents import Inbox, Trap, Fighter
-from ..messages import EnterMessage
+from ..datacomponents import Trap, Fighter, EnterMessage
 
-@system([Inbox, Trap, Fighter])
-def trap(obj, roomData, inbox, trap, fighter):
-    for message in inbox.messages:
-        if isinstance(message, EnterMessage):
-            fighter.target = message.actor
+@system([EnterMessage, Trap, Fighter])
+def trap(obj, roomData, messages, trap, fighter):
+    for message in messages:
+        fighter.target = message.actor
 

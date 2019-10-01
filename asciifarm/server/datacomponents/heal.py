@@ -1,5 +1,7 @@
 
-class Heal:
+from .dc import DC
+
+class Heal(DC):
     
     def __init__(self, interval, amount=1):
         """ interval is the number of steps until next healing, amount is the amount of health that gets added in a healing """

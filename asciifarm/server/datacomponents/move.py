@@ -1,5 +1,7 @@
 
-class Move:
+from .dc import DC
+
+class Move(DC):
     
     def __init__(self, slowness=1):
         self.direction = None

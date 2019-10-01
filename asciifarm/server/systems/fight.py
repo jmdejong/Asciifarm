@@ -9,7 +9,7 @@ def fight(obj, roomData, fighter):
     other = fighter.target
     if other is None:
         return
-    otherFighter = other.getDataComponent(Attackable)
+    otherFighter = roomData.getComponent(other, Attackable)
     if otherFighter is not None and fighter.inRange(obj, other) and fighter.attackReady < roomData.getStamp():
         strength = fighter.strength
         if obj.hasComponent("equipment"):

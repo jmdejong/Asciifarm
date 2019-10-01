@@ -30,7 +30,7 @@ def attacked(obj, roomData, attackable):
         if type == "attack":
             obj.trigger("damage", attacker, damage)
             attacker.trigger("attack", obj, damage)
-            input = obj.getDataComponent(Input)
+            input = roomData.getComponent(obj, Input)
             if input is not None:
                 input.target = attacker # retaliation
         elif type == "heal":

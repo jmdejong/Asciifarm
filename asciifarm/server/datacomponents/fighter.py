@@ -1,7 +1,8 @@
 
 from ..pathfinding import distanceBetween
+from .dc import DC
 
-class Fighter:
+class Fighter(DC):
     
     def __init__(self, strength=0, slowness=1, range=1):
         self.strength = strength

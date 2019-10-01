@@ -1,8 +1,7 @@
 
 
 from ..system import system
-from ..datacomponents import Move
-from ..messages import EnterMessage
+from ..datacomponents import Move, EnterMessage
 
 @system([Move])
 def move(obj, roomData, movable):
@@ -13,7 +12,7 @@ def move(obj, roomData, movable):
         
         if newPlace.accessible():
             for resident in newPlace.getObjs():
-                resident.message(EnterMessage(obj))
+                roomData.addComponent(resident, EnterMessage(obj))
             obj.place(newPlace)
             movable.moveReady = roomData.getStamp() + movable.slowness
             obj.trigger("move")

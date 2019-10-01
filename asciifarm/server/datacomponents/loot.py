@@ -1,7 +1,8 @@
 
 from random import random as rand
+from .dc import DC
 
-class Loot:
+class Loot(DC):
     
     def __init__(self, items):
         self.items = []

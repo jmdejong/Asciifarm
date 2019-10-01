@@ -12,4 +12,4 @@ def handleevents(obj, roomData, events):
         for listener in list(obj.listeners[event]):
             listener(obj, *args, **kwargs)
     
-    roomData.removeComponent(obj, Events)
+    roomData.removeComponent(obj, events)

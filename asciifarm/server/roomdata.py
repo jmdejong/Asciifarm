@@ -11,6 +11,7 @@ from .systems.move import move
 from .systems.controlai import controlai
 from .systems.controlinput import control
 
+
 class RoomData:
     
     """ Instances of this class represents the data about the room that is available to the entities in the room and their components
@@ -53,18 +54,32 @@ class RoomData:
                 print(compt, obj.toJSON())
             self.dataComponents[compt].remove(obj)
     
+    
     def addComponent(self, obj, component):
         if isinstance(component, type):
             component = component()
         compt = type(component)
         self.dataComponents[compt].add(obj)
-        obj.dataComponents[compt] = component
+        if component.allowMultiple:
+            if compt not in obj.dataComponents:
+                obj.dataComponents[compt] = []
+            obj.dataComponents[compt].append(component)
+        else:
+            obj.dataComponents[compt] = component
     
-    def removeComponent(self, obj, compt):
-        if obj not in self.dataComponents[compt]:
-            print(compt, obj.toJSON())
-        self.dataComponents[compt].remove(obj)
-        obj.dataComponents.pop(compt)
+    def removeComponent(self, obj, component):
+        compt = type(component)
+        if component.allowMultiple:
+            l = obj.dataComponents[compt]
+            l.remove(component)
+            if not l:
+                self.dataComponents[compt].remove(l)
+        else:
+            self.dataComponents[compt].remove(obj)
+            obj.dataComponents.pop(compt)
+    
+    def getComponent(self, obj, component):
+        return obj.dataComponents.get(component)
     
     def getEntities(self, components, combinator="intersect"):
         

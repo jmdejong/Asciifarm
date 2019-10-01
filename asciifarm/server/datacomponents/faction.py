@@ -1,5 +1,7 @@
 
-class Faction:
+from .dc import DC
+
+class Faction(DC):
     
     def __init__(self, name):
         self.name = name

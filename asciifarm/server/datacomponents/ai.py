@@ -1,6 +1,7 @@
 
+from .dc import DC
 
-class AI:
+class AI(DC):
     
     def __init__(self, viewDist=0, moveChance=1, home=None, homesickness=0.05):
         self.moveChance = moveChance

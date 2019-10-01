@@ -1,7 +1,10 @@
 
-from ..system import system
-from ..datacomponents import Inbox
+from ..datacomponents import Message
 
-@system([Inbox])
-def clearinbox(obj, roomData, inbox):
-    roomData.removeComponent(obj, Inbox)
+
+def clearinbox(roomData):
+    for compt, entities in roomData.dataComponents.items():
+        if issubclass(compt, Message):
+            for entity in entities:
+                del entity.dataComponents[compt]
+            roomData.dataComponents[compt] = set()
