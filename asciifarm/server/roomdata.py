@@ -78,6 +78,11 @@ class RoomData:
             self.dataComponents[compt].remove(obj)
             obj.dataComponents.pop(compt)
     
+    def clearComponent(self, compt):
+        for entity in self.dataComponents[compt]:
+            del entity.dataComponents[compt]
+        self.dataComponents[compt] = set()
+    
     def getComponent(self, obj, component):
         return obj.dataComponents.get(component)
     

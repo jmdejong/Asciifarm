@@ -57,7 +57,7 @@ class Entity:
         return list(self.components.keys())
     
     def getDataComponent(self, component):
-        return self.dataComponents.get(component)
+        return self.roomData.getComponent(self, component)
     
     def place(self, ground):
         if self.ground:
