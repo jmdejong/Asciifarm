@@ -1,8 +1,8 @@
 
-from ..system import System
+from ..system import system
 from ..datacomponents import Events
 
-@System([Events])
+@system([Events])
 def handleevents(obj, roomData, events):
     while True:
         try:

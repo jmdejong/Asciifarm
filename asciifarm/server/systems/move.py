@@ -1,10 +1,10 @@
 
 
-from ..system import System
+from ..system import system
 from ..datacomponents import Move
 from ..messages import EnterMessage
 
-@System([Move])
+@system([Move])
 def move(obj, roomData, movable):
     
     neighbours = obj.getGround().getNeighbours()

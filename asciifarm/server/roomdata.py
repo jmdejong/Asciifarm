@@ -65,6 +65,17 @@ class RoomData:
             print(compt, obj.toJSON())
         self.dataComponents[compt].remove(obj)
         obj.dataComponents.pop(compt)
+    
+    def getEntities(self, components, combinator="intersect"):
+        
+        entities = set(self.dataComponents[components[0]])
+        if combinator == "intersect":
+            for component in components[1:]:
+                entities &= self.dataComponents[component]
+        elif combinator == "union":
+            for component in components[1:]:
+                entities |= self.dataComponents[component]
+        return entities
         
         
     def getEvent(self, name):

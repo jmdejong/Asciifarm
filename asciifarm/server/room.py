@@ -99,7 +99,7 @@ class Room:
             remove
         ]
         for system in systems:
-            system.run(self.roomData)
+            system(self.roomData)
         
         self.lastStepStamp = stepStamp
     

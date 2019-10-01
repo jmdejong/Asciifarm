@@ -1,9 +1,9 @@
 
-from ..system import System
+from ..system import system
 from ..datacomponents import Inbox, Portal
 from ..messages import EnterMessage
 
-@System([Inbox, Portal])
+@system([Inbox, Portal])
 def teleport(obj, roomData, inbox, portal):
     for message in inbox.messages:
         if isinstance(message, EnterMessage):

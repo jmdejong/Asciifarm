@@ -4,10 +4,10 @@ import random
 
 from asciifarm.common import utils
 from .. import gameobjects
-from ..system import System
+from ..system import system
 from ..datacomponents import Attackable, Input
 
-@System([Attackable])
+@system([Attackable])
 def attacked(obj, roomData, attackable):
     for type, strength, attacker in attackable.attacks:
         if type == "attack":

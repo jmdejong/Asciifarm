@@ -1,9 +1,9 @@
 
 
-from ..system import System
+from ..system import system
 from ..datacomponents import Heal, Attackable
 
-@System([Heal, Attackable])
+@system([Heal, Attackable])
 def heal(obj, roomData, healing, attackable):
     
     if not attackable.healthFull():

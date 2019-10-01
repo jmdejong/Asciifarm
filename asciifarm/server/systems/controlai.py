@@ -3,9 +3,9 @@ import random
 
 from .. import pathfinding
 from ..datacomponents import AI, Move, Fighter, Faction, Attackable
-from ..system import System
+from ..system import system
 
-@System([AI, Move])
+@system([AI, Move])
 def controlai(obj, roomData, ai, movable):
     
     fighter = obj.getDataComponent(Fighter)
