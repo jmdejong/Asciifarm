@@ -24,9 +24,9 @@ entities["fence"] = lambda: Entity(sprite="fence", height=1, flags={"solid"}, co
 entities["builtwall"] = lambda health=None: Entity(
     sprite="builtwall", height=2, flags={"solid"}, components={
         "serialize": Custom(
-            lambda obj: {
+            lambda obj, roomData: {
                 "type": "builtwall",
-                "kwargs": {"health": obj.getDataComponent(Attackable).health}
+                "kwargs": {"health": roomData.getComponent(obj, Attackable).health}
             }
         )
     }, dataComponents=[

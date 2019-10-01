@@ -9,7 +9,7 @@ from ..datacomponents import Interact, Loot, Remove
 entities = {}
 
 def cropSerializer(name):
-    return lambda obj: {
+    return lambda obj, roomData: {
         "type": name,
         "args": [],
         "kwargs": {
