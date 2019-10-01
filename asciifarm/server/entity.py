@@ -1,7 +1,7 @@
 
 from . import serialize
 import collections
-from .datacomponents import Events, Remove, Inbox
+from .datacomponents import Events, Remove
 
 class Entity:
     """ Attempt to implement an entity component system
@@ -95,13 +95,6 @@ class Entity:
             messages = Events()
             self.roomData.addComponent(self, messages)
         messages.add((event, list(args), dict(kwargs)))
-    
-    def message(self, msg):
-        inbox = self.getDataComponent(Inbox)
-        if inbox is None:
-            inbox = Inbox()
-            self.roomData.addComponent(self, inbox)
-        inbox.add(msg)
     
     def getSprite(self):
         return self.sprite

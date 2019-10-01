@@ -1,0 +1,3 @@
+
+class DC:
+    allowMultiple = False
