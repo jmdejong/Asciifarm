@@ -1,6 +1,7 @@
 
 from .component import Component
 from .. import gameobjects
+from ..template import Template
 
 class Inventory(Component):
     
@@ -55,10 +56,10 @@ class Inventory(Component):
     def toJSON(self):
         return {
             "capacity": self.capacity,
-            "items": [item.serialize() for item in self.items]
+            "items": [item.serialize().toJSON() for item in self.items]
         }
     
     @classmethod
     def fromJSON(cls, data):
-        obj = cls(data["capacity"], [gameobjects.createEntity(item) for item in data["items"]])
+        obj = cls(data["capacity"], [gameobjects.createEntity(Template.fromJSON(item)) for item in data["items"]])
         return obj

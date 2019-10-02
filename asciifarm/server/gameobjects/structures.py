@@ -6,6 +6,7 @@ from ..entity import Entity
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
 from ..datacomponents import Attackable, Faction, Loot, Interact, Remove
+from ..template import Template
 
 entities = {}
 
@@ -24,10 +25,8 @@ entities["fence"] = lambda: Entity(sprite="fence", height=1, flags={"solid"}, co
 entities["builtwall"] = lambda health=None: Entity(
     sprite="builtwall", height=2, flags={"solid"}, components={
         "serialize": Custom(
-            lambda obj, roomData: {
-                "type": "builtwall",
-                "kwargs": {"health": roomData.getComponent(obj, Attackable).health}
-            }
+            lambda obj, roomData:
+                template(builtwall, health=roomData.getComponent(obj, Attackable).health)
         )
     }, dataComponents=[
         Faction.NONE,

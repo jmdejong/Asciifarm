@@ -5,15 +5,14 @@ from ..components import Build, Food, Growing
 from ..components import StaticSerializer as Static
 from ..components import CustomSerializer as Custom
 from ..datacomponents import Interact, Loot, Remove
+from ..template import Template
 
 entities = {}
 
 def cropSerializer(name):
-    return lambda obj, roomData: {
-        "type": name,
-        "args": [],
-        "kwargs": {
-            "targetTime": obj.getComponent("grow").getTargetTime()}}
+    return (lambda obj, roomData:
+        Template(name, targetTime=obj.getComponents("grow").getTargetTime())
+    )
 
 class Stage:
     

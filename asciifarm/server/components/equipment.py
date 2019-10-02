@@ -1,6 +1,7 @@
 
 from .component import Component
 from .. import gameobjects
+from ..template import Template
 
 
 class Equipment(Component):
@@ -47,14 +48,14 @@ class Equipment(Component):
     
     def toJSON(self):
         return {
-            slotName: item.serialize() if item else None
+            slotName: item.serialize().toJSON() if item else None
             for slotName, item in self.slots.items()
         }
     
     @classmethod
     def fromJSON(cls, slots):
         return cls({
-            slotname: gameobjects.createEntity(item) if item else None
+            slotname: gameobjects.createEntity(Template.fromJSON(item)) if item else None
             for slotname, item in slots.items()
         })
     

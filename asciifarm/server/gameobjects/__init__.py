@@ -20,21 +20,11 @@ def makeEntity(entType, roomData, *args, preserve=False, **kwargs):
     entity.construct(roomData, preserve)
     return entity
 
-def createEntity(data):
-    obj = None
-    if isinstance(data, str):
-        obj = entities[data]()
-    elif isinstance(data, list) and len(data) == 3:
-        obj = entities[data[0]](*data[1], data[2])
-    elif isinstance(data, dict):
-        if "type" in data:
-            obj = entities[data["type"]](*(data.get("args", [])), **(data.get("kwargs", {})))
-        else:
-            obj = Entity.fromJSON(data)
-    return obj
+def createEntity(template):
+    return entities[template.name](*template.args, **template.kwargs)
 
-def buildEntity(data, roomData, preserve=False):
-    obj = createEntity(data)
+def buildEntity(template, roomData, preserve=False):
+    obj = createEntity(template)
     if obj is not None:
         obj.construct(roomData, preserve)
     return obj

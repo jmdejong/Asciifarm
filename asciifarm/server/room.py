@@ -7,6 +7,7 @@ from . import event
 from . import entity
 from . import roomdata
 from . import serialize
+from .template import Template
 
 
 from .systems import fight, attacked, heal, move, controlai, control, handleevents, remove, droploot, clearinbox, trap, teleport
@@ -50,7 +51,7 @@ class Room:
                 if not isinstance(val, list) :
                     val = [val]
                 for obj in val:
-                    ent = gameobjects.buildEntity(obj, self.roomData)
+                    ent = gameobjects.buildEntity(Template.fromJSON(obj), self.roomData)
                     self.addObj((x, y), ent)
         
         if preserved is not None:
@@ -161,17 +162,13 @@ class Room:
     def getPreserved(self):
         return {
             "changes": [
-                (obj.getGround().getPos(), obj.serialize())
+                (obj.getGround().getPos(), obj.serialize().toJSON())
                 for obj in self.roomData.getPreserved()],
             "step": self.lastStepStamp}
     
     def loadPreserved(self, objects):
-        if isinstance(objects, list):
-            # just for rooms that have been saved in the old format
-            # when there are no such rooms anymore, this can be removed
-            objects = {"changes": objects}
         for (pos, objData) in objects["changes"]:
-            obj = gameobjects.buildEntity(objData, self.roomData, preserve=True)
+            obj = gameobjects.buildEntity(Template.fromJSON(objData), self.roomData, preserve=True)
             self.addObj(tuple(pos), obj)
         self.lastStepStamp = objects.get("step")
         self.roomData.setStamp(self.lastStepStamp)
