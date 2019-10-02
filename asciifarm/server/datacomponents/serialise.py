@@ -9,7 +9,7 @@ class Serialise(DC):
         self.func = func
     
     def serialise(self, obj, roomData):
-        return func(obj, roomData)
+        return self.func(obj, roomData)
     
 
 def Static(name, *args, **kwargs):

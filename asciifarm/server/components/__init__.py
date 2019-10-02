@@ -1,6 +1,5 @@
 
 from .build import Build
-from .customserializer import CustomSerializer
 from .equipment import Equipment
 from .equippable import Equippable
 from .food import Food
@@ -12,6 +11,5 @@ from .optionmenu import OptionMenu
 from .select import Select
 from .selectable import Selectable
 from .spawner import Spawner
-from .staticserializer import StaticSerializer
 from .volatile import Volatile
 from .weather import Weather

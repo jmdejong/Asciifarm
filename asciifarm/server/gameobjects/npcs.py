@@ -2,14 +2,14 @@
 
 from ..entity import Entity
 
-from ..components import StaticSerializer as Static
-from ..datacomponents import Fighter, Move, Attackable, AI, Faction, Loot, Trap
+from ..datacomponents import Fighter, Move, Attackable, AI, Faction, Loot, Trap, Static
 
 entities = {}
 
 
 entities["rabbit"] = lambda: Entity(
-    sprite="rabbit", name="bunny", height=1, components={"serialize": Static("rabbit")}, dataComponents=[AI(moveChance=0.05), Move(slowness=4)])
+    sprite="rabbit", name="bunny", height=1, dataComponents=[AI(moveChance=0.05), Move(slowness=4), Static("rabbit")]
+)
 
 
 entities["goblin"] = lambda home=None: Entity(sprite="goblin", height=1.2, dataComponents=[
@@ -50,7 +50,9 @@ entities["dummy"] = lambda: Entity(
         Faction.NONE
     ])
 
-entities["spiketrap"] = lambda damage=15: Entity(sprite="spikes", height=1, flags={"occupied"}, components={
-        "serialize": Static("spiketrap")
-    }, dataComponents=[Fighter(strength=damage, slowness=10), Trap()]
+entities["spiketrap"] = lambda damage=15: Entity(
+    sprite="spikes",
+    height=1,
+    flags={"occupied"},
+    dataComponents=[Fighter(strength=damage, slowness=10), Trap(), Static("spiketrap")]
 )

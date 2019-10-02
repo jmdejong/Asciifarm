@@ -139,7 +139,7 @@ class Entity:
         if "serialize" in self.components:
             return self.components["serialize"].serialize()
         elif Serialise in self.dataComponents:
-            return self.dataComponents[Serialise].serialise()
+            return self.dataComponents[Serialise].serialise(self, self.roomData)
         else:
             return self.toJSON()
     

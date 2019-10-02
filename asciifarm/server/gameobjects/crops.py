@@ -2,9 +2,7 @@
 
 from ..entity import Entity
 from ..components import Build, Food, Growing
-from ..components import StaticSerializer as Static
-from ..components import CustomSerializer as Custom
-from ..datacomponents import Interact, Loot, Remove
+from ..datacomponents import Interact, Loot, Remove, Serialise, Static
 from ..template import Template
 
 entities = {}
@@ -31,12 +29,12 @@ class Stage:
             dataComponents = []
             if self.duration is not None:
                 if targetTime is None:
-                    components["grow"] = Growing(nextstage, self.duration*timestep)
+                    components["grow"] = Growing(Template(nextstage), self.duration*timestep)
                 else:
-                    components["grow"] = Growing(nextstage, targetTime=targetTime)
-                components["serialize"] = Custom(cropSerializer(name))
+                    components["grow"] = Growing(Template(nextstage), targetTime=targetTime)
+                dataComponents.append(Serialise(cropSerializer(name)))
             else:
-                components["serialize"] = Static(name)
+                dataComponents.append(Static(name))
             if self.harvest is not None:
                 dataComponents.append(Interact(Loot(self.harvest), Remove))
             flags = {"occupied"}
@@ -73,8 +71,10 @@ def createCrop(name, stages, timestep=1):
         name=seedname,
         height=0.2,
         components={
-            "item": Build(stagenames[0], flagsNeeded={"soil"}, blockingFlags={"occupied", "solid"}),
-            "serialize": Static(seedname)})
+            "item": Build(stagenames[0], flagsNeeded={"soil"}, blockingFlags={"occupied", "solid"})
+        },
+        dataComponents=[Static(seedname)]
+    )
     
     for i, stage in enumerate(stages[:-1]):
         nextstage = stagenames[i+1]
@@ -88,7 +88,7 @@ createCrop("carrot", [
     Stage("carrotplant", sprite="smallplant", height=0.5, harvest=[("carrot", 1), ("carrotseed", 1)])
 ], 600)
 
-entities["carrot"] = lambda: Entity(sprite="food", name="carrot", height=0.3, components={"item": Food(4), "serialize": Static("carrot")})
+entities["carrot"] = lambda: Entity(sprite="food", name="carrot", height=0.3, components={"item": Food(4)}, dataComponents=[Static("carrot")])
 
 
 createCrop("radish", [
@@ -103,7 +103,7 @@ createCrop("radish", [
     )
 ], 10)
 
-entities["radishes"] = lambda: Entity(sprite="food", name="radishes", height=0.3, components={"item": Food(2), "serialize": Static("radishes")})
+entities["radishes"] = lambda: Entity(sprite="food", name="radishes", height=0.3, components={"item": Food(2)}, dataComponents=[Static("radishes")])
 
 entities["food"] = entities["radishes"]
 entities["sownseed"] = entities["plantedradishseed"]
