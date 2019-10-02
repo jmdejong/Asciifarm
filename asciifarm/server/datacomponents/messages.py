@@ -8,3 +8,7 @@ class EnterMessage(Message):
     
     def __init__(self, actor):
         self.actor = actor
+
+
+class LootMessage(Message):
+    pass

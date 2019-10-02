@@ -12,7 +12,7 @@ from .portal import Portal
 from .dc import DC
 from .serialise import Serialise, Static
 
-from .messages import Message, EnterMessage
+from .messages import Message, EnterMessage, LootMessage
 
 class Remove(DC):
     pass

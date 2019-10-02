@@ -3,7 +3,7 @@
 
 from ..entity import Entity
 
-from ..datacomponents import Attackable, Faction, Loot, Interact, Remove, Serialise, Static
+from ..datacomponents import Attackable, Faction, Loot, LootMessage, Interact, Remove, Serialise, Static
 from ..template import Template
 
 entities = {}
@@ -26,18 +26,19 @@ entities["builtwall"] = lambda health=None: Entity(
     flags={"solid"},
     dataComponents=[
         Faction.NONE,
-        Attackable(health=health, maxHealth=100, onDie=[Loot(["stone"])]),
+        Attackable(health=health, maxHealth=100, onDie=[LootMessage]),
         Serialise(
             lambda obj, roomData:
                 template(builtwall, health=roomData.getComponent(obj, Attackable).health)
-        )
+        ),
+        Loot(["stone"])
     ]
 )
 
 
-entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, dataComponents=[Interact(Remove, Loot(["opendoor"])), Static("closeddoor")])
+entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, dataComponents=[Interact(Remove, LootMessage), Static("closeddoor"), Loot(["opendoor"])])
 
-entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, dataComponents=[Interact(Remove, Loot(["closeddoor"])), Static("opendoor")])
+entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, dataComponents=[Interact(Remove, LootMessage), Static("opendoor"), Loot(["closeddoor"])])
 
 
 entities["engraved"] = lambda c: Entity(sprite="engravedwall-"+c, height=2, flags={"solid"}, dataComponents=[Static("wall", c)])

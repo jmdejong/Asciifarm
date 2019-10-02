@@ -2,7 +2,7 @@
 
 from ..entity import Entity
 from ..components import Build, Food, Growing
-from ..datacomponents import Interact, Loot, Remove, Serialise, Static
+from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage
 from ..template import Template
 
 entities = {}
@@ -36,7 +36,8 @@ class Stage:
             else:
                 dataComponents.append(Static(name))
             if self.harvest is not None:
-                dataComponents.append(Interact(Loot(self.harvest), Remove))
+                dataComponents.append(Interact(LootMessage, Remove))
+                dataComponents.append(Loot(self.harvest))
             flags = {"occupied"}
             return Entity(
                 sprite=self.sprite.format(cropname),
