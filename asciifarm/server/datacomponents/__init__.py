@@ -10,6 +10,7 @@ from .events import Events
 from .loot import Loot
 from .portal import Portal
 from .dc import DC
+from .serialise import Serialise, Static
 
 from .messages import Message, EnterMessage
 

@@ -6,6 +6,7 @@ from asciifarm.common import utils
 from .. import gameobjects
 from ..system import system
 from ..datacomponents import Attackable, Input
+from ..template import Template
 
 @system([Attackable])
 def attacked(obj, roomData, attackable):
@@ -24,7 +25,7 @@ def attacked(obj, roomData, attackable):
         
         # should this be it's own component? ('bleeding' for example)
         if damage > 0 and obj.getGround() is not None:
-            wound = gameobjects.makeEntity("wound", roomData, 4, obj.getHeight() - 0.01)
+            wound = gameobjects.buildEntity(Template("wound", 4, obj.getHeight() - 0.01), roomData)
             wound.place(obj.getGround())
         
         if type == "attack":

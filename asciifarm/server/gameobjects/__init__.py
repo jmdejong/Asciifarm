@@ -15,11 +15,6 @@ from .structures import entities as structures
 entities = {**base, **crops, **items, **misc, **npcs, **structures, **exchangers}
 
 
-def makeEntity(entType, roomData, *args, preserve=False, **kwargs):
-    entity = entities[entType](*args, **kwargs)
-    entity.construct(roomData, preserve)
-    return entity
-
 def createEntity(template):
     return entities[template.name](*template.args, **template.kwargs)
 

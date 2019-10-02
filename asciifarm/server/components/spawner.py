@@ -1,6 +1,7 @@
 from .. import gameobjects
 import random
 from .component import Component
+from ..template import Template
 
 
 class Spawner(Component):
@@ -44,7 +45,8 @@ class Spawner(Component):
         objectKwargs = self.objectKwargs.copy()
         if self.setHome:
             objectKwargs["home"] = self.owner
-        obj = gameobjects.makeEntity(self.objectType, self.roomData, *self.objectArgs, **objectKwargs)
+        template = Template(self.objectType, *self.objectArgs, **objectKwargs)
+        obj = gameobjects.buildEntity(template, self.roomData)
         obj.place(self.owner.getGround())
         self.spawned.add(obj)
         obj.addListener("remove", self.onSpawnedRemove)

@@ -30,7 +30,7 @@ entities["builtwall"] = lambda health=None: Entity(
         )
     }, dataComponents=[
         Faction.NONE,
-        Attackable(health=health or maxHealth, maxHealth=100, onDie=[Loot([("stone", 1)])])
+        Attackable(health=health, maxHealth=100, onDie=[Loot([("stone", 1)])])
     ]
 )
 

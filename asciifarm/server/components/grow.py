@@ -2,6 +2,7 @@
 from .. import gameobjects
 import random
 from .component import Component
+from ..template import Template
 
 
 class Growing(Component):
@@ -10,14 +11,19 @@ class Growing(Component):
     def __init__(self, nextStage, duration=None, targetTime=None, nextArgs=None, nextKwargs=None, stepsPassed=None):
         # stepsPassed is not used anymore, but included for backwards compatibility
         
-        self.nextStage = nextStage
+        #self.nextStage = nextStage
+        if nextArgs is None:
+            nextArgs = []
+        if nextKwargs is None:
+            nextKwargs = {}
+        self.next = Template(nextStage, *nextArgs, **nextKwargs)
         
         # if both duration and targetTime are passed, duration is ignored
         # if both are none, the growth will never happen
         self.duration = duration
         self.targetTime = targetTime
-        self.nextArgs = nextArgs or []
-        self.nextKwargs = nextKwargs or {}
+        #self.nextArgs = nextArgs or []
+        #self.nextKwargs = nextKwargs or {}
         
     
     
@@ -34,7 +40,7 @@ class Growing(Component):
     
     def grow(self):
         
-        obj = gameobjects.createEntity({"type": self.nextStage, "args": self.nextArgs, "kwargs": self.nextKwargs})
+        obj = gameobjects.createEntity(self.next)#{"type": self.nextStage, "args": self.nextArgs, "kwargs": self.nextKwargs})
         obj.construct(self.roomData, preserve=self.owner.isPreserved(), stamp=self.targetTime)
         obj.place(self.owner.getGround())
         

@@ -1,7 +1,7 @@
 
 from . import serialize
 import collections
-from .datacomponents import Events, Remove
+from .datacomponents import Events, Remove, Serialise
 
 class Entity:
     """ Attempt to implement an entity component system
@@ -136,9 +136,12 @@ class Entity:
         }
     
     def serialize(self):
-        if "serialize" not in self.components:
+        if "serialize" in self.components:
+            return self.components["serialize"].serialize()
+        elif Serialise in self.dataComponents:
+            return self.dataComponents[Serialise].serialise()
+        else:
             return self.toJSON()
-        return self.components["serialize"].serialize()
     
     @classmethod
     def fromJSON(cls, data):
