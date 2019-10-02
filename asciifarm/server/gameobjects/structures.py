@@ -30,14 +30,14 @@ entities["builtwall"] = lambda health=None: Entity(
         )
     }, dataComponents=[
         Faction.NONE,
-        Attackable(health=health, maxHealth=100, onDie=[Loot([("stone", 1)])])
+        Attackable(health=health, maxHealth=100, onDie=[Loot(["stone"])])
     ]
 )
 
 
-entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={"serialize": Static("closeddoor")}, dataComponents=[Interact(Remove, Loot([("opendoor",)]))])
+entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, components={"serialize": Static("closeddoor")}, dataComponents=[Interact(Remove, Loot(["opendoor"]))])
 
-entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={"serialize": Static("opendoor")}, dataComponents=[Interact(Remove, Loot([("closeddoor",)]))])
+entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, components={"serialize": Static("opendoor")}, dataComponents=[Interact(Remove, Loot(["closeddoor"]))])
 
 
 entities["engraved"] = lambda c: Entity(sprite="engravedwall-"+c, height=2, flags={"solid"}, components={"serialize": Static("wall", c)})

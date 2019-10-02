@@ -1,23 +1,20 @@
 
 from random import random as rand
 from .dc import DC
+from ..template import Template
 
 class Loot(DC):
     
     def __init__(self, items):
         self.items = []
-        for itemData in items:
-            item = itemData[0]
-            chance = 1
-            args = []
-            kwargs = {}
-            if len(itemData) > 1:
-                chance = itemData[1]
-                if len(itemData) > 2:
-                    args = itemData[2]
-                    if len(itemData) > 3:
-                        kwargs = itemData[3]
-            self.items.append((item, chance, args, kwargs))
+        for item in items:
+            if isinstance(item, Template) or isinstance(item, str):
+                item = (item, 1)
+            assert len(item) == 2, ValueError(item)
+            template, chance = item
+            if isinstance(template, str):
+                template = Template(template)
+            self.items.append((template, chance))
     
     def pick(self):
-        return [(item, args, kwargs) for item, chance, args, kwargs in self.items if chance > rand()]
+        return [template for template, chance in self.items if chance > rand()]

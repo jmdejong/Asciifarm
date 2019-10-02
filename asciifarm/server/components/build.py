@@ -1,6 +1,7 @@
 
 from .. import gameobjects
 from .component import Component
+from ..template import Template
 
 class Build(Component):
     """ item type for item that can be placed on the map to become something more static (like buildable walls or crops)"""
@@ -8,9 +9,7 @@ class Build(Component):
     def __init__(self, objType, objArgs=(), objKwargs=None, flagsNeeded=frozenset(), blockingFlags=frozenset()):
         if objKwargs is None:
             objKwargs = {}
-        self.buildType = objType
-        self.buildArgs = objArgs
-        self.buildKwargs = objKwargs
+        self.buildTemplate = Template(objType, *objArgs, **objKwargs)
         self.flagsNeeded = set(flagsNeeded)
         self.blockingFlags = set(blockingFlags)
     
@@ -28,7 +27,7 @@ class Build(Component):
             # groundFlags must contain all of self.flagsNeeded, and none of self.blockingFlags
             return
         roomData = user.getRoomData()
-        obj = gameobjects.makeEntity(self.buildType, roomData, *self.buildArgs, preserve=True, **self.buildKwargs)
+        obj = gameobjects.buildEntity(self.buildTemplate, roomData, preserve=True)
         obj.place(user.getGround())
         self.owner.trigger("drop")
         
