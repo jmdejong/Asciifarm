@@ -13,20 +13,25 @@ from .dc import DC
 from .serialise import Serialise, Static
 from .inventory import Inventory
 from .listen import Listen
+from .periodic import Periodic
 
 from .messages import Message, EnterMessage, LootMessage
 
-class Remove(DC):
+class Remove:
     pass
 
-class Dead(DC):
+class Dead:
     pass
 
 
-class Interact(DC):
+class Interact:
     
     def __init__(self, *components):
         self.components = list(components)
 
-class Trap(DC):
+class Trap:
+    pass
+
+
+class Waiting:
     pass

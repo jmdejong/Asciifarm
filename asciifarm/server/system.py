@@ -1,10 +1,10 @@
 
 
 
-def system(components):
+def system(components, avoid=None):
     def system_wrapper(func):
         def system_impl(roomData):
-            entities = roomData.getEntities(components)
+            entities = roomData.getEntities(components, avoid=avoid)
             for entity in entities:
                 comps = [roomData.getComponent(entity, comp) for comp in components]
                 func(entity, roomData, *comps)

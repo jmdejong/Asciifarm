@@ -10,7 +10,7 @@ from . import serialize
 from .template import Template
 
 
-from .systems import fight, attacked, heal, move, controlai, control, handleevents, remove, droploot, clearinbox, trap, teleport, sound
+from .systems import fight, attacked, heal, move, controlai, control, handleevents, remove, droploot, clearinbox, trap, teleport, sound, checktimers
 
 class Room:
     
@@ -87,6 +87,7 @@ class Room:
             attacked,
             droploot,
             handleevents,
+            checktimers,
             sound,
             clearinbox,
             remove

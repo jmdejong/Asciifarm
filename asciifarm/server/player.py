@@ -157,10 +157,11 @@ class Player:
             return {}
     
     def getInteractions(self):
-        if not self.entity:
-            return []
-        controller = self.entity.getComponent("controller")
-        return controller.getInteractions()
+        return NotImplemented
+        #if not self.entity:
+            #return []
+        #controller = self.entity.getComponent("controller")
+        #return controller.getInteractions()
     
     def getGroundObjs(self):
         if not self.entity:

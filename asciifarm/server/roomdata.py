@@ -11,7 +11,7 @@ from .systems.move import move
 from .systems.controlai import controlai
 from .systems.controlinput import control
 
-from .datacomponents import DC
+from .datacomponents import DC, Waiting
 
 
 class RoomData:
@@ -29,26 +29,22 @@ class RoomData:
         self.stepStamp = 0
         
         self.alarms = [] # treat as priority queue
+        self.postponed = []
         
         self.objects = set()
         
         self.sounds = []
         
-        self.components = collections.defaultdict(set) # type: {str: set(Entity)}
         self.dataComponents = collections.defaultdict(set) # type: {str: set(Entity)}
     
     def addObj(self, obj):
         
         self.objects.add(obj)
-        for component in obj.listComponents():
-            self.components[component].add(obj)
         for compt in obj.dataComponents:
             self.dataComponents[compt].add(obj)
     
     def removeObj(self, obj):
         self.objects.remove(obj)
-        for component in obj.listComponents():
-            self.components[component].remove(obj)
         for compt in obj.dataComponents:
             if obj not in self.dataComponents[compt]:
                 print(compt, obj.toJSON())
@@ -57,8 +53,10 @@ class RoomData:
     
     def addComponent(self, obj, component):
         if isinstance(component, type):
+            compt = component
             component = component()
-        compt = type(component)
+        else:
+            compt = type(component)
         self.dataComponents[compt].add(obj)
         if isinstance(component, DC) and component.allowMultiple:
             if compt not in obj.dataComponents:
@@ -67,8 +65,17 @@ class RoomData:
         else:
             obj.dataComponents[compt] = component
     
-    def removeComponent(self, obj, component):
-        compt = type(component)
+    def removeComponent(self, obj, component, gone_ok=False):
+        if isinstance(component, type):
+            compt = component
+            component = self.getComponent(obj, compt)
+        else:
+            compt = type(component)
+        if component is None:
+            if gone_ok:
+                return
+            else:
+                raise KeyError("object {} has no component {}".format(str(object), str(component)))
         if isinstance(component, DC) and component.allowMultiple:
             l = obj.dataComponents[compt]
             l.remove(component)
@@ -86,15 +93,18 @@ class RoomData:
     def getComponent(self, obj, component):
         return obj.dataComponents.get(component)
     
-    def getEntities(self, components, combinator="intersect"):
+    def getEntities(self, compts, combinator="intersect", avoid=None):
         
-        entities = set(self.dataComponents[components[0]])
+        entities = set(self.dataComponents[compts[0]])
         if combinator == "intersect":
-            for component in components[1:]:
-                entities &= self.dataComponents[component]
+            for compt in compts[1:]:
+                entities &= self.dataComponents[compt]
         elif combinator == "union":
-            for component in components[1:]:
-                entities |= self.dataComponents[component]
+            for compt in compts[1:]:
+                entities |= self.dataComponents[compt]
+        if avoid is not None:
+            for compt in avoid:
+                entities -= self.dataComponents[compt]
         return entities
     
     def preserveObject(self, obj):
@@ -113,6 +123,13 @@ class RoomData:
         heapq.heappush(self.alarms, (stamp, count, callback))
     
     def triggerAlarms(self):
+        while self.postponed and self.postponed[0][0] <= self.stepStamp:
+            _plannedTime, _count, obj, components = heapq.heappop(self.postponed)
+            if obj not in self.objects:
+                return\
+            for component in components:
+                self.addComponent(obj, component)
+            self.removeComponent(obj, Waiting, gone_ok=True)
         while self.alarms and self.alarms[0][0] <= self.stepStamp:
             _plannedTime, _count, callback = heapq.heappop(self.alarms)
             callback()
@@ -125,4 +142,10 @@ class RoomData:
     
     def makeSound(self, source, text):
         self.sounds.append((source, text))
+    
+    def postpone(self, stamp, obj, *components):
+        count = next(counter) # tiebreaker for when stamps are equal
+        # see: https://docs.python.org/3/library/heapq.html#priority-queue-implementation-notes
+        heapq.heappush(self.postponed, (stamp, count, obj, list(components)))
+        self.addComponent(obj, Waiting())
     
