@@ -11,6 +11,8 @@ from .loot import Loot
 from .portal import Portal
 from .dc import DC
 from .serialise import Serialise, Static
+from .inventory import Inventory
+from .listen import Listen
 
 from .messages import Message, EnterMessage, LootMessage
 

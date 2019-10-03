@@ -4,8 +4,9 @@
 from . import gameobjects
 
 
-from .components import Inventory, Equipment, Listen, Select
-from .datacomponents import Attackable, Move, Fighter, Heal, Input, Faction
+from .components import Equipment, Select
+from .datacomponents import Inventory, Attackable, Move, Fighter, Heal, Input, Faction, Listen
+from .template import Template
 from . import entity
 
 class Player:
@@ -51,13 +52,13 @@ class Player:
             height = 2,
             name = '&' + self.name,
             components={
-                "inventory": self.inventory,
                 "equipment": self.equipment,
-                "listen": Listen(),
                 "select": Select()
             }, dataComponents=[
+                self.inventory,
                 Faction.GOOD,
                 Input(),
+                Listen(),
                 Move(slowness=2),
                 Heal(interval=50),
                 Fighter(strength=5, slowness=8),
@@ -124,12 +125,6 @@ class Player:
     def on_selection(self, o, obj):
         self.changes.add("selection")
     
-    def on_sound(self, o, source, text):
-        if source is not None:
-            text = source.getName() + ": " + text
-        self.messages.append([text, "world"])
-        
-    
     def control(self, action):
         if not self.entity or not (isinstance(action, list) or isinstance(action, tuple)) or len(action) < 1:
             return
@@ -151,7 +146,7 @@ class Player:
     
     def getInventory(self):
         if self.entity:
-            return self.inventory.getItems()
+            return self.inventory.items
         else:
             return []
     
@@ -196,9 +191,14 @@ class Player:
         print(msg)
     
     def readMessages(self):
-        m = self.messages
-        self.messages = []
-        return m
+        messages = []
+        listen = self.entity.getDataComponent(Listen)
+        for source, text in listen.sounds:
+            if source is not None:
+                text = source.getName() + ": " + text
+            messages.append([text, "world"])
+        listen.sounds = []
+        return messages
     
     def readChanges(self):
         changes = self.changes
@@ -212,7 +212,7 @@ class Player:
         return {
             "name": self.name,
             "roomname": self.roomname,
-            "inventory": self.inventory.toJSON(),
+            "inventory": {"capacity": self.inventory.capacity, "items": [item.serialize().toJSON() for item in self.inventory.items]},
             "equipment": self.equipment.toJSON(),
             "health": self.getHealth(),
             "maxhealth": self.maxHealth
@@ -223,7 +223,7 @@ class Player:
         self = cls(data["name"], world)
         self.health = data["health"]
         self.maxHealth = data["maxhealth"]
-        self.inventory = Inventory.fromJSON(data["inventory"])
+        self.inventory = Inventory(data["inventory"]["capacity"], [gameobjects.createEntity(Template.fromJSON(item)) for item in data["inventory"]["items"]])
         self.equipment = Equipment.fromJSON(data["equipment"])
         self.roomname = data["roomname"]
         

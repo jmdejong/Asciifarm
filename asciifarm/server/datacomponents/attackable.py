@@ -1,7 +1,5 @@
 
-from .dc import DC
-
-class Attackable(DC):
+class Attackable:
     
     def __init__(self, maxHealth, health=None, defence=0, defense=None, onDie=None):
         self.maxHealth = maxHealth

@@ -1,8 +1,7 @@
 
 import collections
-from .dc import DC
 
-class Events(DC):
+class Events:
     
     def __init__(self):
         self.messages = collections.deque()

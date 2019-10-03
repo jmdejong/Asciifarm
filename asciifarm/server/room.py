@@ -10,7 +10,7 @@ from . import serialize
 from .template import Template
 
 
-from .systems import fight, attacked, heal, move, controlai, control, handleevents, remove, droploot, clearinbox, trap, teleport
+from .systems import fight, attacked, heal, move, controlai, control, handleevents, remove, droploot, clearinbox, trap, teleport, sound
 
 class Room:
     
@@ -26,16 +26,7 @@ class Room:
         
         self.lastStepStamp = 0
         
-        self.roomData = roomdata.RoomData(events={
-            "control": event.Event(),
-            "move": event.Event(),
-            "fight": event.Event(),
-            "update": event.Event(),
-            "sound": event.Event()
-        })
-        def logSound(source, text):
-            print("{}: {}: {}".format(self.name, source.getName(), text))
-        self.roomData.getEvent("sound").addListener(logSound)
+        self.roomData = roomdata.RoomData()
         
         
         self.places = data.get("places", {})
@@ -96,6 +87,7 @@ class Room:
             attacked,
             droploot,
             handleevents,
+            sound,
             clearinbox,
             remove
         ]

@@ -2,7 +2,7 @@
 
 
 from ..entity import Entity
-from ..components import Spawner, Volatile, Weather
+from ..components import Spawner, Volatile
 from ..datacomponents import Portal, Static
 
 

@@ -11,6 +11,8 @@ from .systems.move import move
 from .systems.controlai import controlai
 from .systems.controlinput import control
 
+from .datacomponents import DC
+
 
 class RoomData:
     
@@ -19,11 +21,7 @@ class RoomData:
     The Ground class does this as well, but Ground only gives local data, whereas this give data about the whole room.
     """
     
-    def __init__(self, events=None):
-        if events is None:
-            events = []
-
-        self.events = events
+    def __init__(self):
         self.targets = set()
         
         self.preservedObjects = set()
@@ -33,6 +31,8 @@ class RoomData:
         self.alarms = [] # treat as priority queue
         
         self.objects = set()
+        
+        self.sounds = []
         
         self.components = collections.defaultdict(set) # type: {str: set(Entity)}
         self.dataComponents = collections.defaultdict(set) # type: {str: set(Entity)}
@@ -60,7 +60,7 @@ class RoomData:
             component = component()
         compt = type(component)
         self.dataComponents[compt].add(obj)
-        if component.allowMultiple:
+        if isinstance(component, DC) and component.allowMultiple:
             if compt not in obj.dataComponents:
                 obj.dataComponents[compt] = []
             obj.dataComponents[compt].append(component)
@@ -69,7 +69,7 @@ class RoomData:
     
     def removeComponent(self, obj, component):
         compt = type(component)
-        if component.allowMultiple:
+        if isinstance(component, DC) and component.allowMultiple:
             l = obj.dataComponents[compt]
             l.remove(component)
             if not l:
@@ -96,11 +96,6 @@ class RoomData:
             for component in components[1:]:
                 entities |= self.dataComponents[component]
         return entities
-        
-        
-    def getEvent(self, name):
-        return self.events[name]
-    
     
     def preserveObject(self, obj):
         self.preservedObjects.add(obj)
@@ -127,4 +122,7 @@ class RoomData:
     
     def getStamp(self):
         return self.stepStamp
+    
+    def makeSound(self, source, text):
+        self.sounds.append((source, text))
     

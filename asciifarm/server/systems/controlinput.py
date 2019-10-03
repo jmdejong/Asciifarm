@@ -1,5 +1,5 @@
 
-from ..datacomponents import Input, Fighter, Move, Faction, Interact
+from ..datacomponents import Input, Fighter, Move, Faction, Interact, Inventory
 from ..system import system
 
 @system([Input, Fighter, Move])
@@ -35,25 +35,33 @@ def do_move(obj, roomData, direction):
     obj.getDataComponent(Move).direction = direction
 
 def do_take(obj, roomData, rank):
+    inventory = roomData.getComponent(obj, Inventory)
+    if inventory is None or len(inventory.items) >= inventory.capacity:
+        # can't take anything if there is no inventory or if it's full
+        return
     objects = obj.getNearObjects()
     if rank is not None:
         if rank not in range(len(objects)):
             return
         objects = [objects[rank]]
     for item in objects:
-        if item.getComponent("item") is not None and obj.getComponent("inventory").canAdd(item):
-            obj.trigger("take", item)
+        if item.getComponent("item") is not None:
+            inventory.items.insert(0, item)
+            obj.trigger("inventorychange")
             item.remove()
             break
 
 def do_drop(obj, roomData, rank):
-    items = obj.getComponent("inventory").getItems()
+    inventory = roomData.getComponent(obj, Inventory)
+    if inventory is None:
+        return False
     if rank is None:
         rank = 0
-    if rank not in range(len(items)):
+    if rank not in range(len(inventory.items)):
         return False
-    item = items[rank]
-    obj.getComponent("inventory").drop(item)
+    item = inventory.items[rank]
+    inventory.items.remove(item)
+    obj.trigger("inventorychange")
     item.construct(roomData, preserve=True)
     item.place(obj.getGround())
     return True
@@ -104,7 +112,7 @@ def do_attack(obj, roomData, directions):
 def do_say(obj, roomData, text):
     if type(text) != str:
         return
-    roomData.getEvent("sound").trigger(obj, text)
+    roomData.makeSound(obj, text)
 
 def do_pick(obj, roomData, option):
     selected = obj.getComponent("select").getSelected()
