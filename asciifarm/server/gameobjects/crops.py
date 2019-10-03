@@ -1,7 +1,7 @@
 
 
 from ..entity import Entity
-from ..components import Build, Food, Growing
+from ..components import Build, Food
 from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer
 from ..template import Template
 
