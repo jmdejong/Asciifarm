@@ -1,4 +1,5 @@
 
+from .conversions import convert
 
 class Template:
     
@@ -31,4 +32,7 @@ class Template:
                 return cls(value[0], *value[1])
             if len(value) == 3:
                 return cls(value[0], *value[1], value[2])
+        if isinstance(value, dict) and "components" in value:
+            return Template.fromJSON(convert(value))
+            
         raise ValueError(value)

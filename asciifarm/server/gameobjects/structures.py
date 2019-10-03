@@ -29,7 +29,7 @@ entities["builtwall"] = lambda health=None: Entity(
         Attackable(health=health, maxHealth=100, onDie=[LootMessage]),
         Serialise(
             lambda obj, roomData:
-                template(builtwall, health=roomData.getComponent(obj, Attackable).health)
+                Template("builtwall", health=roomData.getComponent(obj, Attackable).health)
         ),
         Loot(["stone"])
     ]

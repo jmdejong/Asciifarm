@@ -112,6 +112,7 @@ entities["youngplant"] = entities["youngradishplant"]
 entities["plant"] = entities["radishplant"]
 entities["seed"] = entities["radishseed"]
 
+entities["eldritch_radish"] = lambda: Entity(sprite="food", name="eldritch radishes", height=0.3, components={"item": Food(20)}, dataComponents=[Static("eldritch_radish")])
 
 
 
