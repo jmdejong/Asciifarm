@@ -2,7 +2,7 @@
 
 from ..entity import Entity
 from ..components import Build, Food, Growing
-from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage
+from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer
 from ..template import Template
 
 entities = {}
@@ -29,10 +29,12 @@ class Stage:
             dataComponents = []
             if self.duration is not None:
                 if targetTime is None:
-                    components["grow"] = Growing(Template(nextstage), self.duration*timestep)
+                    dataComponents.append(Periodic([Remove, LootMessage], self.duration * timestep))
                 else:
-                    components["grow"] = Growing(Template(nextstage), targetTime=targetTime)
+                    dataComponents.append(Periodic([Remove, LootMessage], targetTime=targetTime))
                 dataComponents.append(Serialise(cropSerializer(name)))
+                dataComponents.append(Loot([Template(nextstage)]))
+                dataComponents.append(StartTimer())
             else:
                 dataComponents.append(Static(name))
             if self.harvest is not None:

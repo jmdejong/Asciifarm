@@ -15,6 +15,7 @@ def move(obj, roomData, movable):
                 roomData.addComponent(resident, EnterMessage(obj))
             obj.place(newPlace)
             movable.moveReady = roomData.getStamp() + movable.slowness
+            obj.trigger("move")
         
     movable.direction = None
 
