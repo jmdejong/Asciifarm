@@ -46,7 +46,7 @@ def do_take(obj, roomData, rank):
         objects = [objects[rank]]
     for item in objects:
         if item.getComponent("item") is not None:
-            inventory.items.insert(0, item)
+            inventory.add(item)
             obj.trigger("inventorychange")
             item.remove()
             break
@@ -67,7 +67,7 @@ def do_drop(obj, roomData, rank):
     return True
     
 def do_use(obj, roomData, rank):
-    items = obj.getComponent("inventory").getItems()
+    items = roomData.getComponent(obj, Inventory).items
     if rank is None:
         rank = 0
     if rank not in range(len(items)):
@@ -76,14 +76,19 @@ def do_use(obj, roomData, rank):
     item.getComponent("item").use(obj)
 
 def do_unequip(obj, roomData, rank):
+    inventory = roomData.getComponent(obj, Inventory)
+    if inventory is None or len(inventory.items) >= inventory.capacity:
+        # can't unequip anything if there is place in the inventory
+        return
     slots = sorted(obj.getComponent("equipment").getSlots().items())
     if rank is not None:
         if rank not in range(len(slots)):
             return
         slots = [slots[rank]]
     for (slot, item) in slots:
-        if item is not None and obj.getComponent("inventory").canAdd(item):
+        if item is not None:
             obj.getComponent("equipment").unEquip(slot)
+            inventory.add(item)
             obj.trigger("take", item)
 
 def do_interact(obj, roomData, directions):
