@@ -28,7 +28,14 @@ class Entity:
         self.roomData = None
         if dataComponents is None:
             dataComponents = []
-        self.dataComponents = {type(comp): comp for comp in dataComponents}
+        self.dataComponents = {}
+        for component in dataComponents:
+            if isinstance(component, type):
+                compt = component
+                component = component()
+            else:
+                compt = type(component)
+            self.dataComponents[compt] = component
         
         self.listeners = collections.defaultdict(dict)
         

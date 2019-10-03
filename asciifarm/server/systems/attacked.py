@@ -5,7 +5,7 @@ import random
 from asciifarm.common import utils
 from .. import gameobjects
 from ..system import system
-from ..datacomponents import Attackable, Input
+from ..datacomponents import Attackable, Input, StartTimer, Periodic
 from ..template import Template
 
 @system([Attackable])

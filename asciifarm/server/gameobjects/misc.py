@@ -3,7 +3,7 @@
 
 from ..entity import Entity
 from ..components import Spawner
-from ..datacomponents import Portal, Static, Periodic, Remove
+from ..datacomponents import Portal, Static, Periodic, Remove, StartTimer
 
 
 entities = {}
@@ -32,7 +32,7 @@ entities["roomexit"] = lambda destRoom, destPos=None, mask=(False, False), sprit
 )
 
 
-entities["wound"] = lambda duration=4, height=0.2: Entity(sprite="wound", name="", height=height, dataComponents=[Periodic(duration, Remove), Static(None)])
+entities["wound"] = lambda duration=4, height=0.2: Entity(sprite="wound", name="", height=height, dataComponents=[StartTimer(), Periodic(duration, Remove), Static(None)])
 
 #entities["raindrop"] = lambda: Entity(sprite="raindrop", name="", height=10, components={"weather": Weather(speed=2.5, spread=0.2)}, dataComponents=[Static(None)})
 

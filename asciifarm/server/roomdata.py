@@ -11,7 +11,7 @@ from .systems.move import move
 from .systems.controlai import controlai
 from .systems.controlinput import control
 
-from .datacomponents import DC, Waiting
+from .datacomponents import DC
 
 
 class RoomData:
@@ -126,10 +126,9 @@ class RoomData:
         while self.postponed and self.postponed[0][0] <= self.stepStamp:
             _plannedTime, _count, obj, components = heapq.heappop(self.postponed)
             if obj not in self.objects:
-                return\
+                return
             for component in components:
                 self.addComponent(obj, component)
-            self.removeComponent(obj, Waiting, gone_ok=True)
         while self.alarms and self.alarms[0][0] <= self.stepStamp:
             _plannedTime, _count, callback = heapq.heappop(self.alarms)
             callback()
@@ -147,5 +146,4 @@ class RoomData:
         count = next(counter) # tiebreaker for when stamps are equal
         # see: https://docs.python.org/3/library/heapq.html#priority-queue-implementation-notes
         heapq.heappush(self.postponed, (stamp, count, obj, list(components)))
-        self.addComponent(obj, Waiting())
     

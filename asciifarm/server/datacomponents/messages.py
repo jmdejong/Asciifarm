@@ -12,3 +12,6 @@ class EnterMessage(Message):
 
 class LootMessage(Message):
     pass
+
+class StartTimer(Message):
+    pass

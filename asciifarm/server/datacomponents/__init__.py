@@ -15,7 +15,7 @@ from .inventory import Inventory
 from .listen import Listen
 from .periodic import Periodic
 
-from .messages import Message, EnterMessage, LootMessage
+from .messages import Message, EnterMessage, LootMessage, StartTimer
 
 class Remove:
     pass
@@ -30,8 +30,4 @@ class Interact:
         self.components = list(components)
 
 class Trap:
-    pass
-
-
-class Waiting:
     pass
