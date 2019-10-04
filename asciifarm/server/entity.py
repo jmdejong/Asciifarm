@@ -72,6 +72,12 @@ class Entity:
         self.ground = ground
         ground.addObj(self)
     
+    def unPlace(self):
+        if self.ground:
+            self.ground.removeObj(self)
+            self.ground = None
+        
+    
     def remove(self):
         self.trigger("remove")
         self.roomData.addComponent(self, Remove)
@@ -83,9 +89,7 @@ class Entity:
             self.roomData.removePreserved(self)
         for component in self.components.values():
             component.remove()
-        if self.ground:
-            self.ground.removeObj(self)
-            self.ground = None
+        self.unPlace()
         self.roomData = None
     
     def addListener(self, event, callback, key=None):

@@ -1,6 +1,5 @@
 
 from .build import Build
-from .equipment import Equipment
 from .equippable import Equippable
 from .food import Food
 from .item import Item

@@ -4,8 +4,8 @@
 from . import gameobjects
 
 
-from .components import Equipment, Select
-from .datacomponents import Inventory, Attackable, Move, Fighter, Heal, Input, Faction, Listen
+from .components import Select
+from .datacomponents import Inventory, Attackable, Move, Fighter, Heal, Input, Faction, Listen, Equipment
 from .template import Template
 from . import entity
 
@@ -52,10 +52,11 @@ class Player:
             height = 2,
             name = '&' + self.name,
             components={
-                "equipment": self.equipment,
+                #"equipment": self.equipment,
                 "select": Select()
             }, dataComponents=[
                 self.inventory,
+                self.equipment,
                 Faction.GOOD,
                 Input(),
                 Listen(),
@@ -65,7 +66,12 @@ class Player:
                 Attackable(maxHealth=self.maxHealth, health=self.health or self.maxHealth)
             ]
         )
-        self.entity.construct(room.getRoomData())
+        roomData = room.getRoomData()
+        self.entity.construct(roomData)
+        for item in self.inventory.items:
+            item.construct(roomData)
+        for item in self.equipment.slots.values():
+            item.construct(roomData)
         for attr in dir(self):
             if attr.startswith("on_"):
                 self.entity.addListener(attr[3:], self.__getattribute__(attr))
@@ -152,7 +158,7 @@ class Player:
     
     def getEquipment(self):
         if self.entity:
-            return self.equipment.getSlots()
+            return self.equipment.slots
         else:
             return {}
     
@@ -214,7 +220,8 @@ class Player:
             "name": self.name,
             "roomname": self.roomname,
             "inventory": {"capacity": self.inventory.capacity, "items": [item.serialize().toJSON() for item in self.inventory.items]},
-            "equipment": self.equipment.toJSON(),
+            "equipment": {slot: item.serialialize().toJSON() for slot, item in self.equipment.slots.items()},
+                #self.equipment.toJSON(),
             "health": self.getHealth(),
             "maxhealth": self.maxHealth
         }
@@ -225,7 +232,8 @@ class Player:
         self.health = data["health"]
         self.maxHealth = data["maxhealth"]
         self.inventory = Inventory(data["inventory"]["capacity"], [gameobjects.createEntity(Template.fromJSON(item)) for item in data["inventory"]["items"]])
-        self.equipment = Equipment.fromJSON(data["equipment"])
+        self.equipment =  Equipment({slot: gameobjects.createEntity(Template.fromJSON(item)) for slot, item in data["equipment"].items() if item is not None})
+        #Equipment.fromJSON(data["equipment"])
         self.roomname = data["roomname"]
         
         return self

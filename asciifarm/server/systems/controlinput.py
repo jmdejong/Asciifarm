@@ -1,5 +1,5 @@
 
-from ..datacomponents import Input, Fighter, Move, Faction, Interact, Inventory
+from ..datacomponents import Input, Fighter, Move, Faction, Interact, Inventory, Attackable
 from ..system import system
 
 @system([Input, Fighter, Move])
@@ -32,7 +32,7 @@ def executeAction(obj, roomData, action):
 def do_move(obj, roomData, direction):
     if direction not in {"north", "south", "east", "west"}:
         return
-    obj.getDataComponent(Move).direction = direction
+    roomData.getComponent(obj, Move).direction = direction
 
 def do_take(obj, roomData, rank):
     inventory = roomData.getComponent(obj, Inventory)
@@ -48,7 +48,7 @@ def do_take(obj, roomData, rank):
         if item.getComponent("item") is not None:
             inventory.add(item)
             obj.trigger("inventorychange")
-            item.remove()
+            item.unPlace()
             break
 
 def do_drop(obj, roomData, rank):
@@ -62,7 +62,7 @@ def do_drop(obj, roomData, rank):
     item = inventory.items[rank]
     inventory.items.remove(item)
     obj.trigger("inventorychange")
-    item.construct(roomData, preserve=True)
+    #item.construct(roomData, preserve=True)
     item.place(obj.getGround())
     return True
     
@@ -94,8 +94,8 @@ def do_unequip(obj, roomData, rank):
 def do_interact(obj, roomData, directions):
     objects = _getNearbyObjects(obj, directions)
     for other in objects:
-        if other.getDataComponent(Interact) is not None:
-            for component in other.getDataComponent(Interact).components:
+        if roomData.getComponent(other, Interact) is not None:
+            for component in roomData.getComponent(other, Interact).components:
                 roomData.addComponent(other, component)
             break
         if other.getComponent("interact") is not None:
@@ -104,14 +104,14 @@ def do_interact(obj, roomData, directions):
 
 def do_attack(obj, roomData, directions):
     objects = _getNearbyObjects(obj, directions)
-    if obj.getDataComponent(Input).target in objects:
-        objects = {obj.getDataComponent(Input).target}
-    fighter = obj.getDataComponent(Fighter)
-    alignment = obj.getDataComponent(Faction) or Faction.NONE
+    if roomData.getComponent(obj, Input).target in objects:
+        objects = {roomData.getComponent(obj, Input).target}
+    fighter = roomData.getComponent(obj, Fighter)
+    alignment = roomData.getComponent(obj, Faction) or Faction.NONE
     for other in objects:
-        if fighter.inRange(obj, other) and alignment.isEnemy(other.getDataComponent(Faction) or Faction.NONE):
+        if fighter.inRange(obj, other) and alignment.isEnemy(roomData.getComponent(other, Faction) or Faction.NONE) and roomData.getComponent(other, Attackable):
             fighter.target = other
-            obj.getDataComponent(Input).target = other
+            roomData.getComponent(obj, Input).target = other
             break
 
 def do_say(obj, roomData, text):

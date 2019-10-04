@@ -14,6 +14,7 @@ from .serialise import Serialise, Static
 from .inventory import Inventory
 from .listen import Listen
 from .periodic import Periodic
+from .equipment import Equipment
 
 from .messages import Message, EnterMessage, LootMessage, StartTimer
 
