@@ -3,7 +3,7 @@
 
 from ..entity import Entity
 
-from ..datacomponents import Attackable, Faction, Loot, LootMessage, Interact, Remove, Serialise, Static
+from ..datacomponents import Attackable, Faction, Loot, LootMessage, Interact, Remove, Serialise, Static, Create
 from ..template import Template
 
 entities = {}
@@ -36,9 +36,9 @@ entities["builtwall"] = lambda health=None: Entity(
 )
 
 
-entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, dataComponents=[Interact(Remove, LootMessage), Static("closeddoor"), Loot(["opendoor"])])
+entities["closeddoor"] = lambda: Entity(sprite="closeddoor", name="door", height=2, flags={"solid"}, dataComponents=[Interact(Remove, Create(Template("opendoor"))), Static("closeddoor")])
 
-entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, dataComponents=[Interact(Remove, LootMessage), Static("opendoor"), Loot(["closeddoor"])])
+entities["opendoor"] = lambda: Entity(sprite="opendoor", name="door", height=1, flags={"occupied"}, dataComponents=[Interact(Remove, Create(Template("closeddoor"))), Static("opendoor")])
 
 
 entities["engraved"] = lambda c: Entity(sprite="engravedwall-"+c, height=2, flags={"solid"}, dataComponents=[Static("wall", c)])

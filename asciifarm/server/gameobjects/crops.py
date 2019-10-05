@@ -2,14 +2,14 @@
 
 from ..entity import Entity
 from ..components import Build, Food
-from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer
+from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer, Create
 from ..template import Template
 
 entities = {}
 
 def cropSerializer(name):
     return (lambda obj, roomData:
-        Template(name, targetTime=obj.getComponents("grow").getTargetTime())
+        Template(name, targetTime=roomData.getComponent(obj, Periodic).targetTime)
     )
 
 class Stage:
@@ -28,12 +28,13 @@ class Stage:
             components = {}
             dataComponents = []
             if self.duration is not None:
+                ongrow = [Remove, Create(Template(nextstage))]
                 if targetTime is None:
-                    dataComponents.append(Periodic([Remove, LootMessage], self.duration * timestep))
+                    timer = Periodic(ongrow, self.duration * timestep)
                 else:
-                    dataComponents.append(Periodic([Remove, LootMessage], targetTime=targetTime))
+                    timer = Periodic(ongrow, targetTime=targetTime)
+                dataComponents.append(timer)
                 dataComponents.append(Serialise(cropSerializer(name)))
-                dataComponents.append(Loot([Template(nextstage)]))
                 dataComponents.append(StartTimer())
             else:
                 dataComponents.append(Static(name))

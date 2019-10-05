@@ -2,8 +2,8 @@
 
 
 from ..entity import Entity
-from ..components import Spawner
-from ..datacomponents import Portal, Static, Periodic, Remove, StartTimer
+from ..datacomponents import Portal, Static, Periodic, Remove, StartTimer, Spawner, SpawnMessage
+from ..template import Template
 
 
 entities = {}
@@ -12,11 +12,13 @@ entities = {}
 
 entities["freeland"] = lambda: Entity(name="buildable", flags={"freeland"}, dataComponents=[Static("freeland")])
 
-entities["spawner"] = lambda objType, number, delay, sprite=None, name=None, height=0, setHome=False, initialSpawn=True, objArgs=None, objKwargs=None: Entity(
-    sprite=sprite, height=height, name=name, components={
-        "spawn": Spawner(objType, number, delay, setHome, initialSpawn, objArgs, objKwargs)
-    }, dataComponents=[
-        Static("spawner", objType, number, delay, sprite, name, height, setHome, initialSpawn, objArgs, objKwargs)
+entities["spawner"] = lambda template, number, delay, sprite=None, name=None, height=0, setHome=False, initialSpawn=True: Entity(
+    sprite=sprite, height=height, name=name, dataComponents=[
+        StartTimer,
+        SpawnMessage if initialSpawn else None,
+        Periodic([StartTimer, SpawnMessage], interval=delay, randomise=True),
+        Spawner(Template.fromJSON(template), number, setHome=setHome),
+        Static("spawner", template, number, delay, sprite, name, height, setHome, initialSpawn)
     ]
 )
 

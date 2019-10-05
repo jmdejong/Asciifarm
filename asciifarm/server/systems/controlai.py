@@ -2,20 +2,20 @@
 import random
 
 from .. import pathfinding
-from ..datacomponents import AI, Move, Fighter, Faction, Attackable
+from ..datacomponents import AI, Move, Fighter, Faction, Attackable, Home
 from ..system import system
 
 @system([AI, Move])
 def controlai(obj, roomData, ai, movable):
     
-    fighter = obj.getDataComponent(Fighter)
+    fighter = roomData.getComponent(obj, Fighter)
     if fighter is not None:
         closestDistance = ai.viewDist + 1
         closest = None
-        alignment = obj.getDataComponent(Faction) or Faction.NONE
+        alignment = roomData.getComponent(obj, Faction) or Faction.NONE
         for target in roomData.dataComponents[Attackable]:
             distance = pathfinding.distanceBetween(obj, target)
-            if (alignment.isEnemy(target.getDataComponent(Faction) or Faction.NONE)) and distance < closestDistance:
+            if (alignment.isEnemy(roomData.getComponent(target, Faction) or Faction.NONE)) and distance < closestDistance:
                 closestDistance = distance
                 closest = target
         if closest:
@@ -26,8 +26,9 @@ def controlai(obj, roomData, ai, movable):
             return
     
     if random.random() < ai.moveChance:
-        if ai.home and ai.home.inRoom() and random.random() < (ai.homesickness * pathfinding.distanceBetween(obj, ai.home)):
-            direction = pathfinding.stepTo(obj, ai.home)
+        home = roomData.getComponent(obj, Home)
+        if home is not None and home.home.inRoom() and random.random() < (ai.homesickness * pathfinding.distanceBetween(obj, home.home)):
+            direction = pathfinding.stepTo(obj, home.home)
         else: 
             direction = random.choice(["north", "south", "east", "west"])
         movable.direction = direction

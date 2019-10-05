@@ -12,3 +12,5 @@ from .trap import trap
 from .teleport import teleport
 from .sound import sound
 from .checktimers import checktimers
+from .create import create
+from .spawn import spawn

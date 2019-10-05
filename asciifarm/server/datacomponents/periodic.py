@@ -1,4 +1,5 @@
 
+# todo: make sure growing continues in unloaded rooms
 
 class Periodic:
     

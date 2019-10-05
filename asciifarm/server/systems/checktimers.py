@@ -1,4 +1,6 @@
 
+import random
+
 from ..system import system
 from ..datacomponents import StartTimer, Periodic
 
