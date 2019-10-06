@@ -16,8 +16,10 @@ from .listen import Listen
 from .periodic import Periodic
 from .equipment import Equipment
 from .spawner import Spawner
+from .item import Item
+from .held import Held
 
-from .messages import Message, EnterMessage, LootMessage, StartTimer, Create, SpawnMessage
+from .messages import Message, EnterMessage, LootMessage, StartTimer, Create, SpawnMessage, EatMessage
 
 class Remove:
     pass

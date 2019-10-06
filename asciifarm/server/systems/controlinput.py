@@ -1,5 +1,5 @@
 
-from ..datacomponents import Input, Fighter, Move, Faction, Interact, Inventory, Attackable
+from ..datacomponents import Input, Fighter, Move, Faction, Interact, Inventory, Attackable, Item, Held
 from ..system import system
 
 @system([Input, Fighter, Move])
@@ -45,8 +45,9 @@ def do_take(obj, roomData, rank):
             return
         objects = [objects[rank]]
     for item in objects:
-        if item.getComponent("item") is not None:
+        if roomData.getComponent(item, Item) is not None:
             inventory.add(item)
+            roomData.addComponent(item, Held(obj))
             obj.trigger("inventorychange")
             item.unPlace()
             break
@@ -61,8 +62,8 @@ def do_drop(obj, roomData, rank):
         return False
     item = inventory.items[rank]
     inventory.items.remove(item)
+    roomData.removeComponent(item, Held)
     obj.trigger("inventorychange")
-    #item.construct(roomData, preserve=True)
     item.place(obj.getGround())
     return True
     
@@ -73,7 +74,9 @@ def do_use(obj, roomData, rank):
     if rank not in range(len(items)):
         return
     item = items[rank]
-    item.getComponent("item").use(obj)
+    onUse = roomData.getComponent(item, Item).onUse
+    for component in onUse:
+        roomData.addComponent(item, component)
 
 def do_unequip(obj, roomData, rank):
     inventory = roomData.getComponent(obj, Inventory)

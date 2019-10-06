@@ -23,3 +23,6 @@ class Create(Message):
 
 class SpawnMessage(Message):
     pass
+
+class EatMessage(Message):
+    pass

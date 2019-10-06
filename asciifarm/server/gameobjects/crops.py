@@ -2,7 +2,7 @@
 
 from ..entity import Entity
 from ..components import Build, Food
-from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer, Create
+from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer, Create, Item
 from ..template import Template
 
 entities = {}
@@ -77,7 +77,7 @@ def createCrop(name, stages, timestep=1):
         components={
             "item": Build(stagenames[0], flagsNeeded={"soil"}, blockingFlags={"occupied", "solid"})
         },
-        dataComponents=[Static(seedname)]
+        dataComponents=[Static(seedname), Item]
     )
     
     for i, stage in enumerate(stages[:-1]):
@@ -92,7 +92,7 @@ createCrop("carrot", [
     Stage("carrotplant", sprite="smallplant", height=0.5, harvest=[("carrot", 1), ("carrotseed", 1)])
 ], 600)
 
-entities["carrot"] = lambda: Entity(sprite="food", name="carrot", height=0.3, components={"item": Food(4)}, dataComponents=[Static("carrot")])
+entities["carrot"] = lambda: Entity(sprite="food", name="carrot", height=0.3, components={"item": Food(4)}, dataComponents=[Static("carrot"), Item])
 
 
 createCrop("radish", [
@@ -107,7 +107,7 @@ createCrop("radish", [
     )
 ], 10)
 
-entities["radishes"] = lambda: Entity(sprite="food", name="radishes", height=0.3, components={"item": Food(2)}, dataComponents=[Static("radishes")])
+entities["radishes"] = lambda: Entity(sprite="food", name="radishes", height=0.3, components={"item": Food(2)}, dataComponents=[Static("radishes"), Item])
 
 entities["food"] = entities["radishes"]
 entities["sownseed"] = entities["plantedradishseed"]
@@ -115,7 +115,7 @@ entities["youngplant"] = entities["youngradishplant"]
 entities["plant"] = entities["radishplant"]
 entities["seed"] = entities["radishseed"]
 
-entities["eldritch_radish"] = lambda: Entity(sprite="food", name="eldritch radishes", height=0.3, components={"item": Food(20)}, dataComponents=[Static("eldritch_radish")])
+entities["eldritch_radish"] = lambda: Entity(sprite="food", name="eldritch radishes", height=0.3, components={"item": Food(20)}, dataComponents=[Static("eldritch_radish"), Item])
 
 
 
