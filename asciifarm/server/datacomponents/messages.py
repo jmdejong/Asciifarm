@@ -26,3 +26,7 @@ class SpawnMessage(Message):
 
 class EatMessage(Message):
     pass
+
+class UseMessage(Message):
+    def __init__(self, actor):
+        self.actor = actor

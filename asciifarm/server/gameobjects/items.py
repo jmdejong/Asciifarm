@@ -1,8 +1,8 @@
 
 
 from ..entity import Entity
-from ..datacomponents import Static, Item
-from ..components import Build, Equippable
+from ..datacomponents import Static, Item, Equippable
+from ..components import Build
 
 entities = {}
 
@@ -15,13 +15,13 @@ entities["pebble"] = lambda: Entity(sprite="pebble", height=0.2, dataComponents=
 
 
 
-entities["sword"] = lambda: Entity(sprite="sword", height=0.5, components={"item": Equippable("hand", {"strength": 5})}, dataComponents=[Static("sword"), Item])
+entities["sword"] = lambda: Entity(sprite="sword", height=0.5, dataComponents=[Static("sword"), Item, Equippable("hand", {"strength": 5})])
 
-entities["club"] = lambda: Entity(sprite="club", height=0.5, components={"item": Equippable("hand", {"strength": 3})}, dataComponents=[Static("club"), Item])
+entities["club"] = lambda: Entity(sprite="club", height=0.5, dataComponents=[Static("club"), Item, Equippable("hand", {"strength": 3})])
 
-entities["weapon"] = lambda strength=0, name="weapon": Entity(sprite="sword", name=name, height=0.5, components={"item": Equippable("hand", {"strength": strength})}, dataComponents=[Static("weapon", strength=strength), Item])
+entities["weapon"] = lambda strength=0, name="weapon": Entity(sprite="sword", name=name, height=0.5, dataComponents=[Static("weapon", strength=strength), Item. Equippable("hand", {"strength": strength})])
 
-entities["armour"] = lambda: Entity(sprite="armour", height=0.5, components={"item": Equippable("body", {"defence": 100})}, dataComponents=[Static("armour"), Item])
+entities["armour"] = lambda: Entity(sprite="armour", height=0.5, dataComponents=[Static("armour"), Item, Equippable("body", {"defence": 100})])
 
 
 

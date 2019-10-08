@@ -17,9 +17,9 @@ from .periodic import Periodic
 from .equipment import Equipment
 from .spawner import Spawner
 from .item import Item
-from .held import Held
+from .equippable import Equippable
 
-from .messages import Message, EnterMessage, LootMessage, StartTimer, Create, SpawnMessage, EatMessage
+from .messages import Message, EnterMessage, LootMessage, StartTimer, Create, SpawnMessage, UseMessage
 
 class Remove:
     pass
@@ -39,3 +39,7 @@ class Trap:
 class Home:
     def __init__(self, home):
         self.home = home
+
+class Food:
+    def __init__(self, healing):
+        self.healing = healing

@@ -10,7 +10,7 @@ from . import serialize
 from .template import Template
 
 
-from .systems import fight, attacked, heal, move, controlai, control, handleevents, remove, droploot, clearinbox, trap, teleport, sound, checktimers, create, spawn
+from .systems import fight, attacked, heal, move, controlai, control, handleevents, remove, droploot, clearinbox, trap, teleport, sound, checktimers, create, spawn, eat, equip
 
 class Room:
     
@@ -84,6 +84,8 @@ class Room:
             teleport,
             fight,
             heal,
+            eat,
+            equip,
             attacked,
             droploot,
             spawn,
@@ -158,7 +160,7 @@ class Room:
         return {
             "changes": [
                 (obj.getGround().getPos(), obj.serialize().toJSON())
-                for obj in self.roomData.getPreserved()],
+                for obj in self.roomData.getPreserved() if obj.getGround()],
             "step": self.lastStepStamp}
     
     def loadPreserved(self, objects):

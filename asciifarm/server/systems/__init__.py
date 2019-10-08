@@ -14,3 +14,5 @@ from .sound import sound
 from .checktimers import checktimers
 from .create import create
 from .spawn import spawn
+from .eat import eat
+from .equip import equip

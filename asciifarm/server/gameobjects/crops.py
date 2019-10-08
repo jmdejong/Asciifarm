@@ -1,8 +1,8 @@
 
 
 from ..entity import Entity
-from ..components import Build, Food
-from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer, Create, Item
+from ..components import Build
+from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer, Create, Item, Food
 from ..template import Template
 
 entities = {}
@@ -92,7 +92,7 @@ createCrop("carrot", [
     Stage("carrotplant", sprite="smallplant", height=0.5, harvest=[("carrot", 1), ("carrotseed", 1)])
 ], 600)
 
-entities["carrot"] = lambda: Entity(sprite="food", name="carrot", height=0.3, components={"item": Food(4)}, dataComponents=[Static("carrot"), Item])
+entities["carrot"] = lambda: Entity(sprite="food", name="carrot", height=0.3, dataComponents=[Static("carrot"), Item, Food(5)])
 
 
 createCrop("radish", [
@@ -107,7 +107,7 @@ createCrop("radish", [
     )
 ], 10)
 
-entities["radishes"] = lambda: Entity(sprite="food", name="radishes", height=0.3, components={"item": Food(2)}, dataComponents=[Static("radishes"), Item])
+entities["radishes"] = lambda: Entity(sprite="food", name="radishes", height=0.3, dataComponents=[Static("radishes"), Item, Food(3)])
 
 entities["food"] = entities["radishes"]
 entities["sownseed"] = entities["plantedradishseed"]
@@ -115,7 +115,7 @@ entities["youngplant"] = entities["youngradishplant"]
 entities["plant"] = entities["radishplant"]
 entities["seed"] = entities["radishseed"]
 
-entities["eldritch_radish"] = lambda: Entity(sprite="food", name="eldritch radishes", height=0.3, components={"item": Food(20)}, dataComponents=[Static("eldritch_radish"), Item])
+entities["eldritch_radish"] = lambda: Entity(sprite="food", name="eldritch radishes", height=0.3, dataComponents=[Static("eldritch_radish"), Item, Food(20)])
 
 
 
