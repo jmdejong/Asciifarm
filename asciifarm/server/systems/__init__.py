@@ -16,3 +16,4 @@ from .create import create
 from .spawn import spawn
 from .eat import eat
 from .equip import equip
+from .build import build

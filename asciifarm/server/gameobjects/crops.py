@@ -1,8 +1,7 @@
 
 
 from ..entity import Entity
-from ..components import Build
-from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer, Create, Item, Food
+from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer, Create, Item, Food, Buildable
 from ..template import Template
 
 entities = {}
@@ -74,10 +73,7 @@ def createCrop(name, stages, timestep=1):
         sprite="seed",
         name=seedname,
         height=0.2,
-        components={
-            "item": Build(stagenames[0], flagsNeeded={"soil"}, blockingFlags={"occupied", "solid"})
-        },
-        dataComponents=[Static(seedname), Item]
+        dataComponents=[Static(seedname), Item, Buildable(Template(stagenames[0]), flagsneeded={"soil"}, blockingflags={"occupied", "solid"})]
     )
     
     for i, stage in enumerate(stages[:-1]):

@@ -18,6 +18,7 @@ from .equipment import Equipment
 from .spawner import Spawner
 from .item import Item
 from .equippable import Equippable
+from .buildable import Buildable
 
 from .messages import Message, EnterMessage, LootMessage, StartTimer, Create, SpawnMessage, UseMessage
 
