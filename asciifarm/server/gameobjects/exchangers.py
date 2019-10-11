@@ -2,24 +2,24 @@
 
 
 from ..entity import Entity
-from ..exchange import Exchange
 
-from ..datacomponents import Static
-from ..components import OptionMenu
-from ..components import Selectable
+from ..datacomponents import Static, Interact, Exchanger, Exchange
 
 entities = {}
 
 
 entities["trader"] = lambda: Entity(
-    sprite="sign", height=1, components={
-        "interact": Selectable(),
-        "options": OptionMenu("Trade", [
+    sprite="sign",
+    name="trader",
+    height=1,
+    dataComponents=[
+        Static("trader"),
+        Interact,
+        Exchanger([
             Exchange(["carrotseed"], ["radishes"], None, "buy_carrotseeds"),
             Exchange(["pebble"], ["radishes"], None, "buy_pebble")
-        ])
-    },
-    dataComponents=[Static("trader")]
+        ], "Trade")
+    ]
 )
     
 

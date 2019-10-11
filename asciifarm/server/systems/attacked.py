@@ -5,7 +5,7 @@ import random
 from asciifarm.common import utils
 from .. import gameobjects
 from ..system import system
-from ..datacomponents import Attackable, Input, StartTimer, Periodic
+from ..datacomponents import Attackable, Input, StartTimer, Periodic, Equipment
 from ..template import Template
 
 @system([Attackable])
@@ -13,8 +13,9 @@ def attacked(obj, roomData, attackable):
     for type, strength, attacker in attackable.attacks:
         if type == "attack":
             defence = attackable.defence
-            if obj.hasComponent("equipment"):
-                defence += obj.getComponent("equipment").getBonus("defence")
+            equipment = roomData.getComponent(obj, Equipment)
+            if equipment is not None:
+                defence += equipment.getBonus(roomData, "defence")
             damage = random.randint(0, int(100*strength / (defence + 100)))
         elif type == "heal":
             damage = -strength

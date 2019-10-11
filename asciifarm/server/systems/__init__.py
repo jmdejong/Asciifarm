@@ -17,3 +17,4 @@ from .spawn import spawn
 from .eat import eat
 from .equip import equip
 from .build import build
+from .exchange import exchange

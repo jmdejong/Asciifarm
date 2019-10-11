@@ -78,23 +78,6 @@ def do_use(obj, roomData, action):
         roomData.addComponent(item, component)
     roomData.addComponent(item, UseMessage(obj))
 
-def do_unequip(obj, roomData, action):
-    rank = action.rank
-    inventory = roomData.getComponent(obj, Inventory)
-    if inventory is None or len(inventory.items) >= inventory.capacity:
-        # can't unequip anything if there is no place in the inventory
-        return
-    slots = sorted(obj.getComponent("equipment").getSlots().items())
-    if rank is not None:
-        if rank not in range(len(slots)):
-            return
-        slots = [slots[rank]]
-    for (slot, item) in slots:
-        if item is not None:
-            obj.getComponent("equipment").unEquip(slot)
-            inventory.add(item)
-            obj.trigger("take", item)
-
 def do_interact(obj, roomData, action):
     directions = action.directions
     objects = _getNearbyObjects(obj, directions)
@@ -102,9 +85,7 @@ def do_interact(obj, roomData, action):
         if roomData.getComponent(other, Interact) is not None:
             for component in roomData.getComponent(other, Interact).components:
                 roomData.addComponent(other, component)
-            break
-        if other.getComponent("interact") is not None:
-            other.getComponent("interact").interact(obj)
+            roomData.addComponent(other, UseMessage(obj, action.parameter))
             break
 
 def do_attack(obj, roomData, action):
@@ -124,15 +105,6 @@ def do_say(obj, roomData, action):
     text = action.text
     roomData.makeSound(obj, text)
 
-#def do_pick(obj, roomData, option):
-    #selected = obj.getComponent("select").getSelected()
-    #if selected is None:
-        #return
-    #optionmenu = selected.getComponent("options")
-    #if optionmenu is None:
-        #return
-    #optionmenu.choose(option, obj)
-
 def _getNearbyObjects(obj, directions):
     nearPlaces = obj.getGround().getNeighbours()
     objects = []
@@ -149,10 +121,8 @@ handlers = {
     "take": do_take,
     "drop": do_drop,
     "use": do_use,
-    "unequip": do_unequip,
     "interact": do_interact,
     "attack": do_attack,
-    "say": do_say,
-    #"pick": do_pick
+    "say": do_say
 }
 

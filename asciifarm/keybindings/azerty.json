@@ -5,7 +5,7 @@
         "w": null,
         "W": null,
         "q": ["move", "west"],
-        "a": ["unuse"],
+        "a": ["drop"],
         "A": ["take"],
         "Z": ["input", ["attack", ["north"]]],
         "Q": ["input", ["attack", ["west"]]]

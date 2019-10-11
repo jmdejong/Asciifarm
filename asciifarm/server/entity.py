@@ -14,15 +14,12 @@ class Entity:
     Remove methods are for cleanup, like unsubscribing from events.
     """
     
-    def __init__(self, sprite=' ', height=0, name=None, components=None, flags=None, dataComponents=None):
-        if components is None:
-            components = {}
+    def __init__(self, sprite=' ', height=0, name=None, flags=None, dataComponents=None):
         if flags is None:
             flags = set()
         self.sprite = sprite # the name of the image to display for this entity
         self.height = height # if multiple objects are on a square, the tallest one is drawn
         self.name = name if name else sprite # human readable name/description
-        self.components = components
         self.flags = set(flags)
         self.ground = None
         self.roomData = None
@@ -39,8 +36,6 @@ class Entity:
         
         self.listeners = collections.defaultdict(dict)
         
-        for component in self.components.values():
-            component.attach(self)
         
         
     
@@ -53,15 +48,6 @@ class Entity:
         if stamp is None:
             stamp = roomData.getStamp()
         self.trigger("roomjoin", roomData, stamp)
-    
-    def hasComponent(self, name):
-        return name in self.components
-    
-    def getComponent(self, name):
-        return self.components.get(name, None)
-    
-    def listComponents(self):
-        return list(self.components.keys())
     
     def getDataComponent(self, component):
         return self.roomData.getComponent(self, component)
@@ -87,8 +73,6 @@ class Entity:
         self.roomData.removeObj(self)
         if self.isPreserved():
             self.roomData.removePreserved(self)
-        for component in self.components.values():
-            component.remove()
         self.unPlace()
         self.roomData = None
     
@@ -134,38 +118,11 @@ class Entity:
     def isPreserved(self):
         return "preserve" in self.flags
     
-    def toJSON(self):
-        return {
-            "sprite": self.sprite,
-            "name": self.name,
-            "height": self.height,
-            "flags": list(self.flags),
-            "components": {
-                name: serialize.serialize(comp)
-                for name, comp in self.components.items()
-            }
-        }
-    
     def serialize(self):
         if Serialise in self.dataComponents:
             return self.dataComponents[Serialise].serialise(self, self.roomData)
         else:
-            return self.toJSON()
-    
-    @classmethod
-    def fromJSON(cls, data):
-        if data is None:
             return None
-        return cls(
-            sprite = data["sprite"],
-            name = data["name"],
-            height = data["height"],
-            flags = data["flags"],
-            components = {
-                name: serialize.unserialize(comp)
-                for name, comp in data["components"].items()
-            }
-        )
     
     def getRoomData(self):
         return self.roomData

@@ -28,5 +28,6 @@ class EatMessage(Message):
     pass
 
 class UseMessage(Message):
-    def __init__(self, actor):
+    def __init__(self, actor, parameter=None):
         self.actor = actor
+        self.parameter = parameter

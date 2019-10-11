@@ -1,10 +1,5 @@
 
-# this package is not used, but it is important that it is imported before any component modules
-# importing components before gameobjects is loaded will result in a cyclic dependency problem
 from . import gameobjects
-
-
-from .components import Select
 from .datacomponents import Inventory, Attackable, Move, Fighter, Heal, Input, Faction, Listen, Equipment
 from .template import Template
 from . import entity
@@ -18,7 +13,7 @@ class Player:
         self.world = world
         self.roomname = None
         self.entity = None
-        self.inventory = Inventory(10)
+        self.inventory = Inventory(10) # Todo: make player inventory more abstract; just copy the contents to actual inventory on construction
         self.equipment = Equipment({"hand": None, "body": None})
         self.health = None
         self.maxHealth = 50
@@ -52,10 +47,7 @@ class Player:
             sprite = "player",
             height = 2,
             name = '&' + self.name,
-            components={
-                #"equipment": self.equipment,
-                "select": Select()
-            }, dataComponents=[
+            dataComponents = [
                 self.inventory,
                 self.equipment,
                 Faction.GOOD,

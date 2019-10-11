@@ -58,8 +58,6 @@ class UseControl(RankedControl):
         assert name == cls.name, "Control names do not match: {}, {}".format(name, cls.name)
         return cls(container, rank)
 
-class UnequipControl(RankedControl):
-    name = "unequip"
 
 class InteractControl(Control):
     name = "interact"
@@ -70,7 +68,17 @@ class InteractControl(Control):
         self.parameter = parameter
     
     def to_json(self):
-        return [self.name, self.directions]
+        return [self.name, self.directions, parameter]
+    
+    @classmethod
+    def from_json(cls, jsondata):
+        if len(jsondata) == 3:
+            name, directions, parameter = jsondata
+        else:
+            name, directions = jsondata
+            parameter = None
+        assert name == cls.name, "Control names do not match: {}, {}".format(name, cls.name)
+        return cls(directions, parameter)
     
 
 class AttackControl(Control):
@@ -98,7 +106,6 @@ _controls_by_name = {control.name: control for control in [
     TakeControl,
     DropControl,
     UseControl,
-    UnequipControl,
     InteractControl,
     AttackControl,
     SayControl

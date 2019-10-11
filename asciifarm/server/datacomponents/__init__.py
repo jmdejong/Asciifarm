@@ -19,6 +19,7 @@ from .spawner import Spawner
 from .item import Item
 from .equippable import Equippable
 from .buildable import Buildable
+from .exchanger import Exchange, Exchanger
 
 from .messages import Message, EnterMessage, LootMessage, StartTimer, Create, SpawnMessage, UseMessage
 

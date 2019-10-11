@@ -74,7 +74,7 @@ class CommandHandler:
         self.input(["say", text])
     
     def pick(self, option):
-        self.input(["pick", option])
+        self.input(["interact", [None, "north", "south", "east", "west"], option])
     
     def chat(self, text):
         self.client.sendChat( text)

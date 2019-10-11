@@ -24,7 +24,6 @@ class Stage:
     def create(self, cropname="", nextstage=None, timestep=1):
         name = self.name.format(cropname)
         def makeEntity(targetTime=None):
-            components = {}
             dataComponents = []
             if self.duration is not None:
                 ongrow = [Remove, Create(Template(nextstage))]
@@ -46,7 +45,6 @@ class Stage:
                 height=self.height,
                 name=self.shownname.format(cropname),
                 flags=flags,
-                components=components,
                 dataComponents=dataComponents
             )
         entities[name] = makeEntity
