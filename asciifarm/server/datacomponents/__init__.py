@@ -15,7 +15,7 @@ from .inventory import Inventory
 from .listen import Listen
 from .periodic import Periodic
 from .equipment import Equipment
-from .spawner import Spawner
+from .spawner import Spawner, Squad
 from .item import Item
 from .equippable import Equippable
 from .buildable import Buildable

@@ -19,6 +19,14 @@ class Template:
         else:
             return self.name
     
+    def __repr__(self):
+        a = [self.name]
+        for arg in self.args:
+            a.append(repr(arg))
+        for key, value in self.kwargs.items():
+            a.append(key + "=" + repr(value))
+        return "Template({})".format(", ".join(a))
+    
     @classmethod
     def fromJSON(cls, value):
         if isinstance(value, str):
