@@ -29,7 +29,7 @@ class CommandHandler:
             "selectitem": self.selectItem,
             "inputwithselected": self.actWithSelected,
             "use": self.useSelected,
-            "unuse": self.unUseSelected,
+            "drop": self.dropSelected,
             "take": self.takeSelected,
             "eval": self.eval,
             "exec": self.exec,
@@ -103,20 +103,15 @@ class CommandHandler:
         menu = self.client.display.getSelectedMenu()
         selected = self.client.display.getSelectedItem(menu)
         if menu in ("inventory", "equipment"):
-            action = "use"
+            self.input(["use", menu, selected])
         elif menu == "ground":
-            action = "interact",
-        else:
-            return
-        self.input([action, selected])
+            self.input(["interact", selected])
     
-    def unUseSelected(self):
+    def dropSelected(self):
         menu = self.client.display.getSelectedMenu()
         selected = self.client.display.getSelectedItem(menu)
         if menu == "inventory":
             action = "drop"
-        elif menu == "equipment":
-            action = "unequip"
         else:
             return
         self.input([action, selected])

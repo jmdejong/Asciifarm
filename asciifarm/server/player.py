@@ -8,6 +8,7 @@ from .components import Select
 from .datacomponents import Inventory, Attackable, Move, Fighter, Heal, Input, Faction, Listen, Equipment
 from .template import Template
 from . import entity
+from .controls import Control
 
 class Player:
     
@@ -133,9 +134,8 @@ class Player:
         self.changes.add("selection")
     
     def control(self, action):
-        if not self.entity or not (isinstance(action, list) or isinstance(action, tuple)) or len(action) < 1:
+        if not self.entity or not isinstance(action, Control):
             return
-        print(action)
         self.entity.getDataComponent(Input).action = action
     
     def getHealthPair(self):

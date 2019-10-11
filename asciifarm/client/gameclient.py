@@ -88,7 +88,7 @@ class Client:
             if error == "invalidname":
                 self.close("Invalid name error: "+ str(message.description))
                 return
-            self.log(message.errtype + ": " + message.description)
+            self.log(message.errType + ": " + message.description)
         elif isinstance(message, messages.MessageMessage):
             self.log(message.text, message.type)
         elif isinstance(message, messages.WorldMessage):

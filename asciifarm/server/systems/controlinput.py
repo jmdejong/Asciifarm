@@ -1,6 +1,7 @@
 
-from ..datacomponents import Input, Fighter, Move, Faction, Interact, Inventory, Attackable, Item, UseMessage
+from ..datacomponents import Input, Fighter, Move, Faction, Interact, Inventory, Equipment, Attackable, Item, UseMessage
 from ..system import system
+#from ..controls import MoveAction, TakeAction, DropAction, UseAction
 
 @system([Input, Fighter, Move])
 def control(obj, roomData, input, fighter, *_args):
@@ -14,12 +15,7 @@ def control(obj, roomData, input, fighter, *_args):
         fighter.target = input.target
 
 def executeAction(obj, roomData, action):
-    
-    kind = action[0]
-    if len(action) > 1:
-        arg = action[1]
-    else:
-        arg = None
+    kind = action.name
     try:
         handler = handlers.get(kind)
     except TypeError:
@@ -27,14 +23,14 @@ def executeAction(obj, roomData, action):
     if handler is None:
         print("invalid action", action)
         return
-    handler(obj, roomData, arg)
+    handler(obj, roomData, action)
 
-def do_move(obj, roomData, direction):
-    if direction not in {"north", "south", "east", "west"}:
-        return
+def do_move(obj, roomData, action):
+    direction = action.direction
     roomData.getComponent(obj, Move).direction = direction
 
-def do_take(obj, roomData, rank):
+def do_take(obj, roomData, action):
+    rank = action.rank
     inventory = roomData.getComponent(obj, Inventory)
     if inventory is None or len(inventory.items) >= inventory.capacity:
         # can't take anything if there is no inventory or if it's full
@@ -51,7 +47,8 @@ def do_take(obj, roomData, rank):
             item.unPlace()
             break
 
-def do_drop(obj, roomData, rank):
+def do_drop(obj, roomData, action):
+    rank = action.rank
     inventory = roomData.getComponent(obj, Inventory)
     if inventory is None:
         return False
@@ -65,8 +62,12 @@ def do_drop(obj, roomData, rank):
     item.place(obj.getGround())
     return True
     
-def do_use(obj, roomData, rank):
-    items = roomData.getComponent(obj, Inventory).items
+def do_use(obj, roomData, action):
+    rank = action.rank
+    if action.container == "inventory":
+        items = roomData.getComponent(obj, Inventory).items
+    elif action.container == "equipment":
+        items = [val for key, val in sorted(roomData.getComponent(obj, Equipment).slots.items())]
     if rank is None:
         rank = 0
     if rank not in range(len(items)):
@@ -77,10 +78,11 @@ def do_use(obj, roomData, rank):
         roomData.addComponent(item, component)
     roomData.addComponent(item, UseMessage(obj))
 
-def do_unequip(obj, roomData, rank):
+def do_unequip(obj, roomData, action):
+    rank = action.rank
     inventory = roomData.getComponent(obj, Inventory)
     if inventory is None or len(inventory.items) >= inventory.capacity:
-        # can't unequip anything if there is place in the inventory
+        # can't unequip anything if there is no place in the inventory
         return
     slots = sorted(obj.getComponent("equipment").getSlots().items())
     if rank is not None:
@@ -93,7 +95,8 @@ def do_unequip(obj, roomData, rank):
             inventory.add(item)
             obj.trigger("take", item)
 
-def do_interact(obj, roomData, directions):
+def do_interact(obj, roomData, action):
+    directions = action.directions
     objects = _getNearbyObjects(obj, directions)
     for other in objects:
         if roomData.getComponent(other, Interact) is not None:
@@ -104,7 +107,8 @@ def do_interact(obj, roomData, directions):
             other.getComponent("interact").interact(obj)
             break
 
-def do_attack(obj, roomData, directions):
+def do_attack(obj, roomData, action):
+    directions = action.directions
     objects = _getNearbyObjects(obj, directions)
     if roomData.getComponent(obj, Input).target in objects:
         objects = {roomData.getComponent(obj, Input).target}
@@ -116,24 +120,21 @@ def do_attack(obj, roomData, directions):
             roomData.getComponent(obj, Input).target = other
             break
 
-def do_say(obj, roomData, text):
-    if type(text) != str:
-        return
+def do_say(obj, roomData, action):
+    text = action.text
     roomData.makeSound(obj, text)
 
-def do_pick(obj, roomData, option):
-    selected = obj.getComponent("select").getSelected()
-    if selected is None:
-        return
-    optionmenu = selected.getComponent("options")
-    if optionmenu is None:
-        return
-    optionmenu.choose(option, obj)
+#def do_pick(obj, roomData, option):
+    #selected = obj.getComponent("select").getSelected()
+    #if selected is None:
+        #return
+    #optionmenu = selected.getComponent("options")
+    #if optionmenu is None:
+        #return
+    #optionmenu.choose(option, obj)
 
 def _getNearbyObjects(obj, directions):
     nearPlaces = obj.getGround().getNeighbours()
-    if not isinstance(directions, list):
-        directions = [directions]
     objects = []
     for direction in directions:
         if direction is None:
@@ -152,6 +153,6 @@ handlers = {
     "interact": do_interact,
     "attack": do_attack,
     "say": do_say,
-    "pick": do_pick
+    #"pick": do_pick
 }
 

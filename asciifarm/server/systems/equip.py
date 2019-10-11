@@ -17,9 +17,9 @@ def equip(obj, roomData, use, equippable):
             inv.add(olditem)
         equipment.slots[equippable.slot] = obj
     elif equipment.slots[equippable.slot] == obj:
-        if len(inventory.items) < capacity:
+        if len(inv.items) < inv.capacity:
             equipment.slots[equippable.slot] = None
-            inventory.add(obj)
+            inv.add(obj)
     else:
         raise Exception("attempting to equip item not in inventory")
     actor.trigger("inventorychange")

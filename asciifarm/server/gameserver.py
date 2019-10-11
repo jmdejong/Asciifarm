@@ -10,6 +10,7 @@ import threading
 from . import view
 from . import socketserver as server
 from . import player
+from . import controls
 
 from asciifarm.common import messages
 
@@ -76,7 +77,7 @@ class GameServer:
         except json.JSONDecodeError:
             self.error(connection, "invalidmessage", "Invalid JSON")
         except Exception as e:
-            print(e)
+            print(type(e), e, data)
             self.error(connection, "invalidmessage", "An unknown error occured in handling the message")
     
     def handleMessage(self, connection, message):
@@ -107,7 +108,8 @@ class GameServer:
     
     def handleInputMessage(self, connection, message):
         if connection in self.connections:
-            self.messages.put(("input", self.connections[connection], message.inp))
+            control = controls.controlFromJson(message.inp)
+            self.messages.put(("input", self.connections[connection], control))
     
     def handleChatMessage(self, connection, msg):
             name = self.connections[connection]
