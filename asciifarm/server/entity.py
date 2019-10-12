@@ -1,7 +1,7 @@
 
 from . import serialize
 import collections
-from .datacomponents import Events, Remove, Serialise
+from .datacomponents import Events, Remove, Serialise, Preserve
 
 class Entity:
     """ Attempt to implement an entity component system
@@ -14,13 +14,10 @@ class Entity:
     Remove methods are for cleanup, like unsubscribing from events.
     """
     
-    def __init__(self, sprite=' ', height=0, name=None, flags=None, dataComponents=None):
-        if flags is None:
-            flags = set()
+    def __init__(self, sprite=' ', height=0, name=None, dataComponents=None):
         self.sprite = sprite # the name of the image to display for this entity
         self.height = height # if multiple objects are on a square, the tallest one is drawn
         self.name = name if name else sprite # human readable name/description
-        self.flags = set(flags)
         self.ground = None
         self.roomData = None
         if dataComponents is None:
@@ -43,7 +40,6 @@ class Entity:
         self.roomData = roomData
         if preserve:
             roomData.preserveObject(self)
-            self._preserve()
         self.roomData.addObj(self)
         if stamp is None:
             stamp = roomData.getStamp()
@@ -71,8 +67,6 @@ class Entity:
     
     def doRemove(self):
         self.roomData.removeObj(self)
-        if self.isPreserved():
-            self.roomData.removePreserved(self)
         self.unPlace()
         self.roomData = None
     
@@ -108,15 +102,6 @@ class Entity:
     
     def getNearObjects(self):
         return [obj for obj in self.ground.getObjs() if obj != self]
-    
-    def getFlags(self):
-        return self.flags
-    
-    def _preserve(self):
-        self.flags.add("preserve")
-    
-    def isPreserved(self):
-        return "preserve" in self.flags
     
     def serialize(self):
         if Serialise in self.dataComponents:

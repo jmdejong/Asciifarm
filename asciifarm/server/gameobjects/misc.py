@@ -2,7 +2,7 @@
 
 
 from ..entity import Entity
-from ..datacomponents import Portal, Static, Periodic, Remove, StartTimer, Spawner, SpawnMessage
+from ..datacomponents import Portal, Static, Periodic, Remove, StartTimer, Spawner, SpawnMessage, FreeLand
 from ..template import Template
 
 
@@ -10,7 +10,7 @@ entities = {}
 
 
 
-entities["freeland"] = lambda: Entity(name="buildable", flags={"freeland"}, dataComponents=[Static("freeland")])
+entities["freeland"] = lambda: Entity(name="buildable", dataComponents=[Static("freeland"), FreeLand])
 
 entities["spawner"] = lambda template, number, delay, sprite=None, name=None, height=0, setHome=False, initialSpawn=True: Entity(
     sprite=sprite, height=height, name=name, dataComponents=[

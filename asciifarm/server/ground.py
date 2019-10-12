@@ -1,6 +1,7 @@
 import random
 
 from .eventtarget import EventTarget
+from .datacomponents import Floor, Solid
 
 neighbourdirs = {"north":(0,-1), "south":(0,1), "east":(1,0), "west":(-1,0)}
 
@@ -14,12 +15,15 @@ class GroundPatch:
         self.neighbours = None
         self.event = EventTarget()
     
-    def getFlags(self):
-        return set().union(*[obj.getFlags() for obj in self.getObjs()])
+    def hasFlag(self, flag):
+        roomData = self.room.roomData
+        for obj in self.objects:
+            if roomData.getComponent(obj, flag) is not None:
+                return True
+        return False
     
     def accessible(self):
-        flags = self.getFlags()
-        return "floor" in flags and "solid" not in flags
+        return self.hasFlag(Floor) and not self.hasFlag(Solid)
     
     def addObj(self, obj):
         self.objects.append(obj)

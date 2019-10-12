@@ -11,7 +11,7 @@ from .systems.move import move
 from .systems.controlai import controlai
 from .systems.controlinput import control
 
-from .datacomponents import DC
+from .datacomponents import DC, Preserve
 
 
 class RoomData:
@@ -108,10 +108,7 @@ class RoomData:
         return entities
     
     def preserveObject(self, obj):
-        self.preservedObjects.add(obj)
-    
-    def removePreserved(self, obj):
-        self.preservedObjects.discard(obj)
+        self.addComponent(obj, Preserve)
     
     def getPreserved(self):
         return frozenset(self.preservedObjects)

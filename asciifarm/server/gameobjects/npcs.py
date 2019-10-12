@@ -2,7 +2,7 @@
 
 from ..entity import Entity
 
-from ..datacomponents import Fighter, Move, Attackable, AI, Faction, Loot, LootMessage, Trap, Static
+from ..datacomponents import Fighter, Move, Attackable, AI, Faction, Loot, LootMessage, Trap, Static, Occupied
 
 entities = {}
 
@@ -46,14 +46,14 @@ entities["rat"] = lambda home=None: Entity(sprite="rat", height=1, dataComponent
 
 
 entities["dummy"] = lambda: Entity(
-    sprite="dummy", height=1, flags={"occupied"}, dataComponents=[
+    sprite="dummy", height=1, dataComponents=[
         Attackable(maxHealth=20),
-        Faction.NONE
+        Faction.NONE,
+        Occupied
     ])
 
 entities["spiketrap"] = lambda damage=15: Entity(
     sprite="spikes",
     height=1,
-    flags={"occupied"},
-    dataComponents=[Fighter(strength=damage, slowness=10), Trap(), Static("spiketrap")]
+    dataComponents=[Fighter(strength=damage, slowness=10), Trap(), Static("spiketrap"), Occupied]
 )

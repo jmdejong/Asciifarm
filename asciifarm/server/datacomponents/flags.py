@@ -1,13 +1,21 @@
 
-
-class Solid:
+class Flag:
     pass
 
-class Floor:
+class Solid(Flag):
     pass
 
-class Buildable:
+class Floor(Flag):
     pass
 
-class Soil:
+class Soil(Flag):
+    pass
+
+class Occupied(Flag):
+    pass
+
+class FreeLand(Flag):
+    pass
+
+class Preserve(Flag):
     pass

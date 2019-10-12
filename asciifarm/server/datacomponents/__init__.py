@@ -21,6 +21,7 @@ from .equippable import Equippable
 from .buildable import Buildable
 from .exchanger import Exchange, Exchanger
 
+from .flags import Solid, Occupied, Soil, Floor, FreeLand, Preserve
 from .messages import Message, EnterMessage, LootMessage, StartTimer, Create, SpawnMessage, UseMessage
 
 class Remove:

@@ -1,14 +1,14 @@
 
 
 from ..entity import Entity
-from ..datacomponents import Static, Item, Equippable, Buildable
+from ..datacomponents import Static, Item, Equippable, Buildable, FreeLand, Solid, Occupied
 from ..template import Template
 
 entities = {}
 
 
 
-entities["stone"] = lambda: Entity(sprite="stone", height=0.4, dataComponents=[Static("stone"), Item, Build(Template("builtwall"), flagsneeded={"freeland"}, blockingflags={"solid", "occupied"})])
+entities["stone"] = lambda: Entity(sprite="stone", height=0.4, dataComponents=[Static("stone"), Item, Build(Template("builtwall"), flagsneeded={FreeLand}, blockingflags={Solid, Occupied})])
 
 entities["pebble"] = lambda: Entity(sprite="pebble", height=0.2, dataComponents=[Static("pebble"), Item])
 

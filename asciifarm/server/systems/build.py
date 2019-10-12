@@ -7,11 +7,12 @@ from .. import gameobjects
 def build(obj, roomData, use, buildable):
     actor = use[0].actor
     ground = actor.getGround()
-    print("building")
-    groundFlags = ground.getFlags()
-    if not buildable.flagsneeded <= groundFlags or groundFlags & buildable.blockingflags: # <= means subset when applied on sets
-        # groundFlags must contain all of self.flagsNeeded, and none of self.blockingFlags
-        return
+    for needed in buildable.flagsneeded:
+        if not ground.hasFlag(needed):
+            return
+    for blocking in buildable.blockingflags:
+        if ground.hasFlag(blocking):
+            return
     builtobj = gameobjects.buildEntity(buildable.template, roomData, preserve=True)
     builtobj.place(ground)
     roomData.addComponent(obj, Remove)

@@ -1,7 +1,7 @@
 
 
 from ..entity import Entity
-from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer, Create, Item, Food, Buildable
+from ..datacomponents import Interact, Loot, Remove, Serialise, Static, LootMessage, Periodic, StartTimer, Create, Item, Food, Buildable, Occupied, Soil, Solid
 from ..template import Template
 
 entities = {}
@@ -39,12 +39,11 @@ class Stage:
             if self.harvest is not None:
                 dataComponents.append(Interact(LootMessage, Remove))
                 dataComponents.append(Loot(self.harvest))
-            flags = {"occupied"}
+            dataComponents.append(Occupied)
             return Entity(
                 sprite=self.sprite.format(cropname),
                 height=self.height,
                 name=self.shownname.format(cropname),
-                flags=flags,
                 dataComponents=dataComponents
             )
         entities[name] = makeEntity
@@ -71,7 +70,7 @@ def createCrop(name, stages, timestep=1):
         sprite="seed",
         name=seedname,
         height=0.2,
-        dataComponents=[Static(seedname), Item, Buildable(Template(stagenames[0]), flagsneeded={"soil"}, blockingflags={"occupied", "solid"})]
+        dataComponents=[Static(seedname), Item, Buildable(Template(stagenames[0]), flagsneeded={Soil}, blockingflags={Occupied, Solid})]
     )
     
     for i, stage in enumerate(stages[:-1]):
