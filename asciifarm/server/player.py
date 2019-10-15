@@ -84,21 +84,6 @@ class Player:
         if self.canChangeRoom:
             self.joinRoom(room, pos)
     
-    def on_attack(self, o, obj, damage):
-        self.log("{} attacks {} for {} damage".format(self.name, obj.getName(), damage), "attack")
-    
-    def on_kill(self, o, obj):
-        self.log("{} kills {}".format(self.name, obj.getName()), "kill")
-    
-    def on_damage(self, o, obj, damage):
-        self.log("{} got {} damage from {}".format(self.name, damage, obj.getName()), "damage")
-        self.changes.add("health")
-    
-    def on_heal(self, o, obj, health):
-        if obj:
-            self.log("{} got {} health from {}".format(self.name, health, obj.getName()), "heal")
-        self.changes.add("health")
-    
     def on_die(self, o, obj):
         self.log("{} got killed by {}".format(self.name, obj.getName()))
         self.entity = None
@@ -194,11 +179,9 @@ class Player:
     def readMessages(self):
         messages = []
         listen = self.entity.getDataComponent(Listen)
-        for source, text in listen.sounds:
-            if source is not None:
-                text = source.getName() + ": " + text
-            messages.append([text, "world"])
-        listen.sounds = []
+        for notification in listen.notifications:
+            messages.append(notification)
+        listen.notifications = []
         return messages
     
     def readChanges(self):

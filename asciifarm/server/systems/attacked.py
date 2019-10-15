@@ -5,8 +5,9 @@ import random
 from asciifarm.common import utils
 from .. import gameobjects
 from ..system import system
-from ..datacomponents import Attackable, Input, StartTimer, Periodic, Equipment
+from ..datacomponents import Attackable, Input, StartTimer, Periodic, Equipment, Listen
 from ..template import Template
+from ..notification import AttackNotification, DamageNotification, KillNotification, HealNotification, DieNotification
 
 @system([Attackable])
 def attacked(obj, roomData, attackable):
@@ -29,18 +30,27 @@ def attacked(obj, roomData, attackable):
             wound = gameobjects.buildEntity(Template("wound", 4, obj.getHeight() - 0.01), roomData)
             wound.place(obj.getGround())
         
+        
+        _ear = roomData.getComponent(obj, Listen)
+        ear = _ear.notifications if _ear is not None else []
+        _attackear = roomData.getComponent(attacker, Listen)
+        attackear = _attackear.notifications if _attackear is not None else []
+        actor = attacker.name
+        subject = obj.name
+        
         if type == "attack":
-            obj.trigger("damage", attacker, damage)
-            attacker.trigger("attack", obj, damage)
+            ear.append(DamageNotification(actor, subject, damage))
+            attackear.append(AttackNotification(actor, subject, damage))
             input = roomData.getComponent(obj, Input)
             if input is not None:
                 input.target = attacker # retaliation
         elif type == "heal":
-            obj.trigger("heal", attacker, -damage)
+            
+            ear.append(HealNotification(actor, subject, -damage))
         
         if attackable.isDead():
-            obj.trigger("die", attacker)
-            attacker.trigger("kill", obj)
+            attackear.append(KillNotification(actor, subject))
+            ear.append(DieNotification(actor, subject))
             for component in attackable.onDie:
                 roomData.addComponent(obj, component)
             obj.remove()

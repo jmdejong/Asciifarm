@@ -136,8 +136,8 @@ class RoomData:
     def getStamp(self):
         return self.stepStamp
     
-    def makeSound(self, source, text):
-        self.sounds.append((source, text))
+    def makeSound(self, sound):
+        self.sounds.append(sound)
     
     def postpone(self, stamp, obj, *components):
         count = next(counter) # tiebreaker for when stamps are equal

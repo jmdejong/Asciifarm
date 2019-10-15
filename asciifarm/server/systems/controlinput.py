@@ -2,6 +2,7 @@
 from ..datacomponents import Input, Fighter, Move, Faction, Interact, Inventory, Equipment, Attackable, Item, UseMessage
 from ..system import system
 #from ..controls import MoveAction, TakeAction, DropAction, UseAction
+from ..notification import SoundNotification
 
 @system([Input, Fighter, Move])
 def control(obj, roomData, input, fighter, *_args):
@@ -103,7 +104,8 @@ def do_attack(obj, roomData, action):
 
 def do_say(obj, roomData, action):
     text = action.text
-    roomData.makeSound(obj, text)
+    name = obj.name
+    roomData.makeSound(SoundNotification(name, text))
 
 def _getNearbyObjects(obj, directions):
     nearPlaces = obj.getGround().getNeighbours()

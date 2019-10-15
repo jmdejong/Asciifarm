@@ -6,7 +6,7 @@ def sound(roomData):
     for entity in entities:
         listen = roomData.getComponent(entity, Listen)
         for sound in roomData.sounds:
-            listen.sounds.append(sound)
-    for source, text in roomData.sounds:
-        print("{}: {}: {}".format(" ", source.getName(), text))
+            listen.notifications.append(sound)
+    for sound in roomData.sounds:
+        print("{}: {}: {}".format(" ", sound.source, sound.text))
     roomData.sounds = []
