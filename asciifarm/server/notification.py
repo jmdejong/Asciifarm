@@ -36,7 +36,6 @@ class HealthNotification(Notification):
     def toString(self):
         return self.text.format(actor=self.actor, subject=self.subject, health=self.health)
 
-#print(HealthNotification, type(HealthNotification))
 class AttackNotification(HealthNotification):
     
     type = "attack"
@@ -67,3 +66,20 @@ class DieNotification(Notification):
     
     def toString(self):
         return "{subject} was killed by {actor}".format(actor=self.actor, subject=self.subject)
+
+class OptionsNotification(Notification):
+    type = "options"
+    def __init__(self, options, actor=None, description=None):
+        self.options = options
+        self.description = None
+        self.actor = actor
+    
+    def toString(self):
+        if self.description:
+            return self.description
+        lines = []
+        if self.actor is not None:
+            lines.append(self.actor + ":")
+        for option in self.options.values():
+            lines.append("  {}: {}".format(option.name, option.description))
+        return "\n".join(lines)

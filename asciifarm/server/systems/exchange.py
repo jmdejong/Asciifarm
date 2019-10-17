@@ -3,6 +3,7 @@ from ..system import system
 from ..datacomponents import Exchanger, Inventory, UseMessage, Listen, Remove
 from ..template import Template
 from .. import gameobjects
+from ..notification import OptionsNotification
 
 @system([UseMessage, Exchanger])
 def exchange(obj, roomData, usemessages, exchanger):
@@ -20,10 +21,7 @@ def exchange(obj, roomData, usemessages, exchanger):
 def tell_options(source, exchanger, ear):
     if ear is None:
         return
-    if exchanger.description:
-        ear.sounds.append((source, exchanger.description))
-    for option in exchanger.options.values():
-        ear.sounds.append((source, "{}: {}".format(option.name, option.description)))
+    ear.notifications.append(OptionsNotification(exchanger.options, source.name, exchanger.description))
     
 
 def perform_exchange(exchange, inventory, roomData):
