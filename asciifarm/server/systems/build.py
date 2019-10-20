@@ -19,4 +19,4 @@ def build(obj, roomData, use, buildable):
     inv = roomData.getComponent(actor, Inventory)
     if inv is not None:
         inv.items.remove(obj)
-        actor.trigger("inventorychange")
+        inv.changed = True

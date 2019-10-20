@@ -5,6 +5,7 @@ class Equipment:
     
     def __init__(self, slots):
         self.slots = slots
+        self.changed = True
     
     def getBonus(self, roomData, stat):
         bonus = 0

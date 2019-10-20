@@ -14,8 +14,9 @@ def exchange(obj, roomData, usemessages, exchanger):
             tell_options(obj, exchanger, roomData.getComponent(use.actor, Listen))
         else:
             # perform the exchange
-            perform_exchange(exchange, roomData.getComponent(use.actor, Inventory), roomData)
-            use.actor.trigger("inventorychange")
+            inventory = roomData.getComponent(use.actor, Inventory)
+            perform_exchange(exchange, inventory, roomData)
+            inventory.changed = True
 
 
 def tell_options(source, exchanger, ear):

@@ -44,7 +44,7 @@ def do_take(obj, roomData, action):
     for item in objects:
         if roomData.getComponent(item, Item) is not None:
             inventory.add(item)
-            obj.trigger("inventorychange")
+            inventory.changed = True
             item.unPlace()
             break
 
@@ -59,7 +59,7 @@ def do_drop(obj, roomData, action):
         return False
     item = inventory.items[rank]
     inventory.items.remove(item)
-    obj.trigger("inventorychange")
+    inventory.changed = True
     item.place(obj.getGround())
     return True
     

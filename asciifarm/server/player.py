@@ -21,6 +21,7 @@ class Player:
         self.resetView = True
         self.changes = set()
         self.canChangeRoom=False
+        self.lastView = {"inventory": None, "equipment": None}
         
     
     def getName(self):
@@ -91,12 +92,6 @@ class Player:
         self.place = None
         self.health = self.maxHealth
     
-    def on_inventorychange(self, o):
-        self.changes.add("inventory")
-        
-    def on_equipmentchange(self, o):
-        self.changes.add("equipment")
-    
     def on_objectenter(self, o, obj):
         self.changes.add("ground")
     
@@ -106,9 +101,6 @@ class Player:
     def on_move(self, o):
         self.changes.add("ground")
         self.changes.add("pos")
-    
-    def on_selection(self, o, obj):
-        self.changes.add("selection")
     
     def control(self, action):
         if not self.entity or not isinstance(action, Control):
@@ -143,10 +135,6 @@ class Player:
     
     def getInteractions(self):
         return NotImplemented
-        #if not self.entity:
-            #return []
-        #controller = self.entity.getComponent("controller")
-        #return controller.getInteractions()
     
     def getGroundObjs(self):
         if not self.entity:
@@ -186,6 +174,12 @@ class Player:
     
     def readChanges(self):
         changes = self.changes
+        if self.inventory.changed:
+            changes.add("inventory")
+            self.inventory.changed = False
+        if self.equipment.changed:
+            changes.add("equipment")
+            self.equipment.changed = False
         self.changes = set()
         return changes
     

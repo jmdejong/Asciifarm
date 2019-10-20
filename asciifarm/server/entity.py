@@ -43,7 +43,6 @@ class Entity:
         self.roomData.addObj(self)
         if stamp is None:
             stamp = roomData.getStamp()
-        self.trigger("roomjoin", roomData, stamp)
     
     def getDataComponent(self, component):
         return self.roomData.getComponent(self, component)
@@ -61,7 +60,6 @@ class Entity:
         
     
     def remove(self):
-        self.trigger("remove")
         self.roomData.addComponent(self, Remove)
         
     

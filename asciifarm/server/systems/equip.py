@@ -22,6 +22,6 @@ def equip(obj, roomData, use, equippable):
             inv.add(obj)
     else:
         raise Exception("attempting to equip item not in inventory")
-    actor.trigger("inventorychange")
-    actor.trigger("equipmentchange")
+    equipment.changed = True
+    inv.changed = True
     
