@@ -1,6 +1,6 @@
 # AsciiFarm
 
-Rust server port: [https://github.com/jmdejong/rustifarm](https://github.com/jmdejong/rustifarm)
+Rust server port: [https://github.com/jmdejong/rustifarm](https://github.com/jmdejong/rustifarm)  
 Client: [https://github.com/jmdejong/asciifarmclient](https://github.com/jmdejong/asciifarmclient)
 
 This is a multiplayer ascii farming/fighting game.
