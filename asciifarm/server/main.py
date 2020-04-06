@@ -38,7 +38,7 @@ def main(argv=None):
     sockets = []
     for socktype, address in socketargs:
         assert socktype in ["abstract", "unix", "inet"], "Unknown socket type: " + str(socktype)
-        if address is "":
+        if address == "":
             address = defaultAdresses[socktype]
         if socktype == "abstract":
             address = '\0' + address

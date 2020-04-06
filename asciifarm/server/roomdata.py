@@ -144,3 +144,8 @@ class RoomData:
         # see: https://docs.python.org/3/library/heapq.html#priority-queue-implementation-notes
         heapq.heappush(self.postponed, (stamp, count, obj, list(components)))
     
+    def construct(self, entity, preserve=False):
+        entity.roomData = self
+        if preserve:
+            self.preserveObject(entity)
+        self.addObj(entity)

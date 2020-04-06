@@ -21,7 +21,7 @@ def createEntity(template):
 def buildEntity(template, roomData, preserve=False):
     obj = createEntity(template)
     if obj is not None:
-        obj.construct(roomData, preserve)
+        roomData.construct(obj, preserve)
     return obj
             
         

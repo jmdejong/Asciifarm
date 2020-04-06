@@ -7,14 +7,7 @@ class Attackable:
         if defense is not None:
             defence = defense
         self.defence = defence
-        self.attacks = []
         self.onDie = onDie or []
-    
-    def attack(self, strength, attacker):
-        self.attacks.append(("attack", strength, attacker))
-        
-    def heal(self, health, source):
-        self.attacks.append(("heal", health, source))
     
     def getHealth(self):
         return (self.health, self.maxHealth)

@@ -7,7 +7,8 @@ def eat(obj, roomData, use, food):
     actor = use[0].actor
     life = roomData.getComponent(actor, Attackable)
     if life is not None:
-        life.heal(food.healing, obj)
+        newHealth = min(life.maxHealth, life.health + food.healing)
+        life.health += food.healing
     roomData.addComponent(obj, Remove)
     inv = roomData.getComponent(actor, Inventory)
     if inv is not None:

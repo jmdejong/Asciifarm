@@ -29,11 +29,16 @@ class Room:
         self.roomData = roomdata.RoomData()
         
         
-        self.places = data.get("places", {})
-        for name, pos in self.places.items():
-            self.places[name] = tuple(pos)
-        
         self.field = {}
+        for x in range(self.width):
+            for y in range(self.height):
+                pos = (x, y)
+                groundPatch = ground.GroundPatch(self, pos)
+                self.field[pos] = groundPatch
+                groundPatch.addListener("changesprite", self.onGroundChange)
+        
+        for name, pos in data.get("places", {}).items():
+            self.field[name] = self.field[tuple(pos)]
         
         g = grid.fromDict(data)
         for x in range(g.width):
@@ -82,13 +87,13 @@ class Room:
             move,
             trap,
             teleport,
-            fight,
             heal,
             eat,
+            fight,
             equip,
             build,
             exchange,
-            attacked,
+            #attacked,
             droploot,
             spawn,
             create,
@@ -104,25 +109,16 @@ class Room:
         self.lastStepStamp = stepStamp
     
     def getSprites(self, pos):
-        return self._getGround(pos).getSprites()
+        return self.get(pos).getSprites()
     
     def isValidPos(self, pos):
         x, y = pos
         return x >= 0 and y >= 0 and x < self.width and y < self.height
     
-    def _getGround(self, pos):
-        if pos not in self.field and self.isValidPos(pos):
-            groundPatch = ground.GroundPatch(self, pos)
-            self.field[pos] = groundPatch
-            groundPatch.addListener("changesprite", self.onGroundChange)
-        return self.field.get(pos)
-    
     def get(self, pos):
-        if isinstance(pos, str):
-            pos = self.places.get(pos)
         if not pos:
             return None
-        return self._getGround(pos)
+        return self.field.get(pos)
         
     
     def getAllObjs(self):
@@ -140,14 +136,9 @@ class Room:
         if obj is not None:
             place = self.get(pos)
             if place is None:
-                if pos not in self.places:
-                    raise Exception("Position {} does not exist in room {}. Available places: {}".format(pos, self.name, self.places))
-                else:
-                    raise Exception("Position {} at {} is not a valid position.".format(pos, self.places[pos]))
+                raise Exception("Position {} is not a valid position.".format(pos))
             obj.place(self.get(pos))
     
-    def removeObj(self, pos, obj):
-        self._getGround(pos).removeObj(obj)
     
     def onGroundChange(self, obj):
         self.changedCells[obj.getPos()] = self.getSprites(obj.getPos())

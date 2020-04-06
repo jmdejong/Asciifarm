@@ -33,16 +33,6 @@ class Entity:
         
         self.listeners = collections.defaultdict(dict)
         
-        
-        
-    
-    def construct(self, roomData, preserve=False, stamp=None):
-        self.roomData = roomData
-        if preserve:
-            roomData.preserveObject(self)
-        self.roomData.addObj(self)
-        if stamp is None:
-            stamp = roomData.getStamp()
     
     def getDataComponent(self, component):
         return self.roomData.getComponent(self, component)
