@@ -76,6 +76,8 @@ class World:
         if name in self.players:
             return self.players[name]
         player = self.playerLoader.load(name, self)
+        if player.name != name:
+            raise InvalidPlayerError("Names do not match. Expected {}, found {}".format(name, player.name))
         self.players[name] = player
         return player
     
@@ -129,4 +131,14 @@ class World:
             if self.stepStamp - self.lastRoomActivity[room]> prunetime:
                 self.deactivateRoom(room)
                 
+
+
+class InvalidPlayerError(Exception):
+    errType = "invalidplayer"
+    description = "This player can not be loaded correctly"
+    
+    def __init__(self, description="", errType=None):
+        self.description = description
+        if errType is not None:
+            self.errType = errType
 

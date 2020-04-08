@@ -25,8 +25,8 @@ class PlayerLoader:
                 saved = json.load(f)
         except OSError:
             saved = None
-        
-        return player.Player.fromJSON(saved, world)
+        p = player.Player.fromJSON(saved, world)
+        return p
     
     def exists(self, name):
         savePath = os.path.join(self.savePath, name + saveExt)

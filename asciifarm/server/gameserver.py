@@ -122,6 +122,9 @@ class GameServer:
     def error(self, connection, errtype, description=""):
         self.sendMessage(connection, messages.ErrorMessage(errtype, description))
     
+    def playerError(self, player, errtype, description=""):
+        self.error(self.players[player], errtype, description)
+    
     def close(self, connection):
         if connection in self.connections:
             name = self.connections[connection]

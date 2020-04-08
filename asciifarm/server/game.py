@@ -61,7 +61,11 @@ class Game:
             if t == "join":
                 if not self.world.hasPlayer(name):
                     self.world.createPlayer(name)
-                self.world.playerJoin(name)
+                try:
+                    self.world.playerJoin(name)
+                except world.InvalidPlayerError as err:
+                    self.server.playerError(name, err.errType, err.description)
+                    print("Invalid player: " + str(err))
             elif t == "leave":
                 self.world.removePlayer(name)
             elif t == "input":
