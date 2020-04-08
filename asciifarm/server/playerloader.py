@@ -26,6 +26,7 @@ class PlayerLoader:
         except OSError:
             saved = None
         p = player.Player.fromJSON(saved, world)
+        p.name = name
         return p
     
     def exists(self, name):
