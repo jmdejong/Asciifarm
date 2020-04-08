@@ -2,6 +2,7 @@
 
 from ..entity import Entity
 
+from .conversions import convert
 from .base import entities as base
 from .crops import entities as crops
 from .exchangers import entities as exchangers
@@ -27,8 +28,11 @@ def createEntity(data):
     elif isinstance(data, dict):
         if "type" in data:
             obj = entities[data["type"]](*(data.get("args", [])), **(data.get("kwargs", {})))
+        elif "components" in data:
+            obj = createEntity(convert(data))
+            #obj = Entity.fromJSON(data)
         else:
-            obj = Entity.fromJSON(data)
+            raise ValueError("invalid entity data: " + str(data))
     return obj
 
 def buildEntity(data, roomData, preserve=False):

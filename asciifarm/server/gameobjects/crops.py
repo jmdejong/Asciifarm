@@ -95,14 +95,16 @@ createCrop("radish", [
     Stage("{}plant", sprite="smallplant", height=0.5, harvest=[("radishseed", .92), ("radishseed", .20), ("radishes", .8), ("radishes", .4)])
     ], 10)
 
-entities["radishes"] = lambda: Entity(sprite="food", name="radishes", height=0.3, components={"item": Food(2), "serialize": Static("radishes")})
+entities["radish"] = lambda: Entity(sprite="food", name="radish", height=0.3, components={"item": Food(2), "serialize": Static("radishes")})
 
-entities["food"] = entities["radishes"]
+entities["food"] = entities["radish"]
+entities["radishes"] = entities["radish"]
 entities["sownseed"] = entities["plantedradishseed"]
 entities["youngplant"] = entities["youngradishplant"]
 entities["plant"] = entities["radishplant"]
 entities["seed"] = entities["radishseed"]
 
 
+entities["eldritch_radish"] = lambda: Entity(sprite="food", name="eldritch radish", height=0.3, components={"item": Food(20), "serialize": Static("eldritch_radish")})
 
 
