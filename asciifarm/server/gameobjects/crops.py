@@ -95,7 +95,7 @@ createCrop("radish", [
     Stage("{}plant", sprite="smallplant", height=0.5, harvest=[("radishseed", .92), ("radishseed", .20), ("radishes", .8), ("radishes", .4)])
     ], 10)
 
-entities["radish"] = lambda: Entity(sprite="food", name="radish", height=0.3, components={"item": Food(2), "serialize": Static("radishes")})
+entities["radish"] = lambda: Entity(sprite="food", name="radish", height=0.3, components={"item": Food(2), "serialize": Static("radish")})
 
 entities["food"] = entities["radish"]
 entities["radishes"] = entities["radish"]
