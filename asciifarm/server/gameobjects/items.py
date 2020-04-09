@@ -19,7 +19,7 @@ entities["sword"] = lambda: Entity(sprite="sword", height=0.5, components={"item
 
 entities["club"] = lambda: Entity(sprite="club", height=0.5, components={"item": Equippable("hand", {"strength": 3}), "serialize": Static("club")})
 
-entities["weapon"] = lambda strength=0, name="weapon": Entity(sprite="sword", name=name, height=0.5, components={"item": Equippable("hand", {"strength": strength}), "serialize": Static("weapon", strength=strength)})
+entities["eldritch_sword"] = lambda: Entity(sprite="sword", name="eldritch sword", height=0.5, components={"item": Equippable("hand", {"strength": 500}), "serialize": Static("eldritch_sword")})
 
 entities["armour"] = lambda: Entity(sprite="armour", height=0.5, components={"item": Equippable("body", {"defense": 100}), "serialize": Static("armour")})
 
