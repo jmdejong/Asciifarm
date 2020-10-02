@@ -11,7 +11,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     data_files=[
-        ('charmaps', ['asciifarm/charmaps/default.json', 'asciifarm/charmaps/fullwidth.json']),
+        ('charmaps', ['asciifarm/charmaps/emoji.json', 'asciifarm/charmaps/fullwidth.json', 'asciifarm/charmaps/halfwidth.json']),
     ],
     entry_points={
         'console_scripts': [
