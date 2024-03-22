@@ -1,0 +1,5 @@
+
+
+INT_INFINITY = 2**64
+
+
