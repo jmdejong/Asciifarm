@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='asciifarm',
-    version='0.1.1',
+    version='0.1.2',
     description="Troido's tilde.town ASCII Farm",
     long_description="TODO",
     author="Troido",
@@ -23,11 +23,8 @@ setup(
         ],
     },
     install_requires=[
-        # TODO: Put other requirements here -wangofett, 2017-10-26
-        "ratuil"
     ],
     tests_require=[
-        # TODO: put tests requirements here -wangofett, 2017-10-26
     ],
     license='GPLv3',
     classifiers=[
